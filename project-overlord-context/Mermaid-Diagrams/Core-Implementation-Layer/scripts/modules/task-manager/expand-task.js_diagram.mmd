@@ -1,0 +1,99 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: zod, FROM: zod"]
+        I4["IMPORT: ../ai-services-unified.js, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I5["IMPORT: ../prompt-manager.js, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I6["IMPORT: ./generate-task-files.js, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I7["IMPORT: ../../../src/constants/paths.js, FROM: /claude-task-master/src/constants/paths.js"]
+        I8["IMPORT: ../../../src/constants/providers.js, FROM: /claude-task-master/src/constants/providers.js"]
+        I9["IMPORT: ../utils/contextGatherer.js, FROM: /claude-task-master/scripts/modules/utils/contextGatherer.js"]
+        I10["IMPORT: ../utils/fuzzyTaskSearch.js, FROM: /claude-task-master/scripts/modules/utils/fuzzyTaskSearch.js"]
+        I11["IMPORT: ../utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: parseSubtasksFromText"]
+        FU2["FUNCTION: expandTask"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: expandTask"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} text - Response text from AI."]
+        P2["PARAM: {number} startId - Starting subtask ID expected."]
+        P3["PARAM: {number} expectedCount - Expected number of subtasks."]
+        P4["PARAM: {number} parentTaskId - Parent task ID for context."]
+        P5["PARAM: {Object} logger - Logging object (mcpLog or console log)."]
+        P6["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P7["PARAM: {number} taskId - Task ID to expand"]
+        P8["PARAM: {number | null | undefined} [numSubtasks] - Optional: Explicit target number of subtasks. If null/undefined, check complexity report or config default."]
+        P9["PARAM: {Object} context - Context object containing session and mcpLog."]
+        P10["PARAM: {Object} [context.session] - Session object from MCP."]
+        P11["PARAM: {Object} [context.mcpLog] - MCP logger object."]
+        P12["PARAM: {string} [context.projectRoot] - Project root path"]
+        P13["PARAM: {string} [context.tag] - Tag for the task"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: subtaskSchema, VALUE: z"]
+        C2["CONST: subtaskArraySchema, VALUE: z.array(subtaskSchema)"]
+        C3["CONST: subtaskWrapperSchema, VALUE: z.object({"]
+        C4["CONST: originalTrimmedResponse, VALUE: text.trim()"]
+        C5["CONST: malformedPattern, VALUE: /\"dependencies\":\\s*,/g"]
+        C6["CONST: codeBlockMatch, VALUE: jsonToParse.match(/```(?:json)?\\s*([\\s\\S]*?)\\s*```/)"]
+        C7["CONST: targetPattern, VALUE: '{\"subtasks\":'"]
+        C8["CONST: patternStartIndex, VALUE: jsonToParse.indexOf(targetPattern)"]
+        C9["CONST: openBraces, VALUE: 0"]
+        C10["CONST: firstBraceFound, VALUE: false"]
+        C11["CONST: extractedJsonBlock, VALUE: ''"]
+        C12["CONST: parsedSubtasks, VALUE: parsedObject.subtasks"]
+        C13["CONST: validatedSubtasks, VALUE: []"]
+        C14["CONST: validationErrors, VALUE: []"]
+        C15["CONST: correctedSubtask, VALUE: {"]
+        C16["CONST: result, VALUE: subtaskSchema.safeParse(correctedSubtask)"]
+        C17["CONST: errorMessage, VALUE: `  - Field '${err.path.join('.')}': ${err.message}`"]
+        C18["CONST: outputFormat, VALUE: mcpLog ? 'json' : 'text'"]
+        C19["CONST: projectRoot, VALUE: contextProjectRoot || findProjectRoot(tasksPath)"]
+        C20["CONST: logger, VALUE: mcpLog || {"]
+        C21["CONST: data, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C22["CONST: taskIndex, VALUE: data.tasks.findIndex("]
+        C23["CONST: task, VALUE: data.tasks[taskIndex]"]
+        C24["CONST: contextGatherer, VALUE: new ContextGatherer(projectRoot, tag)"]
+        C25["CONST: allTasksFlat, VALUE: flattenTasksWithSubtasks(data.tasks)"]
+        C26["CONST: fuzzySearch, VALUE: new FuzzyTaskSearch(allTasksFlat, 'expand-task')"]
+        C27["CONST: searchQuery, VALUE: `${task.title} ${task.description}`"]
+        C28["CONST: searchResults, VALUE: fuzzySearch.findRelevantTasks(searchQuery, {"]
+        C29["CONST: relevantTaskIds, VALUE: fuzzySearch.getTaskIds(searchResults)"]
+        C30["CONST: finalTaskIds, VALUE: ["]
+        C31["CONST: contextResult, VALUE: await contextGatherer.gather({"]
+        C32["CONST: complexityReport, VALUE: readJSON(complexityReportPath)"]
+        C33["CONST: explicitNumSubtasks, VALUE: parseInt(numSubtasks, 10)"]
+        C34["CONST: nextSubtaskId, VALUE: (task.subtasks?.length || 0) + 1"]
+        C35["CONST: promptManager, VALUE: getPromptManager()"]
+        C36["CONST: currentProvider, VALUE: useResearch"]
+        C37["CONST: isClaudeCode, VALUE: currentProvider === CUSTOM_PROVIDERS.CLAUDE_CODE"]
+        C38["CONST: promptParams, VALUE: {"]
+        C39["CONST: role, VALUE: useResearch ? 'research' : 'main'"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["expand-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

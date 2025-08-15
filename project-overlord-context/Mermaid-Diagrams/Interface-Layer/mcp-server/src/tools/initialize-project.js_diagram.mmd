@@ -1,0 +1,33 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: zod, FROM: zod"]
+        I2["IMPORT: ../core/task-master-core.js, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I3["IMPORT: ../../../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: registerInitializeProjectTool"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: registerInitializeProjectTool"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: context.session"]
+        C2["CONST: result, VALUE: await initializeProjectDirect(args, log, { session })"]
+        C3["CONST: errorMessage, VALUE: `Project initialization tool failed: ${error.message || 'Unknown error'}`"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["initialize-project.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

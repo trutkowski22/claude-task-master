@@ -1,0 +1,32 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: extractJson"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: extractJson"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} text - The text to extract JSON from"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: varName, VALUE: \""]
+        C2["CONST: lines, VALUE: jsonText.split('\\n')"]
+        C3["CONST: char, VALUE: jsonText[i]"]
+        C4["CONST: objectMatch, VALUE: jsonText.match(/{[\\s\\S]*}/)"]
+        C5["CONST: arrayMatch, VALUE: jsonText.match(/\\[[\\s\\S]*\\]/)"]
+        C6["CONST: converted, VALUE: jsonText"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["json-extractor.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

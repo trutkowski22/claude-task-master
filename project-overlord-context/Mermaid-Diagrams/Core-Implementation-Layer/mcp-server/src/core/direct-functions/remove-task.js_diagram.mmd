@@ -1,0 +1,33 @@
+```mermaid
+flowchart TB
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: removeTaskDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P3["PARAM: {string} args.id - The ID(s) of the task(s) or subtask(s) to remove (comma-separated for multiple)."]
+        P4["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
+        P5["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P6["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: taskIdArray, VALUE: id.split(',').map((taskId) => taskId.trim())"]
+        C2["CONST: data, VALUE: readJSON(tasksJsonPath, projectRoot, tag)"]
+        C3["CONST: invalidTasks, VALUE: taskIdArray.filter("]
+        C4["CONST: result, VALUE: await removeTask(tasksJsonPath, id, {"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+    end
+    subgraph FileName["remove-task.js"]
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+```

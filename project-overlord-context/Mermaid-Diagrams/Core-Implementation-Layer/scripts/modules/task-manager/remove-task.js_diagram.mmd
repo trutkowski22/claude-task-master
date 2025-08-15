@@ -1,0 +1,66 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: ../utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: ./generate-task-files.js, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I5["IMPORT: ./task-exists.js, FROM: /claude-task-master/scripts/modules/task-manager/task-exists.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: removeTask"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: removeTask"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks file"]
+        P2["PARAM: {string} taskIds - Comma-separated string of task/subtask IDs to remove (e.g., '5,6.1,7')"]
+        P3["PARAM: {Object} context - Context object containing projectRoot and tag information"]
+        P4["PARAM: {string} [context.projectRoot] - Project root path"]
+        P5["PARAM: {string} [context.tag] - Tag for the task"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: results, VALUE: {"]
+        C2["CONST: taskIdsToRemove, VALUE: taskIds"]
+        C3["CONST: rawData, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C4["CONST: fullTaggedData, VALUE: rawData._rawTaggedData || rawData"]
+        C5["CONST: tasks, VALUE: fullTaggedData[tag].tasks"]
+        C6["CONST: tasksToDeleteFiles, VALUE: []"]
+        C7["CONST: errorMsg, VALUE: `Task with ID ${taskId} in tag '${tag}' not found or already removed.`"]
+        C8["CONST: parentTask, VALUE: tasks.find((t) => t.id === parentTaskId)"]
+        C9["CONST: subtaskIndex, VALUE: parentTask.subtasks.findIndex("]
+        C10["CONST: removedSubtask, VALUE: {"]
+        C11["CONST: taskIdNum, VALUE: parseInt(taskId, 10)"]
+        C12["CONST: taskIndex, VALUE: tasks.findIndex((t) => t.id === taskIdNum)"]
+        C13["CONST: removedTask, VALUE: tasks[taskIndex]"]
+        C14["CONST: errorMsg, VALUE: `Error processing ID ${taskId}: ${innerError.message}`"]
+        C15["CONST: allRemovedIds, VALUE: new Set("]
+        C16["CONST: currentTagTasks, VALUE: fullTaggedData[tagName].tasks"]
+        C17["CONST: taskFileName, VALUE: path.join("]
+        C18["CONST: unlinkMsg, VALUE: `Failed to delete task file ${taskFileName}: ${unlinkError.message}`"]
+        C19["CONST: genErrMsg, VALUE: `Failed to regenerate task files: ${genError.message}`"]
+        C20["CONST: finalMessage, VALUE: results.messages.join('\\n')"]
+        C21["CONST: finalError, VALUE: results.errors.join('\\n')"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["remove-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

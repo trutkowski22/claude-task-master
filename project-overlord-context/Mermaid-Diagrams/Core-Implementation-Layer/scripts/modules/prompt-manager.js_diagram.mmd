@@ -1,0 +1,88 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: url, FROM: url"]
+        I4["IMPORT: ./utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: ajv, FROM: ajv"]
+        I6["IMPORT: ajv-formats, FROM: ajv-formats"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: like"]
+        FU2["FUNCTION: getPromptManager"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: PromptManager"]
+        E2["EXP: getPromptManager"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} promptId - The prompt template ID"]
+        P2["PARAM: {Object} variables - Variables to inject into the template"]
+        P3["PARAM: {string} [variantKey] - Optional specific variant to use"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: path.dirname(__filename)"]
+        C3["CONST: schemaPath, VALUE: path.join("]
+        C4["CONST: schemaContent, VALUE: fs.readFileSync(schemaPath, 'utf-8')"]
+        C5["CONST: schema, VALUE: JSON.parse(schemaContent)"]
+        C6["CONST: cacheKey, VALUE: `${promptId}-${JSON.stringify(variables)}-${variantKey}`"]
+        C7["CONST: template, VALUE: this.loadTemplate(promptId)"]
+        C8["CONST: variant, VALUE: variantKey"]
+        C9["CONST: rendered, VALUE: {"]
+        C10["CONST: templatePath, VALUE: path.join(this.promptsDir, `${promptId}.json`)"]
+        C11["CONST: content, VALUE: fs.readFileSync(templatePath, 'utf-8')"]
+        C12["CONST: template, VALUE: JSON.parse(content)"]
+        C13["CONST: valid, VALUE: this.validatePrompt(template)"]
+        C14["CONST: errors, VALUE: this.validatePrompt.errors"]
+        C15["CONST: errors, VALUE: []"]
+        C16["CONST: value, VALUE: variables[paramName]"]
+        C17["CONST: regex, VALUE: new RegExp(paramConfig.pattern)"]
+        C18["CONST: context, VALUE: { ...variables }"]
+        C19["CONST: func, VALUE: new Function(...Object.keys(context), `return ${condition}`)"]
+        C20["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C21["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C22["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C23["CONST: numValue, VALUE: parseFloat(compareValue)"]
+        C24["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C25["CONST: numValue, VALUE: parseFloat(compareValue)"]
+        C26["CONST: array, VALUE: this.getNestedValue(variables, path)"]
+        C27["CONST: itemContext, VALUE: {"]
+        C28["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C29["CONST: value, VALUE: this.getNestedValue(variables, path)"]
+        C30["CONST: results, VALUE: { total: 0, errors: [], valid: [] }"]
+        C31["CONST: files, VALUE: fs.readdirSync(this.promptsDir)"]
+        C32["CONST: promptFiles, VALUE: files.filter((file) => file.endsWith('.json'))"]
+        C33["CONST: promptId, VALUE: file.replace('.json', '')"]
+        C34["CONST: files, VALUE: fs.readdirSync(this.promptsDir)"]
+        C35["CONST: prompts, VALUE: []"]
+        C36["CONST: promptId, VALUE: file.replace('.json', '')"]
+        C37["CONST: template, VALUE: this.loadTemplate(promptId)"]
+        C38["CONST: content, VALUE: fs.readFileSync(templatePath, 'utf-8')"]
+        C39["CONST: template, VALUE: JSON.parse(content)"]
+        C40["CONST: required, VALUE: ['id', 'version', 'description', 'prompts']"]
+        C41["CONST: valid, VALUE: this.validatePrompt(template)"]
+        C42["CONST: errors, VALUE: this.validatePrompt.errors"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["prompt-manager.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

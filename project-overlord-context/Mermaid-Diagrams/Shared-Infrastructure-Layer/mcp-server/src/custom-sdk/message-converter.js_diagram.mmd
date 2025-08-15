@@ -1,0 +1,32 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: convertToMCPFormat"]
+        FU2["FUNCTION: convertFromMCPFormat"]
+        FU3["FUNCTION: extractTextContent"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: convertToMCPFormat"]
+        E2["EXP: convertFromMCPFormat"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Array} prompt - AI SDK prompt array"]
+        P2["PARAM: {object} response - MCP sampling response"]
+        P3["PARAM: {string|Array|object} content - Content in various formats"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: messages, VALUE: []"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["message-converter.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

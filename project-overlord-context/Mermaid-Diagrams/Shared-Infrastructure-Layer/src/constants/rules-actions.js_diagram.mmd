@@ -1,0 +1,30 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: isValidRulesAction"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: RULES_ACTIONS"]
+        E2["EXP: RULES_SETUP_ACTION"]
+        E3["EXP: isValidRulesAction"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} action - The action to check"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: RULES_ACTIONS, VALUE: {"]
+        C2["CONST: RULES_SETUP_ACTION, VALUE: 'setup'"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["rules-actions.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

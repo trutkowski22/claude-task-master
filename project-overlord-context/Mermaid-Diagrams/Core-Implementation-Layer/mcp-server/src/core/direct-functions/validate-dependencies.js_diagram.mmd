@@ -1,0 +1,38 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/dependency-manager.js, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: fs, FROM: fs"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: validateDependenciesDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P3["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
+        P4["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P5["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: options, VALUE: { projectRoot, tag }"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["validate-dependencies.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

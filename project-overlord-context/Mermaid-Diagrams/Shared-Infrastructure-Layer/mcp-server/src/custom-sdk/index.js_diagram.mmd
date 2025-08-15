@@ -1,0 +1,36 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ./language-model.js, FROM: /claude-task-master/mcp-server/src/custom-sdk/language-model.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: createMCP"]
+        FU2["FUNCTION: provider"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: createMCP"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} options - Provider options"]
+        P2["PARAM: {object} options.session - MCP session object"]
+        P3["PARAM: {object} options.defaultSettings - Default settings for the provider"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: provider, VALUE: function (modelId, settings = {}) {"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

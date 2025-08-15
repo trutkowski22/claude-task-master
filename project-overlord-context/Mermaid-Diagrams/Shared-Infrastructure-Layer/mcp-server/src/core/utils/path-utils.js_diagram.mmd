@@ -1,0 +1,90 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: ../../../../src/constants/paths.js, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: findPrdPath"]
+        FU2["FUNCTION: resolveTasksPath"]
+        FU3["FUNCTION: resolvePrdPath"]
+        FU4["FUNCTION: resolveComplexityReportPath"]
+        FU5["FUNCTION: resolveProjectPath"]
+        FU6["FUNCTION: findProjectRoot"]
+        FU7["FUNCTION: findTasksPath"]
+        FU8["FUNCTION: findComplexityReportPath"]
+        FU9["FUNCTION: findPRDPath"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: lastFoundProjectRoot"]
+        E2["EXP: findPrdPath"]
+        E3["EXP: resolveTasksPath"]
+        E4["EXP: resolvePrdPath"]
+        E5["EXP: resolveComplexityReportPath"]
+        E6["EXP: resolveProjectPath"]
+        E7["EXP: findProjectRoot"]
+        E8["EXP: findTasksPath"]
+        E9["EXP: findComplexityReportPath"]
+        E10["EXP: findPRDPath"]
+        E11["EXP: findTasksJsonPath"]
+        E12["EXP: findComplexityReportJsonPath"]
+        E13["EXP: PROJECT_MARKERS"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} [explicitPath] - Explicit path to PRD file (highest priority)"]
+        P2["PARAM: {Object} [args] - Arguments object for context"]
+        P3["PARAM: {Object} [log] - Logger object to prevent console logging"]
+        P4["PARAM: {Object} args - Arguments object containing projectRoot and optional file path"]
+        P5["PARAM: {Object} [log] - Logger object to prevent console logging"]
+        P6["PARAM: {Object} args - Arguments object containing projectRoot and optional input path"]
+        P7["PARAM: {Object} [log] - Logger object to prevent console logging"]
+        P8["PARAM: {Object} args - Arguments object containing projectRoot and optional complexityReport path"]
+        P9["PARAM: {Object} [log] - Logger object to prevent console logging"]
+        P10["PARAM: {string} relativePath - Relative path to resolve"]
+        P11["PARAM: {Object} args - Arguments object containing projectRoot"]
+        P12["PARAM: {string} [startDir] - Directory to start searching from"]
+        P13["PARAM: {Object} args - Arguments object containing projectRoot and optional file path"]
+        P14["PARAM: {Object} [log] - Log function to prevent console logging"]
+        P15["PARAM: {Object} args - Arguments object containing projectRoot and optional complexityReport path"]
+        P16["PARAM: {Object} [log] - Log function to prevent console logging"]
+        P17["PARAM: {string} [explicitPath] - Explicit path to PRD file"]
+        P18["PARAM: {Object} [args] - Arguments object for context (not used in current implementation)"]
+        P19["PARAM: {Object} [log] - Logger object to prevent console logging"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: silentLogger, VALUE: {"]
+        C2["CONST: lastFoundProjectRoot, VALUE: null"]
+        C3["CONST: explicitPath, VALUE: args?.file"]
+        C4["CONST: rawProjectRoot, VALUE: args?.projectRoot"]
+        C5["CONST: projectRoot, VALUE: rawProjectRoot"]
+        C6["CONST: explicitPath, VALUE: args?.input"]
+        C7["CONST: rawProjectRoot, VALUE: args?.projectRoot"]
+        C8["CONST: projectRoot, VALUE: rawProjectRoot"]
+        C9["CONST: explicitPath, VALUE: args?.complexityReport"]
+        C10["CONST: rawProjectRoot, VALUE: args?.projectRoot"]
+        C11["CONST: tag, VALUE: args?.tag"]
+        C12["CONST: projectRoot, VALUE: rawProjectRoot"]
+        C13["CONST: projectRoot, VALUE: normalizeProjectRoot(args.projectRoot)"]
+        C14["CONST: findTasksJsonPath, VALUE: findTasksPath"]
+        C15["CONST: findComplexityReportJsonPath, VALUE: findComplexityReportPath"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["path-utils.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

@@ -1,0 +1,61 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: @ai-sdk/provider, FROM: @ai-sdk/provider"]
+        I2["IMPORT: @ai-sdk/provider-utils, FROM: @ai-sdk/provider-utils"]
+        I3["IMPORT: ./message-converter.js, FROM: /claude-task-master/src/ai-providers/custom-sdk/claude-code/message-converter.js"]
+        I4["IMPORT: ./json-extractor.js, FROM: /claude-task-master/src/ai-providers/custom-sdk/claude-code/json-extractor.js"]
+        I5["IMPORT: ./errors.js, FROM: /claude-task-master/src/ai-providers/custom-sdk/claude-code/errors.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: loadClaudeCodeModule"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: ClaudeCodeLanguageModel"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} options - Generation options"]
+        P2["PARAM: {Object} options - Generation options"]
+        P3["PARAM: {Object} options - Stream options"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mod, VALUE: await import('@anthropic-ai/claude-code')"]
+        C2["CONST: modelMap, VALUE: {"]
+        C3["CONST: mapped, VALUE: modelMap[this.modelId]"]
+        C4["CONST: warnings, VALUE: []"]
+        C5["CONST: unsupportedParams, VALUE: []"]
+        C6["CONST: abortController, VALUE: new AbortController()"]
+        C7["CONST: queryOptions, VALUE: {"]
+        C8["CONST: warnings, VALUE: this.generateUnsupportedWarnings(options)"]
+        C9["CONST: response, VALUE: query({"]
+        C10["CONST: isJsonTruncation, VALUE: error instanceof SyntaxError &&"]
+        C11["CONST: abortController, VALUE: new AbortController()"]
+        C12["CONST: queryOptions, VALUE: {"]
+        C13["CONST: warnings, VALUE: this.generateUnsupportedWarnings(options)"]
+        C14["CONST: stream, VALUE: new ReadableStream({"]
+        C15["CONST: response, VALUE: query({"]
+        C16["CONST: text, VALUE: message.message.content"]
+        C17["CONST: extractedJson, VALUE: extractJson(accumulatedText)"]
+        C18["CONST: isJsonTruncation, VALUE: error instanceof SyntaxError &&"]
+        C19["CONST: finalText, VALUE: options.mode?.type === 'object-json'"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["language-model.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

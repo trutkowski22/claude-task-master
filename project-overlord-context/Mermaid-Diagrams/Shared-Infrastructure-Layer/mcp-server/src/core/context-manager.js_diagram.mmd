@@ -1,0 +1,50 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fastmcp, FROM: fastmcp"]
+        I2["IMPORT: lru-cache, FROM: lru-cache"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: FastMCP"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: ContextManager"]
+        E2["EXP: contextManager"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {ContextManagerConfig} config - Configuration options"]
+        P2["PARAM: {string} contextId - Unique identifier for the context"]
+        P3["PARAM: {Object} metadata - Additional metadata for the context"]
+        P4["PARAM: {string} contextId - Context identifier"]
+        P5["PARAM: {Object} updates - Updates to apply to the context"]
+        P6["PARAM: {string} contextId - Context identifier"]
+        P7["PARAM: {Object} metadata - Metadata used in the cache key"]
+        P8["PARAM: {string} key - The cache key."]
+        P9["PARAM: {string} key - The cache key."]
+        P10["PARAM: {any} data - The data to cache."]
+        P11["PARAM: {string} key - The cache key to invalidate."]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: cacheKey, VALUE: this._getCacheKey(contextId, metadata)"]
+        C2["CONST: cached, VALUE: this.cache.get(cacheKey)"]
+        C3["CONST: context, VALUE: {"]
+        C4["CONST: context, VALUE: await this.getContext(contextId)"]
+        C5["CONST: cacheKey, VALUE: this._getCacheKey(contextId, context.metadata)"]
+        C6["CONST: cacheKey, VALUE: this._getCacheKey(contextId, metadata)"]
+        C7["CONST: cached, VALUE: this.cache.get(key)"]
+        C8["CONST: contextManager, VALUE: new ContextManager()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["context-manager.js"]
+        Imports
+        Dependencies
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

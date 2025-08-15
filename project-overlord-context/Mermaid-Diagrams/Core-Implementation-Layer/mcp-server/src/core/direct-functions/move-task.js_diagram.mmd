@@ -1,0 +1,41 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: ../utils/path-utils.js, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: moveTaskDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.sourceId - ID of the task/subtask to move (e.g., '5' or '5.2' or '5,6,7')"]
+        P4["PARAM: {string} args.destinationId - ID of the destination (e.g., '7' or '7.3' or '7,8,9')"]
+        P5["PARAM: {string} args.file - Alternative path to the tasks.json file"]
+        P6["PARAM: {string} args.projectRoot - Project root directory"]
+        P7["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P8["PARAM: {boolean} args.generateFiles - Whether to regenerate task files after moving (default: true)"]
+        P9["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: generateFiles, VALUE: args.generateFiles !== false"]
+        C2["CONST: result, VALUE: await moveTask("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["move-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

@@ -1,0 +1,50 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: addSubtaskDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P3["PARAM: {string} args.id - Parent task ID"]
+        P4["PARAM: {string} [args.taskId] - Existing task ID to convert to subtask (optional)"]
+        P5["PARAM: {string} [args.title] - Title for new subtask (when creating a new subtask)"]
+        P6["PARAM: {string} [args.description] - Description for new subtask"]
+        P7["PARAM: {string} [args.details] - Implementation details for new subtask"]
+        P8["PARAM: {string} [args.status] - Status for new subtask (default: 'pending')"]
+        P9["PARAM: {string} [args.dependencies] - Comma-separated list of dependency IDs"]
+        P10["PARAM: {boolean} [args.skipGenerate] - Skip regenerating task files"]
+        P11["PARAM: {string} [args.projectRoot] - Project root directory"]
+        P12["PARAM: {string} [args.tag] - Tag for the task"]
+        P13["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: existingTaskId, VALUE: taskId ? parseInt(taskId, 10) : null"]
+        C3["CONST: parentId, VALUE: parseInt(id, 10)"]
+        C4["CONST: generateFiles, VALUE: !skipGenerate"]
+        C5["CONST: context, VALUE: { projectRoot, tag }"]
+        C6["CONST: result, VALUE: await addSubtask("]
+        C7["CONST: newSubtaskData, VALUE: {"]
+        C8["CONST: result, VALUE: await addSubtask("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["add-subtask.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

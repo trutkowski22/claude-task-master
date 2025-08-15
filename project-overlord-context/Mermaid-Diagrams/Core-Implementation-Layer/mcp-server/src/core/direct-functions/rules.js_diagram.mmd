@@ -1,0 +1,62 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
+        I2["IMPORT: ../../../../src/constants/rules-actions.js, FROM: /claude-task-master/src/constants/rules-actions.js"]
+        I3["IMPORT: path, FROM: path"]
+        I4["IMPORT: fs, FROM: fs"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: rulesDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {\"add\"|\"remove\"} args.action - Action to perform: add or remove rules"]
+        P3["PARAM: {string[]} args.profiles - List of profiles to add or remove"]
+        P4["PARAM: {string} args.projectRoot - Absolute path to the project root"]
+        P5["PARAM: {Object} log - Logger object"]
+        P6["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: removalResults, VALUE: []"]
+        C2["CONST: addResults, VALUE: []"]
+        C3["CONST: installedProfiles, VALUE: getInstalledProfiles(projectRoot)"]
+        C4["CONST: remainingProfiles, VALUE: installedProfiles.filter("]
+        C5["CONST: profileConfig, VALUE: getRulesProfile(profile)"]
+        C6["CONST: result, VALUE: removeProfileRules(projectRoot, profileConfig)"]
+        C7["CONST: successes, VALUE: removalResults"]
+        C8["CONST: skipped, VALUE: removalResults"]
+        C9["CONST: errors, VALUE: removalResults.filter("]
+        C10["CONST: withNotices, VALUE: removalResults.filter((r) => r.notice)"]
+        C11["CONST: profileConfig, VALUE: getRulesProfile(profile)"]
+        C12["CONST: rulesDir, VALUE: profileConfig.rulesDir"]
+        C13["CONST: profileRulesDir, VALUE: path.join(projectRoot, rulesDir)"]
+        C14["CONST: profileDir, VALUE: profileConfig.profileDir"]
+        C15["CONST: mcpConfig, VALUE: profileConfig.mcpConfig !== false"]
+        C16["CONST: mcpPath, VALUE: mcpConfig && profileConfig.mcpConfigPath"]
+        C17["CONST: mcpConfigCreated, VALUE: mcpConfig && mcpPath ? fs.existsSync(mcpPath) : undefined"]
+        C18["CONST: rulesDirCreated, VALUE: fs.existsSync(profileRulesDir)"]
+        C19["CONST: profileFolderCreated, VALUE: fs.existsSync("]
+        C20["CONST: error, VALUE: failed > 0 ? `${failed} rule files failed to convert.` : null"]
+        C21["CONST: resultObj, VALUE: {"]
+        C22["CONST: successes, VALUE: addResults"]
+        C23["CONST: errors, VALUE: addResults.filter((r) => r.error && !r.success)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["rules.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

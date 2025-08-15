@@ -1,0 +1,65 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ./get-tasks.js, FROM: /claude-task-master/mcp-server/src/tools/get-tasks.js"]
+        I2["IMPORT: ../logger.js, FROM: /claude-task-master/mcp-server/src/logger.js"]
+        I3["IMPORT: ./set-task-status.js, FROM: /claude-task-master/mcp-server/src/tools/set-task-status.js"]
+        I4["IMPORT: ./parse-prd.js, FROM: /claude-task-master/mcp-server/src/tools/parse-prd.js"]
+        I5["IMPORT: ./update.js, FROM: /claude-task-master/mcp-server/src/tools/update.js"]
+        I6["IMPORT: ./update-task.js, FROM: /claude-task-master/mcp-server/src/tools/update-task.js"]
+        I7["IMPORT: ./update-subtask.js, FROM: /claude-task-master/mcp-server/src/tools/update-subtask.js"]
+        I8["IMPORT: ./generate.js, FROM: /claude-task-master/mcp-server/src/tools/generate.js"]
+        I9["IMPORT: ./get-task.js, FROM: /claude-task-master/mcp-server/src/tools/get-task.js"]
+        I10["IMPORT: ./next-task.js, FROM: /claude-task-master/mcp-server/src/tools/next-task.js"]
+        I11["IMPORT: ./expand-task.js, FROM: /claude-task-master/mcp-server/src/tools/expand-task.js"]
+        I12["IMPORT: ./add-task.js, FROM: /claude-task-master/mcp-server/src/tools/add-task.js"]
+        I13["IMPORT: ./add-subtask.js, FROM: /claude-task-master/mcp-server/src/tools/add-subtask.js"]
+        I14["IMPORT: ./remove-subtask.js, FROM: /claude-task-master/mcp-server/src/tools/remove-subtask.js"]
+        I15["IMPORT: ./analyze.js, FROM: /claude-task-master/mcp-server/src/tools/analyze.js"]
+        I16["IMPORT: ./clear-subtasks.js, FROM: /claude-task-master/mcp-server/src/tools/clear-subtasks.js"]
+        I17["IMPORT: ./expand-all.js, FROM: /claude-task-master/mcp-server/src/tools/expand-all.js"]
+        I18["IMPORT: ./remove-dependency.js, FROM: /claude-task-master/mcp-server/src/tools/remove-dependency.js"]
+        I19["IMPORT: ./validate-dependencies.js, FROM: /claude-task-master/mcp-server/src/tools/validate-dependencies.js"]
+        I20["IMPORT: ./fix-dependencies.js, FROM: /claude-task-master/mcp-server/src/tools/fix-dependencies.js"]
+        I21["IMPORT: ./complexity-report.js, FROM: /claude-task-master/mcp-server/src/tools/complexity-report.js"]
+        I22["IMPORT: ./add-dependency.js, FROM: /claude-task-master/mcp-server/src/tools/add-dependency.js"]
+        I23["IMPORT: ./remove-task.js, FROM: /claude-task-master/mcp-server/src/tools/remove-task.js"]
+        I24["IMPORT: ./initialize-project.js, FROM: /claude-task-master/mcp-server/src/tools/initialize-project.js"]
+        I25["IMPORT: ./models.js, FROM: /claude-task-master/mcp-server/src/tools/models.js"]
+        I26["IMPORT: ./move-task.js, FROM: /claude-task-master/mcp-server/src/tools/move-task.js"]
+        I27["IMPORT: ./response-language.js, FROM: /claude-task-master/mcp-server/src/tools/response-language.js"]
+        I28["IMPORT: ./add-tag.js, FROM: /claude-task-master/mcp-server/src/tools/add-tag.js"]
+        I29["IMPORT: ./delete-tag.js, FROM: /claude-task-master/mcp-server/src/tools/delete-tag.js"]
+        I30["IMPORT: ./list-tags.js, FROM: /claude-task-master/mcp-server/src/tools/list-tags.js"]
+        I31["IMPORT: ./use-tag.js, FROM: /claude-task-master/mcp-server/src/tools/use-tag.js"]
+        I32["IMPORT: ./rename-tag.js, FROM: /claude-task-master/mcp-server/src/tools/rename-tag.js"]
+        I33["IMPORT: ./copy-tag.js, FROM: /claude-task-master/mcp-server/src/tools/copy-tag.js"]
+        I34["IMPORT: ./research.js, FROM: /claude-task-master/mcp-server/src/tools/research.js"]
+        I35["IMPORT: ./rules.js, FROM: /claude-task-master/mcp-server/src/tools/rules.js"]
+        I36["IMPORT: ./scope-up.js, FROM: /claude-task-master/mcp-server/src/tools/scope-up.js"]
+        I37["IMPORT: ./scope-down.js, FROM: /claude-task-master/mcp-server/src/tools/scope-down.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: registerTaskMasterTools"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: registerTaskMasterTools"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

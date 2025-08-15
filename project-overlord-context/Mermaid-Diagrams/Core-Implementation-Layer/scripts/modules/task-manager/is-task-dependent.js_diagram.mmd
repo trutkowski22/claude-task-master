@@ -1,0 +1,29 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: isTaskDependentOn"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: isTaskDependentOn"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Array} allTasks - Array of all tasks"]
+        P2["PARAM: {Object} task - The task to check"]
+        P3["PARAM: {number} targetTaskId - The task ID to check dependency against"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: depTask, VALUE: allTasks.find((t) => t.id === depId)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["is-task-dependent.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

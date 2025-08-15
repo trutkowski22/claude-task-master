@@ -1,0 +1,28 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: isValidTaskStatus"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: TASK_STATUS_OPTIONS"]
+        E2["EXP: isValidTaskStatus"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} status - The status to check"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: TASK_STATUS_OPTIONS, VALUE: ["]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["task-status.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

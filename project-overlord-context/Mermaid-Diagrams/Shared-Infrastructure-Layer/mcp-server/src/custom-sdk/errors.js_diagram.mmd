@@ -1,0 +1,35 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: mapMCPError"]
+        FU2["FUNCTION: isRetryableError"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: MCPError"]
+        E2["EXP: MCPSessionError"]
+        E3["EXP: MCPSamplingError"]
+        E4["EXP: mapMCPError"]
+        E5["EXP: isRetryableError"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Error} error - Original error"]
+        P2["PARAM: {Error} error - Error to check"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: message, VALUE: error.message || 'Unknown MCP error'"]
+        C2["CONST: originalError, VALUE: error"]
+        C3["CONST: message, VALUE: error.message?.toLowerCase() || ''"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["errors.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

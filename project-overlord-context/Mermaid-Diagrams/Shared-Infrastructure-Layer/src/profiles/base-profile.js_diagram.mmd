@@ -1,0 +1,58 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: createProfile"]
+        FU2["FUNCTION: getTargetRuleFilename"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: createProfile"]
+        E2["EXP: COMMON_TOOL_MAPPINGS"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} editorConfig - Editor-specific configuration"]
+        P2["PARAM: {string} editorConfig.name - Profile name (e.g., 'cursor', 'vscode')"]
+        P3["PARAM: {string} [editorConfig.displayName] - Display name for the editor (defaults to name)"]
+        P4["PARAM: {string} editorConfig.url - Editor website URL"]
+        P5["PARAM: {string} editorConfig.docsUrl - Editor documentation URL"]
+        P6["PARAM: {string} editorConfig.profileDir - Directory for profile configuration"]
+        P7["PARAM: {string} [editorConfig.rulesDir] - Directory for rules files (defaults to profileDir/rules)"]
+        P8["PARAM: {Function} [editorConfig.onAdd] - Lifecycle hook for profile addition"]
+        P9["PARAM: {Function} [editorConfig.onRemove] - Lifecycle hook for profile removal"]
+        P10["PARAM: {Function} [editorConfig.onPostConvert] - Lifecycle hook for post-conversion"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mcpConfigPath, VALUE: mcpConfigName"]
+        C2["CONST: taskmasterPrefix, VALUE: supportsRulesSubdirectories ? 'taskmaster/' : ''"]
+        C3["CONST: defaultFileMap, VALUE: {"]
+        C4["CONST: finalFileMap, VALUE: includeDefaultRules"]
+        C5["CONST: baseGlobalReplacements, VALUE: ["]
+        C6["CONST: defaultToolMappings, VALUE: {"]
+        C7["CONST: conversionConfig, VALUE: {"]
+        C8["CONST: baseName, VALUE: path.basename(filePath, '.mdc')"]
+        C9["CONST: newFileName, VALUE: finalFileMap[`rules/${baseName}.mdc`] ||"]
+        C10["CONST: newLinkText, VALUE: path.basename(newFileName)"]
+        C11["CONST: COMMON_TOOL_MAPPINGS, VALUE: {"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["base-profile.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

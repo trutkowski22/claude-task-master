@@ -1,0 +1,62 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: url, FROM: url"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: module, FROM: module"]
+        I4["IMPORT: child_process, FROM: child_process"]
+        I5["IMPORT: commander, FROM: commander"]
+        I6["IMPORT: ./package.json, FROM: /claude-task-master/package.json"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: initProject"]
+        FU2["FUNCTION: runInitCLI"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: devScriptPath"]
+        E2["EXP: initProject"]
+        E3["EXP: runInitCLI"]
+        E4["EXP: version"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: dirname(__filename)"]
+        C3["CONST: require, VALUE: createRequire(import.meta.url)"]
+        C4["CONST: packageJson, VALUE: require('./package.json')"]
+        C5["CONST: devScriptPath, VALUE: resolve(__dirname, './scripts/dev.js')"]
+        C6["CONST: initProject, VALUE: async (options = {}) => {"]
+        C7["CONST: init, VALUE: await import('./scripts/init.js')"]
+        C8["CONST: runInitCLI, VALUE: async (options = {}) => {"]
+        C9["CONST: init, VALUE: await import('./scripts/init.js')"]
+        C10["CONST: result, VALUE: await init.initializeProject(options)"]
+        C11["CONST: version, VALUE: packageJson.version"]
+        C12["CONST: program, VALUE: new Command()"]
+        C13["CONST: args, VALUE: process.argv.slice(process.argv.indexOf('dev') + 1)"]
+        C14["CONST: child, VALUE: spawn('node', [devScriptPath, ...args], {"]
+        C15["CONST: child, VALUE: spawn('node', [devScriptPath, 'list'], {"]
+        C16["CONST: child, VALUE: spawn('node', [devScriptPath, 'next'], {"]
+        C17["CONST: child, VALUE: spawn('node', [devScriptPath, 'generate'], {"]
+    end
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: DEBUG, USAGE: accessed via process.env"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

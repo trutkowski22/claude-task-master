@@ -1,0 +1,23 @@
+```mermaid
+flowchart TB
+    subgraph Exports["Exports"]
+        E1["EXP: VALIDATED_PROVIDERS"]
+        E2["EXP: CUSTOM_PROVIDERS"]
+        E3["EXP: CUSTOM_PROVIDERS_ARRAY"]
+        E4["EXP: ALL_PROVIDERS"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: VALIDATED_PROVIDERS, VALUE: ["]
+        C2["CONST: CUSTOM_PROVIDERS, VALUE: {"]
+        C3["CONST: CUSTOM_PROVIDERS_ARRAY, VALUE: Object.values(CUSTOM_PROVIDERS)"]
+        C4["CONST: ALL_PROVIDERS, VALUE: ["]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Expose public API via exports"]
+    end
+    subgraph FileName["providers.js"]
+        Exports
+        Constants
+        ExecutionFlow
+    end
+```

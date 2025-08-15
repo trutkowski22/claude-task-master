@@ -1,0 +1,46 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: chalk, FROM: chalk"]
+        I2["IMPORT: ../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: ../../scripts/modules/config-manager.js, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: log"]
+        FU2["FUNCTION: createLogger"]
+        FU3["FUNCTION: createLogMethod"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: createLogger"]
+        E2["EXP: log"]
+        E3["EXP: LOG_LEVELS"]
+        E4["EXP: logger"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} level - The log level (debug, info, warn, error, success)"]
+        P2["PARAM: {...any} args - Arguments to log"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: LOG_LEVELS, VALUE: {"]
+        C2["CONST: LOG_LEVEL, VALUE: LOG_LEVELS[getLogLevel().toLowerCase()] ?? LOG_LEVELS.info"]
+        C3["CONST: prefixes, VALUE: {"]
+        C4["CONST: prefix, VALUE: prefixes[level] || ''"]
+        C5["CONST: createLogMethod, VALUE: (level) =>"]
+        C6["CONST: logger, VALUE: createLogger()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["logger.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

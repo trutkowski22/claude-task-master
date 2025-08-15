@@ -1,0 +1,18 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: dotenv, FROM: dotenv"]
+        I2["IMPORT: ./modules/commands.js, FROM: /claude-task-master/scripts/modules/commands.js"]
+    end
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: DEBUG, USAGE: accessed via process.env"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+    end
+    subgraph FileName["dev.js"]
+        Imports
+        EnvironmentVariables
+        ExecutionFlow
+    end
+```

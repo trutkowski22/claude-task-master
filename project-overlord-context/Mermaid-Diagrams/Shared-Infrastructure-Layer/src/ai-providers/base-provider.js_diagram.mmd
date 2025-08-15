@@ -1,0 +1,43 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: jsonrepair, FROM: jsonrepair"]
+        I2["IMPORT: ../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: BaseAIProvider"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} params - Parameters to validate"]
+        P2["PARAM: {object} params - Parameters to validate"]
+        P3["PARAM: {object} params - Parameters to validate"]
+        P4["PARAM: {string} modelId - The model ID to check"]
+        P5["PARAM: {string} modelId - The model ID"]
+        P6["PARAM: {number} maxTokens - The maximum tokens value"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: maxTokens, VALUE: Number(params.maxTokens)"]
+        C2["CONST: errorMessage, VALUE: error.message || 'Unknown error occurred'"]
+        C3["CONST: tokenValue, VALUE: Math.floor(Number(maxTokens))"]
+        C4["CONST: client, VALUE: await this.getClient(params)"]
+        C5["CONST: result, VALUE: await generateText({"]
+        C6["CONST: client, VALUE: await this.getClient(params)"]
+        C7["CONST: stream, VALUE: await streamText({"]
+        C8["CONST: client, VALUE: await this.getClient(params)"]
+        C9["CONST: result, VALUE: await generateObject({"]
+        C10["CONST: repairedJson, VALUE: jsonrepair(error.cause.text)"]
+        C11["CONST: parsed, VALUE: JSON.parse(repairedJson)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["base-provider.js"]
+        Imports
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

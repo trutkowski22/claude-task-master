@@ -1,0 +1,63 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: chalk, FROM: chalk"]
+        I4["IMPORT: ../utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: ../ui.js, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I6["IMPORT: ../dependency-manager.js, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I7["IMPORT: ../config-manager.js, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: generateTaskFiles"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: generateTaskFiles"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} outputDir - Output directory for task files"]
+        P3["PARAM: {Object} options - Additional options (mcpLog for MCP mode, projectRoot, tag)"]
+        P4["PARAM: {string} [options.projectRoot] - Project root path"]
+        P5["PARAM: {string} [options.tag] - Tag for the task"]
+        P6["PARAM: {Object} [options.mcpLog] - MCP logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: isMcpMode, VALUE: !!options?.mcpLog"]
+        C2["CONST: resolvedData, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C3["CONST: rawData, VALUE: resolvedData._rawTaggedData || resolvedData"]
+        C4["CONST: tagData, VALUE: rawData[tag]"]
+        C5["CONST: tasksForGeneration, VALUE: tagData.tasks"]
+        C6["CONST: allTasksInTag, VALUE: tagData.tasks"]
+        C7["CONST: validTaskIds, VALUE: allTasksInTag.map((task) => task.id)"]
+        C8["CONST: files, VALUE: fs.readdirSync(outputDir)"]
+        C9["CONST: masterFilePattern, VALUE: /^task_(\\d+)\\.txt$/"]
+        C10["CONST: taggedFilePattern, VALUE: new RegExp(`^task_(\\\\d+)_${tag}\\\\.txt$`)"]
+        C11["CONST: orphanedFiles, VALUE: files.filter((file) => {"]
+        C12["CONST: filePath, VALUE: path.join(outputDir, file)"]
+        C13["CONST: taskFileName, VALUE: tag === 'master'"]
+        C14["CONST: taskPath, VALUE: path.join(outputDir, taskFileName)"]
+        C15["CONST: subtaskDeps, VALUE: subtask.dependencies"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["generate-task-files.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

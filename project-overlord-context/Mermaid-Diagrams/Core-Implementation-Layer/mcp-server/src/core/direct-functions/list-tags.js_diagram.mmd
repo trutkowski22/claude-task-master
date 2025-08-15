@@ -1,0 +1,44 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager/tag-management.js, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: listTagsDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P3["PARAM: {string} [args.projectRoot] - Project root path"]
+        P4["PARAM: {Object} log - Logger object"]
+        P5["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+        C2["CONST: options, VALUE: {"]
+        C3["CONST: result, VALUE: await tags("]
+        C4["CONST: tagsSummary, VALUE: result.tags.map((tag) => {"]
+        C5["CONST: tasks, VALUE: tag.tasks || []"]
+        C6["CONST: statusBreakdown, VALUE: tasks.reduce((acc, task) => {"]
+        C7["CONST: status, VALUE: task.status || 'pending'"]
+        C8["CONST: subtaskCounts, VALUE: tasks.reduce("]
+        C9["CONST: subStatus, VALUE: subtask.status || 'pending'"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["list-tags.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

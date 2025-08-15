@@ -1,0 +1,41 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: scopeDownDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.id - Comma-separated list of task IDs to scope down"]
+        P3["PARAM: {string} [args.prompt] - Custom prompt for scoping adjustments"]
+        P4["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P5["PARAM: {string} args.projectRoot - Project root path"]
+        P6["PARAM: {string} [args.tag] - Tag for the task context (optional)"]
+        P7["PARAM: {Object} log - Logger object"]
+        P8["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+        C2["CONST: taskIds, VALUE: id.split(',').map((taskId) => parseInt(taskId.trim(), 10))"]
+        C3["CONST: result, VALUE: await scopeDownTask("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["scope-down.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

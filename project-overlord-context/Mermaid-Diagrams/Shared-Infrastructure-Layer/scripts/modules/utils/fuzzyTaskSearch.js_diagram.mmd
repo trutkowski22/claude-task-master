@@ -1,0 +1,65 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fuse.js, FROM: fuse.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: createFuzzyTaskSearch"]
+        FU2["FUNCTION: findRelevantTaskIds"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: FuzzyTaskSearch"]
+        E2["EXP: createFuzzyTaskSearch"]
+        E3["EXP: findRelevantTaskIds"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Array} tasks - Array of task objects"]
+        P2["PARAM: {string} prompt - The search prompt"]
+        P3["PARAM: {string} prompt - The search prompt"]
+        P4["PARAM: {Object} options - Search options"]
+        P5["PARAM: {Object} searchResults - Results from findRelevantTasks"]
+        P6["PARAM: {Object} searchResults - Results from findRelevantTasks"]
+        P7["PARAM: {Object} searchResults - Results from findRelevantTasks"]
+        P8["PARAM: {Object} options - Formatting options"]
+        P9["PARAM: {Array} tasks - Array of task objects"]
+        P10["PARAM: {Array} tasks - Array of task objects"]
+        P11["PARAM: {string} prompt - Search prompt"]
+        P12["PARAM: {Object} options - Search options"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: SEARCH_CONFIGS, VALUE: {"]
+        C2["CONST: PURPOSE_CATEGORIES, VALUE: ["]
+        C3["CONST: RELEVANCE_THRESHOLDS, VALUE: {"]
+        C4["CONST: dependencyTitles, VALUE: task.dependencies?.length > 0"]
+        C5["CONST: depTask, VALUE: tasks.find((t) => t.id === depId)"]
+        C6["CONST: promptWords, VALUE: this._extractPromptWords(prompt)"]
+        C7["CONST: fuzzyResults, VALUE: this.fuse.search(prompt)"]
+        C8["CONST: results, VALUE: this.fuse.search(word)"]
+        C9["CONST: mergedResults, VALUE: [...fuzzyResults]"]
+        C10["CONST: highRelevance, VALUE: mergedResults"]
+        C11["CONST: mediumRelevance, VALUE: mergedResults"]
+        C12["CONST: lowRelevance, VALUE: mergedResults"]
+        C13["CONST: recentTasks, VALUE: includeRecent"]
+        C14["CONST: allRelevantTasks, VALUE: [...highRelevance]"]
+        C15["CONST: finalResults, VALUE: allRelevantTasks.slice(0, maxResults)"]
+        C16["CONST: taskIds, VALUE: []"]
+        C17["CONST: parts, VALUE: []"]
+        C18["CONST: fuzzySearch, VALUE: new FuzzyTaskSearch(tasks, searchType)"]
+        C19["CONST: results, VALUE: fuzzySearch.findRelevantTasks(prompt, { maxResults })"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["fuzzyTaskSearch.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

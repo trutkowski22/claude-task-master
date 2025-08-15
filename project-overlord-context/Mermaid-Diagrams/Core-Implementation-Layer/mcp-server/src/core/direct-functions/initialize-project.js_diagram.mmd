@@ -1,0 +1,36 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/init.js, FROM: /claude-task-master/scripts/init.js"]
+        I2["IMPORT: os, FROM: os"]
+        I3["IMPORT: ../../../../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
+        I4["IMPORT: ../../../../src/utils/rule-transformer.js, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: initializeProjectDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} args - Arguments containing initialization options (addAliases, initGit, storeTasksInGit, skipInstall, yes, projectRoot, rules)"]
+        P2["PARAM: {object} log - The FastMCP logger instance."]
+        P3["PARAM: {object} context - The context object, must contain { session }."]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: homeDir, VALUE: os.homedir()"]
+        C2["CONST: targetDirectory, VALUE: args.projectRoot"]
+        C3["CONST: originalCwd, VALUE: process.cwd()"]
+        C4["CONST: options, VALUE: {"]
+        C5["CONST: result, VALUE: await initializeProject(options)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["initialize-project.js"]
+        Imports
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

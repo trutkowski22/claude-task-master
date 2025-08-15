@@ -1,0 +1,25 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ./src/index.js, FROM: /claude-task-master/mcp-server/src/index.js"]
+        I2["IMPORT: dotenv, FROM: dotenv"]
+        I3["IMPORT: ./src/logger.js, FROM: /claude-task-master/mcp-server/src/logger.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: startServer"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: server, VALUE: new TaskMasterMCPServer()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["server.js"]
+        Imports
+        FunctionsDefined
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

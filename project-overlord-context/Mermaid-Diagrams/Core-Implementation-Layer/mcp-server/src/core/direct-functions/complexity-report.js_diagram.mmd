@@ -1,0 +1,31 @@
+```mermaid
+flowchart TB
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: complexityReportDirect"]
+        FU2["FUNCTION: coreActionFn"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing reportPath."]
+        P2["PARAM: {string} args.reportPath - Explicit path to the complexity report file."]
+        P3["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: cacheKey, VALUE: `complexityReport:${reportPath}`"]
+        C2["CONST: coreActionFn, VALUE: async () => {"]
+        C3["CONST: report, VALUE: readComplexityReport(reportPath)"]
+        C4["CONST: result, VALUE: await coreActionFn()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+    end
+    subgraph FileName["complexity-report.js"]
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+```

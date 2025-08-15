@@ -1,0 +1,42 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: zod, FROM: zod"]
+        I2["IMPORT: ../core/task-master-core.js, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I3["IMPORT: ../../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: processTaskResponse"]
+        FU2["FUNCTION: registerShowTaskTool"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: registerShowTaskTool"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} data - The data returned from showTaskDirect"]
+        P2["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: resolvedTag, VALUE: resolveTag({"]
+        C2["CONST: result, VALUE: await showTaskDirect("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["get-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

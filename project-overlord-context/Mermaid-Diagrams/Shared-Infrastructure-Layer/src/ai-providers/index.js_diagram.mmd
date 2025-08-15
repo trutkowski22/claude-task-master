@@ -1,0 +1,25 @@
+```mermaid
+flowchart TB
+    subgraph Exports["Exports"]
+        E1["EXP: AnthropicAIProvider"]
+        E2["EXP: PerplexityAIProvider"]
+        E3["EXP: GoogleAIProvider"]
+        E4["EXP: OpenAIProvider"]
+        E5["EXP: XAIProvider"]
+        E6["EXP: GroqProvider"]
+        E7["EXP: OpenRouterAIProvider"]
+        E8["EXP: OllamaAIProvider"]
+        E9["EXP: BedrockAIProvider"]
+        E10["EXP: AzureProvider"]
+        E11["EXP: VertexAIProvider"]
+        E12["EXP: ClaudeCodeProvider"]
+        E13["EXP: GeminiCliProvider"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Exports
+        ExecutionFlow
+    end
+```

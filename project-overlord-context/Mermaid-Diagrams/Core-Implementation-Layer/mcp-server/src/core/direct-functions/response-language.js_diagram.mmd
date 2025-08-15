@@ -1,0 +1,24 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: responseLanguageDirect"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["response-language.js"]
+        Imports
+        FunctionsDefined
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

@@ -1,0 +1,44 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: addTagDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.name - Name of the new tag to create"]
+        P3["PARAM: {string} [args.copyFromTag] - Specific tag to copy tasks from"]
+        P4["PARAM: {string} [args.description] - Optional description for the tag"]
+        P5["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P6["PARAM: {string} [args.projectRoot] - Project root path"]
+        P7["PARAM: {Object} log - Logger object"]
+        P8["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+        C2["CONST: gitUtils, VALUE: await import("]
+        C3["CONST: currentBranch, VALUE: await gitUtils.getCurrentBranch(projectRoot)"]
+        C4["CONST: branchOptions, VALUE: {"]
+        C5["CONST: result, VALUE: await createTagFromBranch("]
+        C6["CONST: options, VALUE: {"]
+        C7["CONST: result, VALUE: await createTag("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["add-tag.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

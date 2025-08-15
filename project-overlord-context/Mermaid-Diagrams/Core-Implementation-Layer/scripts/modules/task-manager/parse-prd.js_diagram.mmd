@@ -1,0 +1,76 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: chalk, FROM: chalk"]
+        I4["IMPORT: boxen, FROM: boxen"]
+        I5["IMPORT: zod, FROM: zod"]
+        I6["IMPORT: ../ai-services-unified.js, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I7["IMPORT: ../prompt-manager.js, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I8["IMPORT: ../ui.js, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I9["IMPORT: ../../../src/constants/providers.js, FROM: /claude-task-master/src/constants/providers.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: parsePRD"]
+        FU2["FUNCTION: report"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: parsePRD"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} prdPath - Path to the PRD file"]
+        P2["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P3["PARAM: {number} numTasks - Number of tasks to generate"]
+        P4["PARAM: {Object} options - Additional options"]
+        P5["PARAM: {Object} [options.reportProgress] - Function to report progress (optional, likely unused)."]
+        P6["PARAM: {Object} [options.mcpLog] - MCP logger object (optional)."]
+        P7["PARAM: {Object} [options.session] - Session object from MCP server (optional)."]
+        P8["PARAM: {string} [options.projectRoot] - Project root path (for MCP/env fallback)."]
+        P9["PARAM: {string} [options.tag] - Target tag for task generation."]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: prdSingleTaskSchema, VALUE: z.object({"]
+        C2["CONST: prdResponseSchema, VALUE: z.object({"]
+        C3["CONST: isMCP, VALUE: !!mcpLog"]
+        C4["CONST: outputFormat, VALUE: isMCP ? 'json' : 'text'"]
+        C5["CONST: targetTag, VALUE: tag"]
+        C6["CONST: logFn, VALUE: mcpLog"]
+        C7["CONST: report, VALUE: (message, level = 'info') => {"]
+        C8["CONST: existingFileContent, VALUE: fs.readFileSync(tasksPath, 'utf8')"]
+        C9["CONST: allData, VALUE: JSON.parse(existingFileContent)"]
+        C10["CONST: overwriteError, VALUE: new Error("]
+        C11["CONST: prdContent, VALUE: fs.readFileSync(prdPath, 'utf8')"]
+        C12["CONST: promptManager, VALUE: getPromptManager()"]
+        C13["CONST: defaultTaskPriority, VALUE: getDefaultPriority(projectRoot) || 'medium'"]
+        C14["CONST: currentProvider, VALUE: research"]
+        C15["CONST: isClaudeCode, VALUE: currentProvider === CUSTOM_PROVIDERS.CLAUDE_CODE"]
+        C16["CONST: tasksDir, VALUE: path.dirname(tasksPath)"]
+        C17["CONST: generatedData, VALUE: aiServiceResponse?.mainResult?.object"]
+        C18["CONST: taskMap, VALUE: new Map()"]
+        C19["CONST: processedNewTasks, VALUE: generatedData.tasks.map((task) => {"]
+        C20["CONST: newId, VALUE: currentId++"]
+        C21["CONST: finalTasks, VALUE: append"]
+        C22["CONST: existingFileContent, VALUE: fs.readFileSync(tasksPath, 'utf8')"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["parse-prd.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

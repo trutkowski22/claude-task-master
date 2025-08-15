@@ -1,0 +1,23 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ./base-profile.js, FROM: /claude-task-master/src/profiles/base-profile.js"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: codexProfile"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: codexProfile, VALUE: createProfile({"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["codex.js"]
+        Imports
+        Exports
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

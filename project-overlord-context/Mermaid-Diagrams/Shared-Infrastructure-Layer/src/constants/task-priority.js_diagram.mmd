@@ -1,0 +1,34 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: isValidTaskPriority"]
+        FU2["FUNCTION: normalizeTaskPriority"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: TASK_PRIORITY_OPTIONS"]
+        E2["EXP: DEFAULT_TASK_PRIORITY"]
+        E3["EXP: isValidTaskPriority"]
+        E4["EXP: normalizeTaskPriority"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} priority - The priority to check"]
+        P2["PARAM: {string} priority - The priority to normalize"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: TASK_PRIORITY_OPTIONS, VALUE: ['high', 'medium', 'low']"]
+        C2["CONST: DEFAULT_TASK_PRIORITY, VALUE: 'medium'"]
+        C3["CONST: normalized, VALUE: priority.toLowerCase()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["task-priority.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

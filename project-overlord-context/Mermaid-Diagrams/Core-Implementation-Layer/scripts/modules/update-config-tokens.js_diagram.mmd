@@ -1,0 +1,49 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: url, FROM: url"]
+        I4["IMPORT: path, FROM: path"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: updateConfigMaxTokens"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: updateConfigMaxTokens"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} configPath - Path to the config.json file to update"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: dirname(__filename)"]
+        C3["CONST: supportedModelsPath, VALUE: path.join(__dirname, 'supported-models.json')"]
+        C4["CONST: supportedModels, VALUE: JSON.parse("]
+        C5["CONST: config, VALUE: JSON.parse(fs.readFileSync(configPath, 'utf-8'))"]
+        C6["CONST: roles, VALUE: ['main', 'research', 'fallback']"]
+        C7["CONST: provider, VALUE: config.models[role].provider"]
+        C8["CONST: modelId, VALUE: config.models[role].modelId"]
+        C9["CONST: modelData, VALUE: supportedModels[provider].find("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["update-config-tokens.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

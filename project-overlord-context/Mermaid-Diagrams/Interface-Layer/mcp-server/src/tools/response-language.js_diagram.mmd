@@ -1,0 +1,30 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: zod, FROM: zod"]
+        I2["IMPORT: ../core/direct-functions/response-language.js, FROM: /claude-task-master/mcp-server/src/core/direct-functions/response-language.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: registerResponseLanguageTool"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: registerResponseLanguageTool"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: result, VALUE: await responseLanguageDirect("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["response-language.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

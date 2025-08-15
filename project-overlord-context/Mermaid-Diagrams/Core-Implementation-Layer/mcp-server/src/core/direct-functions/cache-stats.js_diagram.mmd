@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../context-manager.js, FROM: /claude-task-master/mcp-server/src/core/context-manager.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: getCacheStatsDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: stats, VALUE: contextManager.getStats()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["cache-stats.js"]
+        Imports
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2

@@ -1,0 +1,48 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: @ai-sdk/provider, FROM: @ai-sdk/provider"]
+        I2["IMPORT: ./language-model.js, FROM: /claude-task-master/src/ai-providers/custom-sdk/claude-code/language-model.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: createClaudeCode"]
+        FU2["FUNCTION: createModel"]
+        FU3["FUNCTION: provider"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: createClaudeCode"]
+        E2["EXP: claudeCode"]
+        E3["EXP: ClaudeCodeLanguageModel"]
+        E4["EXP: isAuthenticationError"]
+        E5["EXP: isTimeoutError"]
+        E6["EXP: getErrorMetadata"]
+        E7["EXP: createAPICallError"]
+        E8["EXP: createAuthenticationError"]
+        E9["EXP: createTimeoutError"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {ClaudeCodeModelId} modelId - Model ID"]
+        P2["PARAM: {ClaudeCodeModelId} modelId - Model ID"]
+        P3["PARAM: {ClaudeCodeSettings} [settings] - Model settings"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: createModel, VALUE: (modelId, settings = {}) => {"]
+        C2["CONST: provider, VALUE: function (modelId, settings) {"]
+        C3["CONST: claudeCode, VALUE: createClaudeCode()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

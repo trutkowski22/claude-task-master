@@ -1,0 +1,31 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: taskExists"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: taskExists"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Array} tasks - Array of tasks to search"]
+        P2["PARAM: {string|number} taskId - ID of task or subtask to check"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: parentId, VALUE: parseInt(parentIdStr, 10)"]
+        C2["CONST: subtaskId, VALUE: parseInt(subtaskIdStr, 10)"]
+        C3["CONST: parentTask, VALUE: tasks.find((t) => t.id === parentId)"]
+        C4["CONST: id, VALUE: parseInt(taskId, 10)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["task-exists.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

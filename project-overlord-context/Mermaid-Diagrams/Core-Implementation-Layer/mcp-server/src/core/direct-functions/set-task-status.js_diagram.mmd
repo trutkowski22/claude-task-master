@@ -1,0 +1,46 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: ./next-task.js, FROM: /claude-task-master/mcp-server/src/core/direct-functions/next-task.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: setTaskStatusDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing id, status, tasksJsonPath, and projectRoot."]
+        P2["PARAM: {string} args.id - The ID of the task to update."]
+        P3["PARAM: {string} args.status - The new status to set for the task."]
+        P4["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file."]
+        P5["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
+        P6["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P7["PARAM: {Object} log - Logger object."]
+        P8["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: errorMessage, VALUE: 'tasksJsonPath is required but was not provided.'"]
+        C2["CONST: errorMessage, VALUE: 'No task ID specified. Please provide a task ID to update.'"]
+        C3["CONST: errorMessage, VALUE: 'No status specified. Please provide a new status value.'"]
+        C4["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C5["CONST: taskId, VALUE: id"]
+        C6["CONST: newStatus, VALUE: status"]
+        C7["CONST: result, VALUE: {"]
+        C8["CONST: nextResult, VALUE: await nextTaskDirect("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["set-task-status.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

@@ -1,0 +1,35 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: convertToClaudeCodeMessages"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: convertToClaudeCodeMessages"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Array} prompt - AI SDK prompt array"]
+        P2["PARAM: {Object} [mode] - Generation mode"]
+        P3["PARAM: {string} mode.type - Mode type ('regular', 'object-json', 'object-tool')"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: messages, VALUE: []"]
+        C2["CONST: textParts, VALUE: message.content"]
+        C3["CONST: imageParts, VALUE: message.content.filter("]
+        C4["CONST: textParts, VALUE: message.content"]
+        C5["CONST: toolCalls, VALUE: message.content.filter("]
+        C6["CONST: formattedMessages, VALUE: []"]
+        C7["CONST: msg, VALUE: messages[i]"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["message-converter.js"]
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

@@ -1,0 +1,50 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: path, FROM: path"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: clearSubtasksDirect"]
+        FU2["FUNCTION: clearSubtasks"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P3["PARAM: {string} [args.id] - Task IDs (comma-separated) to clear subtasks from"]
+        P4["PARAM: {boolean} [args.all] - Clear subtasks from all tasks"]
+        P5["PARAM: {string} [args.tag] - Tag context to operate on (defaults to current active tag)"]
+        P6["PARAM: {string} [args.projectRoot] - Project root path (for MCP/env fallback)"]
+        P7["PARAM: {Object} log - Logger object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: data, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C3["CONST: currentTag, VALUE: data.tag || tag"]
+        C4["CONST: tasks, VALUE: data.tasks"]
+        C5["CONST: updatedData, VALUE: readJSON(tasksPath, projectRoot, currentTag)"]
+        C6["CONST: taskIdArray, VALUE: taskIds.split(',').map((id) => parseInt(id.trim(), 10))"]
+        C7["CONST: clearedTasksCount, VALUE: taskIdArray.length"]
+        C8["CONST: updatedTasks, VALUE: updatedData.tasks || []"]
+        C9["CONST: taskSummary, VALUE: taskIdArray.map((id) => {"]
+        C10["CONST: task, VALUE: updatedTasks.find((t) => t.id === id)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["clear-subtasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

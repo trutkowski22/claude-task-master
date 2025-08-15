@@ -1,0 +1,23 @@
+```mermaid
+flowchart TB
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: withSessionEnv"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object | undefined} sessionEnv - The environment object from the session."]
+        P2["PARAM: {Function} actionFn - An async function to execute with the temporary environment."]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: originalEnv, VALUE: {}"]
+        C2["CONST: keysToRestore, VALUE: []"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define functions and core logic for this module"]
+    end
+    subgraph FileName["env-utils.js"]
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+```

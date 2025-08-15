@@ -1,0 +1,62 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../../../scripts/modules/task-manager/expand-task.js, FROM: /claude-task-master/scripts/modules/task-manager/expand-task.js"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fs, FROM: fs"]
+        I4["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: expandTaskDirect"]
+        FU2["FUNCTION: if"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P3["PARAM: {string} args.id - The ID of the task to expand."]
+        P4["PARAM: {number|string} [args.num] - Number of subtasks to generate."]
+        P5["PARAM: {boolean} [args.research] - Enable research role for subtask generation."]
+        P6["PARAM: {string} [args.prompt] - Additional context to guide subtask generation."]
+        P7["PARAM: {boolean} [args.force] - Force expansion even if subtasks exist."]
+        P8["PARAM: {string} [args.projectRoot] - Project root directory."]
+        P9["PARAM: {string} [args.tag] - Tag for the task"]
+        P10["PARAM: {Object} log - Logger object"]
+        P11["PARAM: {Object} context - Context object containing session"]
+        P12["PARAM: {Object} [context.session] - MCP Session object"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: taskId, VALUE: id ? parseInt(id, 10) : null"]
+        C3["CONST: numSubtasks, VALUE: num ? parseInt(num, 10) : undefined"]
+        C4["CONST: useResearch, VALUE: research === true"]
+        C5["CONST: additionalContext, VALUE: prompt || ''"]
+        C6["CONST: forceFlag, VALUE: force === true"]
+        C7["CONST: data, VALUE: readJSON(tasksPath, projectRoot)"]
+        C8["CONST: task, VALUE: data.tasks.find((t) => t.id === taskId)"]
+        C9["CONST: hasExistingSubtasks, VALUE: task.subtasks && task.subtasks.length > 0"]
+        C10["CONST: originalTask, VALUE: JSON.parse(JSON.stringify(task))"]
+        C11["CONST: subtasksCountBefore, VALUE: task.subtasks ? task.subtasks.length : 0"]
+        C12["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+        C13["CONST: coreResult, VALUE: await expandTask("]
+        C14["CONST: updatedData, VALUE: readJSON(tasksPath, projectRoot)"]
+        C15["CONST: updatedTask, VALUE: updatedData.tasks.find((t) => t.id === taskId)"]
+        C16["CONST: subtasksAdded, VALUE: updatedTask.subtasks"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["expand-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

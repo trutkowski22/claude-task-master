@@ -1,0 +1,13 @@
+
+flowchart TB
+    subgraph InterfaceLayer["Interface Layer"]
+        IL1["MCP Tools (40 files)"]
+    end
+    subgraph CoreLayer["Core Implementation Layer"]
+        CL1["Direct Functions & Core Logic (74 files)"]
+    end
+    subgraph SharedLayer["Shared Infrastructure Layer"]
+        SL1["Utilities, Providers, Constants (62 files)"]
+    end
+    IL1 --> CL1
+    CL1 --> SL1

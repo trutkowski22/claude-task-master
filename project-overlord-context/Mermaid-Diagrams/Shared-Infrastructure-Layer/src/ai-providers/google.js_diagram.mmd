@@ -1,0 +1,26 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: @ai-sdk/google, FROM: @ai-sdk/google"]
+        I2["IMPORT: ./base-provider.js, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: GoogleAIProvider"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} params - Parameters for client initialization"]
+        P2["PARAM: {string} params.apiKey - Google API key"]
+        P3["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Expose public API via exports"]
+    end
+    subgraph FileName["google.js"]
+        Imports
+        Exports
+        Parameters
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

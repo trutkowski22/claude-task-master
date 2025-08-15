@@ -1,0 +1,57 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: ../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: formatJSONWithTabs"]
+        FU2["FUNCTION: setupMCPConfiguration"]
+        FU3["FUNCTION: removeTaskMasterMCPConfiguration"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: setupMCPConfiguration"]
+        E2["EXP: removeTaskMasterMCPConfiguration"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} projectRoot - Target project directory"]
+        P2["PARAM: {string} mcpConfigPath - Relative path to MCP config file (e.g., '.cursor/mcp.json')"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: singleLineContent, VALUE: content"]
+        C2["CONST: mcpPath, VALUE: path.join(projectRoot, mcpConfigPath)"]
+        C3["CONST: configDir, VALUE: path.dirname(mcpPath)"]
+        C4["CONST: newMCPServer, VALUE: {"]
+        C5["CONST: mcpConfig, VALUE: JSON.parse(fs.readFileSync(mcpPath, 'utf8'))"]
+        C6["CONST: hasMCPString, VALUE: Object.values(mcpConfig.mcpServers).some("]
+        C7["CONST: backupPath, VALUE: `${mcpPath}.backup-${Date.now()}`"]
+        C8["CONST: newMCPConfig, VALUE: {"]
+        C9["CONST: newMCPConfig, VALUE: {"]
+        C10["CONST: mcpPath, VALUE: path.join(projectRoot, mcpConfigPath)"]
+        C11["CONST: mcpConfig, VALUE: JSON.parse(fs.readFileSync(mcpPath, 'utf8'))"]
+        C12["CONST: hasTaskMaster, VALUE: mcpConfig.mcpServers['task-master-ai'] ||"]
+        C13["CONST: server, VALUE: mcpConfig.mcpServers[serverName]"]
+        C14["CONST: remainingServers, VALUE: Object.keys(mcpConfig.mcpServers)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["create-mcp-config.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

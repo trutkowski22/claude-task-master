@@ -1,0 +1,42 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I3["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: updateTasksDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing projectRoot, from, prompt, research options."]
+        P2["PARAM: {string} args.from - The ID of the task to update."]
+        P3["PARAM: {string} args.prompt - The prompt to update the task with."]
+        P4["PARAM: {boolean} args.research - Whether to use research mode."]
+        P5["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file."]
+        P6["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
+        P7["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P8["PARAM: {Object} log - Logger object."]
+        P9["PARAM: {Object} context - Context object containing session data."]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: logWrapper, VALUE: createLogWrapper(log)"]
+        C2["CONST: result, VALUE: await updateTasks("]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["update-tasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

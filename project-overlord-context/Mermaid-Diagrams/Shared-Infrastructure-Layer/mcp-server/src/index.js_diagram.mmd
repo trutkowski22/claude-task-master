@@ -1,0 +1,48 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fastmcp, FROM: fastmcp"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: dotenv, FROM: dotenv"]
+        I4["IMPORT: url, FROM: url"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: ./logger.js, FROM: /claude-task-master/mcp-server/src/logger.js"]
+        I7["IMPORT: ./tools/index.js, FROM: /claude-task-master/mcp-server/src/tools/index.js"]
+        I8["IMPORT: ../../src/provider-registry/index.js, FROM: /claude-task-master/src/provider-registry/index.js"]
+        I9["IMPORT: ./providers/mcp-provider.js, FROM: /claude-task-master/mcp-server/src/providers/mcp-provider.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: registerTaskMasterTools"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: TaskMasterMCPServer"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: path.dirname(__filename)"]
+        C3["CONST: packagePath, VALUE: path.join(__dirname, '../../package.json')"]
+        C4["CONST: packageJson, VALUE: JSON.parse(fs.readFileSync(packagePath, 'utf8'))"]
+        C5["CONST: mcpProvider, VALUE: new MCPProvider()"]
+        C6["CONST: providerRegistry, VALUE: ProviderRegistry.getInstance()"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

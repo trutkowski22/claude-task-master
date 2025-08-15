@@ -1,0 +1,26 @@
+```mermaid
+flowchart TB
+    subgraph Exports["Exports"]
+        E1["EXP: ProviderRegistry"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} providerName - The name of the provider"]
+        P2["PARAM: {object} provider - The provider instance"]
+        P3["PARAM: {object} options - Additional options for registration"]
+        P4["PARAM: {string} providerName - The name of the provider"]
+        P5["PARAM: {string} providerName - The name of the provider"]
+        P6["PARAM: {string} providerName - The name of the provider"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: providerEntry, VALUE: this._providers.get(providerName)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Expose public API via exports"]
+    end
+    subgraph FileName["index.js"]
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+```

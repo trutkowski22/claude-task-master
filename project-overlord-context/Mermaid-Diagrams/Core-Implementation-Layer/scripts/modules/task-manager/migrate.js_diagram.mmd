@@ -1,0 +1,74 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: chalk, FROM: chalk"]
+        I4["IMPORT: url, FROM: url"]
+        I5["IMPORT: ../../../mcp-server/src/tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I6["IMPORT: ../utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: migrateProject"]
+        FU2["FUNCTION: analyzeMigrationNeeds"]
+        FU3["FUNCTION: performMigration"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} options - Migration options"]
+        P2["PARAM: {string} projectRoot - Project root directory"]
+        P3["PARAM: {string} projectRoot - Project root directory"]
+        P4["PARAM: {Array} migrationPlan - List of files to migrate"]
+        P5["PARAM: {Object} options - Migration options"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: path.dirname(__filename)"]
+        C3["CONST: log, VALUE: createLogWrapper({"]
+        C4["CONST: projectRoot, VALUE: findProjectRoot() || process.cwd()"]
+        C5["CONST: taskmasterDir, VALUE: path.join(projectRoot, '.taskmaster')"]
+        C6["CONST: migrationPlan, VALUE: analyzeMigrationNeeds(projectRoot)"]
+        C7["CONST: action, VALUE: options.dryRun ? 'Would move' : 'Will move'"]
+        C8["CONST: readline, VALUE: await import('readline')"]
+        C9["CONST: rl, VALUE: readline.createInterface({"]
+        C10["CONST: answer, VALUE: await new Promise((resolve) => {"]
+        C11["CONST: migrationPlan, VALUE: []"]
+        C12["CONST: tasksDir, VALUE: path.join(projectRoot, 'tasks')"]
+        C13["CONST: tasksFiles, VALUE: fs.readdirSync(tasksDir)"]
+        C14["CONST: scriptsDir, VALUE: path.join(projectRoot, 'scripts')"]
+        C15["CONST: scriptsFiles, VALUE: fs.readdirSync(scriptsDir)"]
+        C16["CONST: filePath, VALUE: path.join(scriptsDir, file)"]
+        C17["CONST: lowerFile, VALUE: file.toLowerCase()"]
+        C18["CONST: oldConfig, VALUE: path.join(projectRoot, LEGACY_CONFIG_FILE)"]
+        C19["CONST: taskmasterDir, VALUE: path.join(projectRoot, '.taskmaster')"]
+        C20["CONST: neededDirs, VALUE: new Set()"]
+        C21["CONST: destDir, VALUE: path.dirname(item.to)"]
+        C22["CONST: fullDirPath, VALUE: path.join(projectRoot, dir)"]
+        C23["CONST: backupDir, VALUE: path.join(projectRoot, '.taskmaster-migration-backup')"]
+        C24["CONST: fromPath, VALUE: path.join(projectRoot, item.from)"]
+        C25["CONST: toPath, VALUE: path.join(projectRoot, item.to)"]
+        C26["CONST: backupPath, VALUE: path.join("]
+        C27["CONST: backupDir, VALUE: path.dirname(backupPath)"]
+        C28["CONST: toDir, VALUE: path.dirname(toPath)"]
+        C29["CONST: dirsToCheck, VALUE: ['tasks', 'scripts']"]
+        C30["CONST: dirPath, VALUE: path.join(projectRoot, dir)"]
+        C31["CONST: files, VALUE: fs.readdirSync(dirPath)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["migrate.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```

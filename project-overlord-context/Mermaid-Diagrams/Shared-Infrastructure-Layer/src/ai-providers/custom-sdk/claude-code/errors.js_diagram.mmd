@@ -1,0 +1,58 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: @ai-sdk/provider, FROM: @ai-sdk/provider"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: createAPICallError"]
+        FU2["FUNCTION: createAuthenticationError"]
+        FU3["FUNCTION: createTimeoutError"]
+        FU4["FUNCTION: isAuthenticationError"]
+        FU5["FUNCTION: isTimeoutError"]
+        FU6["FUNCTION: getErrorMetadata"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: createAPICallError"]
+        E2["EXP: createAuthenticationError"]
+        E3["EXP: createTimeoutError"]
+        E4["EXP: isAuthenticationError"]
+        E5["EXP: isTimeoutError"]
+        E6["EXP: getErrorMetadata"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} params - Error parameters"]
+        P2["PARAM: {string} params.message - Error message"]
+        P3["PARAM: {string} [params.code] - Error code"]
+        P4["PARAM: {number} [params.exitCode] - Process exit code"]
+        P5["PARAM: {string} [params.stderr] - Standard error output"]
+        P6["PARAM: {string} [params.promptExcerpt] - Excerpt of the prompt"]
+        P7["PARAM: {Object} params - Error parameters"]
+        P8["PARAM: {string} params.message - Error message"]
+        P9["PARAM: {Object} params - Error parameters"]
+        P10["PARAM: {string} params.message - Error message"]
+        P11["PARAM: {string} [params.promptExcerpt] - Excerpt of the prompt"]
+        P12["PARAM: {number} params.timeoutMs - Timeout in milliseconds"]
+        P13["PARAM: {unknown} error - Error to check"]
+        P14["PARAM: {unknown} error - Error to check"]
+        P15["PARAM: {unknown} error - Error to extract metadata from"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: metadata, VALUE: {"]
+        C2["CONST: metadata, VALUE: {"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["errors.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

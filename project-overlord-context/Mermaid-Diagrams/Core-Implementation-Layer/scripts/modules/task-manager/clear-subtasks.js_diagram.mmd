@@ -1,0 +1,51 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: chalk, FROM: chalk"]
+        I3["IMPORT: boxen, FROM: boxen"]
+        I4["IMPORT: cli-table3, FROM: cli-table3"]
+        I5["IMPORT: ../utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: ../ui.js, FROM: /claude-task-master/scripts/modules/ui.js"]
+    end
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Path resolution"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: clearSubtasks"]
+    end
+    subgraph Exports["Exports"]
+        E1["EXP: clearSubtasks"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} taskIds - Task IDs to clear subtasks from"]
+        P3["PARAM: {Object} context - Context object containing projectRoot and tag"]
+        P4["PARAM: {string} [context.projectRoot] - Project root path"]
+        P5["PARAM: {string} [context.tag] - Tag for the task"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: data, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C2["CONST: taskIdArray, VALUE: taskIds.split(',').map((id) => id.trim())"]
+        C3["CONST: summaryTable, VALUE: new Table({"]
+        C4["CONST: id, VALUE: parseInt(taskId, 10)"]
+        C5["CONST: task, VALUE: data.tasks.find((t) => t.id === id)"]
+        C6["CONST: subtaskCount, VALUE: task.subtasks.length"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+        FL3["Expose public API via exports"]
+    end
+    subgraph FileName["clear-subtasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+```

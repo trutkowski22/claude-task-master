@@ -1,0 +1,41 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I2["IMPORT: ../../../../src/constants/providers.js, FROM: /claude-task-master/src/constants/providers.js"]
+    end
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: getProviderHint"]
+        FU2["FUNCTION: handleModelSetting"]
+        FU3["FUNCTION: modelsDirect"]
+    end
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Arguments containing provider flags"]
+        P2["PARAM: {Object} args - Arguments containing role-specific model IDs"]
+        P3["PARAM: {Object} context - Context object with session, mcpLog, projectRoot"]
+        P4["PARAM: {Object} args - Arguments passed by the MCP tool"]
+        P5["PARAM: {Object} log - MCP logger"]
+        P6["PARAM: {Object} context - MCP context (contains session)"]
+    end
+    subgraph Constants["Const Declarations"]
+        C1["CONST: MODEL_ROLES, VALUE: ['main', 'research', 'fallback']"]
+        C2["CONST: roleKey, VALUE: `set${role.charAt(0).toUpperCase() + role.slice(1)}`"]
+        C3["CONST: providerHint, VALUE: getProviderHint(args)"]
+        C4["CONST: mcpLog, VALUE: createLogWrapper(log)"]
+        C5["CONST: customProviderFlags, VALUE: CUSTOM_PROVIDERS_ARRAY.filter("]
+        C6["CONST: modelContext, VALUE: { session, mcpLog, projectRoot }"]
+        C7["CONST: modelSetResult, VALUE: await handleModelSetting(args, modelContext)"]
+    end
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Identify and load dependencies and modules"]
+        FL2["Define functions and core logic for this module"]
+    end
+    subgraph FileName["models.js"]
+        Imports
+        FunctionsDefined
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    FL1 --> FL2
+```
