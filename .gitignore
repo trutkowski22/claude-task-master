@@ -24,20 +24,6 @@ lerna-debug.log*
 coverage/
 *.lcov
 
-# Jest cache
-.jest/
-
-# Test temporary files and directories
-tests/temp/
-tests/e2e/_runs/
-tests/e2e/log/
-tests/**/*.log
-tests/**/coverage/
-
-# Test database files (if any)
-tests/**/*.db
-tests/**/*.sqlite
-tests/**/*.sqlite3
 
 # Optional npm cache directory
 .npm
@@ -75,8 +61,6 @@ dist
 init-debug.log
 dev-debug.log
 
-# NPMRC
-.npmrc
 
 # Added by Task Master AI
 # Editor directories and files
@@ -88,9 +72,5 @@ dev-debug.log
 *.sln
 *.sw?
 
-# VS Code extension test files
-.vscode-test/
-apps/extension/.vscode-test/
 
-# apps/extension
-apps/extension/vsix-build/
+
