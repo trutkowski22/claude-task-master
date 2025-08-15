@@ -116,8 +116,6 @@ export async function runInteractiveProfilesSetup() {
 			// Integration guide profiles (claude, codex, gemini, opencode, zed, amp) - don't include standard coding rules
 			if (profileName === 'claude') {
 				description = 'Integration guide with Task Master slash commands';
-			} else if (profileName === 'codex') {
-				description = 'Comprehensive Task Master integration guide';
 			} else if (hasMcpConfig) {
 				description = 'Integration guide and MCP config';
 			} else {

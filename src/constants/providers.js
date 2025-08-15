@@ -9,16 +9,13 @@ export const VALIDATED_PROVIDERS = [
 	'openai',
 	'google',
 	'perplexity',
-	'xai',
-	'groq',
+
 	'mistral'
 ];
 
 // Custom providers object for easy named access
 export const CUSTOM_PROVIDERS = {
-	AZURE: 'azure',
 	VERTEX: 'vertex',
-	BEDROCK: 'bedrock',
 	OPENROUTER: 'openrouter',
 	OLLAMA: 'ollama',
 	CLAUDE_CODE: 'claude-code',

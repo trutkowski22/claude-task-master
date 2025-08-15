@@ -1,5 +1,5 @@
 /**
- * @typedef {'amp' | 'claude' | 'cline' | 'codex' | 'cursor' | 'gemini' | 'kiro' | 'opencode' | 'roo' | 'trae' | 'windsurf' | 'vscode' | 'zed'} RulesProfile
+ * @typedef {'claude' | 'cline' | 'codex' | 'cursor' | 'gemini' |'roo' | 'vscode' |} RulesProfile
  */
 
 /**
@@ -10,19 +10,13 @@
  *
  * @type {RulesProfile[]}
  * @description Defines possible rule profile sets:
- * - amp: Amp Code integration
  * - claude: Claude Code integration
  * - cline: Cline IDE rules
  * - codex: Codex integration
  * - cursor: Cursor IDE rules
  * - gemini: Gemini integration
- * - kiro: Kiro IDE rules
- * - opencode: OpenCode integration
  * - roo: Roo Code IDE rules
- * - trae: Trae IDE rules
  * - vscode: VS Code with GitHub Copilot integration
- * - windsurf: Windsurf IDE rules
- * - zed: Zed IDE rules
  *
  * To add a new rule profile:
  * 1. Add the profile name to this array
@@ -30,19 +24,14 @@
  * 3. Export it as {profile}Profile in src/profiles/index.js
  */
 export const RULE_PROFILES = [
-	'amp',
 	'claude',
 	'cline',
 	'codex',
 	'cursor',
 	'gemini',
-	'kiro',
-	'opencode',
 	'roo',
-	'trae',
 	'vscode',
-	'windsurf',
-	'zed'
+
 ];
 
 /**
