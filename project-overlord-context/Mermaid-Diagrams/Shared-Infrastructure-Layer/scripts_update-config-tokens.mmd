@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph ["update-config-tokens-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fileURLToPath, FROM: url"]
+        I4["IMPORT: dirname, FROM: path"]
+    end
+    subgraph ["update-config-tokens-Dependencies"]
+        D1["DEP: Node.js file system operations"]
+        D2["DEP: Node.js path utilities"]
+        D3["DEP: ES module path resolution"]
+    end
+    subgraph ["update-config-tokens-FunctionsDefined"]
+        FU1["FUNCTION: updateConfigMaxTokens"]
+    end
+    subgraph ["update-config-tokens-Exports"]
+        E1["EXP: updateConfigMaxTokens"]
+    end
+    subgraph ["update-config-tokens-Parameters"]
+        P1["PARAM: {string} configPath - Path to the config.json file to update"]
+    end
+    subgraph ["update-config-tokens-Constants"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: dirname(__filename)"]
+        C3["CONST: supportedModelsPath, VALUE: Path to supported-models.json"]
+        C4["CONST: supportedModels, VALUE: Loaded model data from JSON"]
+        C5["CONST: config, VALUE: Loaded configuration object"]
+        C6["CONST: roles, VALUE: Array of role names ['main', 'research', 'fallback']"]
+    end
+    subgraph ["update-config-tokens-ExecutionFlow"]
+        FL1["Load supported models data from JSON file"]
+        FL2["Load current configuration from specified path"]
+        FL3["Iterate through main, research, and fallback roles"]
+        FL4["Find matching model data in supported models"]
+        FL5["Update maxTokens value for each role if model found"]
+        FL6["Write updated configuration back to file"]
+        FL7["Return success status and handle errors"]
+    end
+    subgraph ["update-config-tokens.js"]
+        ["update-config-tokens-Imports"]
+        ["update-config-tokens-Dependencies"]
+        ["update-config-tokens-FunctionsDefined"]
+        ["update-config-tokens-Exports"]
+        ["update-config-tokens-Parameters"]
+        ["update-config-tokens-Constants"]
+        ["update-config-tokens-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

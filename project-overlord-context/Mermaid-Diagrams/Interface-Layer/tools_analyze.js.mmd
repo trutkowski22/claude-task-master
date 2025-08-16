@@ -1,0 +1,77 @@
+```mermaid
+graph TB
+    subgraph "Analyze Project Complexity Tool (analyze.js)"
+        A[registerAnalyzeProjectComplexityTool] --> B[Define Tool Schema]
+        B --> C[Tool: analyze_project_complexity]
+        
+        C --> D[Parameters]
+        D --> E[threshold: Complexity threshold 1-10]
+        D --> F[research: Use Perplexity AI flag]
+        D --> G[output: Output file path]
+        D --> H[file: Optional tasks file path]
+        D --> I[ids: Specific task IDs to analyze]
+        D --> J[from: Starting task ID range]
+        D --> K[to: Ending task ID range]
+        D --> L[projectRoot: Project directory]
+        D --> M[tag: Optional tag context]
+        
+        C --> N[Execute Handler]
+        N --> O[withNormalizedProjectRoot wrapper]
+        O --> P[Define tool name for logging]
+        P --> Q[Log execution start]
+        Q --> R[resolveTag]
+        R --> S[findTasksPath]
+        S --> T{Path found?}
+        
+        T -->|No| U[Return error response]
+        T -->|Yes| V[resolveComplexityReportOutputPath]
+        
+        V --> W[Log output path]
+        W --> X[Check output directory exists]
+        X --> Y{Directory exists?}
+        
+        Y -->|No| Z[Create directory recursively]
+        Y -->|Yes| AA[Continue]
+        Z --> BB{Creation successful?}
+        
+        BB -->|No| CC[Return directory error]
+        BB -->|Yes| AA
+        
+        AA --> DD[analyzeTaskComplexityDirect]
+        DD --> EE[Log result]
+        EE --> FF[handleApiResult]
+        FF --> GG[Return formatted response]
+        
+        N --> HH[Error Handling]
+        HH --> II[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        JJ[utils.js]
+        KK[task-master-core.js]
+        LL[path-utils.js]
+        MM[scripts/modules/utils.js]
+        NN[constants/paths.js]
+        OO[utils/path-utils.js]
+        PP[fs module]
+        QQ[path module]
+    end
+    
+    JJ --> O
+    JJ --> U
+    JJ --> FF
+    JJ --> II
+    KK --> DD
+    LL --> S
+    MM --> R
+    NN --> G
+    OO --> V
+    PP --> X
+    PP --> Z
+    QQ --> W
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style N fill:#e8f5e8
+    style DD fill:#fff3e0
+```

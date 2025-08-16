@@ -1,0 +1,94 @@
+```mermaid
+graph TD
+    A[language-model.js] --> B[Import Statements]
+    A --> C[MCPLanguageModel Class]
+    
+    B --> D[Message Converter]
+    B --> E[Error Handlers]
+    B --> F[JSON Extractor]
+    B --> G[Schema Converter]
+    
+    D --> H["./message-converter.js"]
+    E --> I["./errors.js"]
+    F --> J["./json-extractor.js"]
+    G --> K["./schema-converter.js"]
+    
+    C --> L[Class Properties]
+    L --> M[specificationVersion: 'v1']
+    L --> N[defaultObjectGenerationMode: 'json']
+    L --> O[supportsImageUrls: false]
+    L --> P[supportsStructuredOutputs: true]
+    
+    C --> Q[Constructor]
+    Q --> R[Instance Properties]
+    R --> S[session: MCP session]
+    R --> T[modelId: string]
+    R --> U[settings: object]
+    R --> V[provider: 'mcp-ai-sdk']
+    R --> W[maxTokens: number]
+    R --> X[temperature: number]
+    
+    Q --> Y[validateSession Method]
+    Y --> Z{Capabilities Check}
+    Z -->|Missing sampling| AA[Throw MCPError]
+    Z -->|Valid| BB[Continue]
+    
+    C --> CC[Core Methods]
+    CC --> DD[doGenerate Method]
+    CC --> EE[doGenerateObject Method]
+    CC --> FF[doStream Method]
+    CC --> GG[simulateStreaming Method]
+    
+    DD --> HH[Convert Prompt]
+    HH --> II[convertToMCPFormat]
+    
+    DD --> JJ[MCP Request]
+    JJ --> KK[session.requestSampling]
+    KK --> LL[Request Parameters]
+    LL --> MM[messages, systemPrompt]
+    LL --> NN[temperature, maxTokens]
+    LL --> OO[includeContext: 'thisServer']
+    
+    DD --> PP[Response Processing]
+    PP --> QQ[convertFromMCPFormat]
+    PP --> RR[Return AI SDK format]
+    
+    RR --> SS[text, finishReason]
+    RR --> TT[usage tokens]
+    RR --> UU[rawResponse, warnings]
+    
+    EE --> VV[Schema Validation]
+    VV --> WW[convertSchemaToInstructions]
+    VV --> XX[enhancePromptForJSON]
+    
+    EE --> YY[Enhanced Request]
+    YY --> ZZ[MCP sampling with instructions]
+    
+    EE --> AAA[JSON Processing]
+    AAA --> BBB[extractJson]
+    AAA --> CCC[JSON.parse]
+    AAA --> DDD[schema.parse validation]
+    
+    FF --> EEE[Stream Simulation]
+    EEE --> FFF[doGenerate call]
+    EEE --> GGG[simulateStreaming call]
+    
+    GG --> HHH[Chunking Logic]
+    HHH --> III[Calculate chunk size]
+    HHH --> JJJ[Iterate through text]
+    HHH --> KKK[Yield text-delta chunks]
+    HHH --> LLL[Yield finish chunk]
+    
+    DD --> MMM[Error Handling]
+    EE --> MMM
+    FF --> MMM
+    MMM --> NNN[mapMCPError]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style CC fill:#e8f5e8
+    style DD fill:#fff3e0
+    style EE fill:#e3f2fd
+    style FF fill:#f1f8e9
+    style Z fill:#ffebee
+```

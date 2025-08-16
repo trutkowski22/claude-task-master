@@ -1,0 +1,56 @@
+```mermaid
+graph TB
+    subgraph "Complexity Report Tool (complexity-report.js)"
+        A[registerComplexityReportTool] --> B[Define Tool Schema]
+        B --> C[Tool: complexity_report]
+        
+        C --> D[Parameters]
+        D --> E[file: Optional report file path]
+        D --> F[projectRoot: Project directory]
+        
+        C --> G[Execute Handler]
+        G --> H[withNormalizedProjectRoot wrapper]
+        H --> I[Log report retrieval]
+        I --> J[getCurrentTag]
+        J --> K[Create path arguments object]
+        K --> L[findComplexityReportPath]
+        L --> M[Log report path]
+        M --> N{Report path found?}
+        
+        N -->|No| O[Return error: no report found]
+        N -->|Yes| P[complexityReportDirect]
+        
+        P --> Q{Success?}
+        Q -->|Yes| R[Log success]
+        Q -->|No| S[Log error]
+        
+        R --> T[handleApiResult]
+        S --> T
+        T --> U[Return formatted response]
+        
+        G --> V[Error Handling]
+        V --> W[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        X[utils.js]
+        Y[task-master-core.js]
+        Z[constants/paths.js]
+        AA[core/utils/path-utils.js]
+        BB[scripts/modules/utils.js]
+    end
+    
+    X --> H
+    X --> O
+    X --> T
+    X --> W
+    Y --> P
+    Z --> E
+    AA --> L
+    BB --> J
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style G fill:#e8f5e8
+    style P fill:#fff3e0
+```

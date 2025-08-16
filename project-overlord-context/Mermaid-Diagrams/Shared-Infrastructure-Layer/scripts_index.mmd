@@ -1,0 +1,38 @@
+flowchart TB
+    subgraph ["index-Imports"]
+        I1["IMPORT: *, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I2["IMPORT: *, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: *, FROM: /claude-task-master/scripts/modules/commands.js"]
+        I4["IMPORT: *, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I5["IMPORT: *, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+    end
+    subgraph ["index-Dependencies"]
+        D1["DEP: Task Master CLI modules"]
+        D2["DEP: ES6 module exports"]
+    end
+    subgraph ["index-Exports"]
+        E1["EXP: All exports from ui.js"]
+        E2["EXP: All exports from utils.js"]
+        E3["EXP: All exports from commands.js"]
+        E4["EXP: All exports from task-manager.js"]
+        E5["EXP: All exports from prompt-manager.js"]
+    end
+    subgraph ["index-ExecutionFlow"]
+        FL1["Import all exports from ui module"]
+        FL2["Import all exports from utils module"]
+        FL3["Import all exports from commands module"]
+        FL4["Import all exports from task-manager module"]
+        FL5["Import all exports from prompt-manager module"]
+        FL6["Re-export all imported functions and classes"]
+    end
+    subgraph ["index.js"]
+        ["index-Imports"]
+        ["index-Dependencies"]
+        ["index-Exports"]
+        ["index-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

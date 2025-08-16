@@ -1,0 +1,83 @@
+graph TD
+    subgraph "Claude Code Provider Factory - index.js"
+        direction TB
+        
+        %% External Dependencies
+        EXT_SDK[("@ai-sdk/provider<br/>NoSuchModelError")]
+        EXT_LANG[("./language-model.js<br/>ClaudeCodeLanguageModel")]
+        EXT_ERRORS[("./errors.js<br/>Error handlers")]
+        EXT_TYPES[("./types.js<br/>Type definitions")]
+        
+        %% Main Factory Function
+        CREATE_PROVIDER[("createClaudeCode<br/>Factory function<br/>Creates provider instance")]
+        
+        %% Provider Instance
+        PROVIDER{{"ClaudeCodeProvider<br/>Main provider function"}}
+        
+        %% Internal Functions
+        CREATE_MODEL[("createModel<br/>Internal model creator<br/>Applies default settings")]
+        PROVIDER_FUNC[("provider<br/>Main provider function<br/>Validates constructor usage")]
+        
+        %% Provider Methods
+        LANG_MODEL[("languageModel<br/>Creates language models")]
+        CHAT_MODEL[("chat<br/>Alias for languageModel")]
+        EMBED_MODEL[("textEmbeddingModel<br/>Throws NoSuchModelError")]
+        
+        %% Default Instance
+        DEFAULT_INSTANCE{{"claudeCode<br/>Default provider instance"}}
+        
+        %% Exports
+        EXPORT_LANG[("Export:<br/>ClaudeCodeLanguageModel")]
+        EXPORT_ERRORS[("Export:<br/>Error functions")]
+        
+        %% Flow Connections
+        EXT_SDK --> CREATE_PROVIDER
+        EXT_LANG --> CREATE_PROVIDER
+        EXT_TYPES --> CREATE_PROVIDER
+        
+        CREATE_PROVIDER --> CREATE_MODEL
+        CREATE_PROVIDER --> PROVIDER_FUNC
+        CREATE_PROVIDER --> PROVIDER
+        
+        CREATE_MODEL --> PROVIDER_FUNC
+        PROVIDER_FUNC --> PROVIDER
+        
+        PROVIDER --> LANG_MODEL
+        PROVIDER --> CHAT_MODEL
+        PROVIDER --> EMBED_MODEL
+        
+        CREATE_PROVIDER --> DEFAULT_INSTANCE
+        
+        %% Method Relationships
+        LANG_MODEL -.->|"Creates"| EXT_LANG
+        CHAT_MODEL -.->|"Alias for"| LANG_MODEL
+        EMBED_MODEL -.->|"Throws"| EXT_SDK
+        
+        %% Export Relationships
+        EXT_LANG --> EXPORT_LANG
+        EXT_ERRORS --> EXPORT_ERRORS
+        
+        %% Settings Flow
+        SETTINGS{{"Provider Settings<br/>{defaultSettings}"}}
+        MODEL_SETTINGS{{"Model Settings<br/>Merged with defaults"}}
+        
+        SETTINGS --> CREATE_MODEL
+        CREATE_MODEL --> MODEL_SETTINGS
+        MODEL_SETTINGS --> EXT_LANG
+    end
+    
+    %% Style Classes
+    classDef external fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef factory fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef provider fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef method fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef export fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef data fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    
+    %% Apply Styles
+    class EXT_SDK,EXT_LANG,EXT_ERRORS,EXT_TYPES external
+    class CREATE_PROVIDER,CREATE_MODEL,PROVIDER_FUNC factory
+    class PROVIDER,DEFAULT_INSTANCE provider
+    class LANG_MODEL,CHAT_MODEL,EMBED_MODEL method
+    class EXPORT_LANG,EXPORT_ERRORS export
+    class SETTINGS,MODEL_SETTINGS data

@@ -1,0 +1,58 @@
+graph TD
+    subgraph "Claude Code Error Handler - errors.js"
+        direction TB
+        
+        %% External Dependencies
+        EXT_API[("@ai-sdk/provider<br/>APICallError, LoadAPIKeyError")]
+        EXT_TYPES[("./types.js<br/>ClaudeCodeErrorMetadata")]
+        
+        %% Main Functions
+        CREATE_API[("createAPICallError<br/>Creates API call errors<br/>with metadata")]
+        CREATE_AUTH[("createAuthenticationError<br/>Creates auth errors")]
+        CREATE_TIMEOUT[("createTimeoutError<br/>Creates timeout errors")]
+        
+        %% Utility Functions
+        IS_AUTH[("isAuthenticationError<br/>Checks for auth errors")]
+        IS_TIMEOUT[("isTimeoutError<br/>Checks for timeout errors")]
+        GET_META[("getErrorMetadata<br/>Extracts error metadata")]
+        
+        %% Data Structures
+        META_OBJ{{"ClaudeCodeErrorMetadata<br/>{code, exitCode, stderr, promptExcerpt}"}}
+        
+        %% Flow Connections
+        EXT_API --> CREATE_API
+        EXT_API --> CREATE_AUTH
+        EXT_API --> CREATE_TIMEOUT
+        EXT_TYPES --> CREATE_API
+        EXT_TYPES --> CREATE_TIMEOUT
+        EXT_TYPES --> IS_AUTH
+        EXT_TYPES --> IS_TIMEOUT
+        EXT_TYPES --> GET_META
+        
+        CREATE_API --> META_OBJ
+        CREATE_TIMEOUT --> META_OBJ
+        
+        %% Error Type Classification
+        CREATE_API -.->|"Creates"| API_ERROR[("APICallError<br/>with custom metadata")]
+        CREATE_AUTH -.->|"Creates"| AUTH_ERROR[("LoadAPIKeyError<br/>for authentication")]
+        CREATE_TIMEOUT -.->|"Creates"| TIMEOUT_ERROR[("APICallError<br/>with timeout metadata")]
+        
+        %% Error Detection
+        IS_AUTH -->|"Validates"| AUTH_ERROR
+        IS_TIMEOUT -->|"Validates"| TIMEOUT_ERROR
+        GET_META -->|"Extracts from"| API_ERROR
+    end
+    
+    %% Style Classes
+    classDef external fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef function fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef utility fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    
+    %% Apply Styles
+    class EXT_API,EXT_TYPES external
+    class CREATE_API,CREATE_AUTH,CREATE_TIMEOUT function
+    class IS_AUTH,IS_TIMEOUT,GET_META utility
+    class META_OBJ data
+    class API_ERROR,AUTH_ERROR,TIMEOUT_ERROR error

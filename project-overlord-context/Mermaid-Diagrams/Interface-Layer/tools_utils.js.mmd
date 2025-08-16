@@ -1,0 +1,111 @@
+```mermaid
+graph TB
+    subgraph "Tools Utilities (utils.js)"
+        A[Utility Functions] --> B[Version Management]
+        A --> C[Project Root Resolution]
+        A --> D[Session Handling]
+        A --> E[Command Execution]
+        A --> F[Response Formatting]
+        A --> G[Caching]
+        A --> H[Data Processing]
+        
+        B --> B1[getVersionInfo]
+        B1 --> B2[Cache version from package.json]
+        B1 --> B3[Return cached or fallback version]
+        
+        C --> C1[getProjectRoot]
+        C --> C2[normalizeProjectRoot]
+        C --> C3[withNormalizedProjectRoot HOF]
+        
+        C1 --> C4[Check environment variable]
+        C1 --> C5[Check explicit projectRoot]
+        C1 --> C6[Use last found project root]
+        C1 --> C7[Check current directory markers]
+        C1 --> C8[Default to CWD with warning]
+        
+        C2 --> C9[Decode URI components]
+        C2 --> C10[Strip file:// protocol]
+        C2 --> C11[Handle Windows drive paths]
+        C2 --> C12[Normalize slashes]
+        C2 --> C13[Resolve to absolute path]
+        
+        C3 --> C14[Check TASK_MASTER_PROJECT_ROOT]
+        C3 --> C15[Check args.projectRoot]
+        C3 --> C16[Check session roots]
+        C3 --> C17[Execute wrapped function]
+        
+        D --> D1[getProjectRootFromSession]
+        D --> D2[getRawProjectRootFromSession]
+        D --> D3[getTagInfo]
+        
+        D1 --> D4[Check session.roots[0].uri]
+        D1 --> D5[Check session.roots.roots[0].uri]
+        D1 --> D6[Decode and normalize path]
+        D1 --> D7[Fallback to server path]
+        D1 --> D8[Ultimate fallback to CWD]
+        
+        D3 --> D9[Get current tag]
+        D3 --> D10[Read available tags from tasks.json]
+        D3 --> D11[Return tag information object]
+        
+        E --> E1[executeTaskMasterCommand]
+        E1 --> E2[Normalize project root]
+        E1 --> E3[Prepare spawn options]
+        E1 --> E4[Try global task-master CLI]
+        E1 --> E5[Fallback to local script]
+        E1 --> E6[Handle command result]
+        
+        F --> F1[handleApiResult]
+        F --> F2[createContentResponse]
+        F --> F3[createErrorResponse]
+        F --> F4[createLogWrapper]
+        
+        F1 --> F5[Get version and tag info]
+        F1 --> F6[Process result data]
+        F1 --> F7[Create response payload]
+        
+        F2 --> F8[Format as JSON text]
+        F3 --> F9[Include error message and version]
+        F4 --> F10[Adapt MCP logger interface]
+        
+        G --> G1[getCachedOrExecute]
+        G1 --> G2[Check context manager cache]
+        G1 --> G3[Execute action function if cache miss]
+        G1 --> G4[Cache successful results]
+        
+        H --> H1[processMCPResponseData]
+        H1 --> H2[Remove sensitive fields]
+        H1 --> H3[Process single tasks]
+        H1 --> H4[Process task arrays]
+        H1 --> H5[Handle nested subtasks]
+    end
+    
+    subgraph "External Dependencies"
+        I[child_process]
+        J[path]
+        K[fs]
+        L[context-manager.js]
+        M[path-utils.js]
+        N[scripts/modules/utils.js]
+    end
+    
+    I --> E1
+    J --> C2
+    J --> C1
+    J --> D1
+    K --> B1
+    K --> D3
+    K --> D1
+    L --> G1
+    M --> C1
+    N --> D3
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#f1f8e9
+    style F fill:#fce4ec
+    style G fill:#e3f2fd
+    style H fill:#f9fbe7
+```

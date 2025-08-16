@@ -1,0 +1,55 @@
+```mermaid
+graph TB
+    subgraph "Add Dependency Tool (add-dependency.js)"
+        A[registerAddDependencyTool] --> B[Define Tool Schema]
+        B --> C[Tool: add_dependency]
+        
+        C --> D[Parameters]
+        D --> E[id: Target task ID]
+        D --> F[dependsOn: Dependency task ID]
+        D --> G[file: Optional tasks file path]
+        D --> H[projectRoot: Project directory]
+        D --> I[tag: Optional tag context]
+        
+        C --> J[Execute Handler]
+        J --> K[withNormalizedProjectRoot wrapper]
+        K --> L[Log dependency addition]
+        L --> M[resolveTag]
+        M --> N[findTasksPath]
+        N --> O{Path found?}
+        
+        O -->|No| P[Return error response]
+        O -->|Yes| Q[addDependencyDirect]
+        
+        Q --> R{Success?}
+        R -->|Yes| S[Log success]
+        R -->|No| T[Log error]
+        
+        S --> U[handleApiResult]
+        T --> U
+        U --> V[Return formatted response]
+        
+        J --> W[Error Handling]
+        W --> X[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        Y[utils.js]
+        Z[task-master-core.js]
+        AA[path-utils.js]
+        BB[scripts/modules/utils.js]
+    end
+    
+    Y --> K
+    Y --> P
+    Y --> U
+    Y --> X
+    Z --> Q
+    AA --> N
+    BB --> M
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style J fill:#e8f5e8
+    style Q fill:#fff3e0
+```

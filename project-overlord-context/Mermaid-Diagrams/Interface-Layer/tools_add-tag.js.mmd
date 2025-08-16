@@ -1,0 +1,49 @@
+```mermaid
+graph TB
+    subgraph "Add Tag Tool (add-tag.js)"
+        A[registerAddTagTool] --> B[Define Tool Schema]
+        B --> C[Tool: add_tag]
+        
+        C --> D[Parameters]
+        D --> E[name: Tag name]
+        D --> F[copyFromCurrent: Copy from current tag]
+        D --> G[copyFromTag: Source tag to copy from]
+        D --> H[fromBranch: Create from git branch]
+        D --> I[description: Tag description]
+        D --> J[file: Optional tasks file path]
+        D --> K[projectRoot: Project directory]
+        
+        C --> L[Execute Handler]
+        L --> M[withNormalizedProjectRoot wrapper]
+        M --> N[Log tag creation]
+        N --> O[findTasksPath]
+        O --> P{Path found?}
+        
+        P -->|No| Q[Return error response]
+        P -->|Yes| R[addTagDirect]
+        
+        R --> S[handleApiResult]
+        S --> T[Return formatted response]
+        
+        L --> U[Error Handling]
+        U --> V[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        W[utils.js]
+        X[task-master-core.js]
+        Y[path-utils.js]
+    end
+    
+    W --> M
+    W --> Q
+    W --> S
+    W --> V
+    X --> R
+    Y --> O
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style L fill:#e8f5e8
+    style R fill:#fff3e0
+```

@@ -1,0 +1,117 @@
+```mermaid
+graph TB
+    subgraph "Tools Index Registry (index.js)"
+        A[registerTaskMasterTools] --> B[Try-Catch Error Handling]
+        
+        B --> C[Group 1: Initialization & Setup]
+        C --> D[registerInitializeProjectTool]
+        C --> E[registerModelsTool]
+        C --> F[registerRulesTool]
+        C --> G[registerParsePRDTool]
+        
+        B --> H[Group 2: Task Analysis & Expansion]
+        H --> I[registerAnalyzeProjectComplexityTool]
+        H --> J[registerExpandTaskTool]
+        H --> K[registerExpandAllTool]
+        H --> L[registerScopeUpTool]
+        H --> M[registerScopeDownTool]
+        
+        B --> N[Group 3: Task Listing & Viewing]
+        N --> O[registerListTasksTool]
+        N --> P[registerShowTaskTool]
+        N --> Q[registerNextTaskTool]
+        N --> R[registerComplexityReportTool]
+        
+        B --> S[Group 4: Task Status & Management]
+        S --> T[registerSetTaskStatusTool]
+        S --> U[registerGenerateTool]
+        
+        B --> V[Group 5: Task Creation & Modification]
+        V --> W[registerAddTaskTool]
+        V --> X[registerAddSubtaskTool]
+        V --> Y[registerUpdateTool]
+        V --> Z[registerUpdateTaskTool]
+        V --> AA[registerUpdateSubtaskTool]
+        V --> BB[registerRemoveTaskTool]
+        V --> CC[registerRemoveSubtaskTool]
+        V --> DD[registerClearSubtasksTool]
+        V --> EE[registerMoveTaskTool]
+        
+        B --> FF[Group 6: Dependency Management]
+        FF --> GG[registerAddDependencyTool]
+        FF --> HH[registerRemoveDependencyTool]
+        FF --> II[registerValidateDependenciesTool]
+        FF --> JJ[registerFixDependenciesTool]
+        FF --> KK[registerResponseLanguageTool]
+        
+        B --> LL[Group 7: Tag Management]
+        LL --> MM[registerListTagsTool]
+        LL --> NN[registerAddTagTool]
+        LL --> OO[registerDeleteTagTool]
+        LL --> PP[registerUseTagTool]
+        LL --> QQ[registerRenameTagTool]
+        LL --> RR[registerCopyTagTool]
+        
+        B --> SS[Group 8: Research Features]
+        SS --> TT[registerResearchTool]
+        
+        B --> UU{Registration Error?}
+        UU -->|Yes| VV[Log error and throw]
+        UU -->|No| WW[Export default object]
+    end
+    
+    subgraph "External Dependencies"
+        XX[All individual tool modules]
+        YY[logger.js]
+    end
+    
+    XX --> D
+    XX --> E
+    XX --> F
+    XX --> G
+    XX --> I
+    XX --> J
+    XX --> K
+    XX --> L
+    XX --> M
+    XX --> O
+    XX --> P
+    XX --> Q
+    XX --> R
+    XX --> T
+    XX --> U
+    XX --> W
+    XX --> X
+    XX --> Y
+    XX --> Z
+    XX --> AA
+    XX --> BB
+    XX --> CC
+    XX --> DD
+    XX --> EE
+    XX --> GG
+    XX --> HH
+    XX --> II
+    XX --> JJ
+    XX --> KK
+    XX --> MM
+    XX --> NN
+    XX --> OO
+    XX --> PP
+    XX --> QQ
+    XX --> RR
+    XX --> TT
+    YY --> VV
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#e8f5e8
+    style H fill:#e8f5e8
+    style N fill:#e8f5e8
+    style S fill:#e8f5e8
+    style V fill:#e8f5e8
+    style FF fill:#e8f5e8
+    style LL fill:#e8f5e8
+    style SS fill:#e8f5e8
+    style UU fill:#ffebee
+```

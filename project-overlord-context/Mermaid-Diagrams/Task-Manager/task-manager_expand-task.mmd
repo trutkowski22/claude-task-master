@@ -1,0 +1,88 @@
+flowchart TB
+    subgraph ["expand-task-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: z, FROM: zod"]
+        I4["IMPORT: log, readJSON, writeJSON, isSilentMode, getTagAwareFilePath, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: startLoadingIndicator, stopLoadingIndicator, displayAiUsageSummary, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I6["IMPORT: generateTextService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I7["IMPORT: getDefaultSubtasks, getDebugFlag, getMainProvider, getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I8["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I9["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I10["IMPORT: COMPLEXITY_REPORT_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I11["IMPORT: CUSTOM_PROVIDERS, FROM: /claude-task-master/src/constants/providers.js"]
+        I12["IMPORT: ContextGatherer, FROM: /claude-task-master/scripts/modules/utils/contextGatherer.js"]
+        I13["IMPORT: FuzzyTaskSearch, FROM: /claude-task-master/scripts/modules/utils/fuzzyTaskSearch.js"]
+        I14["IMPORT: flattenTasksWithSubtasks, findProjectRoot, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph ["expand-task-Constants"]
+        C1["CONST: subtaskSchema, VALUE: Zod schema for subtask validation"]
+        C2["CONST: subtaskArraySchema, VALUE: Array schema for subtasks"]
+        C3["CONST: subtaskWrapperSchema, VALUE: Wrapper schema for subtasks object"]
+    end
+    subgraph ["expand-task-FunctionsDefined"]
+        FU1["FUNCTION: parseSubtasksFromText"]
+        FU2["FUNCTION: expandTask"]
+    end
+    subgraph ["expand-task-Exports"]
+        E1["EXP: expandTask (default)"]
+    end
+    subgraph ["expand-task-Parameters"]
+        P1["PARAM: {string} text - Response text from AI"]
+        P2["PARAM: {number} startId - Starting subtask ID expected"]
+        P3["PARAM: {number} expectedCount - Expected number of subtasks"]
+        P4["PARAM: {number} parentTaskId - Parent task ID for context"]
+        P5["PARAM: {Object} logger - Logging object (mcpLog or console log)"]
+        P6["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P7["PARAM: {number} taskId - Task ID to expand"]
+        P8["PARAM: {number|null|undefined} numSubtasks - Optional: Explicit target number of subtasks"]
+        P9["PARAM: {boolean} useResearch - Whether to use the research AI role"]
+        P10["PARAM: {string} additionalContext - Optional additional context"]
+        P11["PARAM: {Object} context - Context object containing session and mcpLog"]
+        P12["PARAM: {Object} context.session - Session object from MCP"]
+        P13["PARAM: {Object} context.mcpLog - MCP logger object"]
+        P14["PARAM: {string} context.projectRoot - Project root path"]
+        P15["PARAM: {string} context.tag - Tag for the task"]
+        P16["PARAM: {boolean} force - If true, replace existing subtasks; otherwise, append"]
+    end
+    subgraph ["expand-task-ExecutionFlow"]
+        FL1["Determine project root and set up logging"]
+        FL2["Read tasks data and find target task"]
+        FL3["Handle force flag: clear existing subtasks if needed"]
+        FL4["Gather project context using ContextGatherer"]
+        FL5["Check for complexity report and task analysis"]
+        FL6["Determine final subtask count from complexity or defaults"]
+        FL7["Load appropriate prompts using PromptManager"]
+        FL8["Determine prompt variant based on context"]
+        FL9["Start loading indicator for AI generation"]
+        FL10["Call generateTextService for subtask creation"]
+        FL11["Parse subtasks from AI response text"]
+        FL12["Validate and correct subtask data"]
+        FL13["Append generated subtasks to task"]
+        FL14["Write updated tasks back to file"]
+        FL15["Display AI usage summary"]
+        FL16["Return updated task with telemetry data"]
+    end
+    subgraph ["expand-task.js"]
+        ["expand-task-Imports"]
+        ["expand-task-Constants"]
+        ["expand-task-FunctionsDefined"]
+        ["expand-task-Exports"]
+        ["expand-task-Parameters"]
+        ["expand-task-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16

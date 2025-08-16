@@ -1,0 +1,161 @@
+graph TD
+    subgraph "Claude Code Language Model - language-model.js"
+        direction TB
+        
+        %% External Dependencies
+        EXT_SDK[("@ai-sdk/provider<br/>NoSuchModelError")]
+        EXT_UTILS[("@ai-sdk/provider-utils<br/>generateId")]
+        EXT_CLAUDE_SDK[("@anthropic-ai/claude-code<br/>query, AbortError")]
+        EXT_CONVERTER[("./message-converter.js<br/>convertToClaudeCodeMessages")]
+        EXT_EXTRACTOR[("./json-extractor.js<br/>extractJson")]
+        EXT_ERRORS[("./errors.js<br/>Error creators")]
+        
+        %% Dynamic Module Loading
+        LOAD_MODULE[("loadClaudeCodeModule<br/>Dynamic import of SDK")]
+        QUERY_VAR{{"query<br/>SDK query function"}}
+        ABORT_VAR{{"AbortError<br/>SDK abort error class"}}
+        
+        %% Main Class
+        LANG_MODEL[("ClaudeCodeLanguageModel<br/>Main language model class")]
+        
+        %% Class Properties
+        SPEC_VERSION{{"specificationVersion: 'v1'"}}
+        DEFAULT_MODE{{"defaultObjectGenerationMode: 'json'"}}
+        SUPPORTS_IMAGES{{"supportsImageUrls: false"}}
+        SUPPORTS_STRUCTURED{{"supportsStructuredOutputs: false"}}
+        MODEL_ID{{"modelId: string"}}
+        SETTINGS{{"settings: ClaudeCodeSettings"}}
+        SESSION_ID{{"sessionId: string|undefined"}}
+        
+        %% Constructor & Validation
+        CONSTRUCTOR[("constructor<br/>Initialize model instance")]
+        VALIDATE_MODEL[("Model ID validation<br/>Check format & existence")]
+        
+        %% Model Mapping
+        MODEL_MAP{{"modelMap<br/>{opus: 'opus', sonnet: 'sonnet'}"}}
+        GET_MODEL[("getModel<br/>Map model ID to CLI format")]
+        
+        %% Core Methods
+        DO_GENERATE[("doGenerate<br/>Generate text response")]
+        DO_STREAM[("doStream<br/>Stream text response")]
+        
+        %% Warning Generation
+        GEN_WARNINGS[("generateUnsupportedWarnings<br/>Check unsupported parameters")]
+        UNSUPPORTED_PARAMS{{"Unsupported Parameters<br/>temperature, maxTokens,<br/>topP, topK, penalties, etc."}}
+        
+        %% Request Processing
+        CONVERT_MESSAGES[("Convert messages<br/>to Claude Code format")]
+        SETUP_ABORT[("Setup AbortController<br/>Handle cancellation")]
+        BUILD_OPTIONS[("Build query options<br/>Map settings to CLI args")]
+        
+        %% Response Processing - Generate
+        PROCESS_RESPONSE[("Process response stream<br/>Handle message types")]
+        EXTRACT_TEXT[("Extract text content<br/>from assistant messages")]
+        EXTRACT_USAGE[("Extract usage stats<br/>from result messages")]
+        HANDLE_ERRORS[("Error handling<br/>Auth, timeout, JSON truncation")]
+        JSON_EXTRACTION[("JSON extraction<br/>for object-json mode")]
+        
+        %% Response Processing - Stream
+        STREAM_CONTROLLER[("ReadableStream controller<br/>Manage streaming")]
+        STREAM_TEXT[("Stream text deltas<br/>Real-time content")]
+        STREAM_FINISH[("Stream finish event<br/>Final metadata")]
+        ACCUMULATE_TEXT[("Accumulate text<br/>for JSON modes")]
+        
+        %% Error Handling Strategies
+        JSON_TRUNCATION[("JSON Truncation Recovery<br/>Handle CLI bug #913")]
+        AUTH_ERROR[("Authentication Error<br/>Check login status")]
+        API_ERROR[("API Call Error<br/>Wrap CLI errors")]
+        
+        %% Flow Connections - Initialization
+        EXT_SDK --> LANG_MODEL
+        EXT_UTILS --> LANG_MODEL
+        EXT_CONVERTER --> LANG_MODEL
+        EXT_EXTRACTOR --> LANG_MODEL
+        EXT_ERRORS --> LANG_MODEL
+        
+        LOAD_MODULE --> QUERY_VAR
+        LOAD_MODULE --> ABORT_VAR
+        EXT_CLAUDE_SDK -.->|"Dynamic import"| LOAD_MODULE
+        
+        LANG_MODEL --> CONSTRUCTOR
+        CONSTRUCTOR --> VALIDATE_MODEL
+        CONSTRUCTOR --> MODEL_ID
+        CONSTRUCTOR --> SETTINGS
+        CONSTRUCTOR --> SESSION_ID
+        
+        LANG_MODEL --> SPEC_VERSION
+        LANG_MODEL --> DEFAULT_MODE
+        LANG_MODEL --> SUPPORTS_IMAGES
+        LANG_MODEL --> SUPPORTS_STRUCTURED
+        
+        %% Flow Connections - Model Mapping
+        MODEL_MAP --> GET_MODEL
+        MODEL_ID --> GET_MODEL
+        
+        %% Flow Connections - Generation
+        DO_GENERATE --> LOAD_MODULE
+        DO_GENERATE --> CONVERT_MESSAGES
+        DO_GENERATE --> SETUP_ABORT
+        DO_GENERATE --> BUILD_OPTIONS
+        DO_GENERATE --> GEN_WARNINGS
+        DO_GENERATE --> PROCESS_RESPONSE
+        
+        CONVERT_MESSAGES --> EXT_CONVERTER
+        BUILD_OPTIONS --> GET_MODEL
+        BUILD_OPTIONS --> SETTINGS
+        GEN_WARNINGS --> UNSUPPORTED_PARAMS
+        
+        PROCESS_RESPONSE --> EXTRACT_TEXT
+        PROCESS_RESPONSE --> EXTRACT_USAGE
+        PROCESS_RESPONSE --> HANDLE_ERRORS
+        EXTRACT_TEXT --> JSON_EXTRACTION
+        JSON_EXTRACTION --> EXT_EXTRACTOR
+        
+        %% Flow Connections - Streaming
+        DO_STREAM --> LOAD_MODULE
+        DO_STREAM --> CONVERT_MESSAGES
+        DO_STREAM --> SETUP_ABORT
+        DO_STREAM --> BUILD_OPTIONS
+        DO_STREAM --> GEN_WARNINGS
+        DO_STREAM --> STREAM_CONTROLLER
+        
+        STREAM_CONTROLLER --> STREAM_TEXT
+        STREAM_CONTROLLER --> STREAM_FINISH
+        STREAM_CONTROLLER --> ACCUMULATE_TEXT
+        ACCUMULATE_TEXT --> JSON_EXTRACTION
+        
+        %% Flow Connections - Error Handling
+        HANDLE_ERRORS --> JSON_TRUNCATION
+        HANDLE_ERRORS --> AUTH_ERROR
+        HANDLE_ERRORS --> API_ERROR
+        
+        JSON_TRUNCATION --> EXT_EXTRACTOR
+        AUTH_ERROR --> EXT_ERRORS
+        API_ERROR --> EXT_ERRORS
+        
+        %% Query Options Structure
+        QUERY_OPTIONS{{"Query Options<br/>model, abortController,<br/>resume, pathToExecutable,<br/>systemPrompt, maxTurns,<br/>permissions, tools, etc."}}
+        
+        BUILD_OPTIONS --> QUERY_OPTIONS
+        QUERY_OPTIONS --> QUERY_VAR
+    end
+    
+    %% Style Classes
+    classDef external fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef class fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef method fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef property fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef processing fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef data fill:#e3f2fd,stroke:#0d47a1,stroke-width:2px
+    classDef stream fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    %% Apply Styles
+    class EXT_SDK,EXT_UTILS,EXT_CLAUDE_SDK,EXT_CONVERTER,EXT_EXTRACTOR,EXT_ERRORS external
+    class LANG_MODEL,CONSTRUCTOR class
+    class DO_GENERATE,DO_STREAM,GET_MODEL,GEN_WARNINGS method
+    class SPEC_VERSION,DEFAULT_MODE,SUPPORTS_IMAGES,SUPPORTS_STRUCTURED,MODEL_ID,SETTINGS,SESSION_ID property
+    class LOAD_MODULE,VALIDATE_MODEL,CONVERT_MESSAGES,SETUP_ABORT,BUILD_OPTIONS,PROCESS_RESPONSE,EXTRACT_TEXT,EXTRACT_USAGE,JSON_EXTRACTION processing
+    class HANDLE_ERRORS,JSON_TRUNCATION,AUTH_ERROR,API_ERROR error
+    class MODEL_MAP,QUERY_VAR,ABORT_VAR,UNSUPPORTED_PARAMS,QUERY_OPTIONS data
+    class STREAM_CONTROLLER,STREAM_TEXT,STREAM_FINISH,ACCUMULATE_TEXT stream

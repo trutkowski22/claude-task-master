@@ -1,0 +1,77 @@
+flowchart TB
+    subgraph ["prompt-manager-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fileURLToPath, FROM: url"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: Ajv, FROM: ajv"]
+        I6["IMPORT: addFormats, FROM: ajv-formats"]
+    end
+    subgraph ["prompt-manager-Dependencies"]
+        D1["DEP: Node.js file system and path modules"]
+        D2["DEP: AJV JSON schema validation"]
+        D3["DEP: File system operations"]
+        D4["DEP: Template processing"]
+    end
+    subgraph ["prompt-manager-FunctionsDefined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: setupValidation"]
+        FU3["FUNCTION: loadPrompt"]
+        FU4["FUNCTION: loadTemplate"]
+        FU5["FUNCTION: validateParameters"]
+        FU6["FUNCTION: validateParameterType"]
+        FU7["FUNCTION: selectVariant"]
+        FU8["FUNCTION: evaluateCondition"]
+        FU9["FUNCTION: renderTemplate"]
+        FU10["FUNCTION: getNestedValue"]
+        FU11["FUNCTION: validateAllPrompts"]
+        FU12["FUNCTION: listPrompts"]
+        FU13["FUNCTION: validateTemplate"]
+        FU14["FUNCTION: getPromptManager"]
+    end
+    subgraph ["prompt-manager-Exports"]
+        E1["EXP: PromptManager"]
+        E2["EXP: getPromptManager"]
+    end
+    subgraph ["prompt-manager-Parameters"]
+        P1["PARAM: {string} promptId - The prompt template ID"]
+        P2["PARAM: {Object} variables - Variables to inject into the template"]
+        P3["PARAM: {string} [variantKey] - Optional specific variant to use"]
+    end
+    subgraph ["prompt-manager-Constants"]
+        C1["CONST: promptsDir, VALUE: Path to prompts directory"]
+        C2["CONST: cache, VALUE: Template cache Map"]
+        C3["CONST: ajv, VALUE: AJV validation instance"]
+        C4["CONST: validatePrompt, VALUE: Compiled schema validator"]
+        C5["CONST: promptManager, VALUE: Singleton instance"]
+    end
+    subgraph ["prompt-manager-ExecutionFlow"]
+        FL1["Initialize PromptManager with prompts directory and cache"]
+        FL2["Set up JSON schema validation with AJV and load schema"]
+        FL3["Load prompt templates with caching and variable injection"]
+        FL4["Validate template structure and parameters"]
+        FL5["Select appropriate variant based on conditions"]
+        FL6["Render templates with variable substitution and helpers"]
+        FL7["Support template helpers (if, each, json, eq, not, gt, gte)"]
+        FL8["Handle nested value access with dot notation"]
+        FL9["Validate all templates and list available prompts"]
+        FL10["Export singleton prompt manager instance"]
+    end
+    subgraph ["prompt-manager.js"]
+        ["prompt-manager-Imports"]
+        ["prompt-manager-Dependencies"]
+        ["prompt-manager-FunctionsDefined"]
+        ["prompt-manager-Exports"]
+        ["prompt-manager-Parameters"]
+        ["prompt-manager-Constants"]
+        ["prompt-manager-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

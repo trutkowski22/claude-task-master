@@ -1,0 +1,50 @@
+```mermaid
+graph TD
+    A[path-utils.js] --> B[Core Imports]
+    A --> C[MCP Path Utilities]
+    A --> D[Legacy Compatibility]
+    A --> E[Configuration]
+    
+    B --> F[coreFindTasksPath]
+    B --> G[coreFindPrdPath]
+    B --> H[coreFindComplexityReportPath]
+    B --> I[coreFindProjectRoot]
+    B --> J[normalizeProjectRoot]
+    
+    E --> K[silentLogger]
+    E --> L[lastFoundProjectRoot Cache]
+    
+    C --> M[Path Resolution Functions]
+    M --> N[resolveTasksPath]
+    M --> O[resolvePrdPath]
+    M --> P[resolveComplexityReportPath]
+    M --> Q[resolveProjectPath]
+    
+    N --> R{Path Type Check}
+    O --> R
+    P --> R
+    
+    R -->|Absolute| S[Use Direct Path]
+    R -->|Relative| T[Resolve with ProjectRoot]
+    R -->|None| U[Use Core Fallback]
+    
+    C --> V[Primary MCP Functions]
+    V --> W[findTasksPath]
+    V --> X[findComplexityReportPath]
+    V --> Y[findPRDPath]
+    V --> Z[findProjectRoot]
+    
+    D --> AA[Legacy Aliases]
+    AA --> BB[findTasksJsonPath]
+    AA --> CC[findComplexityReportJsonPath]
+    
+    A --> DD[Re-exports]
+    DD --> EE[PROJECT_MARKERS]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style V fill:#e3f2fd
+    style R fill:#ffebee
+```

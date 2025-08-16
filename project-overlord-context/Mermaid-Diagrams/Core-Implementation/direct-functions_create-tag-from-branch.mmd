@@ -1,0 +1,83 @@
+flowchart TB
+    subgraph createTagFromBranch-Imports["createTagFromBranch-Imports"]
+        I1["IMPORT: createTagFromBranch, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: getCurrentBranch, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
+        I3["IMPORT: isGitRepository, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph createTagFromBranch-Dependencies["createTagFromBranch-Dependencies"]
+        D1["DEP: Git"]
+        D2["DEP: File system"]
+    end
+    subgraph createTagFromBranch-FunctionsDefined["createTagFromBranch-Functions Defined"]
+        FU1["FUNCTION: createTagFromBranchDirect"]
+    end
+    subgraph createTagFromBranch-Exports["createTagFromBranch-Exports"]
+        E1["EXP: createTagFromBranchDirect"]
+    end
+    subgraph createTagFromBranch-Parameters["createTagFromBranch-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file (resolved by tool)"]
+        P3["PARAM: {string} [args.branchName] - Git branch name (optional, uses current branch if not provided)"]
+        P4["PARAM: {boolean} [args.copyFromCurrent] - Copy tasks from current tag"]
+        P5["PARAM: {string} [args.copyFromTag] - Copy tasks from specific tag"]
+        P6["PARAM: {string} [args.description] - Custom description for the tag"]
+        P7["PARAM: {boolean} [args.autoSwitch] - Automatically switch to the new tag"]
+        P8["PARAM: {string} [args.projectRoot] - Project root path"]
+        P9["PARAM: {Object} log - Logger object"]
+        P10["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph createTagFromBranch-Constants["createTagFromBranch-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: branchName, VALUE: args destructuring"]
+        C3["CONST: copyFromCurrent, VALUE: args destructuring"]
+        C4["CONST: copyFromTag, VALUE: args destructuring"]
+        C5["CONST: description, VALUE: args destructuring"]
+        C6["CONST: autoSwitch, VALUE: args destructuring"]
+        C7["CONST: projectRoot, VALUE: args destructuring"]
+        C8["CONST: session, VALUE: context destructuring"]
+        C9["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C10["CONST: targetBranch, VALUE: branchName or current branch"]
+        C11["CONST: options, VALUE: object with tag creation options"]
+        C12["CONST: result, VALUE: createTagFromBranch function result"]
+    end
+    subgraph createTagFromBranch-ExecutionFlow["createTagFromBranch-Execution Flow"]
+        FL1["Destructure arguments and session from context"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create logger wrapper using utility function"]
+        FL4["Validate tasksJsonPath is provided"]
+        FL5["Validate projectRoot is provided"]
+        FL6["Check if current directory is a git repository"]
+        FL7["Determine target branch name or get current branch"]
+        FL8["Validate that target branch was successfully determined"]
+        FL9["Log tag creation operation with branch name"]
+        FL10["Prepare options object with copy and description settings"]
+        FL11["Call createTagFromBranch core function with all parameters"]
+        FL12["Disable silent mode to restore normal logging"]
+        FL13["Return success response with tag creation details"]
+        FL14["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph createTagFromBranch["create-tag-from-branch.js"]
+        createTagFromBranch-Imports
+        createTagFromBranch-Dependencies
+        createTagFromBranch-FunctionsDefined
+        createTagFromBranch-Exports
+        createTagFromBranch-Parameters
+        createTagFromBranch-Constants
+        createTagFromBranch-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

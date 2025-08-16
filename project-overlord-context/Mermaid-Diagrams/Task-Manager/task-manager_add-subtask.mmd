@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph ["add-subtask-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: log, readJSON, writeJSON, getCurrentTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: isTaskDependentOn, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I4["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+    end
+    subgraph ["add-subtask-FunctionsDefined"]
+        FU1["FUNCTION: addSubtask"]
+    end
+    subgraph ["add-subtask-Exports"]
+        E1["EXP: addSubtask (default)"]
+    end
+    subgraph ["add-subtask-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {number|string} parentId - ID of the parent task"]
+        P3["PARAM: {number|string|null} existingTaskId - ID of an existing task to convert to subtask (optional)"]
+        P4["PARAM: {Object} newSubtaskData - Data for creating a new subtask (used if existingTaskId is null)"]
+        P5["PARAM: {boolean} generateFiles - Whether to regenerate task files after adding the subtask"]
+        P6["PARAM: {Object} context - Context object containing projectRoot and tag information"]
+        P7["PARAM: {string} context.projectRoot - Project root path"]
+        P8["PARAM: {string} context.tag - Tag for the task"]
+    end
+    subgraph ["add-subtask-ExecutionFlow"]
+        FL1["Extract projectRoot and tag from context"]
+        FL2["Read existing tasks data with proper context"]
+        FL3["Validate tasks file and find parent task"]
+        FL4["Initialize subtasks array if doesn't exist"]
+        FL5["Branch: Convert existing task OR create new subtask"]
+        FL6["If existing task: validate circular dependencies"]
+        FL7["If existing task: clone and move to subtasks"]
+        FL8["If new subtask: create subtask object with auto-incremented ID"]
+        FL9["Write updated tasks back to file"]
+        FL10["Optionally regenerate task files"]
+        FL11["Return newly created or converted subtask"]
+    end
+    subgraph ["add-subtask.js"]
+        ["add-subtask-Imports"]
+        ["add-subtask-FunctionsDefined"]
+        ["add-subtask-Exports"]
+        ["add-subtask-Parameters"]
+        ["add-subtask-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL5 --> FL8
+    FL6 --> FL7
+    FL7 --> FL9
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

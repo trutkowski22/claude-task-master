@@ -1,0 +1,68 @@
+flowchart TB
+    subgraph deleteTag-Imports["deleteTag-Imports"]
+        I1["IMPORT: deleteTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph deleteTag-Dependencies["deleteTag-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Git (for tag management)"]
+    end
+    subgraph deleteTag-FunctionsDefined["deleteTag-Functions Defined"]
+        FU1["FUNCTION: deleteTagDirect"]
+    end
+    subgraph deleteTag-Exports["deleteTag-Exports"]
+        E1["EXP: deleteTagDirect"]
+    end
+    subgraph deleteTag-Parameters["deleteTag-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.name - Name of the tag to delete"]
+        P3["PARAM: {boolean} [args.yes=false] - Skip confirmation prompts"]
+        P4["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P5["PARAM: {string} [args.projectRoot] - Project root path"]
+        P6["PARAM: {Object} log - Logger object"]
+        P7["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph deleteTag-Constants["deleteTag-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: name, VALUE: args destructuring"]
+        C3["CONST: yes, VALUE: args destructuring with default false"]
+        C4["CONST: projectRoot, VALUE: args destructuring"]
+        C5["CONST: session, VALUE: context destructuring"]
+        C6["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C7["CONST: options, VALUE: object with yes flag"]
+        C8["CONST: result, VALUE: deleteTag function result"]
+    end
+    subgraph deleteTag-ExecutionFlow["deleteTag-Execution Flow"]
+        FL1["Destructure arguments and session from context"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create logger wrapper using utility function"]
+        FL4["Validate tasksJsonPath is provided"]
+        FL5["Validate tag name is provided and is string"]
+        FL6["Log tag deletion operation with tag name"]
+        FL7["Prepare options object with confirmation skip flag"]
+        FL8["Call deleteTag core function with all parameters"]
+        FL9["Disable silent mode to restore normal logging"]
+        FL10["Return success response with deletion operation details"]
+        FL11["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph deleteTag["delete-tag.js"]
+        deleteTag-Imports
+        deleteTag-Dependencies
+        deleteTag-FunctionsDefined
+        deleteTag-Exports
+        deleteTag-Parameters
+        deleteTag-Constants
+        deleteTag-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

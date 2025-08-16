@@ -1,0 +1,64 @@
+flowchart TB
+    subgraph complexityReport-Imports["complexityReport-Imports"]
+        I1["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph complexityReport-FunctionsDefined["complexityReport-Functions Defined"]
+        FU1["FUNCTION: complexityReportDirect"]
+        FU2["FUNCTION: coreActionFn (async inner function)"]
+    end
+    subgraph complexityReport-Exports["complexityReport-Exports"]
+        E1["EXP: complexityReportDirect"]
+    end
+    subgraph complexityReport-Parameters["complexityReport-Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing reportPath"]
+        P2["PARAM: {string} args.reportPath - Explicit path to the complexity report file"]
+        P3["PARAM: {Object} log - Logger object"]
+    end
+    subgraph complexityReport-Constants["complexityReport-ConstDeclarations"]
+        C1["CONST: reportPath, VALUE: args destructuring"]
+        C2["CONST: cacheKey, VALUE: complexityReport:reportPath"]
+        C3["CONST: coreActionFn, VALUE: async function for report reading"]
+        C4["CONST: report, VALUE: readComplexityReport result"]
+        C5["CONST: result, VALUE: coreActionFn execution result"]
+    end
+    subgraph complexityReport-ExecutionFlow["complexityReport-Execution Flow"]
+        FL1["Destructure reportPath from args object"]
+        FL2["Log operation start with provided arguments"]
+        FL3["Validate reportPath is provided"]
+        FL4["Log report path being searched"]
+        FL5["Generate cache key based on report path"]
+        FL6["Define coreActionFn async function for report reading"]
+        FL7["Enable silent mode to prevent console interference"]
+        FL8["Call readComplexityReport with provided path"]
+        FL9["Disable silent mode to restore normal logging"]
+        FL10["Check if report was successfully read"]
+        FL11["Return success response with report data or error if not found"]
+        FL12["Execute coreActionFn and capture result"]
+        FL13["Log completion of operation"]
+        FL14["Return final result from core action"]
+        FL15["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph complexityReport["complexity-report.js"]
+        complexityReport-Imports
+        complexityReport-FunctionsDefined
+        complexityReport-Exports
+        complexityReport-Parameters
+        complexityReport-Constants
+        complexityReport-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

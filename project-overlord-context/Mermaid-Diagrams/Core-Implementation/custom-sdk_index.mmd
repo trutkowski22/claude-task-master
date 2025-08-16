@@ -1,0 +1,54 @@
+```mermaid
+graph TD
+    A[index.js] --> B[Import Statement]
+    A --> C[Factory Function]
+    
+    B --> D[MCPLanguageModel Import]
+    D --> E["./language-model.js"]
+    
+    C --> F[createMCP Function]
+    F --> G[Parameters]
+    G --> H[options: object]
+    H --> I[options.session: object]
+    H --> J[options.defaultSettings: object]
+    
+    F --> K[Validation]
+    K --> L{Session Check}
+    L -->|Missing| M[Throw Error]
+    L -->|Valid| N[Create Provider]
+    
+    N --> O[Provider Function]
+    O --> P[Parameters]
+    P --> Q[modelId: string]
+    P --> R[settings: object]
+    
+    O --> S[Validation]
+    S --> T{new.target Check}
+    T -->|Called with new| U[Throw Error]
+    T -->|Valid call| V[Create Model Instance]
+    
+    V --> W[MCPLanguageModel Constructor]
+    W --> X[Session Assignment]
+    W --> Y[Model ID Assignment]
+    W --> Z[Settings Merge]
+    
+    X --> AA[options.session]
+    Y --> BB[modelId || 'claude-3-5-sonnet-20241022']
+    Z --> CC[temperature, maxTokens, defaultSettings, settings]
+    
+    O --> DD[AI SDK Compatibility]
+    DD --> EE[provider.languageModel]
+    DD --> FF[provider.chat]
+    
+    EE --> GG[Alias to provider function]
+    FF --> HH[Alias to provider function]
+    
+    F --> II[Return Provider]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style F fill:#e8f5e8
+    style O fill:#fff3e0
+    style L fill:#ffebee
+    style T fill:#ffebee
+```

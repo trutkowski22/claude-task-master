@@ -1,0 +1,144 @@
+graph TD
+    subgraph "Message Converter - message-converter.js"
+        direction TB
+        
+        %% Main Function
+        CONVERT_FUNC[("convertToClaudeCodeMessages<br/>Convert AI SDK prompt<br/>to Claude Code format")]
+        
+        %% Input Processing
+        INPUT_PROMPT{{"AI SDK Prompt Array<br/>Array of message objects"}}
+        INPUT_MODE{{"Generation Mode<br/>{type: 'regular'|'object-json'|'object-tool'}"}}
+        
+        %% Processing Variables
+        MESSAGES_ARRAY{{"messages[]<br/>Collected message strings"}}
+        SYSTEM_PROMPT{{"systemPrompt<br/>Extracted system content"}}
+        
+        %% Message Role Processing
+        ROLE_SWITCH[("Role Switch<br/>Process by message role")]
+        
+        %% System Message Processing
+        SYS_PROCESS[("System Role<br/>Extract system content")]
+        
+        %% User Message Processing
+        USER_PROCESS[("User Role<br/>Process user content")]
+        USER_STRING[("String Content<br/>Add directly to messages")]
+        USER_MULTIPART[("Multi-part Content<br/>Extract text parts")]
+        USER_TEXT_FILTER[("Filter text parts<br/>Join with newlines")]
+        USER_IMAGE_WARN[("Image Warning<br/>Log unsupported images")]
+        
+        %% Assistant Message Processing
+        ASST_PROCESS[("Assistant Role<br/>Process assistant content")]
+        ASST_STRING[("String Content<br/>Add with 'Assistant:' prefix")]
+        ASST_MULTIPART[("Multi-part Content<br/>Extract text and tools")]
+        ASST_TEXT_FILTER[("Filter text parts<br/>Join with newlines")]
+        ASST_TOOL_FILTER[("Filter tool calls<br/>Add tool call note")]
+        
+        %% Tool Message Processing
+        TOOL_PROCESS[("Tool Role<br/>Process tool results")]
+        TOOL_FORMAT[("Format Tool Result<br/>Include tool name and result")]
+        
+        %% Message Formatting
+        FORMAT_MESSAGES[("Format Messages<br/>Add Human:/Assistant: prefixes")]
+        PREFIX_CHECK[("Check Message Prefix<br/>Identify message type")]
+        ADD_HUMAN_PREFIX[("Add 'Human:' prefix<br/>For user messages")]
+        KEEP_PREFIX[("Keep existing prefix<br/>For assistant/tool messages")]
+        
+        %% Final Assembly
+        ASSEMBLE_PROMPT[("Assemble Final Prompt<br/>Combine system + messages")]
+        SYSTEM_CHECK{{"System Prompt Exists?"}}
+        COMBINE_WITH_SYS[("Combine system + messages<br/>With separator")]
+        MESSAGES_ONLY[("Messages only<br/>No system prompt")]
+        
+        %% JSON Mode Enhancement
+        JSON_MODE_CHECK{{"JSON Mode?"}}
+        ADD_JSON_INSTRUCTIONS[("Add JSON Instructions<br/>Critical formatting rules")]
+        JSON_RULES{{"JSON Rules<br/>• Start with {<br/>• End with }<br/>• No markdown blocks<br/>• No explanations<br/>• Valid JSON only"}}
+        
+        %% Output
+        OUTPUT{{"Return Object<br/>{messagesPrompt, systemPrompt}"}}
+        
+        %% Flow Connections - Input
+        INPUT_PROMPT --> CONVERT_FUNC
+        INPUT_MODE --> CONVERT_FUNC
+        CONVERT_FUNC --> MESSAGES_ARRAY
+        CONVERT_FUNC --> SYSTEM_PROMPT
+        CONVERT_FUNC --> ROLE_SWITCH
+        
+        %% Flow Connections - Role Processing
+        ROLE_SWITCH --> SYS_PROCESS
+        ROLE_SWITCH --> USER_PROCESS
+        ROLE_SWITCH --> ASST_PROCESS
+        ROLE_SWITCH --> TOOL_PROCESS
+        
+        %% Flow Connections - System
+        SYS_PROCESS --> SYSTEM_PROMPT
+        
+        %% Flow Connections - User
+        USER_PROCESS --> USER_STRING
+        USER_PROCESS --> USER_MULTIPART
+        USER_STRING --> MESSAGES_ARRAY
+        USER_MULTIPART --> USER_TEXT_FILTER
+        USER_MULTIPART --> USER_IMAGE_WARN
+        USER_TEXT_FILTER --> MESSAGES_ARRAY
+        
+        %% Flow Connections - Assistant
+        ASST_PROCESS --> ASST_STRING
+        ASST_PROCESS --> ASST_MULTIPART
+        ASST_STRING --> MESSAGES_ARRAY
+        ASST_MULTIPART --> ASST_TEXT_FILTER
+        ASST_MULTIPART --> ASST_TOOL_FILTER
+        ASST_TEXT_FILTER --> MESSAGES_ARRAY
+        ASST_TOOL_FILTER --> MESSAGES_ARRAY
+        
+        %% Flow Connections - Tool
+        TOOL_PROCESS --> TOOL_FORMAT
+        TOOL_FORMAT --> MESSAGES_ARRAY
+        
+        %% Flow Connections - Formatting
+        MESSAGES_ARRAY --> FORMAT_MESSAGES
+        FORMAT_MESSAGES --> PREFIX_CHECK
+        PREFIX_CHECK -->|"No prefix"| ADD_HUMAN_PREFIX
+        PREFIX_CHECK -->|"Has prefix"| KEEP_PREFIX
+        ADD_HUMAN_PREFIX --> ASSEMBLE_PROMPT
+        KEEP_PREFIX --> ASSEMBLE_PROMPT
+        
+        %% Flow Connections - Assembly
+        SYSTEM_PROMPT --> ASSEMBLE_PROMPT
+        ASSEMBLE_PROMPT --> SYSTEM_CHECK
+        SYSTEM_CHECK -->|"Yes"| COMBINE_WITH_SYS
+        SYSTEM_CHECK -->|"No"| MESSAGES_ONLY
+        COMBINE_WITH_SYS --> JSON_MODE_CHECK
+        MESSAGES_ONLY --> JSON_MODE_CHECK
+        
+        %% Flow Connections - JSON Mode
+        INPUT_MODE --> JSON_MODE_CHECK
+        JSON_MODE_CHECK -->|"object-json"| ADD_JSON_INSTRUCTIONS
+        JSON_MODE_CHECK -->|"other"| OUTPUT
+        ADD_JSON_INSTRUCTIONS --> JSON_RULES
+        JSON_RULES --> OUTPUT
+        
+        %% Content Type Filters
+        CONTENT_TYPES{{"Content Part Types<br/>• text: Extract .text<br/>• image: Log warning<br/>• tool-call: Add note"}}
+        
+        USER_MULTIPART -.-> CONTENT_TYPES
+        ASST_MULTIPART -.-> CONTENT_TYPES
+    end
+    
+    %% Style Classes
+    classDef function fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef process fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef data fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef decision fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef output fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef warning fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef format fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    %% Apply Styles
+    class CONVERT_FUNC function
+    class SYS_PROCESS,USER_PROCESS,ASST_PROCESS,TOOL_PROCESS,FORMAT_MESSAGES,ASSEMBLE_PROMPT process
+    class USER_STRING,USER_MULTIPART,USER_TEXT_FILTER,ASST_STRING,ASST_MULTIPART,ASST_TEXT_FILTER,ASST_TOOL_FILTER,TOOL_FORMAT process
+    class ADD_HUMAN_PREFIX,KEEP_PREFIX,COMBINE_WITH_SYS,MESSAGES_ONLY,ADD_JSON_INSTRUCTIONS format
+    class INPUT_PROMPT,INPUT_MODE,MESSAGES_ARRAY,SYSTEM_PROMPT,CONTENT_TYPES,JSON_RULES data
+    class ROLE_SWITCH,PREFIX_CHECK,SYSTEM_CHECK,JSON_MODE_CHECK decision
+    class OUTPUT output
+    class USER_IMAGE_WARN warning

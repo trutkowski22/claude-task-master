@@ -1,0 +1,24 @@
+flowchart TB
+    subgraph ["dev-Imports"]
+        I1["IMPORT: dotenv, FROM: dotenv"]
+        I2["IMPORT: runCLI, FROM: /claude-task-master/scripts/modules/commands.js"]
+    end
+    subgraph ["dev-Dependencies"]
+        D1["DEP: Dotenv for environment configuration"]
+        D2["DEP: Task Master CLI commands module"]
+        D3["DEP: Node.js process arguments"]
+    end
+    subgraph ["dev-ExecutionFlow"]
+        FL1["Configure environment variables with dotenv.config()"]
+        FL2["Check DEBUG environment variable for development logging"]
+        FL3["Import runCLI function from modular commands system"]
+        FL4["Execute CLI with process arguments from command line"]
+    end
+    subgraph ["dev.js"]
+        ["dev-Imports"]
+        ["dev-Dependencies"]
+        ["dev-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4

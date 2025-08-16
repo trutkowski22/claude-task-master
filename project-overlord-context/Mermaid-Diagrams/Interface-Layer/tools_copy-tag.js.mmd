@@ -1,0 +1,47 @@
+```mermaid
+graph TB
+    subgraph "Copy Tag Tool (copy-tag.js)"
+        A[registerCopyTagTool] --> B[Define Tool Schema]
+        B --> C[Tool: copy_tag]
+        
+        C --> D[Parameters]
+        D --> E[sourceName: Source tag name]
+        D --> F[targetName: New tag name]
+        D --> G[description: Optional tag description]
+        D --> H[file: Optional tasks file path]
+        D --> I[projectRoot: Project directory]
+        
+        C --> J[Execute Handler]
+        J --> K[withNormalizedProjectRoot wrapper]
+        K --> L[Log tag copying]
+        L --> M[findTasksPath]
+        M --> N{Path found?}
+        
+        N -->|No| O[Return error response]
+        N -->|Yes| P[copyTagDirect]
+        
+        P --> Q[handleApiResult]
+        Q --> R[Return formatted response]
+        
+        J --> S[Error Handling]
+        S --> T[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        U[utils.js]
+        V[task-master-core.js]
+        W[path-utils.js]
+    end
+    
+    U --> K
+    U --> O
+    U --> Q
+    U --> T
+    V --> P
+    W --> M
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style J fill:#e8f5e8
+    style P fill:#fff3e0
+```

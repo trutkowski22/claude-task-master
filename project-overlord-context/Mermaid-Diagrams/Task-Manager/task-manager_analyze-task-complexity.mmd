@@ -1,0 +1,89 @@
+flowchart TB
+    subgraph ["analyze-task-complexity-Imports"]
+        I1["IMPORT: chalk, FROM: chalk"]
+        I2["IMPORT: boxen, FROM: boxen"]
+        I3["IMPORT: readline, FROM: readline"]
+        I4["IMPORT: fs, FROM: fs"]
+        I5["IMPORT: log, readJSON, writeJSON, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: startLoadingIndicator, stopLoadingIndicator, displayAiUsageSummary, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I7["IMPORT: generateTextService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I8["IMPORT: getDebugFlag, getProjectName, getMainProvider, getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I9["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I10["IMPORT: COMPLEXITY_REPORT_FILE, LEGACY_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I11["IMPORT: CUSTOM_PROVIDERS, FROM: /claude-task-master/src/constants/providers.js"]
+        I12["IMPORT: resolveComplexityReportOutputPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I13["IMPORT: ContextGatherer, FROM: /claude-task-master/scripts/modules/utils/contextGatherer.js"]
+        I14["IMPORT: FuzzyTaskSearch, FROM: /claude-task-master/scripts/modules/utils/fuzzyTaskSearch.js"]
+        I15["IMPORT: flattenTasksWithSubtasks, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph ["analyze-task-complexity-FunctionsDefined"]
+        FU1["FUNCTION: generateInternalComplexityAnalysisPrompt"]
+        FU2["FUNCTION: analyzeTaskComplexity"]
+    end
+    subgraph ["analyze-task-complexity-Exports"]
+        E1["EXP: analyzeTaskComplexity (default)"]
+    end
+    subgraph ["analyze-task-complexity-Parameters"]
+        P1["PARAM: {Object} tasksData - The tasks data object"]
+        P2["PARAM: {string} gatheredContext - The gathered context for the analysis"]
+        P3["PARAM: {Object} options - Command options"]
+        P4["PARAM: {string} options.file - Path to tasks file"]
+        P5["PARAM: {string} options.output - Path to report output file"]
+        P6["PARAM: {string|number} options.threshold - Complexity threshold"]
+        P7["PARAM: {boolean} options.research - Use research role"]
+        P8["PARAM: {string} options.projectRoot - Project root path"]
+        P9["PARAM: {string} options.tag - Tag for the task"]
+        P10["PARAM: {string} options.id - Comma-separated list of task IDs to analyze specifically"]
+        P11["PARAM: {number} options.from - Starting task ID in a range to analyze"]
+        P12["PARAM: {number} options.to - Ending task ID in a range to analyze"]
+        P13["PARAM: {Object} options._filteredTasksData - Pre-filtered task data (internal use)"]
+        P14["PARAM: {number} options._originalTaskCount - Original task count (internal use)"]
+        P15["PARAM: {Object} context - Context object, potentially containing session and mcpLog"]
+        P16["PARAM: {Object} context.session - Session object from MCP server (optional)"]
+        P17["PARAM: {Object} context.mcpLog - MCP logger object (optional)"]
+        P18["PARAM: {function} context.reportProgress - Function to report progress (ignored)"]
+    end
+    subgraph ["analyze-task-complexity-ExecutionFlow"]
+        FL1["Parse options and extract parameters"]
+        FL2["Set up logging based on MCP or CLI context"]
+        FL3["Resolve output path using tag-aware resolution"]
+        FL4["Read tasks data or use pre-filtered data"]
+        FL5["Filter tasks by status (active tasks only)"]
+        FL6["Apply ID filtering if specific IDs provided"]
+        FL7["Apply range filtering if from/to IDs provided"]
+        FL8["Gather project context using ContextGatherer"]
+        FL9["Check for existing complexity report"]
+        FL10["Create lookup map of existing analysis entries"]
+        FL11["Load prompts using PromptManager"]
+        FL12["Call AI service for complexity analysis"]
+        FL13["Parse JSON response from AI"]
+        FL14["Handle missing task analyses with defaults"]
+        FL15["Merge with existing report data"]
+        FL16["Write final complexity report to file"]
+        FL17["Display analysis summary and next steps"]
+        FL18["Return report and telemetry data"]
+    end
+    subgraph ["analyze-task-complexity.js"]
+        ["analyze-task-complexity-Imports"]
+        ["analyze-task-complexity-FunctionsDefined"]
+        ["analyze-task-complexity-Exports"]
+        ["analyze-task-complexity-Parameters"]
+        ["analyze-task-complexity-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17
+    FL17 --> FL18

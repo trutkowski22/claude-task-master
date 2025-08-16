@@ -1,0 +1,105 @@
+flowchart TB
+    subgraph ["ai-services-unified-Imports"]
+        I1["IMPORT: MODEL_MAP, getAzureBaseURL, getBaseUrlForRole, getBedrockBaseURL, getDebugFlag, getFallbackModelId, getFallbackProvider, getMainModelId, getMainProvider, getOllamaBaseURL, getParametersForRole, getResearchModelId, getResearchProvider, getResponseLanguage, getUserId, getVertexLocation, getVertexProjectId, isApiKeySet, providersWithoutApiKeys, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I2["IMPORT: findProjectRoot, getCurrentTag, log, resolveEnvVariable, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: AnthropicAIProvider, AzureProvider, BedrockAIProvider, ClaudeCodeProvider, GeminiCliProvider, GoogleAIProvider, GroqProvider, OllamaAIProvider, OpenAIProvider, OpenRouterAIProvider, PerplexityAIProvider, VertexAIProvider, XAIProvider, FROM: /claude-task-master/src/ai-providers/index.js"]
+        I4["IMPORT: ProviderRegistry, FROM: /claude-task-master/src/provider-registry/index.js"]
+    end
+    subgraph ["ai-services-unified-Dependencies"]
+        D1["DEP: Node.js path module"]
+        D2["DEP: Node.js fs module"]
+        D3["DEP: Zod schema validation"]
+        D4["DEP: AI Provider ecosystem"]
+    end
+    subgraph ["ai-services-unified-FunctionsDefined"]
+        FU1["FUNCTION: _getProvider"]
+        FU2["FUNCTION: _getCostForModel"]
+        FU3["FUNCTION: _getTagInfo"]
+        FU4["FUNCTION: isRetryableError"]
+        FU5["FUNCTION: _extractErrorMessage"]
+        FU6["FUNCTION: _resolveApiKey"]
+        FU7["FUNCTION: _attemptProviderCallWithRetries"]
+        FU8["FUNCTION: _unifiedServiceRunner"]
+        FU9["FUNCTION: generateTextService"]
+        FU10["FUNCTION: streamTextService"]
+        FU11["FUNCTION: generateObjectService"]
+        FU12["FUNCTION: logAiUsage"]
+    end
+    subgraph ["ai-services-unified-Exports"]
+        E1["EXP: generateTextService"]
+        E2["EXP: streamTextService"]
+        E3["EXP: generateObjectService"]
+        E4["EXP: logAiUsage"]
+    end
+    subgraph ["ai-services-unified-Parameters"]
+        P1["PARAM: {function} providerApiFn - The specific provider function to call"]
+        P2["PARAM: {object} callParams - Parameters object for the provider function"]
+        P3["PARAM: {string} providerName - Name of the provider"]
+        P4["PARAM: {string} modelId - Specific model ID"]
+        P5["PARAM: {string} attemptRole - The role being attempted"]
+        P6["PARAM: {string} serviceType - Type of service"]
+        P7["PARAM: {object} params - Original parameters passed to the service function"]
+        P8["PARAM: {string} params.role - The initial client role"]
+        P9["PARAM: {object} [params.session=null] - Optional MCP session object"]
+        P10["PARAM: {string} [params.projectRoot] - Optional project root path"]
+        P11["PARAM: {string} params.commandName - Name of the command invoking the service"]
+        P12["PARAM: {string} params.outputType - 'cli' or 'mcp'"]
+        P13["PARAM: {string} [params.systemPrompt] - Optional system prompt"]
+        P14["PARAM: {string} [params.prompt] - The prompt for the AI"]
+        P15["PARAM: {import('zod').ZodSchema} params.schema - The Zod schema for the expected object"]
+        P16["PARAM: {string} [params.objectName] - Name for object/tool"]
+        P17["PARAM: {string} params.userId - Unique user identifier"]
+        P18["PARAM: {number} params.inputTokens - Number of input tokens"]
+        P19["PARAM: {number} params.outputTokens - Number of output tokens"]
+    end
+    subgraph ["ai-services-unified-Constants"]
+        C1["CONST: PROVIDERS, VALUE: Object with AI provider instances"]
+        C2["CONST: MAX_RETRIES, VALUE: 2"]
+        C3["CONST: INITIAL_RETRY_DELAY_MS, VALUE: 1000"]
+        C4["CONST: sequence, VALUE: Array of role order based on initial role"]
+        C5["CONST: messages, VALUE: Array for system and user messages"]
+        C6["CONST: responseLanguage, VALUE: getResponseLanguage result"]
+        C7["CONST: systemPromptWithLanguage, VALUE: Combined system prompt with language"]
+        C8["CONST: callParams, VALUE: Parameters object for provider call"]
+        C9["CONST: telemetryData, VALUE: Usage logging data object"]
+        C10["CONST: defaults, VALUE: Default parameter values for service functions"]
+        C11["CONST: combinedParams, VALUE: Merged default and provided parameters"]
+    end
+    subgraph ["ai-services-unified-ExecutionFlow"]
+        FL1["Initialize provider instances in PROVIDERS object"]
+        FL2["Define retry configuration and error handling helpers"]
+        FL3["Implement provider lookup with fallback to registry"]
+        FL4["Set up cost calculation for model usage tracking"]
+        FL5["Configure tag information retrieval for responses"]
+        FL6["Implement API key resolution with environment fallback"]
+        FL7["Execute provider calls with exponential backoff retry logic"]
+        FL8["Run unified service with role-based provider sequence"]
+        FL9["Handle main/research/fallback role prioritization"]
+        FL10["Configure provider-specific parameters (Vertex, Azure, etc.)"]
+        FL11["Build message array with system prompt and language preference"]
+        FL12["Execute provider call with telemetry and error handling"]
+        FL13["Return formatted response with usage data and tag information"]
+        FL14["Export unified service functions for text, stream, and object generation"]
+    end
+    subgraph ["ai-services-unified.js"]
+        ["ai-services-unified-Imports"]
+        ["ai-services-unified-Dependencies"]
+        ["ai-services-unified-FunctionsDefined"]
+        ["ai-services-unified-Exports"]
+        ["ai-services-unified-Parameters"]
+        ["ai-services-unified-Constants"]
+        ["ai-services-unified-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

@@ -1,0 +1,30 @@
+```mermaid
+graph TD
+    A[env-utils.js] --> B[withSessionEnv Function]
+    
+    B --> C{sessionEnv Validation}
+    C -->|Invalid/Empty| D[Execute Action Directly]
+    C -->|Valid| E[Environment Backup Process]
+    
+    E --> F[Store Original Values]
+    E --> G[Set Session Values]
+    
+    F --> H[originalEnv Object]
+    G --> I[process.env Updates]
+    
+    H --> J[Action Execution]
+    I --> J
+    
+    J --> K[Cleanup Process]
+    K --> L[Restore Original Values]
+    K --> M[Delete New Keys]
+    
+    L --> N[Action Result]
+    M --> N
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style J fill:#e8f5e8
+    style K fill:#ffebee
+```

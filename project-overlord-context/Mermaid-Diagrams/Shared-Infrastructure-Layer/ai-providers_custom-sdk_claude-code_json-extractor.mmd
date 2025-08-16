@@ -1,0 +1,97 @@
+graph TD
+    subgraph "JSON Extractor - json-extractor.js"
+        direction TB
+        
+        %% Main Function
+        EXTRACT_JSON[("extractJson<br/>Extracts JSON from<br/>Claude's response")]
+        
+        %% Input Processing
+        INPUT_TEXT{{"Input Text<br/>Raw response text"}}
+        TRIM_TEXT[("Trim Text<br/>Remove whitespace")]
+        
+        %% Markdown Processing
+        MD_PROCESS[("Markdown Processing<br/>Remove code blocks")]
+        REMOVE_JSON_BLOCKS[("Remove ```json blocks")]
+        REMOVE_CODE_BLOCKS[("Remove ``` blocks")]
+        
+        %% JavaScript Pattern Removal
+        JS_PROCESS[("JavaScript Pattern Removal")]
+        REMOVE_CONST[("Remove 'const varName ='")]
+        REMOVE_LET[("Remove 'let varName ='")]
+        REMOVE_VAR[("Remove 'var varName ='")]
+        REMOVE_SEMICOLON[("Remove trailing semicolons")]
+        
+        %% JSON Extraction
+        EXTRACT_PATTERNS[("Pattern Extraction")]
+        OBJECT_MATCH[("Object Match<br/>{...} pattern")]
+        ARRAY_MATCH[("Array Match<br/>[...] pattern")]
+        
+        %% Validation & Conversion
+        FIRST_PARSE[("First JSON.parse<br/>Validate as-is")]
+        VALID_JSON{{"Valid JSON<br/>Return as-is"}}
+        
+        %% Fallback Conversion
+        CONVERT_JS[("JavaScript to JSON<br/>Conversion")]
+        QUOTE_KEYS[("Quote unquoted keys")]
+        CONVERT_QUOTES[("Single to double quotes")]
+        SECOND_PARSE[("Second JSON.parse<br/>Validate conversion")]
+        CONVERTED_JSON{{"Converted JSON<br/>Return converted"}}
+        
+        %% Final Fallback
+        RETURN_ORIGINAL{{"Return Original<br/>Let AI SDK handle error"}}
+        
+        %% Flow Connections
+        INPUT_TEXT --> EXTRACT_JSON
+        EXTRACT_JSON --> TRIM_TEXT
+        TRIM_TEXT --> MD_PROCESS
+        
+        MD_PROCESS --> REMOVE_JSON_BLOCKS
+        MD_PROCESS --> REMOVE_CODE_BLOCKS
+        
+        REMOVE_CODE_BLOCKS --> JS_PROCESS
+        
+        JS_PROCESS --> REMOVE_CONST
+        JS_PROCESS --> REMOVE_LET
+        JS_PROCESS --> REMOVE_VAR
+        JS_PROCESS --> REMOVE_SEMICOLON
+        
+        REMOVE_SEMICOLON --> EXTRACT_PATTERNS
+        
+        EXTRACT_PATTERNS --> OBJECT_MATCH
+        EXTRACT_PATTERNS --> ARRAY_MATCH
+        
+        OBJECT_MATCH --> FIRST_PARSE
+        ARRAY_MATCH --> FIRST_PARSE
+        
+        FIRST_PARSE -->|"Success"| VALID_JSON
+        FIRST_PARSE -->|"Fail"| CONVERT_JS
+        
+        CONVERT_JS --> QUOTE_KEYS
+        QUOTE_KEYS --> CONVERT_QUOTES
+        CONVERT_QUOTES --> SECOND_PARSE
+        
+        SECOND_PARSE -->|"Success"| CONVERTED_JSON
+        SECOND_PARSE -->|"Fail"| RETURN_ORIGINAL
+        
+        %% Regex Patterns
+        REGEX_PATTERNS{{"Regex Patterns<br/>• /^```json\s*/gm<br/>• /^```\s*/gm<br/>• /```\s*$/gm<br/>• Object: /{[\s\S]*}/<br/>• Array: /\[[\s\S]*\]/"}}
+        
+        MD_PROCESS -.-> REGEX_PATTERNS
+        EXTRACT_PATTERNS -.-> REGEX_PATTERNS
+    end
+    
+    %% Style Classes
+    classDef function fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef process fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef validation fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef data fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef result fill:#e3f2fd,stroke:#0d47a1,stroke-width:2px
+    classDef regex fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    %% Apply Styles
+    class EXTRACT_JSON function
+    class TRIM_TEXT,MD_PROCESS,JS_PROCESS,EXTRACT_PATTERNS,CONVERT_JS process
+    class REMOVE_JSON_BLOCKS,REMOVE_CODE_BLOCKS,REMOVE_CONST,REMOVE_LET,REMOVE_VAR,REMOVE_SEMICOLON,OBJECT_MATCH,ARRAY_MATCH,QUOTE_KEYS,CONVERT_QUOTES process
+    class FIRST_PARSE,SECOND_PARSE validation
+    class INPUT_TEXT,VALID_JSON,CONVERTED_JSON,RETURN_ORIGINAL data
+    class REGEX_PATTERNS regex

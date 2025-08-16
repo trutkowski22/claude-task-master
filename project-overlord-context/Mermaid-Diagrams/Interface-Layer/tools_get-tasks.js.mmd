@@ -1,0 +1,60 @@
+```mermaid
+graph TB
+    subgraph "Get Tasks Tool (get-tasks.js)"
+        A[registerListTasksTool] --> B[Define Tool Schema]
+        B --> C[Tool: get_tasks]
+        
+        C --> D[Parameters]
+        D --> E[status: Filter by task status]
+        D --> F[withSubtasks: Include subtasks flag]
+        D --> G[file: Optional tasks file path]
+        D --> H[complexityReport: Complexity report path]
+        D --> I[projectRoot: Project directory]
+        D --> J[tag: Optional tag context]
+        
+        C --> K[Execute Handler]
+        K --> L[withNormalizedProjectRoot wrapper]
+        L --> M[Log task retrieval]
+        M --> N[resolveTag]
+        N --> O[resolveTasksPath]
+        O --> P{Tasks path found?}
+        
+        P -->|No| Q[Return error response]
+        P -->|Yes| R[resolveComplexityReportPath]
+        R --> S{Report path found?}
+        
+        S -->|No| T[Set report path to null]
+        S -->|Yes| U[Continue with report]
+        
+        T --> V[listTasksDirect]
+        U --> V
+        
+        V --> W[Log task count]
+        W --> X[handleApiResult]
+        X --> Y[Return formatted response]
+        
+        K --> Z[Error Handling]
+        Z --> AA[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        BB[utils.js]
+        CC[task-master-core.js]
+        DD[core/utils/path-utils.js]
+        EE[scripts/modules/utils.js]
+    end
+    
+    BB --> L
+    BB --> Q
+    BB --> X
+    BB --> AA
+    CC --> V
+    DD --> O
+    DD --> R
+    EE --> N
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style K fill:#e8f5e8
+    style V fill:#fff3e0
+```

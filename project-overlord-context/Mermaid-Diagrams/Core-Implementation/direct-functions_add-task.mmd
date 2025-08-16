@@ -1,0 +1,86 @@
+flowchart TB
+    subgraph addTask-Imports["addTask-Imports"]
+        I1["IMPORT: addTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph addTask-FunctionsDefined["addTask-Functions Defined"]
+        FU1["FUNCTION: addTaskDirect"]
+    end
+    subgraph addTask-Exports["addTask-Exports"]
+        E1["EXP: addTaskDirect"]
+    end
+    subgraph addTask-Parameters["addTask-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} [args.prompt] - Description of the task to add (required if not using manual fields)"]
+        P3["PARAM: {string} [args.title] - Task title (for manual task creation)"]
+        P4["PARAM: {string} [args.description] - Task description (for manual task creation)"]
+        P5["PARAM: {string} [args.details] - Implementation details (for manual task creation)"]
+        P6["PARAM: {string} [args.testStrategy] - Test strategy (for manual task creation)"]
+        P7["PARAM: {string} [args.dependencies] - Comma-separated list of task IDs this task depends on"]
+        P8["PARAM: {string} [args.priority='medium'] - Task priority (high, medium, low)"]
+        P9["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P10["PARAM: {boolean} [args.research=false] - Whether to use research capabilities for task creation"]
+        P11["PARAM: {string} [args.projectRoot] - Project root path"]
+        P12["PARAM: {string} [args.tag] - Tag for the task (optional)"]
+        P13["PARAM: {Object} log - Logger object"]
+        P14["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph addTask-Constants["addTask-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: prompt, VALUE: args destructuring"]
+        C3["CONST: dependencies, VALUE: args destructuring"]
+        C4["CONST: priority, VALUE: args destructuring"]
+        C5["CONST: research, VALUE: args destructuring"]
+        C6["CONST: projectRoot, VALUE: args destructuring"]
+        C7["CONST: tag, VALUE: args destructuring"]
+        C8["CONST: session, VALUE: context destructuring"]
+        C9["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C10["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C11["CONST: isManualCreation, VALUE: args.title and args.description check"]
+        C12["CONST: taskDependencies, VALUE: processed dependencies array"]
+        C13["CONST: taskPriority, VALUE: priority or default 'medium'"]
+        C14["CONST: manualTaskData, VALUE: manual task object or null"]
+    end
+    subgraph addTask-ExecutionFlow["addTask-Execution Flow"]
+        FL1["Destructure arguments and session from context"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create logger wrapper using utility function"]
+        FL4["Validate tasksJsonPath is provided"]
+        FL5["Set tasksPath to provided tasksJsonPath"]
+        FL6["Determine if this is manual or AI-driven task creation"]
+        FL7["Validate required parameters based on creation type"]
+        FL8["Process dependencies into array format"]
+        FL9["Set task priority with default fallback"]
+        FL10["Branch: Manual task creation with provided data"]
+        FL11["Branch: AI-driven task creation with prompt"]
+        FL12["Call addTask core function with appropriate parameters"]
+        FL13["Extract results including taskId, telemetry, and tag info"]
+        FL14["Disable silent mode to restore normal logging"]
+        FL15["Return success response with task details"]
+        FL16["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph addTask["add-task.js"]
+        addTask-Imports
+        addTask-FunctionsDefined
+        addTask-Exports
+        addTask-Parameters
+        addTask-Constants
+        addTask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16

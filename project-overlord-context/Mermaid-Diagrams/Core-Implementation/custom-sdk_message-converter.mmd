@@ -1,0 +1,89 @@
+```mermaid
+graph TD
+    A[message-converter.js] --> B[Conversion Functions]
+    A --> C[Utility Functions]
+    
+    B --> D[convertToMCPFormat Function]
+    B --> E[convertFromMCPFormat Function]
+    
+    D --> F[Parameters]
+    F --> G[prompt: Array]
+    
+    D --> H[Initialization]
+    H --> I[messages: Array]
+    H --> J[systemPrompt: string]
+    
+    D --> K[Message Processing]
+    K --> L{Role-based Routing}
+    L -->|system| M[Extract System Prompt]
+    L -->|user/assistant| N[Create Message Object]
+    
+    M --> O[extractTextContent call]
+    M --> P[systemPrompt assignment]
+    
+    N --> Q[Message Structure]
+    Q --> R[role: string]
+    Q --> S[content.type: 'text']
+    Q --> T[content.text: string]
+    
+    T --> U[extractTextContent call]
+    
+    D --> V[Return Object]
+    V --> W[messages, systemPrompt]
+    
+    E --> X[Parameters]
+    X --> Y[response: object]
+    
+    E --> Z[Response Processing]
+    Z --> AA{Response Format Detection}
+    AA -->|string| BB[Direct Text Assignment]
+    AA -->|content property| CC[Extract from content]
+    AA -->|text property| DD[Extract from text]
+    AA -->|other| EE[JSON Fallback]
+    
+    CC --> FF[extractTextContent call]
+    CC --> GG[usage, finishReason extraction]
+    
+    DD --> HH[Direct property access]
+    DD --> II[usage, finishReason extraction]
+    
+    EE --> JJ[JSON.stringify fallback]
+    EE --> KK[Add warning]
+    
+    E --> LL[Return Object]
+    LL --> MM[text, usage, finishReason, warnings]
+    
+    C --> NN[extractTextContent Function]
+    NN --> OO[Parameters]
+    OO --> PP[content: string|Array|object]
+    
+    NN --> QQ{Content Type Detection}
+    QQ -->|string| RR[Return directly]
+    QQ -->|Array| SS[Process array elements]
+    QQ -->|object| TT[Extract from object]
+    
+    SS --> UU[Map array elements]
+    UU --> VV{Element Processing}
+    VV -->|string| WW[Use directly]
+    VV -->|text type| XX[Extract text property]
+    VV -->|other| YY[Skip non-text]
+    
+    SS --> ZZ[Filter and join]
+    
+    TT --> AAA{Object Property Check}
+    AAA -->|text type + text| BBB[Return text property]
+    AAA -->|text property| CCC[Return text property]
+    AAA -->|other| DDD[String conversion]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#e3f2fd
+    style NN fill:#f1f8e9
+    style L fill:#ffebee
+    style AA fill:#ffebee
+    style QQ fill:#ffebee
+    style VV fill:#ffebee
+    style AAA fill:#ffebee
+```

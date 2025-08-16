@@ -1,0 +1,61 @@
+```mermaid
+graph TB
+    subgraph "Add Subtask Tool (add-subtask.js)"
+        A[registerAddSubtaskTool] --> B[Define Tool Schema]
+        B --> C[Tool: add_subtask]
+        
+        C --> D[Parameters]
+        D --> E[id: Parent task ID]
+        D --> F[taskId: Optional existing task ID]
+        D --> G[title: New subtask title]
+        D --> H[description: Subtask description]
+        D --> I[details: Implementation details]
+        D --> J[status: Subtask status]
+        D --> K[dependencies: Dependency IDs]
+        D --> L[file: Optional tasks file path]
+        D --> M[skipGenerate: Skip file regeneration]
+        D --> N[projectRoot: Project directory]
+        D --> O[tag: Optional tag context]
+        
+        C --> P[Execute Handler]
+        P --> Q[withNormalizedProjectRoot wrapper]
+        Q --> R[resolveTag]
+        R --> S[Log subtask addition]
+        S --> T[findTasksPath]
+        T --> U{Path found?}
+        
+        U -->|No| V[Return error response]
+        U -->|Yes| W[addSubtaskDirect]
+        
+        W --> X{Success?}
+        X -->|Yes| Y[Log success]
+        X -->|No| Z[Log error]
+        
+        Y --> AA[handleApiResult]
+        Z --> AA
+        AA --> BB[Return formatted response]
+        
+        P --> CC[Error Handling]
+        CC --> DD[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        EE[utils.js]
+        FF[task-master-core.js]
+        GG[path-utils.js]
+        HH[scripts/modules/utils.js]
+    end
+    
+    EE --> Q
+    EE --> V
+    EE --> AA
+    EE --> DD
+    FF --> W
+    GG --> T
+    HH --> R
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style P fill:#e8f5e8
+    style W fill:#fff3e0
+```

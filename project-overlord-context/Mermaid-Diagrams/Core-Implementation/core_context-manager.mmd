@@ -1,0 +1,58 @@
+```mermaid
+graph TD
+    A[context-manager.js] --> B[ContextManager Class]
+    A --> C[Singleton Export]
+    
+    B --> D[Constructor]
+    D --> E[Configuration Setup]
+    D --> F[LRU Cache Initialization]
+    D --> G[Statistics Initialization]
+    
+    E --> H[maxCacheSize: 1000]
+    E --> I[ttl: 5 minutes]
+    E --> J[maxContextSize: 4000]
+    
+    F --> K[LRUCache Instance]
+    K --> L[max: maxCacheSize]
+    K --> M[ttl: ttl]
+    K --> N[updateAgeOnGet: true]
+    
+    G --> O[Stats Object]
+    O --> P[hits: 0]
+    O --> Q[misses: 0]
+    O --> R[invalidations: 0]
+    
+    B --> S[Context Operations]
+    S --> T[getContext]
+    S --> U[updateContext]
+    S --> V[invalidateContext]
+    
+    T --> W{Cache Check}
+    W -->|Hit| X[Return Cached]
+    W -->|Miss| Y[Create New Context]
+    
+    X --> Z[Increment Hits]
+    Y --> AA[Increment Misses]
+    Y --> BB[Cache New Context]
+    
+    B --> CC[Cache Operations]
+    CC --> DD[getCachedData]
+    CC --> EE[setCachedData]
+    CC --> FF[invalidateCacheKey]
+    
+    B --> GG[Utility Methods]
+    GG --> HH[getStats]
+    GG --> II[_getCacheKey]
+    
+    HH --> JJ[Cache Statistics Report]
+    II --> KK[Context ID + Metadata Hash]
+    
+    C --> LL[contextManager Instance]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style D fill:#e8f5e8
+    style S fill:#fff3e0
+    style CC fill:#e3f2fd
+    style W fill:#ffebee
+```

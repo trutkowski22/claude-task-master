@@ -1,0 +1,166 @@
+graph TD
+    subgraph "Claude Code Types - types.js"
+        direction TB
+        
+        %% Main Type Categories
+        SETTINGS_TYPES[("Settings Types<br/>Configuration interfaces")]
+        MODEL_TYPES[("Model Types<br/>Model identification")]
+        ERROR_TYPES[("Error Types<br/>Error metadata")]
+        PROVIDER_TYPES[("Provider Types<br/>Provider interfaces")]
+        
+        %% ClaudeCodeSettings
+        CLAUDE_SETTINGS{{"ClaudeCodeSettings<br/>Main configuration object"}}
+        
+        %% Execution Settings
+        EXEC_SETTINGS[("Execution Settings")]
+        PATH_EXECUTABLE{{"pathToClaudeCodeExecutable<br/>string (default: 'claude')"}}
+        CWD{{"cwd<br/>Working directory"}}
+        EXECUTABLE{{"executable<br/>'bun'|'deno'|'node'"}}
+        EXECUTABLE_ARGS{{"executableArgs<br/>string[] arguments"}}
+        
+        %% Prompt Settings
+        PROMPT_SETTINGS[("Prompt Settings")]
+        CUSTOM_SYSTEM{{"customSystemPrompt<br/>Custom system prompt"}}
+        APPEND_SYSTEM{{"appendSystemPrompt<br/>Additional system content"}}
+        MAX_TURNS{{"maxTurns<br/>Conversation turn limit"}}
+        MAX_THINKING{{"maxThinkingTokens<br/>Thinking token limit"}}
+        
+        %% Permission Settings
+        PERMISSION_SETTINGS[("Permission Settings")]
+        PERMISSION_MODE{{"permissionMode<br/>'default'|'acceptEdits'|<br/>'bypassPermissions'|'plan'"}}
+        PERMISSION_TOOL{{"permissionPromptToolName<br/>Custom tool name"}}
+        ALLOWED_TOOLS{{"allowedTools<br/>string[] whitelist"}}
+        DISALLOWED_TOOLS{{"disallowedTools<br/>string[] blacklist"}}
+        
+        %% Session Settings
+        SESSION_SETTINGS[("Session Settings")]
+        CONTINUE{{"continue<br/>boolean resume recent"}}
+        RESUME{{"resume<br/>string session ID"}}
+        VERBOSE{{"verbose<br/>boolean logging"}}
+        
+        %% MCP Settings
+        MCP_SETTINGS[("MCP Settings")]
+        MCP_SERVERS{{"mcpServers<br/>Object.<string, MCPServerConfig>"}}
+        
+        %% MCP Server Config
+        MCP_SERVER_CONFIG{{"MCPServerConfig<br/>Server configuration"}}
+        MCP_TYPE{{"type<br/>'stdio'|'sse'"}}
+        MCP_COMMAND{{"command<br/>Execution command"}}
+        MCP_ARGS{{"args<br/>string[] arguments"}}
+        MCP_ENV{{"env<br/>Environment variables"}}
+        MCP_URL{{"url<br/>SSE server URL"}}
+        MCP_HEADERS{{"headers<br/>SSE headers"}}
+        
+        %% Model Types
+        MODEL_ID{{"ClaudeCodeModelId<br/>'opus'|'sonnet'|string"}}
+        LANG_MODEL_OPTIONS{{"ClaudeCodeLanguageModelOptions<br/>{id, settings}"}}
+        
+        %% Error Types
+        ERROR_METADATA{{"ClaudeCodeErrorMetadata<br/>Error information"}}
+        ERROR_CODE{{"code<br/>string error code"}}
+        ERROR_EXIT{{"exitCode<br/>number process exit"}}
+        ERROR_STDERR{{"stderr<br/>string error output"}}
+        ERROR_PROMPT{{"promptExcerpt<br/>string prompt excerpt"}}
+        
+        %% Provider Types
+        PROVIDER_INTERFACE{{"ClaudeCodeProvider<br/>Provider interface"}}
+        PROVIDER_LANG{{"languageModel<br/>function(id, settings)"}}
+        PROVIDER_CHAT{{"chat<br/>alias for languageModel"}}
+        PROVIDER_EMBED{{"textEmbeddingModel<br/>throws NoSuchModelError"}}
+        
+        PROVIDER_SETTINGS{{"ClaudeCodeProviderSettings<br/>{defaultSettings}"}}
+        DEFAULT_SETTINGS{{"defaultSettings<br/>ClaudeCodeSettings"}}
+        
+        %% Flow Connections - Settings Structure
+        SETTINGS_TYPES --> CLAUDE_SETTINGS
+        CLAUDE_SETTINGS --> EXEC_SETTINGS
+        CLAUDE_SETTINGS --> PROMPT_SETTINGS
+        CLAUDE_SETTINGS --> PERMISSION_SETTINGS
+        CLAUDE_SETTINGS --> SESSION_SETTINGS
+        CLAUDE_SETTINGS --> MCP_SETTINGS
+        
+        %% Execution Settings
+        EXEC_SETTINGS --> PATH_EXECUTABLE
+        EXEC_SETTINGS --> CWD
+        EXEC_SETTINGS --> EXECUTABLE
+        EXEC_SETTINGS --> EXECUTABLE_ARGS
+        
+        %% Prompt Settings
+        PROMPT_SETTINGS --> CUSTOM_SYSTEM
+        PROMPT_SETTINGS --> APPEND_SYSTEM
+        PROMPT_SETTINGS --> MAX_TURNS
+        PROMPT_SETTINGS --> MAX_THINKING
+        
+        %% Permission Settings
+        PERMISSION_SETTINGS --> PERMISSION_MODE
+        PERMISSION_SETTINGS --> PERMISSION_TOOL
+        PERMISSION_SETTINGS --> ALLOWED_TOOLS
+        PERMISSION_SETTINGS --> DISALLOWED_TOOLS
+        
+        %% Session Settings
+        SESSION_SETTINGS --> CONTINUE
+        SESSION_SETTINGS --> RESUME
+        SESSION_SETTINGS --> VERBOSE
+        
+        %% MCP Settings
+        MCP_SETTINGS --> MCP_SERVERS
+        MCP_SERVERS --> MCP_SERVER_CONFIG
+        MCP_SERVER_CONFIG --> MCP_TYPE
+        MCP_SERVER_CONFIG --> MCP_COMMAND
+        MCP_SERVER_CONFIG --> MCP_ARGS
+        MCP_SERVER_CONFIG --> MCP_ENV
+        MCP_SERVER_CONFIG --> MCP_URL
+        MCP_SERVER_CONFIG --> MCP_HEADERS
+        
+        %% Model Types
+        MODEL_TYPES --> MODEL_ID
+        MODEL_TYPES --> LANG_MODEL_OPTIONS
+        LANG_MODEL_OPTIONS --> MODEL_ID
+        LANG_MODEL_OPTIONS --> CLAUDE_SETTINGS
+        
+        %% Error Types
+        ERROR_TYPES --> ERROR_METADATA
+        ERROR_METADATA --> ERROR_CODE
+        ERROR_METADATA --> ERROR_EXIT
+        ERROR_METADATA --> ERROR_STDERR
+        ERROR_METADATA --> ERROR_PROMPT
+        
+        %% Provider Types
+        PROVIDER_TYPES --> PROVIDER_INTERFACE
+        PROVIDER_TYPES --> PROVIDER_SETTINGS
+        PROVIDER_INTERFACE --> PROVIDER_LANG
+        PROVIDER_INTERFACE --> PROVIDER_CHAT
+        PROVIDER_INTERFACE --> PROVIDER_EMBED
+        PROVIDER_SETTINGS --> DEFAULT_SETTINGS
+        DEFAULT_SETTINGS --> CLAUDE_SETTINGS
+        
+        %% Module Export
+        MODULE_EXPORT{{"export {}<br/>Module identifier"}}
+        
+        %% Tool Configuration Examples
+        TOOL_EXAMPLES{{"Tool Configuration Examples<br/>allowedTools: ['Read', 'LS', 'Bash(git log:*)']<br/>disallowedTools: ['Write', 'Edit', 'Bash(rm:*)']"}}
+        
+        ALLOWED_TOOLS -.-> TOOL_EXAMPLES
+        DISALLOWED_TOOLS -.-> TOOL_EXAMPLES
+    end
+    
+    %% Style Classes
+    classDef category fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef settings fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef property fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef interface fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef method fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    classDef example fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef export fill:#ffebee,stroke:#c62828,stroke-width:2px
+    
+    %% Apply Styles
+    class SETTINGS_TYPES,MODEL_TYPES,ERROR_TYPES,PROVIDER_TYPES category
+    class EXEC_SETTINGS,PROMPT_SETTINGS,PERMISSION_SETTINGS,SESSION_SETTINGS,MCP_SETTINGS settings
+    class CLAUDE_SETTINGS,MCP_SERVER_CONFIG,LANG_MODEL_OPTIONS,ERROR_METADATA,PROVIDER_INTERFACE,PROVIDER_SETTINGS interface
+    class PATH_EXECUTABLE,CWD,EXECUTABLE,EXECUTABLE_ARGS,CUSTOM_SYSTEM,APPEND_SYSTEM,MAX_TURNS,MAX_THINKING property
+    class PERMISSION_MODE,PERMISSION_TOOL,ALLOWED_TOOLS,DISALLOWED_TOOLS,CONTINUE,RESUME,VERBOSE property
+    class MCP_SERVERS,MCP_TYPE,MCP_COMMAND,MCP_ARGS,MCP_ENV,MCP_URL,MCP_HEADERS property
+    class MODEL_ID,ERROR_CODE,ERROR_EXIT,ERROR_STDERR,ERROR_PROMPT,DEFAULT_SETTINGS property
+    class PROVIDER_LANG,PROVIDER_CHAT,PROVIDER_EMBED method
+    class TOOL_EXAMPLES example
+    class MODULE_EXPORT export

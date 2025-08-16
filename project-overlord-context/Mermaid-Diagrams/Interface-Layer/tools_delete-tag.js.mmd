@@ -1,0 +1,48 @@
+```mermaid
+graph TB
+    subgraph "Delete Tag Tool (delete-tag.js)"
+        A[registerDeleteTagTool] --> B[Define Tool Schema]
+        B --> C[Tool: delete_tag]
+        
+        C --> D[Parameters]
+        D --> E[name: Tag name to delete]
+        D --> F[yes: Skip confirmation flag]
+        D --> G[file: Optional tasks file path]
+        D --> H[projectRoot: Project directory]
+        
+        C --> I[Execute Handler]
+        I --> J[withNormalizedProjectRoot wrapper]
+        J --> K[Log tag deletion]
+        K --> L[findTasksPath]
+        L --> M{Path found?}
+        
+        M -->|No| N[Return error response]
+        M -->|Yes| O[Set confirmation default]
+        O --> P[deleteTagDirect]
+        
+        P --> Q[handleApiResult]
+        Q --> R[Return formatted response]
+        
+        I --> S[Error Handling]
+        S --> T[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        U[utils.js]
+        V[task-master-core.js]
+        W[path-utils.js]
+    end
+    
+    U --> J
+    U --> N
+    U --> Q
+    U --> T
+    V --> P
+    W --> L
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style I fill:#e8f5e8
+    style P fill:#fff3e0
+    style O fill:#ffebee
+```

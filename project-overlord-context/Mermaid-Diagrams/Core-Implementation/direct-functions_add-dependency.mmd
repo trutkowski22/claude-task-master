@@ -1,0 +1,69 @@
+flowchart TB
+    subgraph addDependency-Imports["addDependency-Imports"]
+        I1["IMPORT: addDependency, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph addDependency-FunctionsDefined["addDependency-Functions Defined"]
+        FU1["FUNCTION: addDependencyDirect"]
+    end
+    subgraph addDependency-Exports["addDependency-Exports"]
+        E1["EXP: addDependencyDirect"]
+    end
+    subgraph addDependency-Parameters["addDependency-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string|number} args.id - Task ID to add dependency to"]
+        P4["PARAM: {string|number} args.dependsOn - Task ID that will become a dependency"]
+        P5["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P6["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
+        P7["PARAM: {Object} log - Logger object"]
+    end
+    subgraph addDependency-Constants["addDependency-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: id, VALUE: args destructuring"]
+        C3["CONST: dependsOn, VALUE: args destructuring"]
+        C4["CONST: tag, VALUE: args destructuring"]
+        C5["CONST: projectRoot, VALUE: args destructuring"]
+        C6["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C7["CONST: taskId, VALUE: parsed ID or direct value"]
+        C8["CONST: dependencyId, VALUE: parsed dependsOn or direct value"]
+        C9["CONST: context, VALUE: object with projectRoot and tag"]
+    end
+    subgraph addDependency-ExecutionFlow["addDependency-Execution Flow"]
+        FL1["Destructure arguments from args object"]
+        FL2["Log operation start with provided arguments"]
+        FL3["Validate tasksJsonPath is provided"]
+        FL4["Validate required id parameter exists"]
+        FL5["Validate required dependsOn parameter exists"]
+        FL6["Set tasksPath to provided tasksJsonPath"]
+        FL7["Parse and format task ID and dependency ID"]
+        FL8["Log dependency addition operation details"]
+        FL9["Enable silent mode to prevent console interference"]
+        FL10["Create context object with projectRoot and tag"]
+        FL11["Call addDependency core function with parsed parameters"]
+        FL12["Disable silent mode to restore normal logging"]
+        FL13["Return success response with operation details"]
+        FL14["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph addDependency["add-dependency.js"]
+        addDependency-Imports
+        addDependency-FunctionsDefined
+        addDependency-Exports
+        addDependency-Parameters
+        addDependency-Constants
+        addDependency-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

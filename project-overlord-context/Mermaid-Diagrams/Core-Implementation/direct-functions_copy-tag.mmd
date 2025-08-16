@@ -1,0 +1,72 @@
+flowchart TB
+    subgraph copyTag-Imports["copyTag-Imports"]
+        I1["IMPORT: copyTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph copyTag-Dependencies["copyTag-Dependencies"]
+        D1["DEP: Git"]
+        D2["DEP: File system"]
+    end
+    subgraph copyTag-FunctionsDefined["copyTag-Functions Defined"]
+        FU1["FUNCTION: copyTagDirect"]
+    end
+    subgraph copyTag-Exports["copyTag-Exports"]
+        E1["EXP: copyTagDirect"]
+    end
+    subgraph copyTag-Parameters["copyTag-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.sourceName - Name of the source tag to copy from"]
+        P3["PARAM: {string} args.targetName - Name of the new tag to create"]
+        P4["PARAM: {string} [args.description] - Optional description for the new tag"]
+        P5["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P6["PARAM: {string} [args.projectRoot] - Project root path"]
+        P7["PARAM: {Object} log - Logger object"]
+        P8["PARAM: {Object} context - Additional context (session)"]
+    end
+    subgraph copyTag-Constants["copyTag-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: sourceName, VALUE: args destructuring"]
+        C3["CONST: targetName, VALUE: args destructuring"]
+        C4["CONST: description, VALUE: args destructuring"]
+        C5["CONST: projectRoot, VALUE: args destructuring"]
+        C6["CONST: session, VALUE: context destructuring"]
+        C7["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C8["CONST: options, VALUE: object with description"]
+        C9["CONST: result, VALUE: copyTag function result"]
+    end
+    subgraph copyTag-ExecutionFlow["copyTag-Execution Flow"]
+        FL1["Destructure arguments and session from context"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create logger wrapper using utility function"]
+        FL4["Validate tasksJsonPath is provided"]
+        FL5["Validate sourceName is provided and is string"]
+        FL6["Validate targetName is provided and is string"]
+        FL7["Log tag copy operation with source and target names"]
+        FL8["Prepare options object with description"]
+        FL9["Call copyTag core function with all parameters"]
+        FL10["Disable silent mode to restore normal logging"]
+        FL11["Return success response with copy operation details"]
+        FL12["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph copyTag["copy-tag.js"]
+        copyTag-Imports
+        copyTag-Dependencies
+        copyTag-FunctionsDefined
+        copyTag-Exports
+        copyTag-Parameters
+        copyTag-Constants
+        copyTag-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

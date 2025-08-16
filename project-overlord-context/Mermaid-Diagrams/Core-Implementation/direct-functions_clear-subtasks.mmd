@@ -1,0 +1,92 @@
+flowchart TB
+    subgraph clearSubtasks-Imports["clearSubtasks-Imports"]
+        I1["IMPORT: clearSubtasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: path, FROM: path"]
+    end
+    subgraph clearSubtasks-Dependencies["clearSubtasks-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Node.js path module"]
+    end
+    subgraph clearSubtasks-FunctionsDefined["clearSubtasks-Functions Defined"]
+        FU1["FUNCTION: clearSubtasksDirect"]
+    end
+    subgraph clearSubtasks-Exports["clearSubtasks-Exports"]
+        E1["EXP: clearSubtasksDirect"]
+    end
+    subgraph clearSubtasks-Parameters["clearSubtasks-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} [args.id] - Task IDs (comma-separated) to clear subtasks from"]
+        P4["PARAM: {boolean} [args.all] - Clear subtasks from all tasks"]
+        P5["PARAM: {string} [args.tag] - Tag context to operate on (defaults to current active tag)"]
+        P6["PARAM: {string} [args.projectRoot] - Project root path (for MCP/env fallback)"]
+        P7["PARAM: {Object} log - Logger object"]
+    end
+    subgraph clearSubtasks-Constants["clearSubtasks-ConstDeclarations"]
+        C1["CONST: tasksJsonPath, VALUE: args destructuring"]
+        C2["CONST: id, VALUE: args destructuring"]
+        C3["CONST: all, VALUE: args destructuring"]
+        C4["CONST: tag, VALUE: args destructuring"]
+        C5["CONST: projectRoot, VALUE: args destructuring"]
+        C6["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C7["CONST: data, VALUE: readJSON result"]
+        C8["CONST: currentTag, VALUE: data.tag or tag"]
+        C9["CONST: tasks, VALUE: data.tasks"]
+        C10["CONST: updatedData, VALUE: readJSON result after operation"]
+        C11["CONST: taskIdArray, VALUE: parsed task IDs array"]
+        C12["CONST: clearedTasksCount, VALUE: taskIdArray length"]
+        C13["CONST: updatedTasks, VALUE: updatedData.tasks or empty array"]
+        C14["CONST: taskSummary, VALUE: mapped task summary objects"]
+    end
+    subgraph clearSubtasks-ExecutionFlow["clearSubtasks-Execution Flow"]
+        FL1["Destructure arguments from args object"]
+        FL2["Log operation start with provided arguments"]
+        FL3["Validate tasksJsonPath is provided"]
+        FL4["Validate either id or all parameter is provided"]
+        FL5["Set tasksPath to provided tasksJsonPath"]
+        FL6["Check if tasks.json file exists at path"]
+        FL7["Read JSON data with silent migration and tag resolution"]
+        FL8["Validate tasks data exists and is not empty"]
+        FL9["Extract current tag and tasks from data"]
+        FL10["Branch: If all flag set, get all task IDs from tasks"]
+        FL11["Branch: Otherwise use provided task IDs"]
+        FL12["Log operation details with task IDs and tag"]
+        FL13["Enable silent mode to prevent console interference"]
+        FL14["Call clearSubtasks core function with parameters"]
+        FL15["Disable silent mode to restore normal logging"]
+        FL16["Read updated data to provide operation summary"]
+        FL17["Parse task IDs and build task summary objects"]
+        FL18["Return success response with cleared tasks details"]
+        FL19["Handle errors by restoring logging and returning error response"]
+    end
+    subgraph clearSubtasks["clear-subtasks.js"]
+        clearSubtasks-Imports
+        clearSubtasks-Dependencies
+        clearSubtasks-FunctionsDefined
+        clearSubtasks-Exports
+        clearSubtasks-Parameters
+        clearSubtasks-Constants
+        clearSubtasks-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17
+    FL17 --> FL18
+    FL18 --> FL19

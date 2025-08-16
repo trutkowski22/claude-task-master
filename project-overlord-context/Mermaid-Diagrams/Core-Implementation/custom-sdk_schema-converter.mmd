@@ -1,0 +1,87 @@
+```mermaid
+graph TD
+    A[schema-converter.js] --> B[Main Functions]
+    A --> C[Helper Functions]
+    
+    B --> D[convertSchemaToInstructions Function]
+    B --> E[enhancePromptForJSON Function]
+    
+    D --> F[Parameters]
+    F --> G[schema: ZodSchema]
+    F --> H[objectName: string]
+    
+    D --> I{Schema Processing}
+    I -->|Success| J[Generate Example Structure]
+    I -->|Error| K[Fallback Instructions]
+    
+    J --> L[generateExampleFromSchema call]
+    J --> M[Build Detailed Instructions]
+    
+    M --> N[JSON Structure Display]
+    M --> O[Strict Requirements List]
+    O --> P[Start with {, end with }]
+    O --> Q[Double quotes requirement]
+    O --> R[No extra text]
+    O --> S[No markdown blocks]
+    O --> T[No comments]
+    O --> U[Exact property names]
+    O --> V[All required fields]
+    
+    K --> W[Basic JSON Instructions]
+    W --> X[Simplified Requirements]
+    
+    E --> Y[Parameters]
+    Y --> Z[prompt: Array]
+    Y --> AA[jsonInstructions: string]
+    
+    E --> BB[System Message Handling]
+    BB --> CC{System Message Check}
+    CC -->|Exists| DD[Append to existing]
+    CC -->|Missing| EE[Create new system message]
+    
+    DD --> FF[Content concatenation]
+    EE --> GG[Unshift new message]
+    
+    C --> HH[generateExampleFromSchema Function]
+    HH --> II[Parameters]
+    II --> JJ[schema: ZodSchema]
+    
+    HH --> KK{Schema Type Detection}
+    KK -->|ZodObject| LL[Process object shape]
+    KK -->|ZodString| MM[Return 'string']
+    KK -->|ZodNumber| NN[Return 0]
+    KK -->|ZodBoolean| OO[Return false]
+    KK -->|ZodArray| PP[Process array element]
+    KK -->|ZodOptional| QQ[Process inner type]
+    KK -->|ZodNullable| RR[Process inner type]
+    KK -->|ZodEnum| SS[Return first value]
+    KK -->|ZodLiteral| TT[Return literal value]
+    KK -->|ZodUnion| UU[Process first option]
+    KK -->|ZodRecord| VV[Create key-value example]
+    KK -->|default| WW[Return type placeholder]
+    
+    LL --> XX[Shape Iteration]
+    XX --> YY[Recursive Processing]
+    YY --> ZZ[Build result object]
+    
+    PP --> AAA[Element Schema Processing]
+    AAA --> BBB[Return array with example]
+    
+    UU --> CCC{Options Check}
+    CCC -->|Has options| DDD[Process first option]
+    CCC -->|No options| EEE[Return 'union_value']
+    
+    VV --> FFF[Key-value structure]
+    FFF --> GGG[Process value type]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#e3f2fd
+    style HH fill:#f1f8e9
+    style I fill:#ffebee
+    style CC fill:#ffebee
+    style KK fill:#ffebee
+    style CCC fill:#ffebee
+```

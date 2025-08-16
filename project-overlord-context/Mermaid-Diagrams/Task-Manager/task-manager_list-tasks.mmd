@@ -1,0 +1,74 @@
+flowchart TB
+    subgraph ["list-tasks-Imports"]
+        I1["IMPORT: chalk, FROM: chalk"]
+        I2["IMPORT: boxen, FROM: boxen"]
+        I3["IMPORT: Table, FROM: cli-table3"]
+        I4["IMPORT: log, readJSON, truncate, readComplexityReport, addComplexityToTask, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: findNextTask, FROM: /claude-task-master/scripts/modules/task-manager/find-next-task.js"]
+        I6["IMPORT: displayBanner, getStatusWithColor, formatDependenciesWithStatus, getComplexityWithColor, createProgressBar, FROM: /claude-task-master/scripts/modules/ui.js"]
+    end
+    subgraph ["list-tasks-FunctionsDefined"]
+        FU1["FUNCTION: listTasks"]
+        FU2["FUNCTION: getWorkItemDescription"]
+        FU3["FUNCTION: generateMarkdownOutput"]
+    end
+    subgraph ["list-tasks-Exports"]
+        E1["EXP: listTasks (default)"]
+    end
+    subgraph ["list-tasks-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} statusFilter - Filter by status (single status or comma-separated list)"]
+        P3["PARAM: {string} reportPath - Path to the complexity report"]
+        P4["PARAM: {boolean} withSubtasks - Whether to show subtasks"]
+        P5["PARAM: {string} outputFormat - Output format (text or json)"]
+        P6["PARAM: {Object} context - Context object (required)"]
+        P7["PARAM: {string} context.projectRoot - Project root path"]
+        P8["PARAM: {string} context.tag - Tag for the task"]
+        P9["PARAM: {Object} item - Work item (task or subtask)"]
+        P10["PARAM: {Array} allTasks - Array of all tasks"]
+        P11["PARAM: {Object} data - Full tasks data"]
+        P12["PARAM: {Array} filteredTasks - Filtered tasks array"]
+        P13["PARAM: {Object} stats - Statistics object"]
+    end
+    subgraph ["list-tasks-ExecutionFlow"]
+        FL1["Read tasks data using context"]
+        FL2["Add complexity scores from report if available"]
+        FL3["Filter tasks by status (supports comma-separated)"]
+        FL4["Calculate completion statistics for tasks and subtasks"]
+        FL5["Calculate dependency statistics and metrics"]
+        FL6["Find next task to work on"]
+        FL7["Branch by output format: JSON, markdown, or text"]
+        FL8["If JSON: return structured data without details"]
+        FL9["If markdown: generate README-formatted output"]
+        FL10["If text: create responsive dashboard layout"]
+        FL11["Create project and dependency dashboard boxes"]
+        FL12["Calculate terminal width for responsive layout"]
+        FL13["Create tasks table with adaptive column widths"]
+        FL14["Add tasks and optionally subtasks to table"]
+        FL15["Display next task recommendation box"]
+        FL16["Show suggested next steps"]
+    end
+    subgraph ["list-tasks.js"]
+        ["list-tasks-Imports"]
+        ["list-tasks-FunctionsDefined"]
+        ["list-tasks-Exports"]
+        ["list-tasks-Parameters"]
+        ["list-tasks-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL7 --> FL9
+    FL7 --> FL10
+    FL8 --> FL16
+    FL9 --> FL16
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16

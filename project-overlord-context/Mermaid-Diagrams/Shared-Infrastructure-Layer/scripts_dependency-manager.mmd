@@ -1,0 +1,86 @@
+flowchart TB
+    subgraph ["dependency-manager-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: chalk, FROM: chalk"]
+        I3["IMPORT: boxen, FROM: boxen"]
+        I4["IMPORT: log, readJSON, writeJSON, taskExists, formatTaskId, findCycles, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: displayBanner, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I6["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    end
+    subgraph ["dependency-manager-Dependencies"]
+        D1["DEP: Node.js path module"]
+        D2["DEP: Chalk for colored output"]
+        D3["DEP: Boxen for UI boxes"]
+        D4["DEP: Task management utilities"]
+        D5["DEP: File system operations"]
+    end
+    subgraph ["dependency-manager-FunctionsDefined"]
+        FU1["FUNCTION: addDependency"]
+        FU2["FUNCTION: removeDependency"]
+        FU3["FUNCTION: isCircularDependency"]
+        FU4["FUNCTION: validateTaskDependencies"]
+        FU5["FUNCTION: removeDuplicateDependencies"]
+        FU6["FUNCTION: cleanupSubtaskDependencies"]
+        FU7["FUNCTION: validateDependenciesCommand"]
+        FU8["FUNCTION: countAllDependencies"]
+        FU9["FUNCTION: fixDependenciesCommand"]
+        FU10["FUNCTION: ensureAtLeastOneIndependentSubtask"]
+        FU11["FUNCTION: validateAndFixDependencies"]
+    end
+    subgraph ["dependency-manager-Exports"]
+        E1["EXP: addDependency"]
+        E2["EXP: removeDependency"]
+        E3["EXP: isCircularDependency"]
+        E4["EXP: validateTaskDependencies"]
+        E5["EXP: validateDependenciesCommand"]
+        E6["EXP: fixDependenciesCommand"]
+        E7["EXP: removeDuplicateDependencies"]
+        E8["EXP: cleanupSubtaskDependencies"]
+        E9["EXP: ensureAtLeastOneIndependentSubtask"]
+        E10["EXP: validateAndFixDependencies"]
+    end
+    subgraph ["dependency-manager-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {number|string} taskId - ID of the task to add dependency to"]
+        P3["PARAM: {number|string} dependencyId - ID of the task to add as dependency"]
+        P4["PARAM: {Object} context - Context object containing projectRoot and tag information"]
+        P5["PARAM: {string} [context.projectRoot] - Project root path"]
+        P6["PARAM: {string} [context.tag] - Tag for the task"]
+        P7["PARAM: {Array} tasks - Array of all tasks"]
+        P8["PARAM: {Array} chain - Chain of dependencies to check"]
+        P9["PARAM: {Object} options - Options object, including context"]
+        P10["PARAM: {Object} tasksData - Tasks data object with tasks array"]
+        P11["PARAM: {string} projectRoot - Optional project root for tag context"]
+        P12["PARAM: {string} tag - Optional tag for tag context"]
+    end
+    subgraph ["dependency-manager-ExecutionFlow"]
+        FL1["Load and validate tasks from JSON file"]
+        FL2["Format and validate task and dependency IDs"]
+        FL3["Check for target task existence (task or subtask)"]
+        FL4["Validate dependency target exists and prevent self-dependency"]
+        FL5["Check for circular dependencies before adding"]
+        FL6["Add dependency and sort dependencies array"]
+        FL7["Save changes and display success message"]
+        FL8["Remove dependencies with validation and cleanup"]
+        FL9["Validate all task dependencies for integrity"]
+        FL10["Fix invalid dependencies including duplicates and circular refs"]
+        FL11["Export comprehensive dependency management functions"]
+    end
+    subgraph ["dependency-manager.js"]
+        ["dependency-manager-Imports"]
+        ["dependency-manager-Dependencies"]
+        ["dependency-manager-FunctionsDefined"]
+        ["dependency-manager-Exports"]
+        ["dependency-manager-Parameters"]
+        ["dependency-manager-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

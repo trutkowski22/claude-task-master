@@ -1,0 +1,73 @@
+flowchart TB
+    subgraph ["sync-readme-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: chalk, FROM: chalk"]
+        I4["IMPORT: log, findProjectRoot, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: getProjectName, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I6["IMPORT: listTasks, FROM: /claude-task-master/scripts/modules/task-manager/list-tasks.js"]
+    end
+    subgraph ["sync-readme-Dependencies"]
+        D1["DEP: Node.js file system and path modules"]
+        D2["DEP: Chalk for colored output"]
+        D3["DEP: Project utilities"]
+        D4["DEP: Task management system"]
+    end
+    subgraph ["sync-readme-FunctionsDefined"]
+        FU1["FUNCTION: createBasicReadme"]
+        FU2["FUNCTION: createTaskMasterUrl"]
+        FU3["FUNCTION: createStartMarker"]
+        FU4["FUNCTION: createEndMarker"]
+        FU5["FUNCTION: syncTasksToReadme"]
+    end
+    subgraph ["sync-readme-Exports"]
+        E1["EXP: syncTasksToReadme"]
+        E2["EXP: default"]
+    end
+    subgraph ["sync-readme-Parameters"]
+        P1["PARAM: {string} projectName - Name of the project"]
+        P2["PARAM: {string} projectRoot - The project root path"]
+        P3["PARAM: {Object} options - Export options"]
+        P4["PARAM: {string} projectRoot - Path to the project root directory"]
+        P5["PARAM: {Object} options - Options for syncing"]
+        P6["PARAM: {boolean} options.withSubtasks - Include subtasks in the output"]
+        P7["PARAM: {string} options.status - Filter by status"]
+        P8["PARAM: {string} options.tasksPath - Custom path to tasks.json"]
+    end
+    subgraph ["sync-readme-Constants"]
+        C1["CONST: actualProjectRoot, VALUE: projectRoot or findProjectRoot result"]
+        C2["CONST: timestamp, VALUE: Current ISO timestamp formatted"]
+        C3["CONST: startMarker, VALUE: HTML comment start marker with metadata"]
+        C4["CONST: endMarker, VALUE: HTML comment end marker"]
+        C5["CONST: taskSection, VALUE: Complete markdown section with tasks"]
+        C6["CONST: readmePath, VALUE: Path to README.md file"]
+        C7["CONST: updatedContent, VALUE: README content with updated task section"]
+    end
+    subgraph ["sync-readme-ExecutionFlow"]
+        FL1["Create basic README structure if none exists"]
+        FL2["Generate UTM tracking URL with project folder name"]
+        FL3["Create export markers with timestamp and options metadata"]
+        FL4["Get current tasks using list-tasks with markdown-readme format"]
+        FL5["Read existing README content or create new one"]
+        FL6["Find existing task export section using HTML comments"]
+        FL7["Replace or append task section with updated content"]
+        FL8["Write updated README content to file system"]
+        FL9["Display success message with export details"]
+    end
+    subgraph ["sync-readme.js"]
+        ["sync-readme-Imports"]
+        ["sync-readme-Dependencies"]
+        ["sync-readme-FunctionsDefined"]
+        ["sync-readme-Exports"]
+        ["sync-readme-Parameters"]
+        ["sync-readme-Constants"]
+        ["sync-readme-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

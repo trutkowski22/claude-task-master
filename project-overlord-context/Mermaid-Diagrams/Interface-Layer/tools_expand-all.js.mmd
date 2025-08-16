@@ -1,0 +1,54 @@
+```mermaid
+graph TB
+    subgraph "Expand All Tool (expand-all.js)"
+        A[registerExpandAllTool] --> B[Define Tool Schema]
+        B --> C[Tool: expand_all]
+        
+        C --> D[Parameters]
+        D --> E[num: Target subtasks per task]
+        D --> F[research: Research-backed generation]
+        D --> G[prompt: Additional context]
+        D --> H[force: Force regeneration flag]
+        D --> I[file: Optional tasks file path]
+        D --> J[projectRoot: Project directory]
+        D --> K[tag: Optional tag context]
+        
+        C --> L[Execute Handler]
+        L --> M[withNormalizedProjectRoot wrapper]
+        M --> N[Log execution start]
+        N --> O[resolveTag]
+        O --> P[findTasksPath]
+        P --> Q{Path found?}
+        
+        Q -->|No| R[Return error response]
+        Q -->|Yes| S[Log resolved path]
+        S --> T[expandAllTasksDirect]
+        
+        T --> U[handleApiResult]
+        U --> V[Return formatted response]
+        
+        L --> W[Error Handling]
+        W --> X[Log error and stack trace]
+        X --> Y[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        Z[utils.js]
+        AA[task-master-core.js]
+        BB[path-utils.js]
+        CC[scripts/modules/utils.js]
+    end
+    
+    Z --> M
+    Z --> R
+    Z --> U
+    Z --> Y
+    AA --> T
+    BB --> P
+    CC --> O
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style L fill:#e8f5e8
+    style T fill:#fff3e0
+```

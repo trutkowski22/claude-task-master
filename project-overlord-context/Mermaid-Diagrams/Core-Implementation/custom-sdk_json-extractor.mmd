@@ -1,0 +1,71 @@
+```mermaid
+graph TD
+    A[json-extractor.js] --> B[extractJson Function]
+    
+    B --> C[Parameters]
+    C --> D[text: string]
+    
+    B --> E[Preprocessing Steps]
+    E --> F[Remove Markdown Blocks]
+    E --> G[Remove JS/TS Patterns]
+    E --> H[Remove Explanatory Text]
+    
+    F --> I[Remove ```json blocks]
+    F --> J[Remove ``` blocks]
+    F --> K[Clean block markers]
+    
+    G --> L[Remove const declarations]
+    G --> M[Remove let declarations]
+    G --> N[Remove var declarations]
+    G --> O[Remove trailing semicolons]
+    
+    H --> P[Remove text before JSON]
+    H --> Q[Find JSON boundaries]
+    
+    Q --> R[Brace Tracking Logic]
+    R --> S[Character Iteration]
+    S --> T[String State Tracking]
+    S --> U[Escape Character Handling]
+    S --> V[Brace Counting]
+    
+    T --> W[inString boolean]
+    U --> X[escapeNext boolean]
+    V --> Y[braceCount integer]
+    
+    S --> Z{Character Analysis}
+    Z -->|Escape char| AA[Set escapeNext]
+    Z -->|Quote char| BB[Toggle inString]
+    Z -->|Open brace/bracket| CC[Increment count]
+    Z -->|Close brace/bracket| DD[Decrement count]
+    
+    DD --> EE{Count Zero Check}
+    EE -->|Yes| FF[Mark JSON end]
+    EE -->|No| GG[Continue parsing]
+    
+    R --> HH[Fallback Regex Matching]
+    HH --> II[Object pattern match]
+    HH --> JJ[Array pattern match]
+    
+    B --> KK[JSON Validation]
+    KK --> LL{Parse Attempt}
+    LL -->|Success| MM[Return valid JSON]
+    LL -->|Fail| NN[Object Literal Conversion]
+    
+    NN --> OO[Quote unquoted keys]
+    NN --> PP[Convert single quotes]
+    NN --> QQ[Remove trailing commas]
+    
+    NN --> RR{Second Parse Attempt}
+    RR -->|Success| SS[Return converted JSON]
+    RR -->|Fail| TT[Return original text]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style E fill:#e8f5e8
+    style R fill:#fff3e0
+    style KK fill:#e3f2fd
+    style Z fill:#ffebee
+    style LL fill:#ffebee
+    style EE fill:#ffebee
+    style RR fill:#ffebee
+```

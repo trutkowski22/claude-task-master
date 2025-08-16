@@ -1,0 +1,84 @@
+flowchart TB
+    subgraph ["init-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: readline, FROM: readline"]
+        I4["IMPORT: fileURLToPath, FROM: url"]
+        I5["IMPORT: dirname, FROM: path"]
+        I6["IMPORT: chalk, FROM: chalk"]
+        I7["IMPORT: figlet, FROM: figlet"]
+        I8["IMPORT: boxen, FROM: boxen"]
+        I9["IMPORT: gradient, FROM: gradient-string"]
+        I10["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I11["IMPORT: insideGitWorkTree, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
+        I12["IMPORT: manageGitignoreFile, FROM: /claude-task-master/src/utils/manage-gitignore.js"]
+        I13["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+        I14["IMPORT: convertAllRulesToProfileRules, getRulesProfile, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I15["IMPORT: updateConfigMaxTokens, FROM: /claude-task-master/scripts/modules/update-config-tokens.js"]
+        I16["IMPORT: execSync, FROM: child_process"]
+        I17["IMPORT: EXAMPLE_PRD_FILE, TASKMASTER_CONFIG_FILE, TASKMASTER_TEMPLATES_DIR, TASKMASTER_DIR, TASKMASTER_TASKS_DIR, TASKMASTER_DOCS_DIR, TASKMASTER_REPORTS_DIR, TASKMASTER_STATE_FILE, ENV_EXAMPLE_FILE, GITIGNORE_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    subgraph ["init-Dependencies"]
+        D1["DEP: Node.js built-in modules (fs, path, readline, child_process)"]
+        D2["DEP: CLI UI libraries (chalk, figlet, boxen, gradient)"]
+        D3["DEP: Git utilities and repository management"]
+        D4["DEP: Configuration and template management"]
+        D5["DEP: Project structure constants"]
+    end
+    subgraph ["init-FunctionsDefined"]
+        FU1["FUNCTION: displayBanner"]
+        FU2["FUNCTION: log"]
+        FU3["FUNCTION: ensureDirectoryExists"]
+        FU4["FUNCTION: addShellAliases"]
+        FU5["FUNCTION: createInitialStateFile"]
+        FU6["FUNCTION: copyTemplateFile"]
+        FU7["FUNCTION: initializeProject"]
+        FU8["FUNCTION: promptQuestion"]
+        FU9["FUNCTION: createProjectStructure"]
+        FU10["FUNCTION: _processSingleProfile"]
+    end
+    subgraph ["init-Exports"]
+        E1["EXP: initializeProject"]
+        E2["EXP: log"]
+    end
+    subgraph ["init-Constants"]
+        C1["CONST: LOG_LEVELS, VALUE: Object mapping log levels to numbers"]
+        C2["CONST: LOG_LEVEL, VALUE: Environment-based log level configuration"]
+        C3["CONST: coolGradient, VALUE: Blue gradient for banner styling"]
+        C4["CONST: warmGradient, VALUE: Orange/red gradient for success messages"]
+        C5["CONST: __filename, VALUE: Current module file path"]
+        C6["CONST: __dirname, VALUE: Current module directory path"]
+        C7["CONST: targetDir, VALUE: Current working directory for project"]
+        C8["CONST: selectedRuleProfiles, VALUE: Array of rule profiles to install"]
+        C9["CONST: replacements, VALUE: Template replacement variables"]
+        C10["CONST: shellConfigFile, VALUE: Path to user shell configuration"]
+    end
+    subgraph ["init-ExecutionFlow"]
+        FL1["Display branded banner with ASCII art and project description"]
+        FL2["Handle command-line options and interactive prompts"]
+        FL3["Create Task Master directory structure with proper organization"]
+        FL4["Copy template files with project-specific replacements"]
+        FL5["Initialize Git repository if requested and available"]
+        FL6["Configure shell aliases for easier command access"]
+        FL7["Set up rule profiles based on user selection"]
+        FL8["Run interactive model and language configuration"]
+        FL9["Install dependencies and complete project setup"]
+        FL10["Display success message and next steps guidance"]
+    end
+    subgraph ["init.js"]
+        ["init-Imports"]
+        ["init-Dependencies"]
+        ["init-FunctionsDefined"]
+        ["init-Exports"]
+        ["init-Constants"]
+        ["init-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
