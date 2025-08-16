@@ -1,0 +1,79 @@
+flowchart TB
+    subgraph claude-Imports["claude-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: isSilentMode, log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createProfile, FROM: /claude-task-master/src/profiles/base-profile.js"]
+    end
+    
+    subgraph claude-FunctionsDefined["claude-Functions Defined"]
+        FU1["FUNCTION: copyRecursiveSync"]
+        FU2["FUNCTION: removeDirectoryRecursive"]
+        FU3["FUNCTION: onAddRulesProfile"]
+        FU4["FUNCTION: onRemoveRulesProfile"]
+        FU5["FUNCTION: transformToClaudeFormat"]
+        FU6["FUNCTION: onPostConvertRulesProfile"]
+    end
+    
+    subgraph claude-Exports["claude-Exports"]
+        E1["EXP: claudeProfile"]
+        E2["EXP: onAddRulesProfile"]
+        E3["EXP: onRemoveRulesProfile"]
+        E4["EXP: onPostConvertRulesProfile"]
+    end
+    
+    subgraph claude-Parameters["claude-Parameters"]
+        P1["PARAM: {string} src - Source directory path"]
+        P2["PARAM: {string} dest - Destination directory path"]
+        P3["PARAM: {string} dirPath - Directory path to remove"]
+        P4["PARAM: {string} targetDir - Target directory for profile setup"]
+        P5["PARAM: {string} assetsDir - Assets directory containing source files"]
+        P6["PARAM: {Object} mcpConfig - Standard MCP configuration object"]
+    end
+    
+    subgraph claude-Constants["claude-Const Declarations"]
+        C1["CONST: exists, VALUE: fs.existsSync(src)"]
+        C2["CONST: stats, VALUE: exists && fs.statSync(src)"]
+        C3["CONST: isDirectory, VALUE: exists && stats.isDirectory()"]
+        C4["CONST: claudeSourceDir, VALUE: path.join(assetsDir, 'claude')"]
+        C5["CONST: claudeDestDir, VALUE: path.join(targetDir, '.claude')"]
+        C6["CONST: userClaudeFile, VALUE: path.join(targetDir, 'CLAUDE.md')"]
+        C7["CONST: taskMasterClaudeFile, VALUE: path.join(targetDir, '.taskmaster', 'CLAUDE.md')"]
+        C8["CONST: importLine, VALUE: '@./.taskmaster/CLAUDE.md'"]
+        C9["CONST: claudeConfig, VALUE: {}"]
+        C10["CONST: reorderedServer, VALUE: {}"]
+    end
+    
+    subgraph claude-ExecutionFlow["claude-Execution Flow"]
+        FL1["Provide recursive directory copy functionality"]
+        FL2["Provide recursive directory removal functionality"]
+        FL3["Copy .claude directory from assets to target during profile addition"]
+        FL4["Set up CLAUDE.md import system for non-destructive integration"]
+        FL5["Create Task Master instructions at .taskmaster/CLAUDE.md"]
+        FL6["Add import reference to user's CLAUDE.md if exists"]
+        FL7["Remove .claude directory and clean up imports during profile removal"]
+        FL8["Transform standard MCP configuration to Claude format"]
+        FL9["Add type: stdio as first key in server configurations"]
+        FL10["Handle post-conversion setup including MCP config transformation"]
+        FL11["Create profile with root directory placement and custom file mapping"]
+    end
+    
+    subgraph claude["claude.js"]
+        claude-Imports
+        claude-FunctionsDefined
+        claude-Exports
+        claude-Parameters
+        claude-Constants
+        claude-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

@@ -1,0 +1,67 @@
+```mermaid
+graph TD
+    A[rule-transformer.js] --> B[Profile Management]
+    A --> C[Rule Conversion]
+    A --> D[Content Transformation]
+    A --> E[Profile Operations]
+    
+    B --> F[isValidProfile]
+    B --> G[getRulesProfile]
+    
+    C --> H[convertRuleToProfileRule]
+    C --> I[convertAllRulesToProfileRules]
+    
+    D --> J[transformRuleContent]
+    D --> K[replaceBasicTerms]
+    D --> L[replaceToolReferences]
+    D --> M[updateDocReferences]
+    D --> N[updateFileReferences]
+    
+    E --> O[removeProfileRules]
+    
+    G --> P[profiles/index.js]
+    G --> Q{Profile exists?}
+    Q -->|Yes| R[Return profile object]
+    Q -->|No| S[Throw error]
+    
+    H --> T[Read source file]
+    T --> U[Transform content]
+    U --> J
+    U --> V[Write target file]
+    
+    I --> W[onAddRulesProfile hook]
+    W --> X[Process fileMap]
+    X --> Y{For each file}
+    Y --> Z[Read source]
+    Z --> AA{Is asset file?}
+    AA -->|No| BB[Apply transformations]
+    AA -->|Yes| CC[Copy directly]
+    BB --> DD[Write to target]
+    CC --> DD
+    DD --> EE[Setup MCP config]
+    EE --> FF[onPostConvertRulesProfile hook]
+    
+    J --> GG[updateFileReferences]
+    GG --> HH[replaceBasicTerms]
+    HH --> II[replaceToolReferences]
+    II --> JJ[updateDocReferences]
+    JJ --> KK[Apply global replacements]
+    
+    O --> LL[onRemoveRulesProfile hook]
+    LL --> MM[Remove fileMap files]
+    MM --> NN[Remove MCP config]
+    NN --> OO[Remove empty directories]
+    OO --> PP[Return result object]
+    
+    QQ[External Dependencies] --> RR[constants/profiles.js]
+    QQ --> SS[profiles/index.js]
+    QQ --> TT[create-mcp-config.js]
+    QQ --> UU[utils.js]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style E fill:#f3e5f5
+    style QQ fill:#fff3e0
+```

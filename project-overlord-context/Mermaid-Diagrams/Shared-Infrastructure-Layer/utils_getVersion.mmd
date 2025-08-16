@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph getVersion-Imports["getVersion-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fileURLToPath, FROM: url"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph getVersion-FunctionsDefined["getVersion-Functions Defined"]
+        FU1["FUNCTION: getTaskMasterVersion"]
+    end
+    
+    subgraph getVersion-Exports["getVersion-Exports"]
+        E1["EXP: getTaskMasterVersion"]
+    end
+    
+    subgraph getVersion-Constants["getVersion-Const Declarations"]
+        C1["CONST: version, VALUE: 'unknown'"]
+        C2["CONST: currentModuleFilename, VALUE: fileURLToPath(import.meta.url)"]
+        C3["CONST: currentModuleDirname, VALUE: path.dirname(currentModuleFilename)"]
+        C4["CONST: packageJsonPath, VALUE: path.join(currentModuleDirname, '..', '..', 'package.json')"]
+        C5["CONST: packageJsonContent, VALUE: fs.readFileSync(packageJsonPath, 'utf8')"]
+        C6["CONST: packageJson, VALUE: JSON.parse(packageJsonContent)"]
+    end
+    
+    subgraph getVersion-ExecutionFlow["getVersion-Execution Flow"]
+        FL1["Initialize version as 'unknown' default value"]
+        FL2["Get current module filename using fileURLToPath and import.meta.url"]
+        FL3["Get current module directory using path.dirname"]
+        FL4["Construct path to package.json relative to current file (../../package.json)"]
+        FL5["Check if package.json exists at calculated path"]
+        FL6["Read package.json content as UTF-8 text"]
+        FL7["Parse JSON content and extract version property"]
+        FL8["Return version string or fall back to 'unknown' on error"]
+        FL9["Log warning if package.json reading fails but continue silently"]
+    end
+    
+    subgraph getVersion["getVersion.js"]
+        getVersion-Imports
+        getVersion-FunctionsDefined
+        getVersion-Exports
+        getVersion-Constants
+        getVersion-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

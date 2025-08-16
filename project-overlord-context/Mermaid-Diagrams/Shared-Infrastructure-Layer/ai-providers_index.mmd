@@ -1,0 +1,42 @@
+flowchart TB
+    subgraph aiProvidersIndex-Exports["aiProvidersIndex-Exports"]
+        E1["EXP: AnthropicAIProvider, FROM: /claude-task-master/src/ai-providers/anthropic.js"]
+        E2["EXP: PerplexityAIProvider, FROM: /claude-task-master/src/ai-providers/perplexity.js"]
+        E3["EXP: GoogleAIProvider, FROM: /claude-task-master/src/ai-providers/google.js"]
+        E4["EXP: OpenAIProvider, FROM: /claude-task-master/src/ai-providers/openai.js"]
+        E5["EXP: XAIProvider, FROM: /claude-task-master/src/ai-providers/xai.js"]
+        E6["EXP: GroqProvider, FROM: /claude-task-master/src/ai-providers/groq.js"]
+        E7["EXP: OpenRouterAIProvider, FROM: /claude-task-master/src/ai-providers/openrouter.js"]
+        E8["EXP: OllamaAIProvider, FROM: /claude-task-master/src/ai-providers/ollama.js"]
+        E9["EXP: BedrockAIProvider, FROM: /claude-task-master/src/ai-providers/bedrock.js"]
+        E10["EXP: AzureProvider, FROM: /claude-task-master/src/ai-providers/azure.js"]
+        E11["EXP: VertexAIProvider, FROM: /claude-task-master/src/ai-providers/google-vertex.js"]
+        E12["EXP: ClaudeCodeProvider, FROM: /claude-task-master/src/ai-providers/claude-code.js"]
+        E13["EXP: GeminiCliProvider, FROM: /claude-task-master/src/ai-providers/gemini-cli.js"]
+    end
+    
+    subgraph aiProvidersIndex-ExecutionFlow["aiProvidersIndex-Execution Flow"]
+        FL1["Centralize export of all AI provider classes"]
+        FL2["Re-export AnthropicAIProvider for Claude models"]
+        FL3["Re-export PerplexityAIProvider for Perplexity AI"]
+        FL4["Re-export GoogleAIProvider for Google AI models"]
+        FL5["Re-export OpenAIProvider for OpenAI models"]
+        FL6["Re-export additional providers (XAI, Groq, OpenRouter, Ollama, Bedrock, Azure)"]
+        FL7["Re-export VertexAIProvider for Google Vertex AI"]
+        FL8["Re-export ClaudeCodeProvider for Claude Code CLI"]
+        FL9["Re-export GeminiCliProvider for Gemini CLI"]
+    end
+    
+    subgraph aiProvidersIndex["index.js"]
+        aiProvidersIndex-Exports
+        aiProvidersIndex-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

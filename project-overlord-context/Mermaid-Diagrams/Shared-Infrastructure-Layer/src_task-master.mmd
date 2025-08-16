@@ -1,0 +1,87 @@
+flowchart TB
+    subgraph taskMaster-Imports["taskMaster-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: TASKMASTER_DIR, TASKMASTER_TASKS_FILE, etc., FROM: /claude-task-master/src/constants/paths.js"]
+        I4["IMPORT: findProjectRoot, FROM: /claude-task-master/src/utils/path-utils.js"]
+    end
+    
+    subgraph taskMaster-FunctionsDefined["taskMaster-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getProjectRoot"]
+        FU3["FUNCTION: getTaskMasterDir"]
+        FU4["FUNCTION: getTasksPath"]
+        FU5["FUNCTION: getPrdPath"]
+        FU6["FUNCTION: getComplexityReportPath"]
+        FU7["FUNCTION: getConfigPath"]
+        FU8["FUNCTION: getStatePath"]
+        FU9["FUNCTION: getAllPaths"]
+        FU10["FUNCTION: getCurrentTag"]
+        FU11["FUNCTION: initTaskMaster"]
+        FU12["FUNCTION: resolvePath"]
+    end
+    
+    subgraph taskMaster-Exports["taskMaster-Exports"]
+        E1["EXP: TaskMaster"]
+        E2["EXP: initTaskMaster"]
+    end
+    
+    subgraph taskMaster-Parameters["taskMaster-Parameters"]
+        P1["PARAM: {object} paths - A pre-resolved object of all application paths"]
+        P2["PARAM: {string|undefined} tag - The current tag"]
+        P3["PARAM: {object} [overrides={}] - An object with possible path overrides"]
+        P4["PARAM: {string} pathType - Type of path being resolved"]
+        P5["PARAM: {string} override - Override value"]
+        P6["PARAM: {array} defaultPaths - Default paths to search"]
+        P7["PARAM: {string} basePath - Base path for resolution"]
+        P8["PARAM: {boolean} createParentDirs - Whether to create parent directories"]
+    end
+    
+    subgraph taskMaster-Constants["taskMaster-Const Declarations"]
+        C1["CONST: this.#paths, VALUE: Object.freeze({ ...paths })"]
+        C2["CONST: this.#tag, VALUE: tag"]
+        C3["CONST: complexityReportFile, VALUE: tag-aware complexity report filename"]
+        C4["CONST: rawState, VALUE: fs.readFileSync(this.#paths.statePath, 'utf8')"]
+        C5["CONST: stateData, VALUE: JSON.parse(rawState)"]
+        C6["CONST: rawConfig, VALUE: fs.readFileSync(this.#paths.configPath, 'utf8')"]
+        C7["CONST: configData, VALUE: JSON.parse(rawConfig)"]
+        C8["CONST: resolvedPath, VALUE: path.resolve based on override"]
+        C9["CONST: paths, VALUE: {}"]
+        C10["CONST: resolvedOverride, VALUE: path.resolve(overrides.projectRoot)"]
+    end
+    
+    subgraph taskMaster-ExecutionFlow["taskMaster-Execution Flow"]
+        FL1["Create TaskMaster class for centralized path management"]
+        FL2["Store frozen paths object and tag in private fields"]
+        FL3["Provide getter methods for all application paths"]
+        FL4["Handle tag-aware complexity report path generation"]
+        FL5["Get current tag from state.json or config.json with fallbacks"]
+        FL6["Initialize TaskMaster with path resolution factory function"]
+        FL7["Define resolvePath helper for path validation and creation"]
+        FL8["Resolve project root with validation for taskmaster project"]
+        FL9["Set up default paths for config, state, and tasks"]
+        FL10["Handle path overrides with validation and resolution"]
+        FL11["Support parent directory creation for output paths"]
+        FL12["Return initialized TaskMaster instance with resolved paths"]
+    end
+    
+    subgraph taskMaster["task-master.js"]
+        taskMaster-Imports
+        taskMaster-FunctionsDefined
+        taskMaster-Exports
+        taskMaster-Parameters
+        taskMaster-Constants
+        taskMaster-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

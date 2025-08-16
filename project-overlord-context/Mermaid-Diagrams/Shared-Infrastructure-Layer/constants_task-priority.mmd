@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph taskPriority-FunctionsDefined["taskPriority-Functions Defined"]
+        FU1["FUNCTION: isValidTaskPriority"]
+        FU2["FUNCTION: normalizeTaskPriority"]
+    end
+    
+    subgraph taskPriority-Exports["taskPriority-Exports"]
+        E1["EXP: TASK_PRIORITY_OPTIONS"]
+        E2["EXP: DEFAULT_TASK_PRIORITY"]
+        E3["EXP: isValidTaskPriority"]
+        E4["EXP: normalizeTaskPriority"]
+    end
+    
+    subgraph taskPriority-Parameters["taskPriority-Parameters"]
+        P1["PARAM: {string} priority - The priority to check"]
+        P2["PARAM: {string} priority - The priority to normalize"]
+    end
+    
+    subgraph taskPriority-Constants["taskPriority-Const Declarations"]
+        C1["CONST: TASK_PRIORITY_OPTIONS, VALUE: ['high', 'medium', 'low']"]
+        C2["CONST: DEFAULT_TASK_PRIORITY, VALUE: 'medium'"]
+        C3["CONST: normalized, VALUE: priority.toLowerCase()"]
+    end
+    
+    subgraph taskPriority-ExecutionFlow["taskPriority-Execution Flow"]
+        FL1["Define array of valid task priority options"]
+        FL2["Include high priority for critical tasks"]
+        FL3["Include medium priority as default standard"]
+        FL4["Include low priority for deferrable tasks"]
+        FL5["Set medium as default task priority"]
+        FL6["Provide validation function with case-insensitive checking"]
+        FL7["Provide normalization function with validation"]
+        FL8["Return lowercase normalized priority or null if invalid"]
+        FL9["Export constants and functions for task priority management"]
+    end
+    
+    subgraph taskPriority["task-priority.js"]
+        taskPriority-FunctionsDefined
+        taskPriority-Exports
+        taskPriority-Parameters
+        taskPriority-Constants
+        taskPriority-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

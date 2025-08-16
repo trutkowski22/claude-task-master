@@ -1,0 +1,48 @@
+flowchart TB
+    subgraph providers-Exports["providers-Exports"]
+        E1["EXP: VALIDATED_PROVIDERS"]
+        E2["EXP: CUSTOM_PROVIDERS"]
+        E3["EXP: CUSTOM_PROVIDERS_ARRAY"]
+        E4["EXP: ALL_PROVIDERS"]
+    end
+    
+    subgraph providers-Constants["providers-Const Declarations"]
+        C1["CONST: VALIDATED_PROVIDERS, VALUE: array of providers with predefined model lists"]
+        C2["CONST: anthropic, VALUE: Anthropic Claude provider"]
+        C3["CONST: openai, VALUE: OpenAI GPT provider"]
+        C4["CONST: google, VALUE: Google AI provider"]
+        C5["CONST: perplexity, VALUE: Perplexity AI provider"]
+        C6["CONST: mistral, VALUE: Mistral AI provider"]
+        C7["CONST: CUSTOM_PROVIDERS, VALUE: object with custom provider constants"]
+        C8["CONST: VERTEX, VALUE: 'vertex' for Google Vertex AI"]
+        C9["CONST: OPENROUTER, VALUE: 'openrouter' for OpenRouter service"]
+        C10["CONST: OLLAMA, VALUE: 'ollama' for local Ollama service"]
+        C11["CONST: CLAUDE_CODE, VALUE: 'claude-code' for Claude Code CLI"]
+        C12["CONST: MCP, VALUE: 'mcp' for Model Context Protocol"]
+        C13["CONST: GEMINI_CLI, VALUE: 'gemini-cli' for Gemini CLI"]
+        C14["CONST: CUSTOM_PROVIDERS_ARRAY, VALUE: Object.values(CUSTOM_PROVIDERS)"]
+        C15["CONST: ALL_PROVIDERS, VALUE: spread of VALIDATED_PROVIDERS and CUSTOM_PROVIDERS_ARRAY"]
+    end
+    
+    subgraph providers-ExecutionFlow["providers-Execution Flow"]
+        FL1["Define providers that should be validated against supported-models.json"]
+        FL2["Include major commercial AI providers with predefined models"]
+        FL3["Define custom providers object for named access"]
+        FL4["Include specialized providers (Vertex, OpenRouter, Ollama, CLI tools)"]
+        FL5["Create array version of custom providers for backward compatibility"]
+        FL6["Combine validated and custom providers into comprehensive list"]
+        FL7["Export all constants for provider validation and selection"]
+    end
+    
+    subgraph providers["providers.js"]
+        providers-Exports
+        providers-Constants
+        providers-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

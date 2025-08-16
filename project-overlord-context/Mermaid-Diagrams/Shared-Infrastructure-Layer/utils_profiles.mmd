@@ -1,0 +1,69 @@
+```mermaid
+graph TD
+    A[profiles.js] --> B[Profile Detection]
+    A --> C[Profile Setup]
+    A --> D[Profile Summary]
+    
+    B --> E[getProfileDisplayName]
+    B --> F[getInstalledProfiles]
+    B --> G[wouldRemovalLeaveNoProfiles]
+    
+    C --> H[runInteractiveProfilesSetup]
+    
+    D --> I[generateProfileSummary]
+    D --> J[generateProfileRemovalSummary]
+    D --> K[categorizeProfileResults]
+    D --> L[categorizeRemovalResults]
+    
+    E --> M[getRulesProfile]
+    M --> N[rule-transformer.js]
+    
+    F --> O{For each profile}
+    O --> P[Check profile directory]
+    O --> Q[Check rule files exist]
+    Q --> R[Add to installed list]
+    
+    G --> S[Get installed profiles]
+    S --> T[Filter out profiles to remove]
+    T --> U{Any remaining?}
+    U -->|No| V[Return true]
+    U -->|Yes| W[Return false]
+    
+    H --> X[Generate profile descriptions]
+    X --> Y[Sort alphabetically]
+    Y --> Z[Display in boxen]
+    Z --> AA[Show inquirer prompt]
+    AA --> BB[Validate selection]
+    BB --> CC[Return selected profiles]
+    
+    I --> DD{Profile type?}
+    DD -->|Integration guide| EE[Simple success message]
+    DD -->|Rule profile| FF[Files processed summary]
+    
+    J --> GG{Removal result?}
+    GG -->|Skipped| HH[Skipped message]
+    GG -->|Error| II[Error message]
+    GG -->|Success| JJ{Profile type?}
+    JJ -->|Integration guide| KK[Guide removed message]
+    JJ -->|Rule profile| LL[Profile removed message]
+    
+    K --> MM[Process add results]
+    MM --> NN[Count success/failed]
+    MM --> OO[Categorize by success]
+    
+    L --> PP[Process removal results]
+    PP --> QQ[Categorize by outcome]
+    QQ --> RR[successful/skipped/failed/notices]
+    
+    SS[External Dependencies] --> TT[rule-transformer.js]
+    SS --> UU[constants/profiles.js]
+    SS --> VV[inquirer]
+    SS --> WW[chalk]
+    SS --> XX[boxen]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style SS fill:#fff3e0
+```

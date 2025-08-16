@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph perplexity-Imports["perplexity-Imports"]
+        I1["IMPORT: createPerplexity, FROM: @ai-sdk/perplexity"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph perplexity-FunctionsDefined["perplexity-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: getClient"]
+        FU4["FUNCTION: generateObject"]
+    end
+    
+    subgraph perplexity-Exports["perplexity-Exports"]
+        E1["EXP: PerplexityAIProvider"]
+    end
+    
+    subgraph perplexity-Parameters["perplexity-Parameters"]
+        P1["PARAM: {object} params - Parameters for client initialization"]
+        P2["PARAM: {string} params.apiKey - Perplexity API key"]
+        P3["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+    end
+    
+    subgraph perplexity-Constants["perplexity-Const Declarations"]
+        C1["CONST: { apiKey, baseURL }, VALUE: params"]
+    end
+    
+    subgraph perplexity-ExecutionFlow["perplexity-Execution Flow"]
+        FL1["Extend BaseAIProvider class with Perplexity implementation"]
+        FL2["Set provider name to 'Perplexity' in constructor"]
+        FL3["Return PERPLEXITY_API_KEY as required environment variable"]
+        FL4["Validate API key is present in getClient"]
+        FL5["Create Perplexity client with apiKey and baseURL (default to api.perplexity.ai)"]
+        FL6["Override generateObject to force JSON mode for better reliability"]
+        FL7["Handle errors using inherited error handling method"]
+    end
+    
+    subgraph perplexity["perplexity.js"]
+        perplexity-Imports
+        perplexity-FunctionsDefined
+        perplexity-Exports
+        perplexity-Parameters
+        perplexity-Constants
+        perplexity-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

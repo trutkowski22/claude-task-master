@@ -1,0 +1,29 @@
+```mermaid
+graph TD
+    A[logger-utils.js] --> B[createStandardLogger]
+    A --> C[getLoggerOrDefault]
+    
+    B --> D[Returns Logger Object]
+    D --> E[info method]
+    D --> F[warn method]
+    D --> G[error method]
+    D --> H[debug method]
+    D --> I[success method]
+    
+    J[utilLog from utils.js] --> E
+    J --> F
+    J --> G
+    J --> H
+    J --> I
+    
+    C --> K{providedLogger exists?}
+    K -->|Yes| L[Return providedLogger]
+    K -->|No| M[Call createStandardLogger]
+    M --> D
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style J fill:#fff3e0
+```

@@ -1,0 +1,54 @@
+```mermaid
+graph TD
+    A[roo.js] --> B[Import Dependencies]
+    A --> C[Lifecycle Functions]
+    A --> D[Profile Creation]
+    
+    B --> E[base-profile.js]
+    B --> F[constants/profiles.js]
+    B --> G[utils.js]
+    
+    C --> H[onAddRulesProfile]
+    C --> I[onRemoveRulesProfile]
+    C --> J[onPostConvertRulesProfile]
+    C --> K[copyRecursiveSync]
+    
+    D --> L[createProfile factory]
+    L --> M[Profile Configuration]
+    
+    H --> N[Copy roocode directory]
+    N --> O[Copy .roomodes file]
+    O --> P{For each ROO_MODE}
+    P --> Q[Copy rules-{mode} files]
+    Q --> R[Create .roo directory structure]
+    
+    I --> S[Remove .roomodes file]
+    S --> T[Remove .roo/rules-* directories]
+    T --> U{.roo directory empty?}
+    U -->|Yes| V[Remove .roo directory]
+    U -->|No| W[Keep .roo directory]
+    
+    J --> X[Call onAddRulesProfile]
+    
+    K --> Y[Check if source is directory]
+    Y -->|Yes| Z[Create destination directory]
+    Z --> AA[Recursively copy contents]
+    Y -->|No| BB[Copy file directly]
+    
+    M --> CC[name: 'roo']
+    M --> DD[displayName: 'Roo Code']
+    M --> EE[url: 'roocode.com']
+    M --> FF[docsUrl: 'docs.roocode.com']
+    M --> GG[toolMappings: ROO_STYLE]
+    M --> HH[Lifecycle hooks]
+    
+    II[ROO_MODES] --> JJ[agent]
+    II --> KK[assistant]
+    II --> LL[cursor]
+    II --> MM[dev]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style II fill:#fff3e0
+```

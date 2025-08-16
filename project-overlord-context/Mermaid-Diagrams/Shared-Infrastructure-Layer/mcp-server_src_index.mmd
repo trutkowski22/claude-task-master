@@ -1,0 +1,58 @@
+```mermaid
+graph TD
+    A[index.js - TaskMasterMCPServer] --> B[Constructor]
+    A --> C[Initialize]
+    A --> D[Start Server]
+    A --> E[Register Providers]
+    A --> F[Stop Server]
+    
+    B --> G[Load package.json]
+    G --> H[Create FastMCP instance]
+    H --> I[Setup logging]
+    I --> J[Bind methods]
+    
+    C --> K{Already initialized?}
+    K -->|Yes| L[Return early]
+    K -->|No| M[Register tools]
+    M --> N[registerTaskMasterTools]
+    N --> O[Set initialized flag]
+    
+    D --> P{Initialized?}
+    P -->|No| Q[Call init first]
+    P -->|Yes| R[Setup connect handler]
+    Q --> R
+    R --> S[Start FastMCP server]
+    S --> T[stdio transport]
+    T --> U[2 minute timeout]
+    
+    E --> V[registerRemoteProvider]
+    V --> W{Session exists?}
+    W -->|No| X[Log warning]
+    W -->|Yes| Y{Has sampling capabilities?}
+    Y -->|No| Z[Log missing capabilities]
+    Y -->|Yes| AA[Create MCPProvider]
+    AA --> BB[Set session]
+    BB --> CC[Register with ProviderRegistry]
+    CC --> DD[Log success]
+    
+    F --> EE[Stop FastMCP server]
+    
+    FF[Event Handlers] --> GG[connect event]
+    GG --> HH[Send logging message]
+    HH --> II[Call registerRemoteProvider]
+    
+    JJ[Dependencies] --> KK[FastMCP]
+    JJ --> LL[dotenv]
+    JJ --> MM[logger.js]
+    JJ --> NN[tools/index.js]
+    JJ --> OO[ProviderRegistry]
+    JJ --> PP[MCPProvider]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style E fill:#f3e5f5
+    style F fill:#f3e5f5
+    style JJ fill:#fff3e0
+```

@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph codex-Imports["codex-Imports"]
+        I1["IMPORT: createProfile, FROM: /claude-task-master/src/profiles/base-profile.js"]
+    end
+    
+    subgraph codex-Exports["codex-Exports"]
+        E1["EXP: codexProfile"]
+    end
+    
+    subgraph codex-Constants["codex-Const Declarations"]
+        C1["CONST: codexProfile, VALUE: createProfile configuration for Codex"]
+    end
+    
+    subgraph codex-ExecutionFlow["codex-Execution Flow"]
+        FL1["Create Codex profile using base profile factory"]
+        FL2["Set name to 'codex' and display name to 'Codex'"]
+        FL3["Configure URL as codex.ai and docs URL as platform.openai.com/docs/codex"]
+        FL4["Set profile and rules directory to root directory"]
+        FL5["Disable MCP configuration and default rules"]
+        FL6["Map AGENTS.md to AGENTS.md in root"]
+        FL7["Export profile for use in rules transformation"]
+    end
+    
+    subgraph codex["codex.js"]
+        codex-Imports
+        codex-Exports
+        codex-Constants
+        codex-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph taskStatus-FunctionsDefined["taskStatus-Functions Defined"]
+        FU1["FUNCTION: isValidTaskStatus"]
+    end
+    
+    subgraph taskStatus-Exports["taskStatus-Exports"]
+        E1["EXP: TASK_STATUS_OPTIONS"]
+        E2["EXP: isValidTaskStatus"]
+    end
+    
+    subgraph taskStatus-Parameters["taskStatus-Parameters"]
+        P1["PARAM: {string} status - The status to check"]
+    end
+    
+    subgraph taskStatus-Constants["taskStatus-Const Declarations"]
+        C1["CONST: TASK_STATUS_OPTIONS, VALUE: array of valid task statuses"]
+        C2["CONST: pending, VALUE: task waiting to start"]
+        C3["CONST: done, VALUE: task completed"]
+        C4["CONST: in-progress, VALUE: task in progress"]
+        C5["CONST: review, VALUE: task completed waiting for review"]
+        C6["CONST: deferred, VALUE: task postponed or paused"]
+        C7["CONST: cancelled, VALUE: task cancelled and will not be completed"]
+    end
+    
+    subgraph taskStatus-ExecutionFlow["taskStatus-Execution Flow"]
+        FL1["Define array of valid task status options"]
+        FL2["Include pending status for tasks waiting to start"]
+        FL3["Include done status for completed tasks"]
+        FL4["Include in-progress status for active tasks"]
+        FL5["Include review status for completed tasks awaiting review"]
+        FL6["Include deferred status for postponed tasks"]
+        FL7["Include cancelled status for abandoned tasks"]
+        FL8["Provide validation function for status checking"]
+        FL9["Export constants and function for task status management"]
+    end
+    
+    subgraph taskStatus["task-status.js"]
+        taskStatus-FunctionsDefined
+        taskStatus-Exports
+        taskStatus-Parameters
+        taskStatus-Constants
+        taskStatus-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

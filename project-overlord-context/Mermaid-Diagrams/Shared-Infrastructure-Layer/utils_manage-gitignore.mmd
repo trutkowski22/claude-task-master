@@ -1,0 +1,54 @@
+```mermaid
+graph TD
+    A[manage-gitignore.js] --> B[manageGitignoreFile]
+    A --> C[Helper Functions]
+    
+    B --> D{File exists?}
+    D -->|No| E[createNewGitignoreFile]
+    D -->|Yes| F[mergeWithExistingFile]
+    
+    C --> G[normalizeLine]
+    C --> H[isTaskLine]
+    C --> I[adjustTaskLinesInTemplate]
+    C --> J[removeExistingTaskSection]
+    C --> K[filterNewTemplateLines]
+    C --> L[buildTaskFilesSection]
+    C --> M[addSeparatorIfNeeded]
+    C --> N[validateInputs]
+    
+    B --> O[validateInputs]
+    O --> P[Process template]
+    P --> I
+    
+    E --> Q[Write new file]
+    Q --> R[Log success]
+    
+    F --> S[Read existing file]
+    S --> T[Remove task section]
+    T --> J
+    T --> U[Filter new lines]
+    U --> K
+    U --> V[Build final content]
+    V --> W[Add new content]
+    W --> X[Add task section]
+    X --> L
+    X --> Y[Write merged file]
+    Y --> Z[Log success]
+    
+    AA[Constants] --> BB[TASK_FILES_COMMENT]
+    AA --> CC[TASK_JSON_PATTERN]
+    AA --> DD[TASK_DIR_PATTERN]
+    
+    H --> CC
+    H --> DD
+    L --> BB
+    L --> CC
+    L --> DD
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#f3e5f5
+    style AA fill:#fff3e0
+    style E fill:#e8f5e8
+    style F fill:#e8f5e8
+```

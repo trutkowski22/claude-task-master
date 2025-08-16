@@ -1,0 +1,40 @@
+flowchart TB
+    subgraph commands-Exports["commands-Exports"]
+        E1["EXP: AI_COMMAND_NAMES"]
+    end
+    
+    subgraph commands-Constants["commands-Const Declarations"]
+        C1["CONST: AI_COMMAND_NAMES, VALUE: array of command names that trigger AI processing"]
+        C2["CONST: add-task, VALUE: command for adding new tasks"]
+        C3["CONST: analyze-complexity, VALUE: command for complexity analysis"]
+        C4["CONST: expand-task, VALUE: command for task breakdown"]
+        C5["CONST: parse-prd, VALUE: command for PRD parsing"]
+        C6["CONST: research, VALUE: command for research operations"]
+        C7["CONST: research-save, VALUE: command for saving research"]
+        C8["CONST: update-subtask, VALUE: command for subtask updates"]
+        C9["CONST: update-task, VALUE: command for task updates"]
+        C10["CONST: update-tasks, VALUE: command for batch task updates"]
+    end
+    
+    subgraph commands-ExecutionFlow["commands-Execution Flow"]
+        FL1["Define array of command names that require AI processing"]
+        FL2["Include task management commands (add-task, update-task, update-tasks)"]
+        FL3["Include analysis commands (analyze-complexity, expand-task)"]
+        FL4["Include research commands (research, research-save)"]
+        FL5["Include document processing commands (parse-prd)"]
+        FL6["Include subtask management commands (update-subtask)"]
+        FL7["Export constant for use in AI service routing"]
+    end
+    
+    subgraph commands["commands.js"]
+        commands-Exports
+        commands-Constants
+        commands-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

@@ -1,0 +1,66 @@
+flowchart TB
+    subgraph providerRegistry-FunctionsDefined["providerRegistry-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getInstance"]
+        FU3["FUNCTION: initialize"]
+        FU4["FUNCTION: registerProvider"]
+        FU5["FUNCTION: hasProvider"]
+        FU6["FUNCTION: getProvider"]
+        FU7["FUNCTION: getAllProviders"]
+        FU8["FUNCTION: unregisterProvider"]
+        FU9["FUNCTION: reset"]
+    end
+    
+    subgraph providerRegistry-Exports["providerRegistry-Exports"]
+        E1["EXP: ProviderRegistry (default)"]
+    end
+    
+    subgraph providerRegistry-Parameters["providerRegistry-Parameters"]
+        P1["PARAM: {string} providerName - The name of the provider"]
+        P2["PARAM: {object} provider - The provider instance"]
+        P3["PARAM: {object} options - Additional options for registration"]
+    end
+    
+    subgraph providerRegistry-Constants["providerRegistry-Const Declarations"]
+        C1["CONST: instance, VALUE: null (singleton instance)"]
+        C2["CONST: this._providers, VALUE: new Map()"]
+        C3["CONST: this._initialized, VALUE: false"]
+        C4["CONST: providerEntry, VALUE: this._providers.get(providerName)"]
+    end
+    
+    subgraph providerRegistry-ExecutionFlow["providerRegistry-Execution Flow"]
+        FL1["Implement singleton pattern for provider registry management"]
+        FL2["Initialize private providers Map and initialization flag"]
+        FL3["Create singleton instance on first access"]
+        FL4["Initialize registry with initialized flag"]
+        FL5["Register provider with validation of name and instance"]
+        FL6["Validate provider implements BaseAIProvider interface"]
+        FL7["Store provider with instance, options, and registration timestamp"]
+        FL8["Check provider existence using Map has method"]
+        FL9["Retrieve provider instance from registry"]
+        FL10["Get all providers as new Map copy"]
+        FL11["Remove provider from registry and return success status"]
+        FL12["Reset registry by clearing providers and initialization flag"]
+        FL13["Initialize singleton on module import"]
+    end
+    
+    subgraph providerRegistry["index.js"]
+        providerRegistry-FunctionsDefined
+        providerRegistry-Exports
+        providerRegistry-Parameters
+        providerRegistry-Constants
+        providerRegistry-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13

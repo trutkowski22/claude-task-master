@@ -1,0 +1,79 @@
+flowchart TB
+    subgraph googleVertex-Imports["googleVertex-Imports"]
+        I1["IMPORT: createVertex, FROM: @ai-sdk/google-vertex"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+        I3["IMPORT: resolveEnvVariable, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph googleVertex-FunctionsDefined["googleVertex-Functions Defined"]
+        FU1["FUNCTION: VertexAuthError constructor"]
+        FU2["FUNCTION: VertexConfigError constructor"]
+        FU3["FUNCTION: VertexApiError constructor"]
+        FU4["FUNCTION: constructor"]
+        FU5["FUNCTION: getRequiredApiKeyName"]
+        FU6["FUNCTION: validateAuth"]
+        FU7["FUNCTION: getClient"]
+        FU8["FUNCTION: handleError"]
+    end
+    
+    subgraph googleVertex-Exports["googleVertex-Exports"]
+        E1["EXP: VertexAIProvider"]
+        E2["EXP: VertexAuthError"]
+        E3["EXP: VertexConfigError"] 
+        E4["EXP: VertexApiError"]
+    end
+    
+    subgraph googleVertex-Parameters["googleVertex-Parameters"]
+        P1["PARAM: {object} params - Parameters to validate"]
+        P2["PARAM: {object} params - Parameters for client initialization"]
+        P3["PARAM: {string} [params.apiKey] - Google API key"]
+        P4["PARAM: {string} params.projectId - Google Cloud project ID"]
+        P5["PARAM: {string} params.location - Google Cloud location (e.g., us-central1)"]
+        P6["PARAM: {object} [params.credentials] - Service account credentials object"]
+        P7["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+        P8["PARAM: {string} operation - Description of the operation that failed"]
+        P9["PARAM: {Error} error - The error object"]
+        P10["PARAM: {string} message - Error message"]
+        P11["PARAM: {number} statusCode - HTTP status code"]
+    end
+    
+    subgraph googleVertex-Constants["googleVertex-Const Declarations"]
+        C1["CONST: { apiKey, projectId, location, credentials }, VALUE: params"]
+        C2["CONST: { apiKey, projectId, location, credentials, baseURL }, VALUE: params"]
+        C3["CONST: authOptions, VALUE: {}"]
+        C4["CONST: statusCode, VALUE: error.response.status"]
+        C5["CONST: errorMessage, VALUE: error.response.data?.error?.message || error.message"]
+    end
+    
+    subgraph googleVertex-ExecutionFlow["googleVertex-Execution Flow"]
+        FL1["Define custom error classes for Vertex AI specific errors"]
+        FL2["Extend BaseAIProvider with Google Vertex AI implementation"]
+        FL3["Set provider name to 'Google Vertex AI'"]
+        FL4["Return GOOGLE_API_KEY as required environment variable"]
+        FL5["Validate API key OR credentials and required projectId and location"]
+        FL6["Configure authentication options for API key or service account"]
+        FL7["Create Vertex AI client with auth, project, and location settings"]
+        FL8["Handle Vertex-specific errors with proper categorization"]
+        FL9["Categorize HTTP errors by status code (401/403 auth, 400 config, others API)"]
+        FL10["Throw appropriate error type based on error category"]
+    end
+    
+    subgraph googleVertex["google-vertex.js"]
+        googleVertex-Imports
+        googleVertex-FunctionsDefined
+        googleVertex-Exports
+        googleVertex-Parameters
+        googleVertex-Constants
+        googleVertex-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

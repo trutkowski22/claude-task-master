@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph vscode-Imports["vscode-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createProfile, COMMON_TOOL_MAPPINGS, FROM: /claude-task-master/src/profiles/base-profile.js"]
+    end
+    
+    subgraph vscode-FunctionsDefined["vscode-Functions Defined"]
+        FU1["FUNCTION: transformToVSCodeFormat"]
+        FU2["FUNCTION: onPostConvertRulesProfile"]
+        FU3["FUNCTION: onRemoveRulesProfile"]
+    end
+    
+    subgraph vscode-Exports["vscode-Exports"]
+        E1["EXP: vscodeProfile"]
+        E2["EXP: onPostConvertRulesProfile"]
+        E3["EXP: onRemoveRulesProfile"]
+    end
+    
+    subgraph vscode-Parameters["vscode-Parameters"]
+        P1["PARAM: {Object} mcpConfig - Standard MCP configuration object"]
+        P2["PARAM: {string} targetDir - Target project directory"]
+        P3["PARAM: {string} assetsDir - Assets directory (unused for VS Code)"]
+    end
+    
+    subgraph vscode-Constants["vscode-Const Declarations"]
+        C1["CONST: vscodeConfig, VALUE: {}"]
+        C2["CONST: transformedServer, VALUE: { ...serverConfig }"]
+        C3["CONST: reorderedServer, VALUE: {}"]
+        C4["CONST: vscodeConfigPath, VALUE: path.join(targetDir, '.vscode', 'mcp.json')"]
+        C5["CONST: mcpConfigContent, VALUE: fs.readFileSync(vscodeConfigPath, 'utf8')"]
+    end
+    
+    subgraph vscode-ExecutionFlow["vscode-Execution Flow"]
+        FL1["Transform standard MCP configuration to VS Code format"]
+        FL2["Rename mcpServers to servers in configuration"]
+        FL3["Add type: stdio property after env block in server configs"]
+        FL4["Handle post-conversion transformation of MCP configuration"]
+        FL5["Read generated MCP config and check if already transformed"]
+        FL6["Write back transformed configuration with proper formatting"]
+        FL7["Clean up MCP configuration during profile removal"]
+        FL8["Remove task-master-ai server or entire file if empty"]
+        FL9["Create profile with VS Code specific directories and file extensions"]
+        FL10["Use .github/instructions for rules and .vscode for configuration"]
+        FL11["Apply VS Code specific text replacements and terminology"]
+    end
+    
+    subgraph vscode["vscode.js"]
+        vscode-Imports
+        vscode-FunctionsDefined
+        vscode-Exports
+        vscode-Parameters
+        vscode-Constants
+        vscode-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

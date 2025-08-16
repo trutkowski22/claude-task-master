@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph openai-Imports["openai-Imports"]
+        I1["IMPORT: createOpenAI, FROM: @ai-sdk/openai"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph openai-FunctionsDefined["openai-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: requiresMaxCompletionTokens"]
+        FU4["FUNCTION: getClient"]
+    end
+    
+    subgraph openai-Exports["openai-Exports"]
+        E1["EXP: OpenAIProvider"]
+    end
+    
+    subgraph openai-Parameters["openai-Parameters"]
+        P1["PARAM: {string} modelId - The model ID to check"]
+        P2["PARAM: {object} params - Parameters for client initialization"]
+        P3["PARAM: {string} params.apiKey - OpenAI API key"]
+        P4["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+    end
+    
+    subgraph openai-Constants["openai-Const Declarations"]
+        C1["CONST: { apiKey, baseURL }, VALUE: params"]
+    end
+    
+    subgraph openai-ExecutionFlow["openai-Execution Flow"]
+        FL1["Extend BaseAIProvider class with OpenAI implementation"]
+        FL2["Set provider name to 'OpenAI' in constructor"]
+        FL3["Return OPENAI_API_KEY as required environment variable"]
+        FL4["Override requiresMaxCompletionTokens for GPT-5 models"]
+        FL5["Validate API key is present in getClient"]
+        FL6["Create OpenAI client with apiKey and optional baseURL"]
+        FL7["Handle errors using inherited error handling method"]
+    end
+    
+    subgraph openai["openai.js"]
+        openai-Imports
+        openai-FunctionsDefined
+        openai-Exports
+        openai-Parameters
+        openai-Constants
+        openai-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

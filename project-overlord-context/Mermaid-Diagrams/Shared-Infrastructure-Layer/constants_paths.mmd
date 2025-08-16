@@ -1,0 +1,77 @@
+flowchart TB
+    subgraph paths-Exports["paths-Exports"]
+        E1["EXP: TASKMASTER_DIR"]
+        E2["EXP: TASKMASTER_TASKS_DIR"]
+        E3["EXP: TASKMASTER_DOCS_DIR"]
+        E4["EXP: TASKMASTER_REPORTS_DIR"]
+        E5["EXP: TASKMASTER_TEMPLATES_DIR"]
+        E6["EXP: TASKMASTER_CONFIG_FILE"]
+        E7["EXP: TASKMASTER_STATE_FILE"]
+        E8["EXP: LEGACY_CONFIG_FILE"]
+        E9["EXP: COMPLEXITY_REPORT_FILE"]
+        E10["EXP: LEGACY_COMPLEXITY_REPORT_FILE"]
+        E11["EXP: PRD_FILE"]
+        E12["EXP: LEGACY_PRD_FILE"]
+        E13["EXP: EXAMPLE_PRD_FILE"]
+        E14["EXP: LEGACY_EXAMPLE_PRD_FILE"]
+        E15["EXP: TASKMASTER_TASKS_FILE"]
+        E16["EXP: LEGACY_TASKS_FILE"]
+        E17["EXP: ENV_EXAMPLE_FILE"]
+        E18["EXP: GITIGNORE_FILE"]
+        E19["EXP: TASK_FILE_PREFIX"]
+        E20["EXP: TASK_FILE_EXTENSION"]
+        E21["EXP: PROJECT_MARKERS"]
+    end
+    
+    subgraph paths-Constants["paths-Const Declarations"]
+        C1["CONST: TASKMASTER_DIR, VALUE: '.taskmaster'"]
+        C2["CONST: TASKMASTER_TASKS_DIR, VALUE: '.taskmaster/tasks'"]
+        C3["CONST: TASKMASTER_DOCS_DIR, VALUE: '.taskmaster/docs'"]
+        C4["CONST: TASKMASTER_REPORTS_DIR, VALUE: '.taskmaster/reports'"]
+        C5["CONST: TASKMASTER_TEMPLATES_DIR, VALUE: '.taskmaster/templates'"]
+        C6["CONST: TASKMASTER_CONFIG_FILE, VALUE: '.taskmaster/config.json'"]
+        C7["CONST: TASKMASTER_STATE_FILE, VALUE: '.taskmaster/state.json'"]
+        C8["CONST: LEGACY_CONFIG_FILE, VALUE: '.taskmasterconfig'"]
+        C9["CONST: COMPLEXITY_REPORT_FILE, VALUE: '.taskmaster/reports/task-complexity-report.json'"]
+        C10["CONST: LEGACY_COMPLEXITY_REPORT_FILE, VALUE: 'scripts/task-complexity-report.json'"]
+        C11["CONST: PRD_FILE, VALUE: '.taskmaster/docs/prd.txt'"]
+        C12["CONST: LEGACY_PRD_FILE, VALUE: 'scripts/prd.txt'"]
+        C13["CONST: EXAMPLE_PRD_FILE, VALUE: '.taskmaster/templates/example_prd.txt'"]
+        C14["CONST: LEGACY_EXAMPLE_PRD_FILE, VALUE: 'scripts/example_prd.txt'"]
+        C15["CONST: TASKMASTER_TASKS_FILE, VALUE: '.taskmaster/tasks/tasks.json'"]
+        C16["CONST: LEGACY_TASKS_FILE, VALUE: 'tasks/tasks.json'"]
+        C17["CONST: ENV_EXAMPLE_FILE, VALUE: '.env.example'"]
+        C18["CONST: GITIGNORE_FILE, VALUE: '.gitignore'"]
+        C19["CONST: TASK_FILE_PREFIX, VALUE: 'task_'"]
+        C20["CONST: TASK_FILE_EXTENSION, VALUE: '.txt'"]
+        C21["CONST: PROJECT_MARKERS, VALUE: array of project identification markers"]
+    end
+    
+    subgraph paths-ExecutionFlow["paths-Execution Flow"]
+        FL1["Define taskmaster directory structure constants"]
+        FL2["Define configuration file paths (current and legacy)"]
+        FL3["Define report file paths (current and legacy locations)"]
+        FL4["Define PRD document file paths (current and legacy)"]
+        FL5["Define template file paths (current and legacy)"]
+        FL6["Define task file paths (current and legacy)"]
+        FL7["Define general project file constants"]
+        FL8["Define task file naming patterns"]
+        FL9["Define project markers for root directory identification"]
+        FL10["Export all constants for use in path resolution"]
+    end
+    
+    subgraph paths["paths.js"]
+        paths-Exports
+        paths-Constants
+        paths-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

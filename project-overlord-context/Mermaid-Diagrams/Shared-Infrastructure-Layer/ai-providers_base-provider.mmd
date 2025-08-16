@@ -1,0 +1,76 @@
+flowchart TB
+    subgraph baseProvider-Imports["baseProvider-Imports"]
+        I1["IMPORT: generateObject, generateText, streamText, zodSchema, JSONParseError, NoObjectGeneratedError, FROM: ai"]
+        I2["IMPORT: jsonrepair, FROM: jsonrepair"]
+        I3["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph baseProvider-FunctionsDefined["baseProvider-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: validateAuth"]
+        FU3["FUNCTION: validateParams"]
+        FU4["FUNCTION: validateOptionalParams"]
+        FU5["FUNCTION: validateMessages"]
+        FU6["FUNCTION: handleError"]
+        FU7["FUNCTION: getClient"]
+        FU8["FUNCTION: isRequiredApiKey"]
+        FU9["FUNCTION: getRequiredApiKeyName"]
+        FU10["FUNCTION: requiresMaxCompletionTokens"]
+        FU11["FUNCTION: prepareTokenParam"]
+        FU12["FUNCTION: generateText"]
+        FU13["FUNCTION: streamText"]
+        FU14["FUNCTION: generateObject"]
+    end
+    
+    subgraph baseProvider-Exports["baseProvider-Exports"]
+        E1["EXP: BaseAIProvider"]
+    end
+    
+    subgraph baseProvider-Parameters["baseProvider-Parameters"]
+        P1["PARAM: {object} params - Parameters to validate"]
+        P2["PARAM: {string} modelId - The model ID to check"]
+        P3["PARAM: {number} maxTokens - The maximum tokens value"]
+    end
+    
+    subgraph baseProvider-Constants["baseProvider-Const Declarations"]
+        C1["CONST: maxTokens, VALUE: Number(params.maxTokens)"]
+        C2["CONST: tokenValue, VALUE: Math.floor(Number(maxTokens))"]
+        C3["CONST: client, VALUE: await this.getClient(params)"]
+        C4["CONST: result, VALUE: await generateText/Object/streamText"]
+        C5["CONST: repairedJson, VALUE: jsonrepair(error.cause.text)"]
+        C6["CONST: parsed, VALUE: JSON.parse(repairedJson)"]
+    end
+    
+    subgraph baseProvider-ExecutionFlow["baseProvider-Execution Flow"]
+        FL1["Prevent direct instantiation of BaseAIProvider abstract class"]
+        FL2["Set provider name from constructor name"]
+        FL3["Validate API key and model ID requirements"]
+        FL4["Validate optional parameters like temperature and maxTokens"]
+        FL5["Validate messages array structure and content"]
+        FL6["Handle errors with consistent logging and error propagation"]
+        FL7["Determine token parameter format based on model requirements"]
+        FL8["Generate text/stream/object using AI SDK with validated parameters"]
+        FL9["Return results with usage statistics"]
+        FL10["Attempt JSON repair for malformed object generation responses"]
+        FL11["Log debug information for tracking API calls"]
+    end
+    
+    subgraph baseProvider["base-provider.js"]
+        baseProvider-Imports
+        baseProvider-FunctionsDefined
+        baseProvider-Exports
+        baseProvider-Parameters
+        baseProvider-Constants
+        baseProvider-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

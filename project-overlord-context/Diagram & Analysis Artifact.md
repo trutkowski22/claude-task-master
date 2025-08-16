@@ -203,7 +203,7 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ message-converter.js - DONE
  ┃  ┃  ┃  ┃  ┗ schema-converter.js - DONE
  ┃  ┃  ┃  ┣ providers
- ┃  ┃  ┃  ┃  ┗ mcp-provider.js
+ ┃  ┃  ┃  ┃  ┗ mcp-provider.js - DONE
  ┃  ┃  ┃  ┣ tools
  ┃  ┃  ┃  ┃  ┣ add-dependency.js  - DONE
  ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
@@ -244,9 +244,9 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
  ┃  ┃  ┃  ┃  ┣ utils.js  - DONE
  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
- ┃  ┃  ┃  ┣ index.js
- ┃  ┃  ┃  ┗ logger.js
- ┃  ┃  ┗ server.js 
+ ┃  ┃  ┃  ┣ index.js - DONE
+ ┃  ┃  ┃  ┗ logger.js - DONE
+ ┃  ┃  ┗ server.js - DONE 
  ┃  ┣ scripts
  ┃  ┃  ┣ modules
  ┃  ┃  ┃  ┣ task-manager
@@ -286,7 +286,7 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┣ dependency-manager.js  - DONE
  ┃  ┃  ┃  ┣ index.js  - DONE
  ┃  ┃  ┃  ┣ prompt-manager.js  - DONE
- ┃  ┃  ┃  ┣ supported-models.json
+ ┃  ┃  ┃  ┣ supported-models.json - DONE
  ┃  ┃  ┃  ┣ sync-readme.js - DONE
  ┃  ┃  ┃  ┣ task-manager.js  - DONE
  ┃  ┃  ┃  ┣ ui.js  - DONE
@@ -294,7 +294,7 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┗ utils.js  - DONE
  ┃  ┃  ┣ dev.js  - DONE
  ┃  ┃  ┣ init.js  - DONE
- ┃  ┃  ┗ task-complexity-report.json
+ ┃  ┃  ┗ task-complexity-report.json - DONE
  ┃  ┣ src
  ┃  ┃  ┣ ai-providers
  ┃  ┃  ┃  ┣ custom-sdk
@@ -305,61 +305,61 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃     ┣ language-model.js - DONE
  ┃  ┃  ┃  ┃     ┣ message-converter.js - DONE
  ┃  ┃  ┃  ┃     ┗ types.js - DONE
- ┃  ┃  ┃  ┣ anthropic.js 
- ┃  ┃  ┃  ┣ base-provider.js 
- ┃  ┃  ┃  ┣ claude-code.js
- ┃  ┃  ┃  ┣ gemini-cli.js
- ┃  ┃  ┃  ┣ google-vertex.js
- ┃  ┃  ┃  ┣ google.js
- ┃  ┃  ┃  ┣ index.js 
- ┃  ┃  ┃  ┣ ollama.js
- ┃  ┃  ┃  ┣ openai.js 
- ┃  ┃  ┃  ┣ openrouter.js
- ┃  ┃  ┃  ┗ perplexity.js
+ ┃  ┃  ┃  ┣ anthropic.js - DONE
+ ┃  ┃  ┃  ┣ base-provider.js - DONE
+ ┃  ┃  ┃  ┣ claude-code.js - DONE
+ ┃  ┃  ┃  ┣ gemini-cli.js - DONE
+ ┃  ┃  ┃  ┣ google-vertex.js - DONE
+ ┃  ┃  ┃  ┣ google.js - DONE
+ ┃  ┃  ┃  ┣ index.js - DONE
+ ┃  ┃  ┃  ┣ ollama.js - DONE
+ ┃  ┃  ┃  ┣ openai.js - DONE
+ ┃  ┃  ┃  ┣ openrouter.js - DONE
+ ┃  ┃  ┃  ┗ perplexity.js - DONE
  ┃  ┃  ┣ constants
- ┃  ┃  ┃  ┣ commands.js
- ┃  ┃  ┃  ┣ paths.js 
- ┃  ┃  ┃  ┣ profiles.js
- ┃  ┃  ┃  ┣ providers.js
- ┃  ┃  ┃  ┣ rules-actions.js
- ┃  ┃  ┃  ┣ task-priority.js 
- ┃  ┃  ┃  ┗ task-status.js 
+ ┃  ┃  ┃  ┣ commands.js - DONE
+ ┃  ┃  ┃  ┣ paths.js - DONE
+ ┃  ┃  ┃  ┣ profiles.js - DONE
+ ┃  ┃  ┃  ┣ providers.js - DONE
+ ┃  ┃  ┃  ┣ rules-actions.js - DONE
+ ┃  ┃  ┃  ┣ task-priority.js - DONE
+ ┃  ┃  ┃  ┗ task-status.js - DONE 
  ┃  ┃  ┣ profiles
- ┃  ┃  ┃  ┣ base-profile.js
- ┃  ┃  ┃  ┣ claude.js
- ┃  ┃  ┃  ┣ cline.js
- ┃  ┃  ┃  ┣ codex.js
- ┃  ┃  ┃  ┣ cursor.js
- ┃  ┃  ┃  ┣ gemini.js
- ┃  ┃  ┃  ┣ index.js
- ┃  ┃  ┃  ┣ roo.js
- ┃  ┃  ┃  ┗ vscode.js
+ ┃  ┃  ┃  ┣ base-profile.js - DONE
+ ┃  ┃  ┃  ┣ claude.js - DONE
+ ┃  ┃  ┃  ┣ cline.js - DONE
+ ┃  ┃  ┃  ┣ codex.js - DONE
+ ┃  ┃  ┃  ┣ cursor.js - DONE
+ ┃  ┃  ┃  ┣ gemini.js - DONE
+ ┃  ┃  ┃  ┣ index.js - DONE
+ ┃  ┃  ┃  ┣ roo.js - DONE
+ ┃  ┃  ┃  ┗ vscode.js - DONE
  ┃  ┃  ┣ prompts
  ┃  ┃  ┃  ┣ schemas
- ┃  ┃  ┃  ┃  ┣ parameter.schema.json
- ┃  ┃  ┃  ┃  ┣ prompt-template.schema.json
- ┃  ┃  ┃  ┃  ┗ variant.schema.json
- ┃  ┃  ┃  ┣ add-task.json
- ┃  ┃  ┃  ┣ analyze-complexity.json
- ┃  ┃  ┃  ┣ expand-task.json
- ┃  ┃  ┃  ┣ parse-prd.json
- ┃  ┃  ┃  ┣ research.json
- ┃  ┃  ┃  ┣ update-subtask.json
- ┃  ┃  ┃  ┣ update-task.json
- ┃  ┃  ┃  ┗ update-tasks.json
+ ┃  ┃  ┃  ┃  ┣ parameter.schema.json - DONE
+ ┃  ┃  ┃  ┃  ┣ prompt-template.schema.json - DONE
+ ┃  ┃  ┃  ┃  ┗ variant.schema.json - DONE
+ ┃  ┃  ┃  ┣ add-task.json - DONE
+ ┃  ┃  ┃  ┣ analyze-complexity.json - DONE
+ ┃  ┃  ┃  ┣ expand-task.json - DONE
+ ┃  ┃  ┃  ┣ parse-prd.json - DONE
+ ┃  ┃  ┃  ┣ research.json - DONE
+ ┃  ┃  ┃  ┣ update-subtask.json - DONE
+ ┃  ┃  ┃  ┣ update-task.json - DONE
+ ┃  ┃  ┃  ┗ update-tasks.json - DONE
  ┃  ┃  ┣ provider-registry
- ┃  ┃  ┃  ┗ index.js 
+ ┃  ┃  ┃  ┗ index.js - DONE
  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┣ create-mcp-config.js
- ┃  ┃  ┃  ┣ getVersion.js
- ┃  ┃  ┃  ┣ logger-utils.js
- ┃  ┃  ┃  ┣ manage-gitignore.js
- ┃  ┃  ┃  ┣ path-utils.js 
- ┃  ┃  ┃  ┣ profiles.js
- ┃  ┃  ┃  ┗ rule-transformer.js
- ┃  ┃  ┗ task-master.js 
- ┃  ┣ .mcp.json
- ┃  ┣ index.js 
+ ┃  ┃  ┃  ┣ create-mcp-config.js - DONE
+ ┃  ┃  ┃  ┣ getVersion.js - DONE
+ ┃  ┃  ┃  ┣ logger-utils.js - DONE
+ ┃  ┃  ┃  ┣ manage-gitignore.js - DONE
+ ┃  ┃  ┃  ┣ path-utils.js - DONE
+ ┃  ┃  ┃  ┣ profiles.js - DONE
+ ┃  ┃  ┃  ┗ rule-transformer.js - DONE
+ ┃  ┃  ┗ task-master.js - DONE
+ ┃  ┣ .mcp.json - DONE
+ ┃  ┣ index.js - DONE 
 
 **Process:**
 1. Use this Directory Tree to check your progress, if the file has " - Done" next to it, you have completed the file, if it doesn't say " - Done", you have not completed the file

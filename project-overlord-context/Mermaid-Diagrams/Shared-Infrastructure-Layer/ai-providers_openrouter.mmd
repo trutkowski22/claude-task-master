@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph openRouter-Imports["openRouter-Imports"]
+        I1["IMPORT: createOpenRouter, FROM: @openrouter/ai-sdk-provider"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph openRouter-FunctionsDefined["openRouter-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: getClient"]
+    end
+    
+    subgraph openRouter-Exports["openRouter-Exports"]
+        E1["EXP: OpenRouterAIProvider"]
+    end
+    
+    subgraph openRouter-Parameters["openRouter-Parameters"]
+        P1["PARAM: {object} params - Parameters for client initialization"]
+        P2["PARAM: {string} params.apiKey - OpenRouter API key"]
+        P3["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+    end
+    
+    subgraph openRouter-Constants["openRouter-Const Declarations"]
+        C1["CONST: { apiKey, baseURL }, VALUE: params"]
+    end
+    
+    subgraph openRouter-ExecutionFlow["openRouter-Execution Flow"]
+        FL1["Extend BaseAIProvider class with OpenRouter implementation"]
+        FL2["Set provider name to 'OpenRouter' in constructor"]
+        FL3["Return OPENROUTER_API_KEY as required environment variable"]
+        FL4["Validate API key is present in getClient"]
+        FL5["Create OpenRouter client with apiKey and optional baseURL"]
+        FL6["Handle errors using inherited error handling method"]
+    end
+    
+    subgraph openRouter["openrouter.js"]
+        openRouter-Imports
+        openRouter-FunctionsDefined
+        openRouter-Exports
+        openRouter-Parameters
+        openRouter-Constants
+        openRouter-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

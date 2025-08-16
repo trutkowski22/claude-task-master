@@ -1,0 +1,45 @@
+flowchart TB
+    subgraph serverImports["mcp-server_server-Imports"]
+        I1["IMPORT: TaskMasterMCPServer, FROM: /claude-task-master/mcp-server/src/index.js"]
+        I2["IMPORT: dotenv, FROM: dotenv"]
+        I3["IMPORT: logger, FROM: /claude-task-master/mcp-server/src/logger.js"]
+    end
+    
+    subgraph serverDependencies["mcp-server_server-Dependencies"]
+        D1["DEP: Node.js process management"]
+        D2["DEP: Environment variable loading"]
+        D3["DEP: Signal handling"]
+    end
+    
+    subgraph serverFunctionsDefined["mcp-server_server-Functions Defined"]
+        FU1["FUNCTION: startServer"]
+    end
+    
+    subgraph serverConstants["mcp-server_server-Const Declarations"]
+        C1["CONST: server, VALUE: new TaskMasterMCPServer instance"]
+    end
+    
+    subgraph serverExecutionFlow["mcp-server_server-Execution Flow"]
+        FL1["Load environment variables using dotenv.config"]
+        FL2["Create new TaskMasterMCPServer instance"]
+        FL3["Set up SIGINT signal handler for graceful shutdown"]
+        FL4["Set up SIGTERM signal handler for graceful shutdown"]
+        FL5["Start the MCP server and handle startup errors"]
+        FL6["Log error message and exit with code 1 if startup fails"]
+        FL7["Execute startServer function to begin server operation"]
+    end
+    
+    subgraph server["mcp-server_server.js"]
+        serverImports
+        serverDependencies
+        serverFunctionsDefined
+        serverConstants
+        serverExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

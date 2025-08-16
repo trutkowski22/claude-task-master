@@ -1,0 +1,50 @@
+flowchart TB
+    subgraph claudeCode-Imports["claudeCode-Imports"]
+        I1["IMPORT: createClaudeCode, FROM: /claude-task-master/src/ai-providers/custom-sdk/claude-code/index.js"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+        I3["IMPORT: getClaudeCodeSettingsForCommand, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+    end
+    
+    subgraph claudeCode-FunctionsDefined["claudeCode-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: isRequiredApiKey"]
+        FU4["FUNCTION: validateAuth"]
+        FU5["FUNCTION: getClient"]
+    end
+    
+    subgraph claudeCode-Exports["claudeCode-Exports"]
+        E1["EXP: ClaudeCodeProvider"]
+    end
+    
+    subgraph claudeCode-Parameters["claudeCode-Parameters"]
+        P1["PARAM: {object} params - Parameters to validate"]
+        P2["PARAM: {object} params - Parameters for client initialization"]
+        P3["PARAM: {string} [params.commandName] - Name of the command invoking the service"]
+        P4["PARAM: {string} [params.baseURL] - Optional custom API endpoint (not used by Claude Code)"]
+    end
+    
+    subgraph claudeCode-ExecutionFlow["claudeCode-Execution Flow"]
+        FL1["Extend BaseAIProvider with Claude Code specific implementation"]
+        FL2["Set provider name to 'Claude Code'"]
+        FL3["Return CLAUDE_CODE_API_KEY as nominal environment variable"]
+        FL4["Override isRequiredApiKey to return false"]
+        FL5["Override validateAuth to skip API key validation"]
+        FL6["Create Claude Code client using command-specific settings"]
+        FL7["Handle initialization errors using inherited error handling"]
+    end
+    
+    subgraph claudeCode["claude-code.js"]
+        claudeCode-Imports
+        claudeCode-FunctionsDefined
+        claudeCode-Exports
+        claudeCode-Parameters
+        claudeCode-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

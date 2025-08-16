@@ -1,0 +1,34 @@
+flowchart TB
+    subgraph cline-Imports["cline-Imports"]
+        I1["IMPORT: createProfile, COMMON_TOOL_MAPPINGS, FROM: /claude-task-master/src/profiles/base-profile.js"]
+    end
+    
+    subgraph cline-Exports["cline-Exports"]
+        E1["EXP: clineProfile"]
+    end
+    
+    subgraph cline-Constants["cline-Const Declarations"]
+        C1["CONST: clineProfile, VALUE: createProfile configuration for Cline"]
+    end
+    
+    subgraph cline-ExecutionFlow["cline-Execution Flow"]
+        FL1["Create Cline profile using base profile factory"]
+        FL2["Set name to 'cline' and display name to 'Cline'"]
+        FL3["Configure URL as cline.bot and docs URL as docs.cline.bot"]
+        FL4["Set profile and rules directory to .clinerules"]
+        FL5["Disable MCP configuration for Cline"]
+        FL6["Export profile for use in rules transformation"]
+    end
+    
+    subgraph cline["cline.js"]
+        cline-Imports
+        cline-Exports
+        cline-Constants
+        cline-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

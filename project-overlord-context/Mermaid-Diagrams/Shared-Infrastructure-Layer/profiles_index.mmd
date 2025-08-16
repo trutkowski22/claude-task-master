@@ -1,0 +1,34 @@
+flowchart TB
+    subgraph profilesIndex-Exports["profilesIndex-Exports"]
+        E1["EXP: claudeProfile, FROM: /claude-task-master/src/profiles/claude.js"]
+        E2["EXP: clineProfile, FROM: /claude-task-master/src/profiles/cline.js"]
+        E3["EXP: codexProfile, FROM: /claude-task-master/src/profiles/codex.js"]
+        E4["EXP: cursorProfile, FROM: /claude-task-master/src/profiles/cursor.js"]
+        E5["EXP: geminiProfile, FROM: /claude-task-master/src/profiles/gemini.js"]
+        E6["EXP: rooProfile, FROM: /claude-task-master/src/profiles/roo.js"]
+        E7["EXP: vscodeProfile, FROM: /claude-task-master/src/profiles/vscode.js"]
+    end
+    
+    subgraph profilesIndex-ExecutionFlow["profilesIndex-Execution Flow"]
+        FL1["Centralize export of all editor profile configurations"]
+        FL2["Re-export claudeProfile for Claude Code integration"]
+        FL3["Re-export clineProfile for Cline IDE"]
+        FL4["Re-export codexProfile for Codex integration"]
+        FL5["Re-export cursorProfile for Cursor IDE"]
+        FL6["Re-export geminiProfile for Gemini integration"]
+        FL7["Re-export rooProfile for Roo Code IDE"]
+        FL8["Re-export vscodeProfile for VS Code with GitHub Copilot"]
+    end
+    
+    subgraph profilesIndex["index.js"]
+        profilesIndex-Exports
+        profilesIndex-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

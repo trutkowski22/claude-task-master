@@ -1,0 +1,59 @@
+```mermaid
+graph TD
+    A[logger.js] --> B[Import Dependencies]
+    A --> C[Log Configuration]
+    A --> D[Core Functions]
+    A --> E[Exports]
+    
+    B --> F[chalk for colors]
+    B --> G[utils.js for isSilentMode]
+    B --> H[config-manager for getLogLevel]
+    
+    C --> I[LOG_LEVELS constant]
+    C --> J[LOG_LEVEL variable]
+    
+    I --> K[debug: 0]
+    I --> L[info: 1]
+    I --> M[warn: 2]
+    I --> N[error: 3]
+    I --> O[success: 4]
+    
+    J --> P[Get from config manager]
+    P --> Q[Default to info level]
+    
+    D --> R[log function]
+    D --> S[createLogger function]
+    
+    R --> T{Silent mode?}
+    T -->|Yes| U[Return early]
+    T -->|No| V[Check log level]
+    V --> W{Level meets threshold?}
+    W -->|No| X[Return early]
+    W -->|Yes| Y[Apply color formatting]
+    Y --> Z[Output to console]
+    
+    S --> AA[Create log methods]
+    AA --> BB[debug method]
+    AA --> CC[info method]
+    AA --> DD[warn method]
+    AA --> EE[error method]
+    AA --> FF[success method]
+    AA --> GG[raw log method]
+    
+    Y --> HH{Log level?}
+    HH -->|error| II[Apply red color]
+    HH -->|warn| JJ[Apply yellow color]
+    HH -->|success| KK[Apply green color]
+    HH -->|info| LL[Apply blue color]
+    HH -->|debug| MM[Apply gray color]
+    
+    E --> NN[Default logger instance]
+    E --> OO[createLogger function]
+    E --> PP[log function]
+    E --> QQ[LOG_LEVELS constant]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style E fill:#e8f5e8
+```

@@ -1,0 +1,72 @@
+flowchart TB
+    subgraph createMcpConfig-Imports["createMcpConfig-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph createMcpConfig-FunctionsDefined["createMcpConfig-Functions Defined"]
+        FU1["FUNCTION: formatJSONWithTabs"]
+        FU2["FUNCTION: setupMCPConfiguration"]
+        FU3["FUNCTION: removeTaskMasterMCPConfiguration"]
+    end
+    
+    subgraph createMcpConfig-Exports["createMcpConfig-Exports"]
+        E1["EXP: setupMCPConfiguration"]
+        E2["EXP: removeTaskMasterMCPConfiguration"]
+    end
+    
+    subgraph createMcpConfig-Parameters["createMcpConfig-Parameters"]
+        P1["PARAM: {Object} obj - JSON object to format"]
+        P2["PARAM: {string} projectRoot - Target project directory"]
+        P3["PARAM: {string} mcpConfigPath - Relative path to MCP config file"]
+    end
+    
+    subgraph createMcpConfig-Constants["createMcpConfig-Const Declarations"]
+        C1["CONST: json, VALUE: JSON.stringify(obj, null, '\\t')"]
+        C2["CONST: mcpPath, VALUE: path.join(projectRoot, mcpConfigPath)"]
+        C3["CONST: configDir, VALUE: path.dirname(mcpPath)"]
+        C4["CONST: newMCPServer, VALUE: task-master-ai server configuration"]
+        C5["CONST: mcpConfig, VALUE: JSON.parse(fs.readFileSync(mcpPath, 'utf8'))"]
+        C6["CONST: hasMCPString, VALUE: check for existing task-master-ai in args"]
+        C7["CONST: newMCPConfig, VALUE: { mcpServers: newMCPServer }"]
+        C8["CONST: result, VALUE: operation result object"]
+        C9["CONST: hasTaskMaster, VALUE: check for task-master-ai configuration"]
+        C10["CONST: remainingServers, VALUE: Object.keys(mcpConfig.mcpServers)"]
+    end
+    
+    subgraph createMcpConfig-ExecutionFlow["createMcpConfig-Execution Flow"]
+        FL1["Format JSON with tabs and collapse simple arrays to single lines"]
+        FL2["Set up MCP configuration for task-master-ai package"]
+        FL3["Build full path to MCP config file and create directory if needed"]
+        FL4["Define new MCP server configuration with environment variables"]
+        FL5["Check if MCP config file exists and read existing configuration"]
+        FL6["Verify if task-master-ai is already configured in args or server name"]
+        FL7["Add task-master-ai server to existing configuration if not present"]
+        FL8["Create new MCP configuration file if none exists"]
+        FL9["Remove Task Master MCP configuration while preserving other servers"]
+        FL10["Delete specific task-master-ai servers and servers with task-master-ai in args"]
+        FL11["Delete entire MCP file if no other servers remain"]
+        FL12["Return result object with operation status and details"]
+    end
+    
+    subgraph createMcpConfig["create-mcp-config.js"]
+        createMcpConfig-Imports
+        createMcpConfig-FunctionsDefined
+        createMcpConfig-Exports
+        createMcpConfig-Parameters
+        createMcpConfig-Constants
+        createMcpConfig-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

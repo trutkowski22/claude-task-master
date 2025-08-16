@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph rootIndex-Imports["rootIndex-Imports"]
+        I1["IMPORT: fileURLToPath, FROM: url"]
+        I2["IMPORT: dirname, resolve, FROM: path"]
+        I3["IMPORT: createRequire, FROM: module"]
+        I4["IMPORT: spawn, FROM: child_process"]
+        I5["IMPORT: Command, FROM: commander"]
+    end
+    
+    subgraph rootIndex-FunctionsDefined["rootIndex-Functions Defined"]
+        FU1["FUNCTION: initProject"]
+        FU2["FUNCTION: runInitCLI"]
+    end
+    
+    subgraph rootIndex-Exports["rootIndex-Exports"]
+        E1["EXP: devScriptPath"]
+        E2["EXP: initProject"]
+        E3["EXP: runInitCLI"]
+        E4["EXP: version"]
+    end
+    
+    subgraph rootIndex-Constants["rootIndex-Const Declarations"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: dirname(__filename)"]
+        C3["CONST: require, VALUE: createRequire(import.meta.url)"]
+        C4["CONST: packageJson, VALUE: require('./package.json')"]
+        C5["CONST: devScriptPath, VALUE: resolve(__dirname, './scripts/dev.js')"]
+        C6["CONST: version, VALUE: packageJson.version"]
+        C7["CONST: program, VALUE: new Command()"]
+        C8["CONST: args, VALUE: process.argv.slice(process.argv.indexOf('dev') + 1)"]
+        C9["CONST: child, VALUE: spawn('node', [devScriptPath, ...args])"]
+    end
+    
+    subgraph rootIndex-ExecutionFlow["rootIndex-Execution Flow"]
+        FL1["Set up CommonJS compatibility with fileURLToPath and createRequire"]
+        FL2["Load package.json for version information"]
+        FL3["Export devScriptPath for programmatic access to dev.js"]
+        FL4["Export initProject function for programmatic project initialization"]
+        FL5["Export runInitCLI function for CLI-based initialization"]
+        FL6["Export version information from package.json"]
+        FL7["Set up Commander.js CLI when running as main module"]
+        FL8["Add init command with options for project initialization"]
+        FL9["Add dev command that spawns dev.js script with arguments"]
+        FL10["Add shortcuts for common dev.js commands (list, next, generate)"]
+        FL11["Handle command execution with child process spawning"]
+        FL12["Parse command line arguments and execute appropriate handlers"]
+    end
+    
+    subgraph rootIndex["index.js"]
+        rootIndex-Imports
+        rootIndex-FunctionsDefined
+        rootIndex-Exports
+        rootIndex-Constants
+        rootIndex-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

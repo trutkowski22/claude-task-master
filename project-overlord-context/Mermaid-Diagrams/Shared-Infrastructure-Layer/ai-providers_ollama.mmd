@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph ollama-Imports["ollama-Imports"]
+        I1["IMPORT: createOllama, FROM: ollama-ai-provider"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph ollama-FunctionsDefined["ollama-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: validateAuth"]
+        FU3["FUNCTION: getClient"]
+        FU4["FUNCTION: isRequiredApiKey"]
+        FU5["FUNCTION: getRequiredApiKeyName"]
+    end
+    
+    subgraph ollama-Exports["ollama-Exports"]
+        E1["EXP: OllamaAIProvider"]
+    end
+    
+    subgraph ollama-Parameters["ollama-Parameters"]
+        P1["PARAM: {object} _params - Parameters to validate (unused)"]
+        P2["PARAM: {object} params - Parameters for client initialization"]
+        P3["PARAM: {string} [params.baseURL] - Optional Ollama base URL (defaults to http://localhost:11434)"]
+    end
+    
+    subgraph ollama-Constants["ollama-Const Declarations"]
+        C1["CONST: { baseURL }, VALUE: params"]
+    end
+    
+    subgraph ollama-ExecutionFlow["ollama-Execution Flow"]
+        FL1["Extend BaseAIProvider class with Ollama implementation"]
+        FL2["Set provider name to 'Ollama' in constructor"]
+        FL3["Override validateAuth to skip authentication (local service)"]
+        FL4["Create Ollama client with optional baseURL parameter"]
+        FL5["Override isRequiredApiKey to return false"]
+        FL6["Return OLLAMA_API_KEY as nominal environment variable name"]
+        FL7["Handle errors using inherited error handling method"]
+    end
+    
+    subgraph ollama["ollama.js"]
+        ollama-Imports
+        ollama-FunctionsDefined
+        ollama-Exports
+        ollama-Parameters
+        ollama-Constants
+        ollama-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

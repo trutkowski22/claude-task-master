@@ -1,0 +1,107 @@
+flowchart TB
+    subgraph geminiCli-Imports["geminiCli-Imports"]
+        I1["IMPORT: generateObject, generateText, streamText, FROM: ai"]
+        I2["IMPORT: parse, FROM: jsonc-parser"]
+        I3["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph geminiCli-Dependencies["geminiCli-Dependencies"]
+        D1["DEP: ai-sdk-provider-gemini-cli"]
+    end
+    
+    subgraph geminiCli-FunctionsDefined["geminiCli-Functions Defined"]
+        FU1["FUNCTION: loadGeminiCliModule"]
+        FU2["FUNCTION: constructor"]
+        FU3["FUNCTION: validateAuth"]
+        FU4["FUNCTION: getClient"]
+        FU5["FUNCTION: _extractSystemMessage"]
+        FU6["FUNCTION: _getJsonEnforcementPrompt"]
+        FU7["FUNCTION: _isValidJson"]
+        FU8["FUNCTION: _detectJsonRequest"]
+        FU9["FUNCTION: _simplifyJsonPrompts"]
+        FU10["FUNCTION: extractJson"]
+        FU11["FUNCTION: generateText"]
+        FU12["FUNCTION: streamText"]
+        FU13["FUNCTION: generateObject"]
+        FU14["FUNCTION: getRequiredApiKeyName"]
+        FU15["FUNCTION: isRequiredApiKey"]
+    end
+    
+    subgraph geminiCli-Exports["geminiCli-Exports"]
+        E1["EXP: GeminiCliProvider"]
+    end
+    
+    subgraph geminiCli-Parameters["geminiCli-Parameters"]
+        P1["PARAM: {object} params - Parameters to validate"]
+        P2["PARAM: {object} params - Parameters for client initialization"]
+        P3["PARAM: {string} [params.apiKey] - Optional Gemini API key (rarely used with gemini-cli)"]
+        P4["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+        P5["PARAM: {Array} messages - Array of message objects"]
+        P6["PARAM: {Object} options - Options for system prompt enhancement"]
+        P7["PARAM: {boolean} options.enforceJsonOutput - Whether to add JSON enforcement to system prompt"]
+        P8["PARAM: {string} text - Text to validate"]
+        P9["PARAM: {string} text - Raw text which may contain JSON"]
+    end
+    
+    subgraph geminiCli-Constants["geminiCli-Const Declarations"]
+        C1["CONST: mod, VALUE: await import('ai-sdk-provider-gemini-cli')"]
+        C2["CONST: authOptions, VALUE: authentication configuration object"]
+        C3["CONST: systemMessages, VALUE: messages.filter((msg) => msg.role === 'system')"]
+        C4["CONST: nonSystemMessages, VALUE: messages.filter((msg) => msg.role !== 'system')"]
+        C5["CONST: jsonEnforcement, VALUE: this._getJsonEnforcementPrompt()"]
+        C6["CONST: userMessages, VALUE: messages.filter((msg) => msg.role === 'user')"]
+        C7["CONST: combinedText, VALUE: userMessages.map((msg) => msg.content).join(' ')"]
+        C8["CONST: subtaskCountMatch, VALUE: systemMsg.content.match regex"]
+        C9["CONST: subtaskCount, VALUE: subtaskCountMatch ? subtaskCountMatch[1] : '10'"]
+        C10["CONST: content, VALUE: text.trim() with wrappers removed"]
+        C11["CONST: firstObj, VALUE: content.indexOf('{')"]
+        C12["CONST: firstArr, VALUE: content.indexOf('[')"]
+        C13["CONST: start, VALUE: calculated start position"]
+        C14["CONST: openChar, VALUE: content[0]"]
+        C15["CONST: closeChar, VALUE: openChar === '{' ? '}' : ']'"]
+        C16["CONST: { systemPrompt, messages }, VALUE: this._extractSystemMessage result"]
+        C17["CONST: client, VALUE: await this.getClient(params)"]
+        C18["CONST: result, VALUE: await generateText/Object/streamText"]
+        C19["CONST: finalText, VALUE: result.text or extracted JSON"]
+        C20["CONST: extractedJson, VALUE: this.extractJson(result.text)"]
+    end
+    
+    subgraph geminiCli-ExecutionFlow["geminiCli-Execution Flow"]
+        FL1["Dynamically load ai-sdk-provider-gemini-cli module"]
+        FL2["Extend BaseAIProvider with Gemini CLI specific implementation"]
+        FL3["Override validateAuth to handle OAuth and API key authentication"]
+        FL4["Create Gemini provider with OAuth personal or API key auth"]
+        FL5["Extract system messages for separate parameter handling"]
+        FL6["Add JSON enforcement prompt for structured output requests"]
+        FL7["Detect JSON requests in user messages using indicators"]
+        FL8["Simplify complex prompts for better JSON compliance"]
+        FL9["Extract JSON from conversational responses using progressive parsing"]
+        FL10["Generate text with system prompt separation and JSON extraction"]
+        FL11["Stream text with proper message handling"]
+        FL12["Generate objects with fallback JSON extraction for parsing errors"]
+        FL13["Return false for API key requirement (uses CLI auth)"]
+    end
+    
+    subgraph geminiCli["gemini-cli.js"]
+        geminiCli-Imports
+        geminiCli-Dependencies
+        geminiCli-FunctionsDefined
+        geminiCli-Exports
+        geminiCli-Parameters
+        geminiCli-Constants
+        geminiCli-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13

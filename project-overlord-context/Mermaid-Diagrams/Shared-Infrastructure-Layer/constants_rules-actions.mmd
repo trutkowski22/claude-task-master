@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph rulesActions-FunctionsDefined["rulesActions-Functions Defined"]
+        FU1["FUNCTION: isValidRulesAction"]
+    end
+    
+    subgraph rulesActions-Exports["rulesActions-Exports"]
+        E1["EXP: RULES_ACTIONS"]
+        E2["EXP: RULES_SETUP_ACTION"]
+        E3["EXP: isValidRulesAction"]
+    end
+    
+    subgraph rulesActions-Parameters["rulesActions-Parameters"]
+        P1["PARAM: {string} action - The action to check"]
+    end
+    
+    subgraph rulesActions-Constants["rulesActions-Const Declarations"]
+        C1["CONST: RULES_ACTIONS, VALUE: object with ADD and REMOVE actions"]
+        C2["CONST: ADD, VALUE: 'add'"]
+        C3["CONST: REMOVE, VALUE: 'remove'"]
+        C4["CONST: RULES_SETUP_ACTION, VALUE: 'setup'"]
+    end
+    
+    subgraph rulesActions-ExecutionFlow["rulesActions-Execution Flow"]
+        FL1["Define individual rules action constants in object"]
+        FL2["Include ADD action for adding rules"]
+        FL3["Include REMOVE action for removing rules"]
+        FL4["Define special SETUP action for rules initialization"]
+        FL5["Provide validation function for rules action checking"]
+        FL6["Use Object.values to validate against action constants"]
+        FL7["Export actions and validation for rules command processing"]
+    end
+    
+    subgraph rulesActions["rules-actions.js"]
+        rulesActions-FunctionsDefined
+        rulesActions-Exports
+        rulesActions-Parameters
+        rulesActions-Constants
+        rulesActions-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

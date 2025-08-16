@@ -1,0 +1,36 @@
+```mermaid
+graph TD
+    A[gemini.js] --> B[Import base-profile]
+    A --> C[Create geminiProfile]
+    
+    B --> D[base-profile.js]
+    D --> E[createProfile factory]
+    
+    C --> F[Profile Configuration]
+    F --> G[name: 'gemini']
+    F --> H[displayName: 'Gemini']
+    F --> I[url: 'codeassist.google']
+    F --> J[docsUrl: 'github.com/google-gemini/gemini-cli']
+    F --> K[profileDir: '.gemini']
+    F --> L[rulesDir: '.']
+    F --> M[mcpConfigName: 'settings.json']
+    F --> N[includeDefaultRules: false]
+    F --> O[fileMap Configuration]
+    
+    O --> P[AGENTS.md -> GEMINI.md]
+    
+    E --> Q[Apply base configuration]
+    Q --> R[Add profile-specific settings]
+    R --> S[Generate conversion config]
+    S --> T[Return complete profile object]
+    
+    U[Profile Features] --> V[Integration guide only]
+    U --> W[MCP configuration support]
+    U --> X[Root directory placement]
+    U --> Y[Custom settings file]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style F fill:#e8f5e8
+    style U fill:#fff3e0
+```

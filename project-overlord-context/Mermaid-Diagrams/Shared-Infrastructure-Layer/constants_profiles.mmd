@@ -1,0 +1,55 @@
+flowchart TB
+    subgraph constProfiles-FunctionsDefined["constProfiles-Functions Defined"]
+        FU1["FUNCTION: isValidRulesProfile"]
+    end
+    
+    subgraph constProfiles-Exports["constProfiles-Exports"]
+        E1["EXP: RULE_PROFILES"]
+        E2["EXP: ROO_MODES"]
+        E3["EXP: isValidRulesProfile"]
+    end
+    
+    subgraph constProfiles-Parameters["constProfiles-Parameters"]
+        P1["PARAM: {string} rulesProfile - The rule profile to check"]
+    end
+    
+    subgraph constProfiles-Constants["constProfiles-Const Declarations"]
+        C1["CONST: RULE_PROFILES, VALUE: array of supported rule profile names"]
+        C2["CONST: claude, VALUE: Claude Code integration profile"]
+        C3["CONST: cline, VALUE: Cline IDE rules profile"]
+        C4["CONST: codex, VALUE: Codex integration profile"]
+        C5["CONST: cursor, VALUE: Cursor IDE rules profile"]
+        C6["CONST: gemini, VALUE: Gemini integration profile"]
+        C7["CONST: roo, VALUE: Roo Code IDE rules profile"]
+        C8["CONST: vscode, VALUE: VS Code with GitHub Copilot profile"]
+        C9["CONST: ROO_MODES, VALUE: array of Roo agent modes"]
+        C10["CONST: architect, VALUE: Roo architect mode"]
+        C11["CONST: ask, VALUE: Roo ask mode"]
+        C12["CONST: orchestrator, VALUE: Roo orchestrator mode"]
+        C13["CONST: code, VALUE: Roo code mode"]
+        C14["CONST: debug, VALUE: Roo debug mode"]
+        C15["CONST: test, VALUE: Roo test mode"]
+    end
+    
+    subgraph constProfiles-ExecutionFlow["constProfiles-Execution Flow"]
+        FL1["Define authoritative list of supported rule profiles"]
+        FL2["Include major IDE and AI integration profiles"]
+        FL3["Define Roo-specific agent modes for specialized functionality"]
+        FL4["Provide validation function for rule profile checking"]
+        FL5["Use includes method to validate profile existence"]
+        FL6["Export constants for use in profile selection and validation"]
+    end
+    
+    subgraph constProfiles["profiles.js"]
+        constProfiles-FunctionsDefined
+        constProfiles-Exports
+        constProfiles-Parameters
+        constProfiles-Constants
+        constProfiles-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

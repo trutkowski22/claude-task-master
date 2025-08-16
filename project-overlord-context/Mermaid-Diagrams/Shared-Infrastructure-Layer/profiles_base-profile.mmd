@@ -1,0 +1,73 @@
+flowchart TB
+    subgraph baseProfile-Imports["baseProfile-Imports"]
+        I1["IMPORT: path, FROM: path"]
+    end
+    
+    subgraph baseProfile-FunctionsDefined["baseProfile-Functions Defined"]
+        FU1["FUNCTION: createProfile"]
+        FU2["FUNCTION: getTargetRuleFilename"]
+    end
+    
+    subgraph baseProfile-Exports["baseProfile-Exports"]
+        E1["EXP: createProfile"]
+        E2["EXP: COMMON_TOOL_MAPPINGS"]
+    end
+    
+    subgraph baseProfile-Parameters["baseProfile-Parameters"]
+        P1["PARAM: {Object} editorConfig - Editor-specific configuration"]
+        P2["PARAM: {string} editorConfig.name - Profile name (e.g., 'cursor', 'vscode')"]
+        P3["PARAM: {string} [editorConfig.displayName] - Display name for the editor (defaults to name)"]
+        P4["PARAM: {string} editorConfig.url - Editor website URL"]
+        P5["PARAM: {string} editorConfig.docsUrl - Editor documentation URL"]
+        P6["PARAM: {string} editorConfig.profileDir - Directory for profile configuration"]
+        P7["PARAM: {string} [editorConfig.rulesDir] - Directory for rules files (defaults to profileDir/rules)"]
+        P8["PARAM: {boolean} [editorConfig.mcpConfig=true] - Whether to create MCP configuration"]
+        P9["PARAM: {string} sourceFilename - Source filename to transform"]
+    end
+    
+    subgraph baseProfile-Constants["baseProfile-Const Declarations"]
+        C1["CONST: mcpConfigPath, VALUE: path.join(profileDir, mcpConfigName)"]
+        C2["CONST: taskmasterPrefix, VALUE: supportsRulesSubdirectories ? 'taskmaster/' : ''"]
+        C3["CONST: defaultFileMap, VALUE: standard file mapping object"]
+        C4["CONST: finalFileMap, VALUE: merged default and custom file mappings"]
+        C5["CONST: baseGlobalReplacements, VALUE: array of replacement patterns"]
+        C6["CONST: defaultToolMappings, VALUE: standard tool name mappings"]
+        C7["CONST: conversionConfig, VALUE: comprehensive conversion configuration"]
+        C8["CONST: COMMON_TOOL_MAPPINGS, VALUE: standard and ROO_STYLE tool mappings"]
+    end
+    
+    subgraph baseProfile-ExecutionFlow["baseProfile-Execution Flow"]
+        FL1["Accept editor configuration with defaults and customizations"]
+        FL2["Build MCP configuration path if MCP support enabled"]
+        FL3["Create default file mapping with optional taskmaster subdirectory"]
+        FL4["Merge default and custom file mappings based on includeDefaultRules"]
+        FL5["Define base global text replacements for URLs, tools, and terms"]
+        FL6["Create comprehensive conversion configuration with patterns"]
+        FL7["Define tool name mappings for different editor contexts"]
+        FL8["Create file reference replacement patterns for markdown links"]
+        FL9["Return complete profile configuration object"]
+        FL10["Provide target filename transformation function"]
+        FL11["Include lifecycle hooks for profile addition, removal, and conversion"]
+        FL12["Export common tool mappings for standard and Roo-style editors"]
+    end
+    
+    subgraph baseProfile["base-profile.js"]
+        baseProfile-Imports
+        baseProfile-FunctionsDefined
+        baseProfile-Exports
+        baseProfile-Parameters
+        baseProfile-Constants
+        baseProfile-ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
