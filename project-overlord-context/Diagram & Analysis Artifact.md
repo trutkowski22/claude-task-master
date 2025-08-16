@@ -163,33 +163,33 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js 
  ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js 
  ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js 
- ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js
- ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
- ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js
- ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js
- ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js 
- ┃  ┃  ┃  ┃  ┃  ┣ models.js
- ┃  ┃  ┃  ┃  ┃  ┣ move-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ next-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js
- ┃  ┃  ┃  ┃  ┃  ┣ research.js
- ┃  ┃  ┃  ┃  ┃  ┣ response-language.js
- ┃  ┃  ┃  ┃  ┃  ┣ rules.js
- ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js
- ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js
- ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js
- ┃  ┃  ┃  ┃  ┃  ┣ show-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js
- ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js
- ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
+ ┃  ┃  ┃  ┃  ┃  ┣ models.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ research.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ rules.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ show-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
  ┃  ┃  ┃  ┃  ┣ utils
  ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js 
  ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js
@@ -215,35 +215,35 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ copy-tag.js 
  ┃  ┃  ┃  ┃  ┣ delete-tag.js 
  ┃  ┃  ┃  ┃  ┣ expand-all.js 
- ┃  ┃  ┃  ┃  ┣ expand-task.js
- ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
- ┃  ┃  ┃  ┃  ┣ generate.js
- ┃  ┃  ┃  ┃  ┣ get-operation-status.js
- ┃  ┃  ┃  ┃  ┣ get-task.js
+ ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
+ ┃  ┃  ┃  ┃  ┣ generate.js - DONE
+ ┃  ┃  ┃  ┃  ┣ get-operation-status.js - DONE
+ ┃  ┃  ┃  ┃  ┣ get-task.js - DONE
  ┃  ┃  ┃  ┃  ┣ get-tasks.js 
  ┃  ┃  ┃  ┃  ┣ index.js 
- ┃  ┃  ┃  ┃  ┣ initialize-project.js
- ┃  ┃  ┃  ┃  ┣ list-tags.js
- ┃  ┃  ┃  ┃  ┣ models.js
- ┃  ┃  ┃  ┃  ┣ move-task.js
- ┃  ┃  ┃  ┃  ┣ next-task.js
- ┃  ┃  ┃  ┃  ┣ parse-prd.js
- ┃  ┃  ┃  ┃  ┣ remove-dependency.js
- ┃  ┃  ┃  ┃  ┣ remove-subtask.js
- ┃  ┃  ┃  ┃  ┣ remove-task.js
- ┃  ┃  ┃  ┃  ┣ rename-tag.js
- ┃  ┃  ┃  ┃  ┣ research.js
- ┃  ┃  ┃  ┃  ┣ response-language.js
- ┃  ┃  ┃  ┃  ┣ rules.js
- ┃  ┃  ┃  ┃  ┣ scope-down.js
- ┃  ┃  ┃  ┃  ┣ scope-up.js
- ┃  ┃  ┃  ┃  ┣ set-task-status.js
- ┃  ┃  ┃  ┃  ┣ update-subtask.js
- ┃  ┃  ┃  ┃  ┣ update-task.js
- ┃  ┃  ┃  ┃  ┣ update.js
- ┃  ┃  ┃  ┃  ┣ use-tag.js
+ ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
+ ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
+ ┃  ┃  ┃  ┃  ┣ models.js - DONE
+ ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
+ ┃  ┃  ┃  ┃  ┣ remove-dependency.js - DONE
+ ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
+ ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ rename-tag.js - DONE
+ ┃  ┃  ┃  ┃  ┣ research.js - DONE
+ ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
+ ┃  ┃  ┃  ┃  ┣ rules.js - DONE
+ ┃  ┃  ┃  ┃  ┣ scope-down.js - DONE
+ ┃  ┃  ┃  ┃  ┣ scope-up.js - DONE
+ ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update-subtask.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update.js - DONE
+ ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
  ┃  ┃  ┃  ┃  ┣ utils.js 
- ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
+ ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
  ┃  ┃  ┃  ┣ index.js
  ┃  ┃  ┃  ┗ logger.js
  ┃  ┃  ┗ server.js 
@@ -256,30 +256,30 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js 
  ┃  ┃  ┃  ┃  ┣ expand-task.js 
- ┃  ┃  ┃  ┃  ┣ find-next-task.js
- ┃  ┃  ┃  ┃  ┣ generate-task-files.js
- ┃  ┃  ┃  ┃  ┣ is-task-dependent.js
+ ┃  ┃  ┃  ┃  ┣ find-next-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
+ ┃  ┃  ┃  ┃  ┣ is-task-dependent.js - DONE
  ┃  ┃  ┃  ┃  ┣ list-tasks.js 
- ┃  ┃  ┃  ┃  ┣ migrate.js
- ┃  ┃  ┃  ┃  ┣ models.js
- ┃  ┃  ┃  ┃  ┣ move-task.js
- ┃  ┃  ┃  ┃  ┣ parse-prd.js
- ┃  ┃  ┃  ┃  ┣ remove-subtask.js
- ┃  ┃  ┃  ┃  ┣ remove-task.js
- ┃  ┃  ┃  ┃  ┣ research.js
- ┃  ┃  ┃  ┃  ┣ response-language.js
- ┃  ┃  ┃  ┃  ┣ scope-adjustment.js
- ┃  ┃  ┃  ┃  ┣ set-task-status.js
- ┃  ┃  ┃  ┃  ┣ tag-management.js
- ┃  ┃  ┃  ┃  ┣ task-exists.js
- ┃  ┃  ┃  ┃  ┣ update-single-task-status.js
- ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js
- ┃  ┃  ┃  ┃  ┣ update-task-by-id.js
- ┃  ┃  ┃  ┃  ┗ update-tasks.js
+ ┃  ┃  ┃  ┃  ┣ migrate.js - DONE
+ ┃  ┃  ┃  ┃  ┣ models.js - DONE
+ ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
+ ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
+ ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
+ ┃  ┃  ┃  ┃  ┣ research.js - DONE
+ ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
+ ┃  ┃  ┃  ┃  ┣ scope-adjustment.js - DONE
+ ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
+ ┃  ┃  ┃  ┃  ┣ tag-management.js - DONE
+ ┃  ┃  ┃  ┃  ┣ task-exists.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update-single-task-status.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┣ update-task-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┗ update-tasks.js - DONE
  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┣ contextGatherer.js
- ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js
- ┃  ┃  ┃  ┃  ┗ git-utils.js
+ ┃  ┃  ┃  ┃  ┣ contextGatherer.js - DONE
+ ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js - DONE
+ ┃  ┃  ┃  ┃  ┗ git-utils.js - DONE
  ┃  ┃  ┃  ┣ ai-services-unified.js 
  ┃  ┃  ┃  ┣ commands.js 
  ┃  ┃  ┃  ┣ config-manager.js 
@@ -362,7 +362,7 @@ CLAUDE-TASK-MASTER
  ┃  ┣ index.js 
 
 **Process:**
-1. Use the validated instructions document: **Analysis-Mapping-Instructions.md**
+1. Use this Directory Tree to check your progress, if the file has " - Done" next to it, you have completed the file, if it doesn't say " - Done", you have not completed the file
 2. Follow exact format requirements
 3. Ensure path resolution for all relative imports
 4. Validate each diagram follows the established pattern
