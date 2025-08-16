@@ -1,31 +1,45 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: zod, FROM: zod"]
-        I2["IMPORT: ../core/task-master-core.js, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
-        I3["IMPORT: ../core/utils/path-utils.js, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: copyTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
+        D1["DEP: FastMCP server framework for tool registration"]
+        D2["DEP: Zod validation library for parameter schemas"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: registerCopyTagTool"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: registerCopyTagTool"]
     end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} server - FastMCP server instance"]
+        P1["PARAM: {Object} server - FastMCP server instance for registering the copy tag tool"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: result, VALUE: await copyTagDirect("]
+        C1["CONST: tasksJsonPath, VALUE: path to tasks.json file found using findTasksPath"]
+        C2["CONST: result, VALUE: result from copyTagDirect function execution"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Register copy_tag tool with server using name and description"]
+        FL2["Validate parameters requiring source tag name and target tag name"]
+        FL3["Find tasks.json file path using project root and optional file parameter"]
+        FL4["Execute copyTagDirect function to copy source tag to target tag with metadata"]
+        FL5["Return formatted API result with success or error information"]
     end
-    subgraph FileName["copy-tag.js"]
+    
+    subgraph copyTag["copy-tag.js"]
         Imports
         Dependencies
         FunctionsDefined
@@ -34,6 +48,9 @@ flowchart TB
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
 ```

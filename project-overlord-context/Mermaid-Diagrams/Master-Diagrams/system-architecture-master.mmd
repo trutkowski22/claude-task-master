@@ -1,13 +1,174 @@
-
 flowchart TB
+    %% EXTERNAL SYSTEM DEPENDENCIES
+    subgraph ExternalSystems["External Systems & Dependencies"]
+        EXT1["AI Providers<br/>(Anthropic, OpenAI, Google, etc.)"]
+        EXT2["File System<br/>(Project files, Tasks JSON)"]
+        EXT3["MCP Protocol<br/>(Model Context Protocol)"]
+        EXT4["Command Line Interface<br/>(Shell/Terminal)"]
+        EXT5["Git Integration<br/>(Version control)"]
+        EXT6["Configuration Files<br/>(.mcp.json, environment)"]
+    end
+
+    %% SHARED INFRASTRUCTURE LAYER
+    subgraph SharedInfrastructure["Shared Infrastructure Layer"]
+        subgraph SystemIntegration["System Integration Components"]
+            SI0["task-master-core.js<br/>Central function orchestration hub"]
+            SI00["server.js<br/>MCP server entry point & lifecycle"]
+            SI000["dev.js<br/>CLI entry point & command delegation"]
+            SI0000["init.js<br/>Project initialization & setup"]
+            SI00000["index.js<br/>Main package entry & CLI structure"]
+        end
+        
+        subgraph PathManagement["Path Management"]
+            SI1["paths.js<br/>Central path definitions"]
+            SI2["path-utils.js<br/>Path resolution utilities"]
+        end
+        
+        subgraph AIServices["AI Services"]
+            SI3["ai-services-unified.js<br/>Multi-provider AI abstraction"]
+            SI4["Provider implementations<br/>(anthropic.js, openai.js, etc.)"]
+            SI5["custom-sdk/<br/>Claude Code integration"]
+        end
+        
+        subgraph ConfigurationManagement["Configuration Management"]
+            SI6["config-manager.js<br/>System configuration"]
+            SI7["task-status.js<br/>Status constants"]
+            SI8["task-priority.js<br/>Priority constants"]
+            SI9["profiles.js<br/>Profile definitions"]
+        end
+        
+        subgraph SharedUtilities["Shared Utilities"]
+            SI10["context-manager.js<br/>Context handling"]
+            SI11["logger.js<br/>Logging utilities"]
+            SI12["env-utils.js<br/>Environment handling"]
+            SI13["rule-transformer.js<br/>Rule processing"]
+        end
+        
+        subgraph DataModels["Data Models & Schemas"]
+            SI14["models.js<br/>Data structure definitions"]
+            SI15["JSON schemas<br/>(parameter, prompt-template)"]
+            SI16["constants/<br/>System constants"]
+        end
+    end
+
+    %% CORE IMPLEMENTATION LAYER
+    subgraph CoreImplementation["Core Implementation Layer"]
+        subgraph CoreFunctions["Core Business Logic"]
+            CI1["direct-functions/<br/>Core task operations"]
+            CI2["task-master-core.js<br/>Core orchestration"]
+            CI3["task-manager/<br/>Task management modules"]
+        end
+        
+        subgraph CoreServices["Core Services"]
+            CI4["dependency-manager.js<br/>Dependency handling"]
+            CI5["prompt-manager.js<br/>Prompt management"]
+            CI6["utils/<br/>Core utilities"]
+        end
+        
+        subgraph DataProcessing["Data Processing"]
+            CI7["parse-prd.js<br/>PRD parsing"]
+            CI8["research.js<br/>Research operations"]
+            CI9["complexity analysis<br/>Task complexity evaluation"]
+        end
+    end
+
+    %% INTERFACE LAYER
     subgraph InterfaceLayer["Interface Layer"]
-        IL1["MCP Tools (40 files)"]
+        subgraph MCPInterface["MCP Server Interface"]
+            IL1["mcp-server/<br/>MCP protocol implementation"]
+            IL2["tools/<br/>MCP tool definitions"]
+            IL3["providers/<br/>MCP provider integration"]
+        end
+        
+        subgraph CLIInterface["CLI Interface"]
+            IL4["scripts/<br/>Command line scripts"]
+            IL5["commands.js<br/>CLI command definitions"]
+            IL6["index.js<br/>CLI entry point"]
+        end
+        
+        subgraph DirectInterface["Direct Function Interface"]
+            IL7["task-master.js<br/>Direct API access"]
+            IL8["provider-registry/<br/>Provider management"]
+            IL9["profiles/<br/>Profile implementations"]
+        end
     end
-    subgraph CoreLayer["Core Implementation Layer"]
-        CL1["Direct Functions & Core Logic (74 files)"]
+
+    %% LAYER RELATIONSHIPS - DELEGATION PATTERN
+    InterfaceLayer -.->|"Delegates to"| CoreImplementation
+    CoreImplementation -.->|"Inherits from"| SharedInfrastructure
+
+    %% CROSS-LAYER DATA FLOW WITH SYSTEM INTEGRATION
+    %% Entry Points and Orchestration Flow
+    SI00000 -->|"Package entry"| SI000
+    SI000 -->|"CLI delegation"| IL5
+    SI00 -->|"MCP lifecycle"| IL1
+    SI0000 -->|"Project setup"| CI2
+    
+    %% Request Flow: Interface → Core → Shared Infrastructure
+    IL1 -->|"MCP requests"| SI0
+    IL4 -->|"CLI commands"| SI0
+    IL7 -->|"Direct calls"| SI0
+    
+    SI0 -->|"Orchestrates"| CI1
+    CI1 -->|"Uses services"| SI3
+    CI2 -->|"Uses config"| SI6
+    CI3 -->|"Uses paths"| SI1
+
+    %% Response Flow: Shared Infrastructure → Core → Interface
+    SI3 -->|"AI responses"| CI1
+    SI6 -->|"Configuration"| CI2
+    SI1 -->|"Path resolution"| CI3
+    
+    CI1 -->|"Results"| SI0
+    SI0 -->|"Results"| IL1
+    CI2 -->|"Output"| IL4
+    CI3 -->|"Data"| IL7
+
+    %% EXTERNAL SYSTEM CONNECTIONS
+    EXT1 -.->|"API calls"| SI3
+    EXT2 -.->|"File operations"| SI1
+    EXT3 -.->|"Protocol"| SI00
+    EXT4 -.->|"Commands"| SI000
+    EXT5 -.->|"Git operations"| SI0000
+    EXT6 -.->|"Configuration"| SI6
+    EXT6 -.->|"Environment vars"| SI00
+
+    %% SHARED INFRASTRUCTURE CROSS-CUTTING CONCERNS
+    SI11 -.->|"Logging"| CoreImplementation
+    SI11 -.->|"Logging"| InterfaceLayer
+    SI12 -.->|"Environment"| CoreImplementation
+    SI12 -.->|"Environment"| InterfaceLayer
+    SI14 -.->|"Data models"| CoreImplementation
+    SI14 -.->|"Data models"| InterfaceLayer
+
+    %% INTERFACE LAYER CONSISTENCY PATTERN
+    subgraph ConsistencyPattern["Consistent Functionality Across Interfaces"]
+        CP1["Same task operations available via:<br/>• MCP tools<br/>• CLI commands<br/>• Direct function calls"]
+        CP2["Unified error handling<br/>across all interfaces"]
+        CP3["Consistent data models<br/>and response formats"]
     end
-    subgraph SharedLayer["Shared Infrastructure Layer"]
-        SL1["Utilities, Providers, Constants (62 files)"]
+
+    InterfaceLayer -.->|"Implements"| ConsistencyPattern
+    CoreImplementation -.->|"Ensures"| ConsistencyPattern
+    SharedInfrastructure -.->|"Supports"| ConsistencyPattern
+
+    %% ARCHITECTURAL PATTERNS
+    subgraph ArchitecturalPatterns["Key Architectural Patterns"]
+        AP1["Layered Architecture:<br/>Interface → Core → Infrastructure"]
+        AP2["Delegation Pattern:<br/>Interfaces delegate to core logic"]
+        AP3["Shared Infrastructure:<br/>Common utilities across layers"]
+        AP4["Multi-Interface Support:<br/>Same functionality, different access"]
+        AP5["Provider Abstraction:<br/>Multiple AI providers via unified interface"]
     end
-    IL1 --> CL1
-    CL1 --> SL1
+
+    classDef externalSystem fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef sharedInfra fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef coreImpl fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef interface fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef pattern fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class EXT1,EXT2,EXT3,EXT4,EXT5,EXT6 externalSystem
+    class SI0,SI00,SI000,SI0000,SI00000,SI1,SI2,SI3,SI4,SI5,SI6,SI7,SI8,SI9,SI10,SI11,SI12,SI13,SI14,SI15,SI16 sharedInfra
+    class CI1,CI2,CI3,CI4,CI5,CI6,CI7,CI8,CI9 coreImpl
+    class IL1,IL2,IL3,IL4,IL5,IL6,IL7,IL8,IL9 interface
+    class CP1,CP2,CP3,AP1,AP2,AP3,AP4,AP5 pattern

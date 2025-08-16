@@ -1,62 +1,69 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: url, FROM: url"]
-        I2["IMPORT: path, FROM: path"]
-        I3["IMPORT: module, FROM: module"]
-        I4["IMPORT: child_process, FROM: child_process"]
-        I5["IMPORT: commander, FROM: commander"]
-        I6["IMPORT: ./package.json, FROM: /claude-task-master/package.json"]
+        I1["IMPORT: fileURLToPath, FROM: url"]
+        I2["IMPORT: dirname, FROM: path"]
+        I3["IMPORT: resolve, FROM: path"]
+        I4["IMPORT: createRequire, FROM: module"]
+        I5["IMPORT: spawn, FROM: child_process"]
+        I6["IMPORT: Command, FROM: commander"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
+        D1["DEP: Node.js ESM module system for dynamic imports"]
+        D2["DEP: Node.js child process system for spawning CLI commands"]
+        D3["DEP: Commander.js framework for CLI command structure"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: initProject"]
         FU2["FUNCTION: runInitCLI"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: devScriptPath"]
         E2["EXP: initProject"]
         E3["EXP: runInitCLI"]
         E4["EXP: version"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
-        C2["CONST: __dirname, VALUE: dirname(__filename)"]
-        C3["CONST: require, VALUE: createRequire(import.meta.url)"]
-        C4["CONST: packageJson, VALUE: require('./package.json')"]
-        C5["CONST: devScriptPath, VALUE: resolve(__dirname, './scripts/dev.js')"]
-        C6["CONST: initProject, VALUE: async (options = {}) => {"]
-        C7["CONST: init, VALUE: await import('./scripts/init.js')"]
-        C8["CONST: runInitCLI, VALUE: async (options = {}) => {"]
-        C9["CONST: init, VALUE: await import('./scripts/init.js')"]
-        C10["CONST: result, VALUE: await init.initializeProject(options)"]
-        C11["CONST: version, VALUE: packageJson.version"]
-        C12["CONST: program, VALUE: new Command()"]
-        C13["CONST: args, VALUE: process.argv.slice(process.argv.indexOf('dev') + 1)"]
-        C14["CONST: child, VALUE: spawn('node', [devScriptPath, ...args], {"]
-        C15["CONST: child, VALUE: spawn('node', [devScriptPath, 'list'], {"]
-        C16["CONST: child, VALUE: spawn('node', [devScriptPath, 'next'], {"]
-        C17["CONST: child, VALUE: spawn('node', [devScriptPath, 'generate'], {"]
+        C1["CONST: __filename, VALUE: current file path resolved from import.meta.url"]
+        C2["CONST: __dirname, VALUE: directory path of current file"]
+        C3["CONST: require, VALUE: CommonJS require function created for ESM compatibility"]
+        C4["CONST: packageJson, VALUE: package.json contents loaded for version info"]
+        C5["CONST: devScriptPath, VALUE: resolved path to dev.js script for programmatic usage"]
+        C6["CONST: version, VALUE: package version extracted from package.json"]
+        C7["CONST: program, VALUE: Commander.js program instance for CLI structure"]
     end
-    subgraph EnvironmentVariables["Environment Variables"]
-        ENV1["ENV: DEBUG, USAGE: accessed via process.env"]
-    end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Setup ESM compatibility by creating require function and resolving paths"]
+        FL2["Load package.json to extract version and metadata information"]
+        FL3["Export programmatic functions for project initialization and dev script access"]
+        FL4["Check if file is being executed directly as CLI entry point"]
+        FL5["Create Commander.js program with name, description, and version"]
+        FL6["Define 'init' command with various options and flags for project setup"]
+        FL7["Define 'dev' command to delegate to dev.js script with argument passing"]
+        FL8["Define shortcut commands like 'list', 'next', 'generate' for common operations"]
+        FL9["Parse command line arguments and execute appropriate command handler"]
     end
-    subgraph FileName["index.js"]
+    
+    subgraph indexJs["index.js"]
         Imports
         Dependencies
         FunctionsDefined
         Exports
         Constants
-        EnvironmentVariables
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
 ```

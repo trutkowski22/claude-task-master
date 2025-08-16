@@ -3,21 +3,35 @@ flowchart TB
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: withSessionEnv"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: withSessionEnv"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {object | undefined} sessionEnv - The environment object from the session."]
-        P2["PARAM: {Function} actionFn - An async function to execute with the temporary environment."]
+        P1["PARAM: {object|undefined} sessionEnv - The environment object from the session"]
+        P2["PARAM: {Function} actionFn - An async function to execute with the temporary environment"]
     end
-    subgraph Constants["Const Declarations"]
-        C1["CONST: originalEnv, VALUE: {}"]
-        C2["CONST: keysToRestore, VALUE: []"]
-    end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Define functions and core logic for this module"]
+        FL1["Check if session environment variables are provided"]
+        FL2["Store original environment variable values for restoration"]
+        FL3["Temporarily set environment variables from session"]
+        FL4["Execute the provided action function with modified environment"]
+        FL5["Restore original environment variables regardless of action outcome"]
+        FL6["Return the result of the executed action function"]
     end
-    subgraph FileName["env-utils.js"]
+    
+    subgraph envUtils["env-utils.js"]
         FunctionsDefined
+        Exports
         Parameters
-        Constants
         ExecutionFlow
     end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
 ```

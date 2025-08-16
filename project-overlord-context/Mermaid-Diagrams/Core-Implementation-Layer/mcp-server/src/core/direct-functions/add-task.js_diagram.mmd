@@ -1,15 +1,19 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: addTask, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: addTaskDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addTaskDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
         P2["PARAM: {string} [args.prompt] - Description of the task to add (required if not using manual fields)"]
@@ -18,32 +22,49 @@ flowchart TB
         P5["PARAM: {string} [args.details] - Implementation details (for manual task creation)"]
         P6["PARAM: {string} [args.testStrategy] - Test strategy (for manual task creation)"]
         P7["PARAM: {string} [args.dependencies] - Comma-separated list of task IDs this task depends on"]
-        P8["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P9["PARAM: {string} [args.projectRoot] - Project root path"]
-        P10["PARAM: {string} [args.tag] - Tag for the task (optional)"]
-        P11["PARAM: {Object} log - Logger object"]
-        P12["PARAM: {Object} context - Additional context (session)"]
+        P8["PARAM: {string} [args.priority='medium'] - Task priority (high, medium, low)"]
+        P9["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P10["PARAM: {boolean} [args.research=false] - Whether to use research capabilities for task creation"]
+        P11["PARAM: {string} [args.projectRoot] - Project root path"]
+        P12["PARAM: {string} [args.tag] - Tag for the task (optional)"]
+        P13["PARAM: {Object} log - Logger object"]
+        P14["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C3["CONST: isManualCreation, VALUE: args.title && args.description"]
-        C4["CONST: taskDependencies, VALUE: Array.isArray(dependencies)"]
-        C5["CONST: taskPriority, VALUE: priority || 'medium'"]
-        C6["CONST: result, VALUE: await addTask("]
-        C7["CONST: result, VALUE: await addTask("]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath from arguments"]
+        C2["CONST: isManualCreation, VALUE: boolean check for title and description"]
+        C3["CONST: taskDependencies, VALUE: parsed dependencies array from string"]
+        C4["CONST: taskPriority, VALUE: priority or default 'medium'"]
+        C5["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C6["CONST: manualTaskData, VALUE: manual task data object"]
+        C7["CONST: result, VALUE: addTask function result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Enable silent mode to prevent console interference"]
+        FL2["Validate that tasksJsonPath is provided"]
+        FL3["Check if this is manual task creation or AI-driven"]
+        FL4["Validate required parameters based on creation type"]
+        FL5["Parse dependencies from comma-separated string to array"]
+        FL6["Call shared addTask function with appropriate parameters"]
+        FL7["Return structured success response with task ID and metadata"]
+        FL8["Handle errors and ensure silent mode is disabled"]
     end
-    subgraph FileName["add-task.js"]
+    
+    subgraph addTaskJs["add-task.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

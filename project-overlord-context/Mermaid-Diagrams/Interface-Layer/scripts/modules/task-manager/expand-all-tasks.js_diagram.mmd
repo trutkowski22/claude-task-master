@@ -1,0 +1,97 @@
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: log, readJSON, isSilentMode, findProjectRoot, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: startLoadingIndicator, stopLoadingIndicator, displayAiUsageSummary, FROM: /claude-task-master/claude-task-master/scripts/modules/ui.js"]
+        I3["IMPORT: expandTask, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager/expand-task.js"]
+        I4["IMPORT: getDebugFlag, FROM: /claude-task-master/claude-task-master/scripts/modules/config-manager.js"]
+        I5["IMPORT: aggregateTelemetry, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: chalk, FROM: chalk"]
+        I7["IMPORT: boxen, FROM: boxen"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: AI service provider for task expansion"]
+        D2["DEP: Terminal/console for user interface display"]
+        D3["DEP: File system for reading tasks data"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: expandAllTasks"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: expandAllTasks"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {number} numSubtasks - Optional: Target number of subtasks per task"]
+        P3["PARAM: {boolean} useResearch - Whether to use the research AI role"]
+        P4["PARAM: {string} additionalContext - Optional additional context"]
+        P5["PARAM: {boolean} force - Force expansion even if tasks already have subtasks"]
+        P6["PARAM: {Object} context - Context object containing session and mcpLog"]
+        P7["PARAM: {Object} context.session - Session object from MCP"]
+        P8["PARAM: {Object} context.mcpLog - MCP logger object"]
+        P9["PARAM: {string} context.projectRoot - Project root path"]
+        P10["PARAM: {string} context.tag - Tag for the task"]
+        P11["PARAM: {string} context.complexityReportPath - Path to the complexity report file"]
+        P12["PARAM: {string} outputFormat - Output format ('text' or 'json'). MCP calls should use 'json'"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context parameter"]
+        C2["CONST: mcpLog, VALUE: extracted from context parameter"]
+        C3["CONST: projectRoot, VALUE: providedProjectRoot or findProjectRoot result"]
+        C4["CONST: isMCPCall, VALUE: boolean indicating if called from MCP server"]
+        C5["CONST: logger, VALUE: appropriate logging interface based on call context"]
+        C6["CONST: expandedCount, VALUE: counter for successfully expanded tasks"]
+        C7["CONST: failedCount, VALUE: counter for failed expansion attempts"]
+        C8["CONST: tasksToExpandCount, VALUE: number of tasks eligible for expansion"]
+        C9["CONST: allTelemetryData, VALUE: array collecting telemetry from individual expansions"]
+        C10["CONST: data, VALUE: readJSON result from tasks file"]
+        C11["CONST: tasksToExpand, VALUE: filtered array of tasks eligible for expansion"]
+        C12["CONST: aggregatedTelemetryData, VALUE: combined telemetry data from all expansions"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Determine project root and validate context parameters"]
+        FL2["Set up appropriate logger based on MCP or CLI context"]
+        FL3["Start loading indicator for CLI output mode"]
+        FL4["Read tasks from JSON file and validate data structure"]
+        FL5["Filter tasks to find those eligible for expansion (pending/in-progress, no subtasks or force)"]
+        FL6["Check if any tasks are eligible for expansion"]
+        FL7["Iterate through each eligible task for expansion"]
+        FL8["Start individual task loading indicator"]
+        FL9["Call expandTask function for current task"]
+        FL10["Collect telemetry data from individual expansion"]
+        FL11["Handle expansion success or failure for each task"]
+        FL12["Aggregate collected telemetry data from all expansions"]
+        FL13["Display expansion summary with counts and results"]
+        FL14["Show AI usage summary if in text output mode"]
+        FL15["Return summary object with expansion results and telemetry"]
+    end
+    
+    subgraph expandAllTasksJs["expand-all-tasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

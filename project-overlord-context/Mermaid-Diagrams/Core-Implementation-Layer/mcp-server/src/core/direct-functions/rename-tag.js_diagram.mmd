@@ -1,39 +1,63 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager/tag-management.js, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: renameTag, FROM: G:\claude-task-master\claude-task-master\scripts\modules\task-manager\tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: G:\claude-task-master\claude-task-master\mcp-server\src\tools\utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: renameTagDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: renameTagDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
         P2["PARAM: {string} args.oldName - Current name of the tag to rename"]
         P3["PARAM: {string} args.newName - New name for the tag"]
-        P4["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P5["PARAM: {string} [args.projectRoot] - Project root path"]
+        P4["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file (resolved by tool)"]
+        P5["PARAM: {string} args.projectRoot - Project root path"]
         P6["PARAM: {Object} log - Logger object"]
         P7["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: result, VALUE: await renameTag("]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: oldName, VALUE: extracted from args"]
+        C3["CONST: newName, VALUE: extracted from args"]
+        C4["CONST: projectRoot, VALUE: extracted from args"]
+        C5["CONST: session, VALUE: extracted from context"]
+        C6["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C7["CONST: result, VALUE: renameTag function call result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Enable silent mode to prevent console interference"]
+        FL2["Create logger wrapper for MCP compatibility"]
+        FL3["Validate tasksJsonPath and required tag name parameters"]
+        FL4["Validate old and new tag names are valid strings"]
+        FL5["Call core renameTag function with proper context"]
+        FL6["Restore normal logging mode"]
+        FL7["Return success response with tag rename details"]
     end
-    subgraph FileName["rename-tag.js"]
+    
+    subgraph renameTag["rename-tag.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
 ```

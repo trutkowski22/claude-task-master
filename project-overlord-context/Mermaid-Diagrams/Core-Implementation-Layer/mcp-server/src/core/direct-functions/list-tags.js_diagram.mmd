@@ -1,44 +1,63 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager/tag-management.js, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: tags, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: listTagsDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: listTagsDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
-        P2["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P3["PARAM: {string} [args.projectRoot] - Project root path"]
-        P4["PARAM: {Object} log - Logger object"]
-        P5["PARAM: {Object} context - Additional context (session)"]
+        P2["PARAM: {boolean} [args.showMetadata=false] - Whether to include metadata in the output"]
+        P3["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
+        P4["PARAM: {string} [args.projectRoot] - Project root path"]
+        P5["PARAM: {Object} log - Logger object"]
+        P6["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: options, VALUE: {"]
-        C3["CONST: result, VALUE: await tags("]
-        C4["CONST: tagsSummary, VALUE: result.tags.map((tag) => {"]
-        C5["CONST: tasks, VALUE: tag.tasks || []"]
-        C6["CONST: statusBreakdown, VALUE: tasks.reduce((acc, task) => {"]
-        C7["CONST: status, VALUE: task.status || 'pending'"]
-        C8["CONST: subtaskCounts, VALUE: tasks.reduce("]
-        C9["CONST: subStatus, VALUE: subtask.status || 'pending'"]
+        C1["CONST: tasksJsonPath, VALUE: destructured from args"]
+        C2["CONST: showMetadata, VALUE: destructured from args with default false"]
+        C3["CONST: projectRoot, VALUE: destructured from args"]
+        C4["CONST: session, VALUE: destructured from context"]
+        C5["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C6["CONST: options, VALUE: object with showMetadata property"]
+        C7["CONST: result, VALUE: await tags function result"]
+        C8["CONST: tagsSummary, VALUE: transformed tag data with summary information"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate required tasksJsonPath parameter"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create logger wrapper for MCP compatibility"]
+        FL4["Call tags function with provided parameters and options"]
+        FL5["Transform result to create summary with task counts and status breakdown"]
+        FL6["Calculate subtask counts and status distribution for each tag"]
+        FL7["Restore normal logging mode"]
+        FL8["Return success response with processed tag data"]
     end
-    subgraph FileName["list-tags.js"]
+    
+    subgraph listTags["list-tags.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

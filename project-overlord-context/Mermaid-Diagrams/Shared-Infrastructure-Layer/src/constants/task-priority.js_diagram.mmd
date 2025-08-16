@@ -4,31 +4,42 @@ flowchart TB
         FU1["FUNCTION: isValidTaskPriority"]
         FU2["FUNCTION: normalizeTaskPriority"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: TASK_PRIORITY_OPTIONS"]
         E2["EXP: DEFAULT_TASK_PRIORITY"]
         E3["EXP: isValidTaskPriority"]
         E4["EXP: normalizeTaskPriority"]
     end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {string} priority - The priority to check"]
-        P2["PARAM: {string} priority - The priority to normalize"]
+        P1["PARAM: {string} priority - The priority value to check for validity"]
+        P2["PARAM: {string} priority - The priority value to normalize to lowercase"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: TASK_PRIORITY_OPTIONS, VALUE: ['high', 'medium', 'low']"]
-        C2["CONST: DEFAULT_TASK_PRIORITY, VALUE: 'medium'"]
-        C3["CONST: normalized, VALUE: priority.toLowerCase()"]
+        C1["CONST: TASK_PRIORITY_OPTIONS, VALUE: array of valid priority levels - high, medium, low"]
+        C2["CONST: DEFAULT_TASK_PRIORITY, VALUE: medium as the standard priority level"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Define functions and core logic for this module"]
-        FL2["Expose public API via exports"]
+        FL1["Define array of valid task priority levels"]
+        FL2["Set default priority level for new tasks"]
+        FL3["Create validation function to check priority validity"]
+        FL4["Create normalization function to standardize priority format"]
+        FL5["Return boolean for validation or normalized priority value"]
     end
-    subgraph FileName["task-priority.js"]
+    
+    subgraph taskPriorityJS["task-priority.js"]
         FunctionsDefined
         Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
 ```

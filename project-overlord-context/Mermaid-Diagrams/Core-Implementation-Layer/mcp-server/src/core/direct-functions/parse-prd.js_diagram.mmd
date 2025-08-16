@@ -1,54 +1,88 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
         I1["IMPORT: path, FROM: path"]
         I2["IMPORT: fs, FROM: fs"]
-        I3["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
-        I4["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
-        I5["IMPORT: ../../../../scripts/modules/config-manager.js, FROM: /claude-task-master/scripts/modules/config-manager.js"]
-        I6["IMPORT: ../utils/path-utils.js, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
-        I7["IMPORT: ../../../../src/constants/paths.js, FROM: /claude-task-master/src/constants/paths.js"]
+        I3["IMPORT: parsePRD, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: isSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: createLogWrapper, FROM: /claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        I8["IMPORT: getDefaultNumTasks, FROM: /claude-task-master/claude-task-master/scripts/modules/config-manager.js"]
+        I9["IMPORT: resolvePrdPath, FROM: /claude-task-master/claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I10["IMPORT: resolveProjectPath, FROM: /claude-task-master/claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I11["IMPORT: TASKMASTER_TASKS_FILE, FROM: /claude-task-master/claude-task-master/src/constants/paths.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
+        D1["DEP: File system operations"]
+        D2["DEP: Path resolution utilities"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: parsePRDDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: parsePRDDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments containing projectRoot, input, output, numTasks options."]
-        P2["PARAM: {string} args.input - Path to the input PRD file."]
-        P3["PARAM: {string} args.output - Path to the output directory."]
-        P4["PARAM: {string} args.numTasks - Number of tasks to generate."]
-        P5["PARAM: {boolean} args.force - Whether to force parsing."]
-        P6["PARAM: {boolean} args.append - Whether to append to the output file."]
-        P7["PARAM: {boolean} args.research - Whether to use research mode."]
-        P8["PARAM: {string} args.tag - Tag context for organizing tasks into separate task lists."]
-        P9["PARAM: {Object} log - Logger object."]
-        P10["PARAM: {Object} context - Context object containing session data."]
+        P1["PARAM: {Object} args - Command arguments containing projectRoot, input, output, numTasks options"]
+        P2["PARAM: {string} args.input - Path to the input PRD file"]
+        P3["PARAM: {string} args.output - Path to the output directory"]
+        P4["PARAM: {string} args.numTasks - Number of tasks to generate"]
+        P5["PARAM: {boolean} args.force - Whether to force parsing"]
+        P6["PARAM: {boolean} args.append - Whether to append to the output file"]
+        P7["PARAM: {boolean} args.research - Whether to use research mode"]
+        P8["PARAM: {string} args.tag - Tag context for organizing tasks into separate task lists"]
+        P9["PARAM: {Object} log - Logger object"]
+        P10["PARAM: {Object} context - Context object containing session data"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: logWrapper, VALUE: createLogWrapper(log)"]
-        C2["CONST: outputPath, VALUE: outputArg"]
-        C3["CONST: errorMsg, VALUE: `Input PRD file not found at resolved path: ${inputPath}`"]
-        C4["CONST: outputDir, VALUE: path.dirname(outputPath)"]
-        C5["CONST: errorMsg, VALUE: `Failed to create output directory ${outputDir}: ${error.message}`"]
-        C6["CONST: wasSilent, VALUE: isSilentMode()"]
-        C7["CONST: result, VALUE: await parsePRD("]
-        C8["CONST: successMsg, VALUE: `Successfully parsed PRD and generated tasks in ${result.tasksPath}`"]
+        C1["CONST: session, VALUE: destructured from context"]
+        C2["CONST: inputArg, VALUE: destructured from args"]
+        C3["CONST: outputArg, VALUE: destructured from args"]
+        C4["CONST: numTasksArg, VALUE: destructured from args"]
+        C5["CONST: force, VALUE: destructured from args"]
+        C6["CONST: append, VALUE: destructured from args"]
+        C7["CONST: research, VALUE: destructured from args"]
+        C8["CONST: projectRoot, VALUE: destructured from args"]
+        C9["CONST: tag, VALUE: destructured from args"]
+        C10["CONST: logWrapper, VALUE: createLogWrapper result"]
+        C11["CONST: inputPath, VALUE: resolvePrdPath result"]
+        C12["CONST: outputPath, VALUE: resolved output path or default"]
+        C13["CONST: outputDir, VALUE: path.dirname result of outputPath"]
+        C14["CONST: numTasks, VALUE: parsed or default number of tasks"]
+        C15["CONST: wasSilent, VALUE: isSilentMode check before operation"]
+        C16["CONST: result, VALUE: await parsePRD function result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate required projectRoot and input parameters"]
+        FL2["Resolve input PRD file path using path utilities"]
+        FL3["Resolve output path with fallback to default tasks file"]
+        FL4["Verify input file exists and create output directory if needed"]
+        FL5["Parse and validate numTasks parameter with fallback to default"]
+        FL6["Log configuration details and enable silent mode if needed"]
+        FL7["Call core parsePRD function with all parameters and options"]
+        FL8["Process result and return success response with task file path"]
     end
-    subgraph FileName["parse-prd.js"]
+    
+    subgraph parsePRD["parse-prd.js"]
         Imports
         Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

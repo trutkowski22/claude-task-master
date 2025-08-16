@@ -1,41 +1,74 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager/tag-management.js, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: copyTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
+        D1["DEP: Tag management system for copying operations"]
+        D2["DEP: Session context for user interaction tracking"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: copyTagDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: copyTagDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments"]
+        P1["PARAM: {Object} args - Command arguments for tag copying"]
         P2["PARAM: {string} args.sourceName - Name of the source tag to copy from"]
         P3["PARAM: {string} args.targetName - Name of the new tag to create"]
-        P4["PARAM: {string} [args.description] - Optional description for the new tag"]
-        P5["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P6["PARAM: {string} [args.projectRoot] - Project root path"]
-        P7["PARAM: {Object} log - Logger object"]
+        P4["PARAM: {string} args.description - Optional description for the new tag"]
+        P5["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file (resolved by tool)"]
+        P6["PARAM: {string} args.projectRoot - Project root path"]
+        P7["PARAM: {Object} log - Logger object for tracking operations"]
         P8["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: options, VALUE: {"]
-        C3["CONST: result, VALUE: await copyTag("]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: sourceName, VALUE: extracted from args"]
+        C3["CONST: targetName, VALUE: extracted from args"]
+        C4["CONST: description, VALUE: extracted from args"]
+        C5["CONST: projectRoot, VALUE: extracted from args"]
+        C6["CONST: session, VALUE: extracted from context"]
+        C7["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C8["CONST: options, VALUE: tag copy configuration object"]
+        C9["CONST: result, VALUE: copyTag execution result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Enable silent mode to prevent console interference"]
+        FL2["Create logger wrapper for MCP operations"]
+        FL3["Validate required tasksJsonPath argument"]
+        FL4["Validate source tag name is provided and valid"]
+        FL5["Validate target tag name is provided and valid"]
+        FL6["Prepare options object with description"]
+        FL7["Execute core copyTag function with all parameters"]
+        FL8["Restore normal logging mode"]
+        FL9["Return success response with copy operation details"]
     end
-    subgraph FileName["copy-tag.js"]
+    
+    subgraph copyTag["copy-tag.js"]
         Imports
         Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

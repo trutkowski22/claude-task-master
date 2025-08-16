@@ -1,39 +1,70 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager/tag-management.js, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: deleteTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
+        D1["DEP: Tag management system for deletion operations"]
+        D2["DEP: Session context for user interaction tracking"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: deleteTagDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: deleteTagDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments"]
+        P1["PARAM: {Object} args - Command arguments for tag deletion"]
         P2["PARAM: {string} args.name - Name of the tag to delete"]
-        P3["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P4["PARAM: {string} [args.projectRoot] - Project root path"]
-        P5["PARAM: {Object} log - Logger object"]
-        P6["PARAM: {Object} context - Additional context (session)"]
+        P3["PARAM: {boolean} args.yes - Skip confirmation prompts (defaults to false)"]
+        P4["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file (resolved by tool)"]
+        P5["PARAM: {string} args.projectRoot - Project root path"]
+        P6["PARAM: {Object} log - Logger object for tracking operations"]
+        P7["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: options, VALUE: {"]
-        C3["CONST: result, VALUE: await deleteTag("]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: name, VALUE: extracted from args"]
+        C3["CONST: yes, VALUE: extracted from args with default false"]
+        C4["CONST: projectRoot, VALUE: extracted from args"]
+        C5["CONST: session, VALUE: extracted from context"]
+        C6["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C7["CONST: options, VALUE: tag deletion configuration object"]
+        C8["CONST: result, VALUE: deleteTag execution result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Enable silent mode to prevent console interference"]
+        FL2["Create logger wrapper for MCP operations"]
+        FL3["Validate required tasksJsonPath argument"]
+        FL4["Validate tag name is provided and valid string"]
+        FL5["Prepare options object with confirmation settings"]
+        FL6["Execute core deleteTag function with parameters"]
+        FL7["Restore normal logging mode"]
+        FL8["Return success response with deletion operation details"]
     end
-    subgraph FileName["delete-tag.js"]
+    
+    subgraph deleteTag["delete-tag.js"]
         Imports
         Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

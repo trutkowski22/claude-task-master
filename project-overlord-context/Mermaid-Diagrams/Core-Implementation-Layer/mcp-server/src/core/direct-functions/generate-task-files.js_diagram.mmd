@@ -1,39 +1,66 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I1["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: generateTaskFilesDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: generateTaskFilesDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments containing tasksJsonPath and outputDir."]
-        P2["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file."]
-        P3["PARAM: {string} args.outputDir - Path to the output directory."]
+        P1["PARAM: {Object} args - Command arguments containing tasksJsonPath and outputDir"]
+        P2["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file"]
+        P3["PARAM: {string} args.outputDir - Path to the output directory"]
         P4["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
         P5["PARAM: {string} args.tag - Tag for the task (optional)"]
-        P6["PARAM: {Object} log - Logger object."]
+        P6["PARAM: {Object} log - Logger object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: errorMessage, VALUE: 'tasksJsonPath is required but was not provided.'"]
-        C2["CONST: errorMessage, VALUE: 'outputDir is required but was not provided.'"]
-        C3["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C4["CONST: resolvedOutputDir, VALUE: outputDir"]
+        C1["CONST: tasksJsonPath, outputDir, projectRoot, tag, VALUE: destructured from args"]
+        C2["CONST: errorMessage, VALUE: error message for missing arguments"]
+        C3["CONST: tasksPath, VALUE: tasksJsonPath value"]
+        C4["CONST: resolvedOutputDir, VALUE: outputDir value"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Destructure arguments from input parameters"]
+        FL2["Log operation start with argument details"]
+        FL3["Validate tasksJsonPath is provided or return error"]
+        FL4["Validate outputDir is provided or return error"]
+        FL5["Assign provided paths to local variables"]
+        FL6["Log file generation operation details"]
+        FL7["Enable silent mode to prevent stdout interference"]
+        FL8["Call core generateTaskFiles with paths and context"]
+        FL9["Restore normal logging after task generation"]
+        FL10["Return success with generated file information"]
+        FL11["Handle core function errors and restore logging"]
+        FL12["Handle outer errors and ensure logging restoration"]
     end
-    subgraph FileName["generate-task-files.js"]
+    
+    subgraph generateTaskFilesJsDirect["generate-task-files.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

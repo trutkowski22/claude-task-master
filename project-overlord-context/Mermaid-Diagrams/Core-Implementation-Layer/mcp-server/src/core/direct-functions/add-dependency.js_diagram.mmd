@@ -1,40 +1,64 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/dependency-manager.js, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I1["IMPORT: addDependency, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: addDependencyDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addDependencyDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
         P3["PARAM: {string|number} args.id - Task ID to add dependency to"]
         P4["PARAM: {string|number} args.dependsOn - Task ID that will become a dependency"]
         P5["PARAM: {string} args.tag - Tag for the task (optional)"]
         P6["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
         P7["PARAM: {Object} log - Logger object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C2["CONST: taskId, VALUE: id && id.includes && id.includes('.') ? id : parseInt(id, 10)"]
-        C3["CONST: dependencyId, VALUE: dependsOn && dependsOn.includes && dependsOn.includes('.')"]
-        C4["CONST: context, VALUE: { projectRoot, tag }"]
+        C1["CONST: tasksJsonPath, VALUE: destructured from args"]
+        C2["CONST: id, VALUE: destructured from args"]
+        C3["CONST: dependsOn, VALUE: destructured from args"]
+        C4["CONST: tag, VALUE: destructured from args"]
+        C5["CONST: projectRoot, VALUE: destructured from args"]
+        C6["CONST: tasksPath, VALUE: tasksJsonPath value"]
+        C7["CONST: taskId, VALUE: formatted ID for core function"]
+        C8["CONST: dependencyId, VALUE: formatted dependency ID for core function"]
+        C9["CONST: context, VALUE: object with projectRoot and tag"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate required tasksJsonPath parameter exists"]
+        FL2["Validate task ID and dependency ID are provided"]
+        FL3["Format IDs to handle both numeric and dotted task identifiers"]
+        FL4["Enable silent mode to suppress console output for clean JSON responses"]
+        FL5["Create context object and call core addDependency function"]
+        FL6["Restore normal logging mode and return success result"]
+        FL7["Handle errors by restoring logging and returning error response"]
     end
-    subgraph FileName["add-dependency.js"]
+    
+    subgraph addDependency["add-dependency.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
 ```

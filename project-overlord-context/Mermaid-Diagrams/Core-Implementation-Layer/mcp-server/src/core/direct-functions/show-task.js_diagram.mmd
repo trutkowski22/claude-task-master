@@ -1,45 +1,66 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../utils/path-utils.js, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I1["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: showTaskDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: showTaskDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments."]
-        P2["PARAM: {string} args.id - Task ID to show."]
-        P3["PARAM: {string} [args.file] - Optional path to the tasks file (passed to findTasksPath)."]
-        P4["PARAM: {string} args.reportPath - Explicit path to the complexity report file."]
-        P5["PARAM: {string} [args.status] - Optional status to filter subtasks by."]
-        P6["PARAM: {string} args.projectRoot - Absolute path to the project root directory (already normalized by tool)."]
+        P1["PARAM: {Object} args - Command arguments containing task ID and optional filters"]
+        P2["PARAM: {string} args.id - Task ID to show (supports comma-separated multiple IDs)"]
+        P3["PARAM: {string} [args.file] - Optional path to the tasks file passed to findTasksPath"]
+        P4["PARAM: {string} args.reportPath - Explicit path to the complexity report file"]
+        P5["PARAM: {string} [args.status] - Optional status to filter subtasks by"]
+        P6["PARAM: {string} args.projectRoot - Absolute path to the project root directory"]
         P7["PARAM: {string} [args.tag] - Tag for the task"]
-        P8["PARAM: {Object} log - Logger object."]
-        P9["PARAM: {Object} context - Context object containing session data."]
+        P8["PARAM: {Object} log - Logger object for recording operations"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: tasksData, VALUE: readJSON(tasksJsonPath, projectRoot, tag)"]
-        C2["CONST: complexityReport, VALUE: readComplexityReport(reportPath)"]
-        C3["CONST: taskIds, VALUE: id"]
-        C4["CONST: returnData, VALUE: { ...task }"]
-        C5["CONST: foundTasks, VALUE: []"]
-        C6["CONST: notFoundIds, VALUE: []"]
-        C7["CONST: taskData, VALUE: { ...task }"]
+        C1["CONST: tasksJsonPath, VALUE: result of findTasksPath function call"]
+        C2["CONST: tasksData, VALUE: parsed JSON data from tasks file"]
+        C3["CONST: complexityReport, VALUE: loaded complexity report data"]
+        C4["CONST: taskIds, VALUE: array of trimmed task IDs split from comma-separated input"]
+        C5["CONST: returnData, VALUE: task data with optional metadata fields"]
+        C6["CONST: foundTasks, VALUE: array of successfully retrieved tasks"]
+        C7["CONST: notFoundIds, VALUE: array of task IDs that could not be found"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate and extract task parameters from arguments"]
+        FL2["Resolve tasks file path using project root and optional file parameter"]
+        FL3["Load and validate tasks data from JSON file"]
+        FL4["Load complexity report data for task enrichment"]
+        FL5["Parse and validate comma-separated task IDs"]
+        FL6["Handle single task ID retrieval with status filtering"]
+        FL7["Handle multiple task IDs with batch processing"]
+        FL8["Return formatted response with task data and metadata"]
     end
-    subgraph FileName["show-task.js"]
+    
+    subgraph showTaskJs["show-task.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
 ```

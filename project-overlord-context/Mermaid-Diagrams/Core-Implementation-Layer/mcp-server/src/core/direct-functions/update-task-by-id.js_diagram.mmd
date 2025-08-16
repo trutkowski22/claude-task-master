@@ -1,51 +1,69 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
-        I2["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: updateTaskById, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: updateTaskByIdDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: updateTaskByIdDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments containing id, prompt, useResearch, tasksJsonPath, and projectRoot."]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
-        P3["PARAM: {string} args.id - Task ID (or subtask ID like \"1.2\")."]
-        P4["PARAM: {string} args.prompt - New information/context prompt."]
-        P5["PARAM: {boolean} [args.research] - Whether to use research role."]
-        P6["PARAM: {boolean} [args.append] - Whether to append timestamped information instead of full update."]
-        P7["PARAM: {string} [args.projectRoot] - Project root path."]
-        P8["PARAM: {string} [args.tag] - Tag for the task (optional)"]
-        P9["PARAM: {Object} log - Logger object."]
-        P10["PARAM: {Object} context - Context object containing session data."]
+        P1["PARAM: {Object} args - Command arguments containing task update information"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.id - Task ID or subtask ID in format like 1.2"]
+        P4["PARAM: {string} args.prompt - New information or context prompt for update"]
+        P5["PARAM: {boolean} [args.research] - Whether to use research role for updates"]
+        P6["PARAM: {boolean} [args.append] - Whether to append timestamped information instead of full update"]
+        P7["PARAM: {string} [args.projectRoot] - Project root path for context"]
+        P8["PARAM: {string} [args.tag] - Tag for the task operation"]
+        P9["PARAM: {Object} log - Logger object for recording operations"]
+        P10["PARAM: {Object} context - Context object containing session data"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: logWrapper, VALUE: createLogWrapper(log)"]
-        C2["CONST: errorMessage, VALUE: 'tasksJsonPath is required but was not provided.'"]
-        C3["CONST: errorMessage, VALUE: 'No task ID specified. Please provide a task ID to update.'"]
-        C4["CONST: errorMessage, VALUE: 'No prompt specified. Please provide a prompt with new information for the task update.'"]
-        C5["CONST: errorMessage, VALUE: `Invalid task ID: ${id}. Task ID must be a positive integer or subtask ID (e.g., \"5.2\").`"]
-        C6["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C7["CONST: useResearch, VALUE: research === true"]
-        C8["CONST: wasSilent, VALUE: isSilentMode()"]
-        C9["CONST: coreResult, VALUE: await updateTaskById("]
-        C10["CONST: message, VALUE: `Task ${taskId} was not updated (likely already completed).`"]
-        C11["CONST: successMessage, VALUE: `Successfully updated task with ID ${taskId} based on the prompt`"]
+        C1["CONST: logWrapper, VALUE: enhanced logger with additional formatting methods"]
+        C2["CONST: taskId, VALUE: parsed and validated task identifier"]
+        C3["CONST: tasksPath, VALUE: validated path to tasks JSON file"]
+        C4["CONST: useResearch, VALUE: boolean flag for research mode activation"]
+        C5["CONST: wasSilent, VALUE: original silent mode state before operation"]
+        C6["CONST: coreResult, VALUE: result from core updateTaskById function"]
+        C7["CONST: successMessage, VALUE: formatted success message for operation"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Extract and validate task ID and required parameters"]
+        FL2["Parse task ID handling both integer and subtask formats"]
+        FL3["Verify tasks JSON path is provided and accessible"]
+        FL4["Temporarily enable silent mode to prevent console interference"]
+        FL5["Execute core task update function with research and append options"]
+        FL6["Process update result and handle both success and no-update cases"]
+        FL7["Restore original silent mode state"]
+        FL8["Return formatted response with task data and operation metadata"]
     end
-    subgraph FileName["update-task-by-id.js"]
+    
+    subgraph updateTaskByIdJs["update-task-by-id.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
 ```

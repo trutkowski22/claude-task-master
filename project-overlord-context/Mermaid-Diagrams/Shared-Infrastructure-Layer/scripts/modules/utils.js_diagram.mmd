@@ -1,0 +1,158 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: chalk, FROM: chalk"]
+        I4["IMPORT: dotenv, FROM: dotenv"]
+        I5["IMPORT: getLogLevel, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I6["IMPORT: getDebugFlag, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I7["IMPORT: gitUtils, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
+        I8["IMPORT: COMPLEXITY_REPORT_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I9["IMPORT: LEGACY_COMPLEXITY_REPORT_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I10["IMPORT: LEGACY_CONFIG_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system for JSON operations and file management"]
+        D2["DEP: Environment variable management system"]
+        D3["DEP: Git integration for tag-aware operations"]
+        D4["DEP: Logging and configuration systems"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: resolveEnvVariable"]
+        FU2["FUNCTION: slugifyTagForFilePath"]
+        FU3["FUNCTION: getTagAwareFilePath"]
+        FU4["FUNCTION: findProjectRoot"]
+        FU5["FUNCTION: getTaskManager"]
+        FU6["FUNCTION: enableSilentMode"]
+        FU7["FUNCTION: disableSilentMode"]
+        FU8["FUNCTION: isSilentMode"]
+        FU9["FUNCTION: log"]
+        FU10["FUNCTION: hasTaggedStructure"]
+        FU11["FUNCTION: normalizeTaskIds"]
+        FU12["FUNCTION: readJSON"]
+        FU13["FUNCTION: performCompleteTagMigration"]
+        FU14["FUNCTION: migrateConfigJson"]
+        FU15["FUNCTION: createStateJson"]
+        FU16["FUNCTION: markMigrationForNotice"]
+        FU17["FUNCTION: writeJSON"]
+        FU18["FUNCTION: sanitizePrompt"]
+        FU19["FUNCTION: readComplexityReport"]
+        FU20["FUNCTION: findTaskInComplexityReport"]
+        FU21["FUNCTION: addComplexityToTask"]
+        FU22["FUNCTION: taskExists"]
+        FU23["FUNCTION: formatTaskId"]
+        FU24["FUNCTION: findTaskById"]
+        FU25["FUNCTION: truncate"]
+        FU26["FUNCTION: isEmpty"]
+        FU27["FUNCTION: findCycles"]
+        FU28["FUNCTION: toKebabCase"]
+        FU29["FUNCTION: detectCamelCaseFlags"]
+        FU30["FUNCTION: aggregateTelemetry"]
+        FU31["FUNCTION: getCurrentTag"]
+        FU32["FUNCTION: resolveTag"]
+        FU33["FUNCTION: getTasksForTag"]
+        FU34["FUNCTION: setTasksForTag"]
+        FU35["FUNCTION: flattenTasksWithSubtasks"]
+        FU36["FUNCTION: ensureTagMetadata"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: LOG_LEVELS"]
+        E2["EXP: log"]
+        E3["EXP: readJSON"]
+        E4["EXP: writeJSON"]
+        E5["EXP: sanitizePrompt"]
+        E6["EXP: readComplexityReport"]
+        E7["EXP: findTaskInComplexityReport"]
+        E8["EXP: taskExists"]
+        E9["EXP: formatTaskId"]
+        E10["EXP: findTaskById"]
+        E11["EXP: truncate"]
+        E12["EXP: isEmpty"]
+        E13["EXP: findCycles"]
+        E14["EXP: toKebabCase"]
+        E15["EXP: detectCamelCaseFlags"]
+        E16["EXP: disableSilentMode"]
+        E17["EXP: enableSilentMode"]
+        E18["EXP: getTaskManager"]
+        E19["EXP: isSilentMode"]
+        E20["EXP: addComplexityToTask"]
+        E21["EXP: resolveEnvVariable"]
+        E22["EXP: findProjectRoot"]
+        E23["EXP: getTagAwareFilePath"]
+        E24["EXP: slugifyTagForFilePath"]
+        E25["EXP: aggregateTelemetry"]
+        E26["EXP: getCurrentTag"]
+        E27["EXP: resolveTag"]
+        E28["EXP: getTasksForTag"]
+        E29["EXP: setTasksForTag"]
+        E30["EXP: performCompleteTagMigration"]
+        E31["EXP: migrateConfigJson"]
+        E32["EXP: createStateJson"]
+        E33["EXP: markMigrationForNotice"]
+        E34["EXP: flattenTasksWithSubtasks"]
+        E35["EXP: ensureTagMetadata"]
+        E36["EXP: normalizeTaskIds"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} key - The environment variable key"]
+        P2["PARAM: {object} session - The MCP session object"]
+        P3["PARAM: {string} projectRoot - The project root directory"]
+        P4["PARAM: {string} tagName - The tag name to slugify"]
+        P5["PARAM: {string} basePath - The base file path"]
+        P6["PARAM: {string} tag - The tag name"]
+        P7["PARAM: {string} startDir - The directory to start searching from"]
+        P8["PARAM: {string} level - The log level"]
+        P9["PARAM: {string} filepath - Path to the JSON file"]
+        P10["PARAM: {Object} data - Data to write"]
+        P11["PARAM: {Array} tasks - Array of all tasks"]
+        P12["PARAM: {string|number} taskId - The task ID to find"]
+        P13["PARAM: {Object} complexityReport - Optional complexity report"]
+        P14["PARAM: {string} statusFilter - Optional status to filter by"]
+        P15["PARAM: {string} text - The text to truncate"]
+        P16["PARAM: {number} maxLength - The maximum length"]
+        P17["PARAM: {Array} telemetryArray - Array of telemetry objects"]
+        P18["PARAM: {string} overallCommandName - Name for aggregated command"]
+        P19["PARAM: {Object} options - Options object"]
+        P20["PARAM: {Object} tagObj - The tag object"]
+        P21["PARAM: {Object} opts - Optional fields"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: silentMode, VALUE: global silent mode flag"]
+        C2["CONST: LOG_LEVELS, VALUE: mapping of log levels to numeric values"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Resolve environment variables from multiple sources with precedence"]
+        FL2["Handle project root discovery and tag-aware file path resolution"]
+        FL3["Provide comprehensive logging with configurable levels and silent mode"]
+        FL4["Read and write JSON files with tag migration and structure validation"]
+        FL5["Manage task data operations including search, formatting, and validation"]
+        FL6["Handle complexity report integration and telemetry aggregation"]
+        FL7["Support legacy data migration to tagged task structure"]
+        FL8["Ensure data integrity with ID normalization and metadata management"]
+    end
+    
+    subgraph utils["utils.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+```

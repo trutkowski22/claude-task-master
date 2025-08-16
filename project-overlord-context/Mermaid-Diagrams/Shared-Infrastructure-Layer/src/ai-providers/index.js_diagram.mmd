@@ -15,11 +15,20 @@ flowchart TB
         E12["EXP: ClaudeCodeProvider"]
         E13["EXP: GeminiCliProvider"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Expose public API via exports"]
+        FL1["Re-export all AI provider classes from individual modules"]
+        FL2["Provide centralized access point for all AI providers"]
+        FL3["Enable convenient imports for consumers"]
+        FL4["Maintain single source of truth for provider availability"]
     end
-    subgraph FileName["index.js"]
+    
+    subgraph index["index.js"]
         Exports
         ExecutionFlow
     end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
 ```

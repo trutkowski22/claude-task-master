@@ -1,55 +1,93 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager/analyze-task-complexity.js, FROM: /claude-task-master/scripts/modules/task-manager/analyze-task-complexity.js"]
-        I2["IMPORT: fs, FROM: fs"]
-        I3["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: analyzeTaskComplexity, FROM: /claude-task-master/scripts/modules/task-manager/analyze-task-complexity.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: analyzeTaskComplexityDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: analyzeTaskComplexityDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Function arguments"]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
-        P3["PARAM: {string} args.outputPath - Explicit absolute path to save the report."]
-        P4["PARAM: {string|number} [args.threshold] - Minimum complexity score to recommend expansion (1-10)"]
-        P5["PARAM: {boolean} [args.research] - Use Perplexity AI for research-backed complexity analysis"]
-        P6["PARAM: {string} [args.ids] - Comma-separated list of task IDs to analyze"]
-        P7["PARAM: {number} [args.from] - Starting task ID in a range to analyze"]
-        P8["PARAM: {number} [args.to] - Ending task ID in a range to analyze"]
-        P9["PARAM: {string} [args.projectRoot] - Project root path."]
-        P10["PARAM: {string} [args.tag] - Tag for the task (optional)"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.outputPath - Explicit absolute path to save the report"]
+        P4["PARAM: {string|number} args.threshold - Minimum complexity score to recommend expansion (1-10)"]
+        P5["PARAM: {boolean} args.research - Use Perplexity AI for research-backed complexity analysis"]
+        P6["PARAM: {string} args.ids - Comma-separated list of task IDs to analyze"]
+        P7["PARAM: {number} args.from - Starting task ID in a range to analyze"]
+        P8["PARAM: {number} args.to - Ending task ID in a range to analyze"]
+        P9["PARAM: {string} args.projectRoot - Project root path"]
+        P10["PARAM: {string} args.tag - Tag for the task (optional)"]
         P11["PARAM: {Object} log - Logger object"]
-        P12["PARAM: {Object} [context.session] - MCP session object"]
+        P12["PARAM: {Object} context - Context object containing session data"]
+        P13["PARAM: {Object} context.session - MCP session object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: logWrapper, VALUE: createLogWrapper(log)"]
-        C2["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C3["CONST: resolvedOutputPath, VALUE: outputPath"]
-        C4["CONST: fromStr, VALUE: from !== undefined ? from : 'first'"]
-        C5["CONST: toStr, VALUE: to !== undefined ? to : 'last'"]
-        C6["CONST: coreOptions, VALUE: {"]
-        C7["CONST: wasSilent, VALUE: isSilentMode()"]
-        C8["CONST: analysisArray, VALUE: Array.isArray(coreResult.report.complexityAnalysis)"]
-        C9["CONST: highComplexityTasks, VALUE: analysisArray.filter("]
-        C10["CONST: mediumComplexityTasks, VALUE: analysisArray.filter("]
-        C11["CONST: lowComplexityTasks, VALUE: analysisArray.filter("]
+        C1["CONST: session, VALUE: destructured from context"]
+        C2["CONST: tasksJsonPath, VALUE: destructured from args"]
+        C3["CONST: outputPath, VALUE: destructured from args"]
+        C4["CONST: threshold, VALUE: destructured from args"]
+        C5["CONST: research, VALUE: destructured from args"]
+        C6["CONST: projectRoot, VALUE: destructured from args"]
+        C7["CONST: ids, VALUE: destructured from args"]
+        C8["CONST: from, VALUE: destructured from args"]
+        C9["CONST: to, VALUE: destructured from args"]
+        C10["CONST: tag, VALUE: destructured from args"]
+        C11["CONST: logWrapper, VALUE: createLogWrapper result"]
+        C12["CONST: tasksPath, VALUE: tasksJsonPath value"]
+        C13["CONST: resolvedOutputPath, VALUE: outputPath value"]
+        C14["CONST: fromStr, VALUE: formatted from value or 'first'"]
+        C15["CONST: toStr, VALUE: formatted to value or 'last'"]
+        C16["CONST: coreOptions, VALUE: options object for core function"]
+        C17["CONST: wasSilent, VALUE: current silent mode state"]
+        C18["CONST: coreResult, VALUE: result from core analysis function"]
+        C19["CONST: report, VALUE: report from core result"]
+        C20["CONST: analysisArray, VALUE: complexity analysis array from report"]
+        C21["CONST: highComplexityTasks, VALUE: count of tasks with score >= 8"]
+        C22["CONST: mediumComplexityTasks, VALUE: count of tasks with score 5-7"]
+        C23["CONST: lowComplexityTasks, VALUE: count of tasks with score < 5"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate required parameters tasksJsonPath and outputPath"]
+        FL2["Log analysis parameters including task range and research mode"]
+        FL3["Prepare options object for core analysis function"]
+        FL4["Check and manage silent mode state for clean output"]
+        FL5["Call core analyzeTaskComplexity function with options and context"]
+        FL6["Verify that the analysis report file was created successfully"]
+        FL7["Validate core function returned proper result with report data"]
+        FL8["Process complexity analysis results and count tasks by complexity level"]
+        FL9["Return success response with report summary and full analysis data"]
+        FL10["Handle errors by restoring logging state and returning error response"]
     end
-    subgraph FileName["analyze-task-complexity.js"]
+    
+    subgraph analyzeTaskComplexity["analyze-task-complexity.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
 ```

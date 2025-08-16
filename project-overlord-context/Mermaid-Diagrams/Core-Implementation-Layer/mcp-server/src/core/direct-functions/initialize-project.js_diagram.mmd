@@ -1,36 +1,84 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/init.js, FROM: /claude-task-master/scripts/init.js"]
-        I2["IMPORT: os, FROM: os"]
-        I3["IMPORT: ../../../../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
-        I4["IMPORT: ../../../../src/utils/rule-transformer.js, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I1["IMPORT: initializeProject, FROM: /claude-task-master/scripts/init.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: os, FROM: os"]
+        I5["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+        I6["IMPORT: convertAllRulesToProfileRules, FROM: /claude-task-master/src/utils/rule-transformer.js"]
     end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js os module for operating system utilities"]
+        D2["DEP: Node.js process module for working directory management"]
+    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: initializeProjectDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: initializeProjectDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {object} args - Arguments containing initialization options (addAliases, initGit, storeTasksInGit, skipInstall, yes, projectRoot, rules)"]
-        P2["PARAM: {object} log - The FastMCP logger instance."]
-        P3["PARAM: {object} context - The context object, must contain { session }."]
+        P2["PARAM: {object} log - The FastMCP logger instance"]
+        P3["PARAM: {object} context - The context object, must contain session"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: homeDir, VALUE: os.homedir()"]
-        C2["CONST: targetDirectory, VALUE: args.projectRoot"]
-        C3["CONST: originalCwd, VALUE: process.cwd()"]
-        C4["CONST: options, VALUE: {"]
-        C5["CONST: result, VALUE: await initializeProject(options)"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: homeDir, VALUE: os.homedir() result"]
+        C3["CONST: targetDirectory, VALUE: args.projectRoot"]
+        C4["CONST: originalCwd, VALUE: process.cwd() result"]
+        C5["CONST: options, VALUE: initialization options object"]
+        C6["CONST: result, VALUE: initializeProject execution result"]
+        C7["CONST: resultData, VALUE: formatted result with success message"]
     end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: process.cwd(), USAGE: current working directory management"]
+    end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Extract session from context and get home directory"]
+        FL2["Log received arguments for debugging"]
+        FL3["Determine target directory from args.projectRoot"]
+        FL4["Validate target directory is not root or home"]
+        FL5["Log validated target directory for initialization"]
+        FL6["Store original working directory and change to target"]
+        FL7["Enable silent mode for core function execution"]
+        FL8["Construct initialization options from args"]
+        FL9["Handle rules option with MCP-specific defaults"]
+        FL10["Call core initializeProject with constructed options"]
+        FL11["Format success result with next step guidance"]
+        FL12["Handle initialization errors and restore state"]
+        FL13["Always disable silent mode and restore working directory"]
+        FL14["Return success or error response based on outcome"]
     end
-    subgraph FileName["initialize-project.js"]
+    
+    subgraph initializeProjectJsDirect["initialize-project.js"]
         Imports
+        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
+        EnvironmentVariables
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

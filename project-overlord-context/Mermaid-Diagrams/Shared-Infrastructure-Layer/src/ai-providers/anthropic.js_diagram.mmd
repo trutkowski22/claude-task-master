@@ -1,26 +1,60 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: @ai-sdk/anthropic, FROM: @ai-sdk/anthropic"]
-        I2["IMPORT: ./base-provider.js, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
+        I1["IMPORT: createAnthropic, FROM: @ai-sdk/anthropic"]
+        I2["IMPORT: BaseAIProvider, FROM: /claude-task-master/src/ai-providers/base-provider.js"]
     end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Anthropic AI SDK for Claude model access"]
+        D2["DEP: Anthropic API service for language model operations"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: getClient"]
+    end
+    
     subgraph Exports["Exports"]
         E1["EXP: AnthropicAIProvider"]
     end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {object} params - Parameters for client initialization"]
+        P1["PARAM: {object} params - parameters for client initialization"]
         P2["PARAM: {string} params.apiKey - Anthropic API key"]
-        P3["PARAM: {string} [params.baseURL] - Optional custom API endpoint"]
+        P3["PARAM: {string} params.baseURL - optional custom API endpoint"]
     end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: apiKey, VALUE: extracted API key from parameters"]
+        C2["CONST: baseURL, VALUE: extracted custom endpoint from parameters"]
+    end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Expose public API via exports"]
+        FL1["Extend BaseAIProvider to inherit common AI functionality"]
+        FL2["Set provider name to 'Anthropic' for identification"]
+        FL3["Define ANTHROPIC_API_KEY as required environment variable"]
+        FL4["Validate API key presence in parameters"]
+        FL5["Create Anthropic client with API key and optional base URL"]
+        FL6["Configure beta headers for enhanced output features"]
+        FL7["Return configured client function for model operations"]
     end
-    subgraph FileName["anthropic.js"]
+    
+    subgraph anthropic["anthropic.js"]
         Imports
+        Dependencies
+        FunctionsDefined
         Exports
         Parameters
+        Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
 ```

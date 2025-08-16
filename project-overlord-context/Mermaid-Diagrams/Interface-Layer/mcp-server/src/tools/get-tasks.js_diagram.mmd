@@ -1,32 +1,50 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: zod, FROM: zod"]
-        I2["IMPORT: ../core/task-master-core.js, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
-        I3["IMPORT: ../../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: ./utils.js"]
+        I3["IMPORT: handleApiResult, FROM: ./utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: ./utils.js"]
+        I5["IMPORT: listTasksDirect, FROM: ../core/task-master-core.js"]
+        I6["IMPORT: resolveTasksPath, FROM: ../core/utils/path-utils.js"]
+        I7["IMPORT: resolveComplexityReportPath, FROM: ../core/utils/path-utils.js"]
+        I8["IMPORT: resolveTag, FROM: ../../../scripts/modules/utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
+        D1["DEP: FastMCP server framework for tool registration"]
+        D2["DEP: Zod schema validation library"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: registerListTasksTool"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: registerListTasksTool"]
     end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} server - FastMCP server instance"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: resolvedTag, VALUE: resolveTag({"]
-        C2["CONST: result, VALUE: await listTasksDirect("]
+        C1["CONST: resolvedTag, VALUE: resolveTag result with project context"]
+        C2["CONST: tasksJsonPath, VALUE: resolveTasksPath result"]
+        C3["CONST: complexityReportPath, VALUE: resolveComplexityReportPath result or null"]
+        C4["CONST: result, VALUE: await listTasksDirect execution result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Register MCP tool with server using name 'get_tasks'"]
+        FL2["Define Zod schema parameters for task filtering"]
+        FL3["Resolve tag context for project organization"]
+        FL4["Find tasks.json file path in project structure"]
+        FL5["Optionally resolve complexity report file path"]
+        FL6["Call direct function to list tasks with filters"]
+        FL7["Return formatted task list with count information"]
     end
-    subgraph FileName["get-tasks.js"]
+    
+    subgraph getTasksJs["get-tasks.js"]
         Imports
         Dependencies
         FunctionsDefined
@@ -35,6 +53,10 @@ flowchart TB
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
-```
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

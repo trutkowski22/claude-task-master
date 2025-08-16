@@ -1,41 +1,58 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: zod, FROM: zod"]
+        I1["IMPORT: z, FROM: zod"]
         I2["IMPORT: path, FROM: path"]
         I3["IMPORT: fs, FROM: fs"]
-        I4["IMPORT: ../core/task-master-core.js, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
-        I5["IMPORT: ../core/utils/path-utils.js, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
-        I6["IMPORT: ../../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I7["IMPORT: ../../../src/constants/paths.js, FROM: /claude-task-master/src/constants/paths.js"]
-        I8["IMPORT: ../../../src/utils/path-utils.js, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I4["IMPORT: handleApiResult, FROM: ./utils.js"]
+        I5["IMPORT: createErrorResponse, FROM: ./utils.js"]
+        I6["IMPORT: withNormalizedProjectRoot, FROM: ./utils.js"]
+        I7["IMPORT: analyzeTaskComplexityDirect, FROM: ../core/task-master-core.js"]
+        I8["IMPORT: findTasksPath, FROM: ../core/utils/path-utils.js"]
+        I9["IMPORT: resolveTag, FROM: ../../../scripts/modules/utils.js"]
+        I10["IMPORT: COMPLEXITY_REPORT_FILE, FROM: ../../../src/constants/paths.js"]
+        I11["IMPORT: resolveComplexityReportOutputPath, FROM: ../../../src/utils/path-utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
+        D1["DEP: FastMCP server framework for MCP tool registration"]
+        D2["DEP: Zod validation library for parameter schema validation"]
+        D3["DEP: Node.js file system for directory creation"]
+        D4["DEP: Perplexity AI service for research-backed analysis"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: registerAnalyzeProjectComplexityTool"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: registerAnalyzeProjectComplexityTool"]
     end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} server - FastMCP server instance"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: toolName, VALUE: 'analyze_project_complexity'"]
-        C2["CONST: resolvedTag, VALUE: resolveTag({"]
-        C3["CONST: outputPath, VALUE: resolveComplexityReportOutputPath("]
-        C4["CONST: outputDir, VALUE: path.dirname(outputPath)"]
-        C5["CONST: result, VALUE: await analyzeTaskComplexityDirect("]
+        C1["CONST: toolName, VALUE: analyze_project_complexity"]
+        C2["CONST: resolvedTag, VALUE: resolveTag result"]
+        C3["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C4["CONST: outputPath, VALUE: resolveComplexityReportOutputPath result"]
+        C5["CONST: outputDir, VALUE: path.dirname of outputPath"]
+        C6["CONST: result, VALUE: await analyzeTaskComplexityDirect"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with threshold and research options"]
+        FL3["Wrap execute function with normalized project root"]
+        FL4["Resolve tag context and find tasks.json path"]
+        FL5["Determine output path for complexity report"]
+        FL6["Ensure output directory exists, create if needed"]
+        FL7["Call direct function to analyze task complexity"]
+        FL8["Handle result and format response for MCP client"]
     end
-    subgraph FileName["analyze.js"]
+    
+    subgraph analyze["analyze.js"]
         Imports
         Dependencies
         FunctionsDefined
@@ -44,6 +61,11 @@ flowchart TB
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
-```
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

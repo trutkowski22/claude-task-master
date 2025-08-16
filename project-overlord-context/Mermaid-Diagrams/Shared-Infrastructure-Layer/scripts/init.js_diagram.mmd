@@ -4,23 +4,38 @@ flowchart TB
         I1["IMPORT: fs, FROM: fs"]
         I2["IMPORT: path, FROM: path"]
         I3["IMPORT: readline, FROM: readline"]
-        I4["IMPORT: url, FROM: url"]
-        I5["IMPORT: path, FROM: path"]
+        I4["IMPORT: fileURLToPath, FROM: url"]
+        I5["IMPORT: dirname, FROM: path"]
         I6["IMPORT: chalk, FROM: chalk"]
         I7["IMPORT: figlet, FROM: figlet"]
         I8["IMPORT: boxen, FROM: boxen"]
-        I9["IMPORT: gradient-string, FROM: gradient-string"]
-        I10["IMPORT: ./modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I11["IMPORT: ./modules/utils/git-utils.js, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
-        I12["IMPORT: ../src/utils/manage-gitignore.js, FROM: /claude-task-master/src/utils/manage-gitignore.js"]
-        I13["IMPORT: ../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
-        I14["IMPORT: ./modules/update-config-tokens.js, FROM: /claude-task-master/scripts/modules/update-config-tokens.js"]
-        I15["IMPORT: child_process, FROM: child_process"]
+        I9["IMPORT: gradient, FROM: gradient-string"]
+        I10["IMPORT: isSilentMode, FROM: G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        I11["IMPORT: insideGitWorkTree, FROM: G:\claude-task-master\claude-task-master\scripts\modules\utils\git-utils.js"]
+        I12["IMPORT: manageGitignoreFile, FROM: G:\claude-task-master\claude-task-master\src\utils\manage-gitignore.js"]
+        I13["IMPORT: RULE_PROFILES, FROM: G:\claude-task-master\claude-task-master\src\constants\profiles.js"]
+        I14["IMPORT: convertAllRulesToProfileRules, FROM: G:\claude-task-master\claude-task-master\src\utils\rule-transformer.js"]
+        I15["IMPORT: getRulesProfile, FROM: G:\claude-task-master\claude-task-master\src\utils\rule-transformer.js"]
+        I16["IMPORT: updateConfigMaxTokens, FROM: G:\claude-task-master\claude-task-master\scripts\modules\update-config-tokens.js"]
+        I17["IMPORT: execSync, FROM: child_process"]
+        I18["IMPORT: EXAMPLE_PRD_FILE, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I19["IMPORT: TASKMASTER_CONFIG_FILE, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I20["IMPORT: TASKMASTER_TEMPLATES_DIR, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I21["IMPORT: TASKMASTER_DIR, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I22["IMPORT: TASKMASTER_TASKS_DIR, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I23["IMPORT: TASKMASTER_DOCS_DIR, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I24["IMPORT: TASKMASTER_REPORTS_DIR, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I25["IMPORT: TASKMASTER_STATE_FILE, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I26["IMPORT: ENV_EXAMPLE_FILE, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
+        I27["IMPORT: GITIGNORE_FILE, FROM: G:\claude-task-master\claude-task-master\src\constants\paths.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
+        D1["DEP: Node.js file system for directory and file operations"]
+        D2["DEP: Shell environment for executing Git and npm commands"]
+        D3["DEP: Terminal interface for user interaction and colored output"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: displayBanner"]
         FU2["FUNCTION: log"]
@@ -31,73 +46,45 @@ flowchart TB
         FU7["FUNCTION: initializeProject"]
         FU8["FUNCTION: promptQuestion"]
         FU9["FUNCTION: createProjectStructure"]
-        FU10["FUNCTION: _processSingleProfile"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: initializeProject"]
         E2["EXP: log"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
-        C2["CONST: __dirname, VALUE: dirname(__filename)"]
-        C3["CONST: LOG_LEVELS, VALUE: {"]
-        C4["CONST: LOG_LEVEL, VALUE: process.env.TASKMASTER_LOG_LEVEL"]
-        C5["CONST: coolGradient, VALUE: gradient(['#00b4d8', '#0077b6', '#03045e'])"]
-        C6["CONST: warmGradient, VALUE: gradient(['#fb8b24', '#e36414', '#9a031e'])"]
-        C7["CONST: bannerText, VALUE: figlet.textSync('Task Master AI', {"]
-        C8["CONST: icons, VALUE: {"]
-        C9["CONST: icon, VALUE: icons[level] || ''"]
-        C10["CONST: logMessage, VALUE: `[${level.toUpperCase()}] ${args.join(' ')}\\n`"]
-        C11["CONST: homeDir, VALUE: process.env.HOME || process.env.USERPROFILE"]
-        C12["CONST: configContent, VALUE: fs.readFileSync(shellConfigFile, 'utf8')"]
-        C13["CONST: aliasBlock, VALUE: `"]
-        C14["CONST: stateFilePath, VALUE: path.join(targetDir, TASKMASTER_STATE_FILE)"]
-        C15["CONST: initialState, VALUE: {"]
-        C16["CONST: regex, VALUE: new RegExp(`\\\\{\\\\{${key}\\\\}\\\\}`, 'g')"]
-        C17["CONST: filename, VALUE: path.basename(targetPath)"]
-        C18["CONST: existingContent, VALUE: fs.readFileSync(targetPath, 'utf8')"]
-        C19["CONST: existingLines, VALUE: new Set("]
-        C20["CONST: newLines, VALUE: content"]
-        C21["CONST: updatedContent, VALUE: `${existingContent.trim()}\\n\\n# Added by Task Master AI\\n${newLines.join('\\n')}`"]
-        C22["CONST: taskMasterReadmePath, VALUE: path.join("]
-        C23["CONST: skipPrompts, VALUE: options.yes || (options.name && options.description)"]
-        C24["CONST: projectName, VALUE: options.name || 'task-master-project'"]
-        C25["CONST: projectDescription, VALUE: options.description || 'A project managed with Task Master AI'"]
-        C26["CONST: projectVersion, VALUE: options.version || '0.1.0'"]
-        C27["CONST: authorName, VALUE: options.author || 'Vibe coder'"]
-        C28["CONST: dryRun, VALUE: options.dryRun || false"]
-        C29["CONST: addAliases, VALUE: options.addAliases !== undefined ? options.addAliases : true"]
-        C30["CONST: initGit, VALUE: options.initGit !== undefined ? options.initGit : true"]
-        C31["CONST: storeTasksInGit, VALUE: options.storeTasksInGit !== undefined ? options.storeTasksInGit : true"]
-        C32["CONST: rl, VALUE: readline.createInterface({"]
-        C33["CONST: addAliasesInput, VALUE: await promptQuestion("]
-        C34["CONST: gitInitInput, VALUE: await promptQuestion("]
-        C35["CONST: gitTasksInput, VALUE: await promptQuestion("]
-        C36["CONST: confirmInput, VALUE: await promptQuestion("]
-        C37["CONST: shouldContinue, VALUE: confirmInput.trim().toLowerCase() !== 'n'"]
-        C38["CONST: dryRun, VALUE: options.dryRun || false"]
-        C39["CONST: targetDir, VALUE: process.cwd()"]
-        C40["CONST: replacements, VALUE: {"]
-        C41["CONST: profile, VALUE: getRulesProfile(profileName)"]
-        C42["CONST: configPath, VALUE: path.join(targetDir, TASKMASTER_CONFIG_FILE)"]
-        C43["CONST: gitignoreTemplatePath, VALUE: path.join("]
-        C44["CONST: templateContent, VALUE: fs.readFileSync(gitignoreTemplatePath, 'utf8')"]
-        C45["CONST: npmInstallOptions, VALUE: {"]
-        C46["CONST: aliasResult, VALUE: addShellAliases()"]
+        C1["CONST: __filename, VALUE: current file path using fileURLToPath"]
+        C2["CONST: __dirname, VALUE: current directory path using dirname"]
+        C3["CONST: LOG_LEVELS, VALUE: object mapping log level names to numeric priorities"]
+        C4["CONST: LOG_LEVEL, VALUE: current logging threshold from environment or default"]
+        C5["CONST: coolGradient, VALUE: blue color gradient for banner display"]
+        C6["CONST: warmGradient, VALUE: orange/red color gradient for success messages"]
     end
+    
     subgraph EnvironmentVariables["Environment Variables"]
-        ENV1["ENV: TASKMASTER_LOG_LEVEL, USAGE: accessed via process.env"]
-        ENV2["ENV: DEBUG, USAGE: accessed via process.env"]
-        ENV3["ENV: HOME, USAGE: accessed via process.env"]
-        ENV4["ENV: USERPROFILE, USAGE: accessed via process.env"]
-        ENV5["ENV: SHELL, USAGE: accessed via process.env"]
+        ENV1["ENV: TASKMASTER_LOG_LEVEL, USAGE: controls verbosity of logging output"]
+        ENV2["ENV: DEBUG, USAGE: enables debug logging to file when set to 'true'"]
+        ENV3["ENV: HOME, USAGE: user home directory for shell configuration files"]
+        ENV4["ENV: USERPROFILE, USAGE: Windows user home directory alternative"]
+        ENV5["ENV: SHELL, USAGE: determines which shell configuration file to modify"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Parse command line options and determine initialization mode"]
+        FL2["Display colorful banner and welcome message unless in silent mode"]
+        FL3["Handle boolean flags for aliases, git, and git-tasks configuration"]
+        FL4["Determine rule profiles based on command line flags or prompts"]
+        FL5["Either skip prompts with defaults or run interactive configuration"]
+        FL6["Create complete project directory structure in target location"]
+        FL7["Copy template files like config.json, .env.example, and .gitignore"]
+        FL8["Initialize Git repository if requested and not already present"]
+        FL9["Configure rule profiles, response language, and AI model settings"]
+        FL10["Add shell aliases if requested for easier command access"]
+        FL11["Display success message and next steps for project setup"]
     end
-    subgraph FileName["init.js"]
+    
+    subgraph initJs["init.js"]
         Imports
         Dependencies
         FunctionsDefined
@@ -106,6 +93,15 @@ flowchart TB
         EnvironmentVariables
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
 ```

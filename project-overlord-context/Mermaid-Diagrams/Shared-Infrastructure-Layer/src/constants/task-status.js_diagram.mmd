@@ -3,26 +3,36 @@ flowchart TB
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: isValidTaskStatus"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: TASK_STATUS_OPTIONS"]
         E2["EXP: isValidTaskStatus"]
     end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {string} status - The status to check"]
+        P1["PARAM: {string} status - The status to check for validity"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: TASK_STATUS_OPTIONS, VALUE: ["]
+        C1["CONST: TASK_STATUS_OPTIONS, VALUE: array of valid task status strings including pending, done, in-progress, review, deferred, cancelled"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Define functions and core logic for this module"]
-        FL2["Expose public API via exports"]
+        FL1["Define array of valid task status values"]
+        FL2["Export status options for use throughout application"]
+        FL3["Create validation function to check if status is valid"]
+        FL4["Return boolean result indicating status validity"]
     end
-    subgraph FileName["task-status.js"]
+    
+    subgraph taskStatusJS["task-status.js"]
         FunctionsDefined
         Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
 ```

@@ -1,17 +1,21 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I1["IMPORT: addSubtask, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: addSubtaskDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addSubtaskDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Function arguments"]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
         P3["PARAM: {string} args.id - Parent task ID"]
         P4["PARAM: {string} [args.taskId] - Existing task ID to convert to subtask (optional)"]
         P5["PARAM: {string} [args.title] - Title for new subtask (when creating a new subtask)"]
@@ -24,27 +28,42 @@ flowchart TB
         P12["PARAM: {string} [args.tag] - Tag for the task"]
         P13["PARAM: {Object} log - Logger object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C2["CONST: existingTaskId, VALUE: taskId ? parseInt(taskId, 10) : null"]
-        C3["CONST: parentId, VALUE: parseInt(id, 10)"]
-        C4["CONST: generateFiles, VALUE: !skipGenerate"]
-        C5["CONST: context, VALUE: { projectRoot, tag }"]
-        C6["CONST: result, VALUE: await addSubtask("]
-        C7["CONST: newSubtaskData, VALUE: {"]
-        C8["CONST: result, VALUE: await addSubtask("]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath from arguments"]
+        C2["CONST: dependencies, VALUE: parsed dependencies array from string"]
+        C3["CONST: existingTaskId, VALUE: parsed taskId as integer"]
+        C4["CONST: parentId, VALUE: parsed id as integer"]
+        C5["CONST: generateFiles, VALUE: inverted skipGenerate flag"]
+        C6["CONST: context, VALUE: object with projectRoot and tag"]
+        C7["CONST: newSubtaskData, VALUE: subtask data object for new subtask creation"]
+        C8["CONST: result, VALUE: addSubtask function result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate that tasksJsonPath and parent task ID are provided"]
+        FL2["Check that either taskId or title is provided"]
+        FL3["Parse dependencies from comma-separated string to array"]
+        FL4["Enable silent mode to prevent console interference"]
+        FL5["Determine operation: convert existing task or create new subtask"]
+        FL6["Call shared addSubtask function with appropriate parameters"]
+        FL7["Return structured success response with operation confirmation"]
+        FL8["Handle errors and ensure silent mode is disabled"]
     end
-    subgraph FileName["add-subtask.js"]
+    
+    subgraph addSubtaskJs["add-subtask.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

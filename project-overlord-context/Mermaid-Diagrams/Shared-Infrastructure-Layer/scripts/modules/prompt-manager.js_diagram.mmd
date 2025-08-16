@@ -1,0 +1,79 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fileURLToPath, FROM: url"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: Ajv, FROM: ajv"]
+        I6["IMPORT: addFormats, FROM: ajv-formats"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: File system for template storage and retrieval"]
+        D2["DEP: JSON Schema validation framework"]
+        D3["DEP: Template rendering engine with conditional logic"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: PromptManager.constructor"]
+        FU2["FUNCTION: setupValidation"]
+        FU3["FUNCTION: loadPrompt"]
+        FU4["FUNCTION: loadTemplate"]
+        FU5["FUNCTION: validateParameters"]
+        FU6["FUNCTION: validateParameterType"]
+        FU7["FUNCTION: selectVariant"]
+        FU8["FUNCTION: evaluateCondition"]
+        FU9["FUNCTION: renderTemplate"]
+        FU10["FUNCTION: getNestedValue"]
+        FU11["FUNCTION: validateAllPrompts"]
+        FU12["FUNCTION: listPrompts"]
+        FU13["FUNCTION: validateTemplate"]
+        FU14["FUNCTION: getPromptManager"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: PromptManager"]
+        E2["EXP: getPromptManager"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} promptId - The prompt template ID"]
+        P2["PARAM: {Object} variables - Variables to inject into the template"]
+        P3["PARAM: {string} variantKey - Optional specific variant to use"]
+        P4["PARAM: {Object} template - Template object to validate"]
+        P5["PARAM: {string} condition - Condition string to evaluate"]
+        P6["PARAM: {string} templatePath - Path to template file for validation"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: promptManager, VALUE: singleton instance holder"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Initialize prompt manager with templates directory path"]
+        FL2["Set up JSON schema validation for template structure"]
+        FL3["Load and cache prompt templates from disk"]
+        FL4["Validate template parameters against schema definitions"]
+        FL5["Select appropriate variant based on conditions"]
+        FL6["Render template with variable substitution and helpers"]
+        FL7["Return rendered system and user prompts with metadata"]
+    end
+    
+    subgraph promptManager["prompt-manager.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

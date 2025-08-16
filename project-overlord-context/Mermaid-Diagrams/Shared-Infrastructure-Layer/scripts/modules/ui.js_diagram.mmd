@@ -1,0 +1,114 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: chalk, FROM: chalk"]
+        I2["IMPORT: figlet, FROM: figlet"]
+        I3["IMPORT: boxen, FROM: boxen"]
+        I4["IMPORT: ora, FROM: ora"]
+        I5["IMPORT: Table, FROM: cli-table3"]
+        I6["IMPORT: gradient, FROM: gradient-string"]
+        I7["IMPORT: readline, FROM: readline"]
+        I8["IMPORT: fs, FROM: fs"]
+        I9["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I10["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I11["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I12["IMPORT: truncate, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I13["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I14["IMPORT: findNextTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I15["IMPORT: analyzeTaskComplexity, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I16["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I17["IMPORT: getProjectName, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I18["IMPORT: getDefaultSubtasks, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I19["IMPORT: TASK_STATUS_OPTIONS, FROM: /claude-task-master/src/constants/task-status.js"]
+        I20["IMPORT: TASKMASTER_CONFIG_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I21["IMPORT: TASKMASTER_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I22["IMPORT: getTaskMasterVersion, FROM: /claude-task-master/src/utils/getVersion.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Terminal/console interface for user interaction"]
+        D2["DEP: CLI styling libraries for visual presentation"]
+        D3["DEP: File system for reading task and configuration data"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: displayTaggedTasksFYI"]
+        FU2["FUNCTION: displayCurrentTagIndicator"]
+        FU3["FUNCTION: displayBanner"]
+        FU4["FUNCTION: startLoadingIndicator"]
+        FU5["FUNCTION: stopLoadingIndicator"]
+        FU6["FUNCTION: succeedLoadingIndicator"]
+        FU7["FUNCTION: failLoadingIndicator"]
+        FU8["FUNCTION: warnLoadingIndicator"]
+        FU9["FUNCTION: infoLoadingIndicator"]
+        FU10["FUNCTION: createProgressBar"]
+        FU11["FUNCTION: getStatusWithColor"]
+        FU12["FUNCTION: formatDependenciesWithStatus"]
+        FU13["FUNCTION: displayHelp"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: displayTaggedTasksFYI"]
+        E2["EXP: displayCurrentTagIndicator"]
+        E3["EXP: displayBanner"]
+        E4["EXP: startLoadingIndicator"]
+        E5["EXP: stopLoadingIndicator"]
+        E6["EXP: succeedLoadingIndicator"]
+        E7["EXP: failLoadingIndicator"]
+        E8["EXP: warnLoadingIndicator"]
+        E9["EXP: infoLoadingIndicator"]
+        E10["EXP: createProgressBar"]
+        E11["EXP: getStatusWithColor"]
+        E12["EXP: formatDependenciesWithStatus"]
+        E13["EXP: displayHelp"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} data - Data object that may contain migration flag"]
+        P2["PARAM: {string} tagName - The tag name to display"]
+        P3["PARAM: {Object} options - Display options for tag indicator"]
+        P4["PARAM: {string} message - Message to display next to spinner"]
+        P5["PARAM: {Object} spinner - Spinner object to control"]
+        P6["PARAM: {number} percent - The completion percentage"]
+        P7["PARAM: {number} length - Total length of progress bar in characters"]
+        P8["PARAM: {Object} statusBreakdown - Breakdown of task statuses"]
+        P9["PARAM: {string} status - Task status for color coding"]
+        P10["PARAM: {boolean} forTable - Whether status is for table display"]
+        P11["PARAM: {Array} dependencies - Array of dependency IDs"]
+        P12["PARAM: {Array} allTasks - Array of all tasks for lookup"]
+        P13["PARAM: {boolean} forConsole - Whether output is for console display"]
+        P14["PARAM: {Object} complexityReport - Optional complexity report data"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: coolGradient, VALUE: blue gradient for banner styling"]
+        C2["CONST: warmGradient, VALUE: orange/red gradient for accent styling"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Display application banner with version and project information"]
+        FL2["Show current tag context and migration notices when appropriate"]
+        FL3["Provide loading indicators with animated spinners for operations"]
+        FL4["Create colored progress bars with status breakdown visualization"]
+        FL5["Format task statuses and dependencies with appropriate colors"]
+        FL6["Display help information and user guidance"]
+        FL7["Handle silent mode to suppress visual output when needed"]
+    end
+    
+    subgraph ui["ui.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

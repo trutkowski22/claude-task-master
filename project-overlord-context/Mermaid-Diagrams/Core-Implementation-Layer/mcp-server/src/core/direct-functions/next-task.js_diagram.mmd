@@ -1,44 +1,69 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/task-manager.js, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I1["IMPORT: findNextTask, FROM: /claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: readJSON, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readComplexityReport, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: nextTaskDirect"]
-        FU2["FUNCTION: coreNextTaskAction"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: nextTaskDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
-        P3["PARAM: {string} args.reportPath - Path to the report file."]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.reportPath - Path to the report file"]
         P4["PARAM: {string} args.projectRoot - Project root path (for MCP/env fallback)"]
         P5["PARAM: {string} args.tag - Tag for the task (optional)"]
         P6["PARAM: {Object} log - Logger object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: coreNextTaskAction, VALUE: async () => {"]
-        C2["CONST: data, VALUE: readJSON(tasksJsonPath, projectRoot, tag)"]
-        C3["CONST: complexityReport, VALUE: readComplexityReport(reportPath)"]
-        C4["CONST: nextTask, VALUE: findNextTask(data.tasks, complexityReport)"]
-        C5["CONST: isSubtask, VALUE: typeof nextTask.id === 'string' && nextTask.id.includes('.')"]
-        C6["CONST: taskOrSubtask, VALUE: isSubtask ? 'subtask' : 'task'"]
-        C7["CONST: additionalAdvice, VALUE: isSubtask"]
-        C8["CONST: result, VALUE: await coreNextTaskAction()"]
+        C1["CONST: tasksJsonPath, VALUE: destructured from args"]
+        C2["CONST: reportPath, VALUE: destructured from args"]
+        C3["CONST: projectRoot, VALUE: destructured from args"]
+        C4["CONST: tag, VALUE: destructured from args"]
+        C5["CONST: session, VALUE: destructured from context"]
+        C6["CONST: coreNextTaskAction, VALUE: async function for cache miss handling"]
+        C7["CONST: data, VALUE: readJSON result from tasksJsonPath"]
+        C8["CONST: complexityReport, VALUE: readComplexityReport result"]
+        C9["CONST: nextTask, VALUE: findNextTask result"]
+        C10["CONST: isSubtask, VALUE: boolean check for subtask ID format"]
+        C11["CONST: taskOrSubtask, VALUE: string indicating task or subtask type"]
+        C12["CONST: additionalAdvice, VALUE: context-specific guidance message"]
+        C13["CONST: result, VALUE: coreNextTaskAction result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate required tasksJsonPath parameter"]
+        FL2["Enable silent mode to prevent console logs interfering with JSON response"]
+        FL3["Read tasks data from provided JSON path"]
+        FL4["Read complexity report for task prioritization"]
+        FL5["Find next eligible task using findNextTask algorithm"]
+        FL6["Determine if found task is a subtask or main task"]
+        FL7["Generate appropriate guidance message based on task type"]
+        FL8["Return next task with metadata and guidance"]
     end
-    subgraph FileName["next-task.js"]
+    
+    subgraph nextTask["next-task.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

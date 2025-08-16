@@ -1,38 +1,68 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../scripts/modules/dependency-manager.js, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
-        I2["IMPORT: fs, FROM: fs"]
+        I1["IMPORT: fixDependenciesCommand, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: fs, FROM: fs"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
+        D1["DEP: Node.js fs module for file system operations"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: fixDependenciesDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: fixDependenciesDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Function arguments"]
-        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file."]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
         P3["PARAM: {string} args.projectRoot - Project root directory"]
         P4["PARAM: {string} args.tag - Tag for the project"]
         P5["PARAM: {Object} log - Logger object"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
-        C2["CONST: options, VALUE: { projectRoot, tag }"]
+        C1["CONST: tasksJsonPath, projectRoot, tag, VALUE: destructured from args"]
+        C2["CONST: tasksPath, VALUE: tasksJsonPath value"]
+        C3["CONST: options, VALUE: object with projectRoot and tag"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Destructure arguments from input parameters"]
+        FL2["Log operation start with tasks path information"]
+        FL3["Validate tasksJsonPath is provided or return error"]
+        FL4["Assign provided path to tasksPath variable"]
+        FL5["Verify tasks file exists at specified path"]
+        FL6["Enable silent mode to prevent console interference"]
+        FL7["Create options object with projectRoot and tag"]
+        FL8["Call fixDependenciesCommand with path and options"]
+        FL9["Restore normal logging after operation"]
+        FL10["Return success with operation details"]
+        FL11["Handle errors and restore logging state"]
     end
-    subgraph FileName["fix-dependencies.js"]
+    
+    subgraph fixDependenciesJsDirect["fix-dependencies.js"]
         Imports
         Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

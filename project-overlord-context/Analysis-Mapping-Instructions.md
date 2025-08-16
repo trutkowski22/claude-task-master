@@ -47,6 +47,7 @@ EXCLUDED_DIRECTORIES:
 - .cursor
 - .claude
 - claude-task-master\assets
+- claude-task-master\project-overlord-context
 ```
 
 #### Files to Exclude (Skip these individual files)
@@ -124,24 +125,24 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┣ src
  ┃  ┃  ┃  ┣ core
  ┃  ┃  ┃  ┃  ┣ direct-functions
- ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js
- ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js
- ┃  ┃  ┃  ┃  ┃  ┣ add-tag.js
- ┃  ┃  ┃  ┃  ┃  ┣ add-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js
- ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js
- ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js
- ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js
- ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js
- ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js
- ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js
+ ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ add-tag.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ add-task.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js ✅
+ ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js ✅
  ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js
  ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js
  ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
  ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js
  ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js
  ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js
- ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js ✅
  ┃  ┃  ┃  ┃  ┃  ┣ models.js
  ┃  ┃  ┃  ┃  ┃  ┣ move-task.js
  ┃  ┃  ┃  ┃  ┃  ┣ next-task.js
@@ -163,10 +164,10 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js
  ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
  ┃  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js
+ ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js ✅
  ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js
- ┃  ┃  ┃  ┃  ┣ context-manager.js
- ┃  ┃  ┃  ┃  ┗ task-master-core.js
+ ┃  ┃  ┃  ┃  ┣ context-manager.js ✅
+ ┃  ┃  ┃  ┃  ┗ task-master-core.js ✅
  ┃  ┃  ┃  ┣ custom-sdk
  ┃  ┃  ┃  ┃  ┣ errors.js
  ┃  ┃  ┃  ┃  ┣ index.js
@@ -177,23 +178,23 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┣ providers
  ┃  ┃  ┃  ┃  ┗ mcp-provider.js
  ┃  ┃  ┃  ┣ tools
- ┃  ┃  ┃  ┃  ┣ add-dependency.js
- ┃  ┃  ┃  ┃  ┣ add-subtask.js
- ┃  ┃  ┃  ┃  ┣ add-tag.js
- ┃  ┃  ┃  ┃  ┣ add-task.js
- ┃  ┃  ┃  ┃  ┣ analyze.js
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js
- ┃  ┃  ┃  ┃  ┣ complexity-report.js
- ┃  ┃  ┃  ┃  ┣ copy-tag.js
- ┃  ┃  ┃  ┃  ┣ delete-tag.js
- ┃  ┃  ┃  ┃  ┣ expand-all.js
+ ┃  ┃  ┃  ┃  ┣ add-dependency.js ✅
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js ✅
+ ┃  ┃  ┃  ┃  ┣ add-tag.js ✅
+ ┃  ┃  ┃  ┃  ┣ add-task.js ✅
+ ┃  ┃  ┃  ┃  ┣ analyze.js ✅
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js ✅
+ ┃  ┃  ┃  ┃  ┣ complexity-report.js ✅
+ ┃  ┃  ┃  ┃  ┣ copy-tag.js ✅
+ ┃  ┃  ┃  ┃  ┣ delete-tag.js ✅
+ ┃  ┃  ┃  ┃  ┣ expand-all.js ✅
  ┃  ┃  ┃  ┃  ┣ expand-task.js
  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
  ┃  ┃  ┃  ┃  ┣ generate.js
  ┃  ┃  ┃  ┃  ┣ get-operation-status.js
  ┃  ┃  ┃  ┃  ┣ get-task.js
- ┃  ┃  ┃  ┃  ┣ get-tasks.js
- ┃  ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┃  ┣ get-tasks.js ✅
+ ┃  ┃  ┃  ┃  ┣ index.js ✅
  ┃  ┃  ┃  ┃  ┣ initialize-project.js
  ┃  ┃  ┃  ┃  ┣ list-tags.js
  ┃  ┃  ┃  ┃  ┣ models.js
@@ -214,24 +215,24 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ update-task.js
  ┃  ┃  ┃  ┃  ┣ update.js
  ┃  ┃  ┃  ┃  ┣ use-tag.js
- ┃  ┃  ┃  ┃  ┣ utils.js
+ ┃  ┃  ┃  ┃  ┣ utils.js ✅
  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
  ┃  ┃  ┃  ┣ index.js
  ┃  ┃  ┃  ┗ logger.js
- ┃  ┃  ┗ server.js
+ ┃  ┃  ┗ server.js ✅
  ┃  ┣ scripts
  ┃  ┃  ┣ modules
  ┃  ┃  ┃  ┣ task-manager
- ┃  ┃  ┃  ┃  ┣ add-subtask.js
- ┃  ┃  ┃  ┃  ┣ add-task.js
- ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js
- ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js
- ┃  ┃  ┃  ┃  ┣ expand-task.js
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js ✅
+ ┃  ┃  ┃  ┃  ┣ add-task.js ✅
+ ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js ✅
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js ✅
+ ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js ✅
+ ┃  ┃  ┃  ┃  ┣ expand-task.js ✅
  ┃  ┃  ┃  ┃  ┣ find-next-task.js
  ┃  ┃  ┃  ┃  ┣ generate-task-files.js
  ┃  ┃  ┃  ┃  ┣ is-task-dependent.js
- ┃  ┃  ┃  ┃  ┣ list-tasks.js
+ ┃  ┃  ┃  ┃  ┣ list-tasks.js ✅
  ┃  ┃  ┃  ┃  ┣ migrate.js
  ┃  ┃  ┃  ┃  ┣ models.js
  ┃  ┃  ┃  ┃  ┣ move-task.js
@@ -252,20 +253,20 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ contextGatherer.js
  ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js
  ┃  ┃  ┃  ┃  ┗ git-utils.js
- ┃  ┃  ┃  ┣ ai-services-unified.js
- ┃  ┃  ┃  ┣ commands.js
- ┃  ┃  ┃  ┣ config-manager.js
- ┃  ┃  ┃  ┣ dependency-manager.js
- ┃  ┃  ┃  ┣ index.js
- ┃  ┃  ┃  ┣ prompt-manager.js
+ ┃  ┃  ┃  ┣ ai-services-unified.js ✅
+ ┃  ┃  ┃  ┣ commands.js ✅
+ ┃  ┃  ┃  ┣ config-manager.js ✅
+ ┃  ┃  ┃  ┣ dependency-manager.js ✅
+ ┃  ┃  ┃  ┣ index.js ✅
+ ┃  ┃  ┃  ┣ prompt-manager.js ✅
  ┃  ┃  ┃  ┣ supported-models.json
  ┃  ┃  ┃  ┣ sync-readme.js
- ┃  ┃  ┃  ┣ task-manager.js
- ┃  ┃  ┃  ┣ ui.js
+ ┃  ┃  ┃  ┣ task-manager.js ✅
+ ┃  ┃  ┃  ┣ ui.js ✅
  ┃  ┃  ┃  ┣ update-config-tokens.js
- ┃  ┃  ┃  ┗ utils.js
- ┃  ┃  ┣ dev.js
- ┃  ┃  ┣ init.js
+ ┃  ┃  ┃  ┗ utils.js ✅
+ ┃  ┃  ┣ dev.js ✅
+ ┃  ┃  ┣ init.js ✅
  ┃  ┃  ┗ task-complexity-report.json
  ┃  ┣ src
  ┃  ┃  ┣ ai-providers
@@ -277,25 +278,25 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃     ┣ language-model.js
  ┃  ┃  ┃  ┃     ┣ message-converter.js
  ┃  ┃  ┃  ┃     ┗ types.js
- ┃  ┃  ┃  ┣ anthropic.js
- ┃  ┃  ┃  ┣ base-provider.js
+ ┃  ┃  ┃  ┣ anthropic.js ✅
+ ┃  ┃  ┃  ┣ base-provider.js ✅
  ┃  ┃  ┃  ┣ claude-code.js
  ┃  ┃  ┃  ┣ gemini-cli.js
  ┃  ┃  ┃  ┣ google-vertex.js
  ┃  ┃  ┃  ┣ google.js
- ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┣ index.js ✅
  ┃  ┃  ┃  ┣ ollama.js
- ┃  ┃  ┃  ┣ openai.js
+ ┃  ┃  ┃  ┣ openai.js ✅
  ┃  ┃  ┃  ┣ openrouter.js
  ┃  ┃  ┃  ┗ perplexity.js
  ┃  ┃  ┣ constants
  ┃  ┃  ┃  ┣ commands.js
- ┃  ┃  ┃  ┣ paths.js
+ ┃  ┃  ┃  ┣ paths.js ✅
  ┃  ┃  ┃  ┣ profiles.js
  ┃  ┃  ┃  ┣ providers.js
  ┃  ┃  ┃  ┣ rules-actions.js
- ┃  ┃  ┃  ┣ task-priority.js
- ┃  ┃  ┃  ┗ task-status.js
+ ┃  ┃  ┃  ┣ task-priority.js ✅
+ ┃  ┃  ┃  ┗ task-status.js ✅
  ┃  ┃  ┣ profiles
  ┃  ┃  ┃  ┣ base-profile.js
  ┃  ┃  ┃  ┣ claude.js
@@ -320,18 +321,18 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┣ update-task.json
  ┃  ┃  ┃  ┗ update-tasks.json
  ┃  ┃  ┣ provider-registry
- ┃  ┃  ┃  ┗ index.js
+ ┃  ┃  ┃  ┗ index.js ✅
  ┃  ┃  ┣ utils
  ┃  ┃  ┃  ┣ create-mcp-config.js
  ┃  ┃  ┃  ┣ getVersion.js
  ┃  ┃  ┃  ┣ logger-utils.js
  ┃  ┃  ┃  ┣ manage-gitignore.js
- ┃  ┃  ┃  ┣ path-utils.js
+ ┃  ┃  ┃  ┣ path-utils.js ✅
  ┃  ┃  ┃  ┣ profiles.js
  ┃  ┃  ┃  ┗ rule-transformer.js
- ┃  ┃  ┗ task-master.js
+ ┃  ┃  ┗ task-master.js ✅
  ┃  ┣ .mcp.json
- ┃  ┣ index.js
+ ┃  ┣ index.js ✅
 
 
 #### File Analysis Requirements

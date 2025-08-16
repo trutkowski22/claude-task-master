@@ -1,25 +1,44 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ./src/index.js, FROM: /claude-task-master/mcp-server/src/index.js"]
+        I1["IMPORT: TaskMasterMCPServer, FROM: G:\claude-task-master\claude-task-master\mcp-server\src\index.js"]
         I2["IMPORT: dotenv, FROM: dotenv"]
-        I3["IMPORT: ./src/logger.js, FROM: /claude-task-master/mcp-server/src/logger.js"]
+        I3["IMPORT: logger, FROM: G:\claude-task-master\claude-task-master\mcp-server\src\logger.js"]
     end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js process management for signal handling"]
+        D2["DEP: Environment variable configuration system"]
+    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: startServer"]
     end
-    subgraph Constants["Const Declarations"]
-        C1["CONST: server, VALUE: new TaskMasterMCPServer()"]
-    end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Load environment variables from .env file using dotenv configuration"]
+        FL2["Create new instance of TaskMasterMCPServer for handling MCP protocol"]
+        FL3["Register graceful shutdown handlers for SIGINT and SIGTERM signals"]
+        FL4["Start the MCP server and begin listening for client connections"]
+        FL5["Handle any startup errors by logging and exiting with error code"]
+        FL6["Execute startServer function to initialize the entire system"]
     end
-    subgraph FileName["server.js"]
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: Various environment variables, USAGE: loaded by dotenv for server configuration"]
+    end
+    
+    subgraph serverJs["server.js"]
         Imports
+        Dependencies
         FunctionsDefined
-        Constants
         ExecutionFlow
+        EnvironmentVariables
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
 ```

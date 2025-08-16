@@ -1,18 +1,22 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: child_process, FROM: child_process"]
+        I1["IMPORT: spawnSync, FROM: child_process"]
         I2["IMPORT: path, FROM: path"]
         I3["IMPORT: fs, FROM: fs"]
-        I4["IMPORT: ../core/context-manager.js, FROM: /claude-task-master/mcp-server/src/core/context-manager.js"]
-        I5["IMPORT: url, FROM: url"]
-        I6["IMPORT: ../../../scripts/modules/utils.js, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: contextManager, FROM: ../core/context-manager.js"]
+        I5["IMPORT: fileURLToPath, FROM: url"]
+        I6["IMPORT: getCurrentTag, FROM: ../../../scripts/modules/utils.js"]
+        I7["IMPORT: lastFoundProjectRoot, FROM: ../core/utils/path-utils.js"]
+        I8["IMPORT: PROJECT_MARKERS, FROM: ../core/utils/path-utils.js"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: FastMCP"]
-        D2["DEP: File system"]
-        D3["DEP: Path resolution"]
+        D1["DEP: Node.js child process for executing task-master CLI commands"]
+        D2["DEP: Node.js file system for path validation and reading"]
+        D3["DEP: FastMCP server framework for tool registration and responses"]
+        D4["DEP: Task Master CLI or local script for command execution"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: getVersionInfo"]
         FU2["FUNCTION: getTagInfo"]
@@ -28,9 +32,8 @@ flowchart TB
         FU12["FUNCTION: normalizeProjectRoot"]
         FU13["FUNCTION: getRawProjectRootFromSession"]
         FU14["FUNCTION: withNormalizedProjectRoot"]
-        FU15["FUNCTION: processSingleTask"]
-        FU16["FUNCTION: processArrayOfTasks"]
     end
+    
     subgraph Exports["Exports"]
         E1["EXP: getProjectRoot"]
         E2["EXP: getProjectRootFromSession"]
@@ -46,88 +49,74 @@ flowchart TB
         E12["EXP: getRawProjectRootFromSession"]
         E13["EXP: withNormalizedProjectRoot"]
     end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {string} projectRoot - The project root directory"]
+        P1["PARAM: {Object} result - Result object from API call with success, data, and error properties"]
         P2["PARAM: {Object} log - Logger object"]
-        P3["PARAM: {string|undefined} projectRootRaw - Raw project root from arguments"]
-        P4["PARAM: {Object} log - Logger object"]
-        P5["PARAM: {Object} session - The MCP session object."]
-        P6["PARAM: {Object} log - The MCP logger object."]
-        P7["PARAM: {Object} result - Result object from API call with success, data, and error properties"]
-        P8["PARAM: {Object} log - Logger object"]
-        P9["PARAM: {string} errorPrefix - Prefix for error messages"]
-        P10["PARAM: {Function} processFunction - Optional function to process successful result data"]
-        P11["PARAM: {string} [projectRoot] - Optional project root for tag information"]
-        P12["PARAM: {string} command - The command to execute (e.g., 'add-task')"]
-        P13["PARAM: {Object} log - Logger instance"]
-        P14["PARAM: {Array} args - Arguments for the command"]
-        P15["PARAM: {string|undefined} projectRootRaw - Optional raw project root path (will be normalized internally)"]
-        P16["PARAM: {Object|null} customEnv - Optional object containing environment variables to pass to the child process"]
-        P17["PARAM: {Object} options - Configuration options."]
-        P18["PARAM: {string} options.cacheKey - The unique key for caching this operation's result."]
-        P19["PARAM: {Function} options.actionFn - The async function to execute if the cache misses."]
-        P20["PARAM: {Object} options.log - The logger instance."]
-        P21["PARAM: {Object|Array} taskOrData - A single task object or a data object containing a 'tasks' array."]
-        P22["PARAM: {string[]} fieldsToRemove - An array of field names to remove."]
-        P23["PARAM: {string|Object} content - Content to include in response"]
-        P24["PARAM: {string} errorMessage - Error message to include in response"]
-        P25["PARAM: {Object} [versionInfo] - Optional version information object"]
-        P26["PARAM: {Object} [tagInfo] - Optional tag information object"]
-        P27["PARAM: {Object} log - The MCP logger instance."]
-        P28["PARAM: {string | undefined | null} rawPath - The raw project root path."]
-        P29["PARAM: {object} [log] - Optional logger object."]
-        P30["PARAM: {Object} session - The MCP session object."]
-        P31["PARAM: {Object} log - The MCP logger object."]
-        P32["PARAM: {Function} executeFn - The original async execute(args, context) function."]
+        P3["PARAM: {string} errorPrefix - Prefix for error messages"]
+        P4["PARAM: {Function} processFunction - Optional function to process successful result data"]
+        P5["PARAM: {string} projectRoot - The project root directory"]
+        P6["PARAM: {string} command - The command to execute"]
+        P7["PARAM: {Array} args - Arguments for the command"]
+        P8["PARAM: {string} cacheKey - The unique key for caching this operation's result"]
+        P9["PARAM: {Function} actionFn - The async function to execute if the cache misses"]
+        P10["PARAM: {Object|Array} taskOrData - A single task object or a data object containing a 'tasks' array"]
+        P11["PARAM: {string[]} fieldsToRemove - An array of field names to remove"]
+        P12["PARAM: {string|Object} content - Content to include in response"]
+        P13["PARAM: {string} errorMessage - Error message to include in response"]
+        P14["PARAM: {string|undefined|null} rawPath - The raw project root path"]
+        P15["PARAM: {Object} session - The MCP session object"]
+        P16["PARAM: {Function} executeFn - The original async execute function"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
-        C2["CONST: packageJsonPath, VALUE: path.join("]
-        C3["CONST: packageJson, VALUE: JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))"]
-        C4["CONST: currentTag, VALUE: getCurrentTag(projectRoot)"]
-        C5["CONST: tasksJsonPath, VALUE: path.join("]
-        C6["CONST: tasksData, VALUE: JSON.parse(fs.readFileSync(tasksJsonPath, 'utf-8'))"]
-        C7["CONST: tagKeys, VALUE: Object.keys(tasksData).filter("]
-        C8["CONST: envRoot, VALUE: process.env.TASK_MASTER_PROJECT_ROOT"]
-        C9["CONST: absolutePath, VALUE: path.isAbsolute(envRoot)"]
-        C10["CONST: absolutePath, VALUE: path.isAbsolute(projectRootRaw)"]
-        C11["CONST: currentDir, VALUE: process.cwd()"]
-        C12["CONST: markerPath, VALUE: path.join(currentDir, marker)"]
-        C13["CONST: normalizedSlashes, VALUE: decodedPath.replace(/\\\\/g, '/')"]
-        C14["CONST: cwd, VALUE: process.cwd()"]
-        C15["CONST: serverPath, VALUE: process.argv[1]"]
-        C16["CONST: mcpServerIndex, VALUE: serverPath.indexOf('mcp-server')"]
-        C17["CONST: projectRoot, VALUE: path.dirname("]
-        C18["CONST: cwd, VALUE: process.cwd()"]
-        C19["CONST: versionInfo, VALUE: getVersionInfo()"]
-        C20["CONST: tagInfo, VALUE: projectRoot ? getTagInfo(projectRoot, log) : null"]
-        C21["CONST: errorMsg, VALUE: result.error?.message || `Unknown ${errorPrefix}`"]
-        C22["CONST: processedData, VALUE: processFunction"]
-        C23["CONST: responsePayload, VALUE: {"]
-        C24["CONST: cwd, VALUE: getProjectRoot(projectRootRaw, log)"]
-        C25["CONST: fullArgs, VALUE: [command, ...args]"]
-        C26["CONST: spawnOptions, VALUE: {"]
-        C27["CONST: errorOutput, VALUE: result.stderr"]
-        C28["CONST: cachedResult, VALUE: contextManager.getCachedData(cacheKey)"]
-        C29["CONST: result, VALUE: await actionFn()"]
-        C30["CONST: processSingleTask, VALUE: (task) => {"]
-        C31["CONST: processedTask, VALUE: { ...task }"]
-        C32["CONST: processArrayOfTasks, VALUE: (tasks) => {"]
-        C33["CONST: resolvedPath, VALUE: path.resolve(pathString)"]
-        C34["CONST: envRoot, VALUE: process.env.TASK_MASTER_PROJECT_ROOT"]
-        C35["CONST: envRoot, VALUE: session.env.TASK_MASTER_PROJECT_ROOT"]
-        C36["CONST: sessionRoot, VALUE: getProjectRootFromSession(session, log)"]
-        C37["CONST: updatedArgs, VALUE: { ...args, projectRoot: normalizedRoot }"]
+        C1["CONST: __filename, VALUE: fileURLToPath result"]
+        C2["CONST: cachedVersionInfo, VALUE: null or version information cache"]
+        C3["CONST: packageJsonPath, VALUE: path to package.json file"]
+        C4["CONST: packageJson, VALUE: parsed package.json content"]
+        C5["CONST: currentTag, VALUE: getCurrentTag result"]
+        C6["CONST: availableTags, VALUE: extracted tag keys from tasks.json"]
+        C7["CONST: tasksJsonPath, VALUE: path to tasks.json file"]
+        C8["CONST: tasksData, VALUE: parsed tasks.json content"]
+        C9["CONST: tagKeys, VALUE: filtered object keys from tasks data"]
+        C10["CONST: versionInfo, VALUE: getVersionInfo result"]
+        C11["CONST: tagInfo, VALUE: getTagInfo result"]
+        C12["CONST: processedData, VALUE: processFunction result"]
+        C13["CONST: responsePayload, VALUE: formatted response object"]
+        C14["CONST: cwd, VALUE: getProjectRoot result"]
+        C15["CONST: fullArgs, VALUE: command and arguments array"]
+        C16["CONST: spawnOptions, VALUE: spawn configuration object"]
+        C17["CONST: result, VALUE: spawnSync execution result"]
+        C18["CONST: cachedResult, VALUE: contextManager.getCachedData result"]
+        C19["CONST: processSingleTask, VALUE: helper function for processing task objects"]
+        C20["CONST: processArrayOfTasks, VALUE: helper function for processing task arrays"]
+        C21["CONST: pathString, VALUE: normalized path string"]
+        C22["CONST: resolvedPath, VALUE: path.resolve result"]
+        C23["CONST: normalizedRoot, VALUE: normalized project root path"]
+        C24["CONST: rootSource, VALUE: source description for project root"]
+        C25["CONST: updatedArgs, VALUE: args with normalized project root"]
     end
+    
     subgraph EnvironmentVariables["Environment Variables"]
-        ENV1["ENV: TASK_MASTER_PROJECT_ROOT, USAGE: accessed via process.env"]
+        ENV1["ENV: TASK_MASTER_PROJECT_ROOT, USAGE: override for project root path detection"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
-        FL3["Expose public API via exports"]
+        FL1["Provide version information retrieval with caching"]
+        FL2["Extract current tag and available tags from project"]
+        FL3["Determine project root using precedence order"]
+        FL4["Extract project root from MCP session with fallbacks"]
+        FL5["Handle API results with standardized formatting"]
+        FL6["Execute task-master CLI commands with proper environment"]
+        FL7["Implement caching mechanism for expensive operations"]
+        FL8["Process MCP response data by removing sensitive fields"]
+        FL9["Create standardized content and error responses"]
+        FL10["Provide logger wrapper for core function compatibility"]
+        FL11["Normalize project root paths from various formats"]
+        FL12["Wrap tool execute functions with project root normalization"]
     end
-    subgraph FileName["utils.js"]
+    
+    subgraph utils["utils.js"]
         Imports
         Dependencies
         FunctionsDefined
@@ -137,6 +126,15 @@ flowchart TB
         EnvironmentVariables
         ExecutionFlow
     end
+    
     FL1 --> FL2
     FL2 --> FL3
-```
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

@@ -1,0 +1,135 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: MODEL_MAP, getAzureBaseURL, getBaseUrlForRole, getBedrockBaseURL, getDebugFlag, getFallbackModelId, getFallbackProvider, getMainModelId, getMainProvider, getOllamaBaseURL, getParametersForRole, getResearchModelId, getResearchProvider, getResponseLanguage, getUserId, getVertexLocation, getVertexProjectId, isApiKeySet, providersWithoutApiKeys, FROM: /claude-task-master/claude-task-master/scripts/modules/config-manager.js"]
+        I2["IMPORT: findProjectRoot, getCurrentTag, log, resolveEnvVariable, FROM: /claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: AnthropicAIProvider, AzureProvider, BedrockAIProvider, ClaudeCodeProvider, GeminiCliProvider, GoogleAIProvider, GroqProvider, OllamaAIProvider, OpenAIProvider, OpenRouterAIProvider, PerplexityAIProvider, VertexAIProvider, XAIProvider, FROM: /claude-task-master/claude-task-master/src/ai-providers/index.js"]
+        I4["IMPORT: ProviderRegistry, FROM: /claude-task-master/claude-task-master/src/provider-registry/index.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js path module for file system paths"]
+        D2["DEP: Node.js fs module for file system operations"]
+        D3["DEP: Multiple AI provider APIs (Anthropic, OpenAI, Google, etc.)"]
+        D4["DEP: Task Master configuration system"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: _getProvider"]
+        FU2["FUNCTION: _getCostForModel"]
+        FU3["FUNCTION: _getTagInfo"]
+        FU4["FUNCTION: isRetryableError"]
+        FU5["FUNCTION: _extractErrorMessage"]
+        FU6["FUNCTION: _resolveApiKey"]
+        FU7["FUNCTION: _attemptProviderCallWithRetries"]
+        FU8["FUNCTION: _unifiedServiceRunner"]
+        FU9["FUNCTION: generateTextService"]
+        FU10["FUNCTION: streamTextService"]
+        FU11["FUNCTION: generateObjectService"]
+        FU12["FUNCTION: logAiUsage"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: generateTextService"]
+        E2["EXP: streamTextService"]
+        E3["EXP: generateObjectService"]
+        E4["EXP: logAiUsage"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} providerName - Name of the AI provider to retrieve"]
+        P2["PARAM: {string} providerName - Provider name for cost calculation"]
+        P3["PARAM: {string} modelId - Specific model identifier for cost lookup"]
+        P4["PARAM: {string} projectRoot - Root directory path for tag information"]
+        P5["PARAM: {Error} error - Error object to check for retry eligibility"]
+        P6["PARAM: {string} providerName - Provider name for API key resolution"]
+        P7["PARAM: {object} session - Optional MCP session object"]
+        P8["PARAM: {string} projectRoot - Optional project root path for environment fallback"]
+        P9["PARAM: {object} provider - Provider instance to call"]
+        P10["PARAM: {string} serviceType - Type of service operation to perform"]
+        P11["PARAM: {object} callParams - Parameters object for the provider function"]
+        P12["PARAM: {string} providerName - Name of the provider for logging"]
+        P13["PARAM: {string} modelId - Specific model ID for logging"]
+        P14["PARAM: {string} attemptRole - The role being attempted for logging"]
+        P15["PARAM: {string} serviceType - Type of service being performed"]
+        P16["PARAM: {object} params - Configuration parameters for the service call"]
+        P17["PARAM: {object} params - Parameters for text generation service"]
+        P18["PARAM: {object} params - Parameters for text streaming service"]
+        P19["PARAM: {object} params - Parameters for object generation service"]
+        P20["PARAM: {string} userId - Unique user identifier for telemetry"]
+        P21["PARAM: {string} commandName - Command that triggered the AI call"]
+        P22["PARAM: {string} providerName - AI provider used for the call"]
+        P23["PARAM: {string} modelId - Specific AI model ID used"]
+        P24["PARAM: {number} inputTokens - Number of input tokens consumed"]
+        P25["PARAM: {number} outputTokens - Number of output tokens generated"]
+        P26["PARAM: {string} outputType - Type of output interface (cli or mcp)"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: PROVIDERS, VALUE: object mapping provider names to instantiated provider classes"]
+        C2["CONST: MAX_RETRIES, VALUE: 2 (maximum number of retry attempts)"]
+        C3["CONST: INITIAL_RETRY_DELAY_MS, VALUE: 1000 (initial delay between retries in milliseconds)"]
+        C4["CONST: errorMessage, VALUE: lowercase error message string for retry checking"]
+        C5["CONST: envVarName, VALUE: required API key environment variable name"]
+        C6["CONST: apiKey, VALUE: resolved API key from environment or session"]
+        C7["CONST: fnName, VALUE: service type function name for logging"]
+        C8["CONST: effectiveProjectRoot, VALUE: resolved project root directory path"]
+        C9["CONST: userId, VALUE: unique user identifier from configuration"]
+        C10["CONST: sequence, VALUE: array of provider roles to attempt in order"]
+        C11["CONST: responseLanguage, VALUE: configured response language preference"]
+        C12["CONST: systemPromptWithLanguage, VALUE: system prompt with language instruction appended"]
+        C13["CONST: messages, VALUE: array of message objects for AI conversation"]
+        C14["CONST: callParams, VALUE: complete parameter object for provider API call"]
+        C15["CONST: providerResponse, VALUE: response object from successful AI provider call"]
+        C16["CONST: telemetryData, VALUE: usage tracking data for AI service calls"]
+        C17["CONST: finalMainResult, VALUE: processed result based on service type"]
+        C18["CONST: tagInfo, VALUE: current project tag information"]
+        C19["CONST: defaults, VALUE: default parameter values for service functions"]
+        C20["CONST: combinedParams, VALUE: merged default and provided parameters"]
+        C21["CONST: timestamp, VALUE: ISO string timestamp for telemetry logging"]
+        C22["CONST: totalTokens, VALUE: sum of input and output tokens"]
+        C23["CONST: inputCost, outputCost, currency, VALUE: cost calculation data from model pricing"]
+        C24["CONST: totalCost, VALUE: calculated total cost for the AI service call"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: VERTEX_PROJECT_ID, USAGE: Google Vertex AI project identifier"]
+        ENV2["ENV: VERTEX_LOCATION, USAGE: Google Vertex AI region/location setting"]
+        ENV3["ENV: GOOGLE_APPLICATION_CREDENTIALS, USAGE: path to Google service account credentials file"]
+        ENV4["ENV: Various provider API keys, USAGE: authentication keys for different AI providers"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Initialize provider instances for all supported AI services"]
+        FL2["Provide unified interface for text generation, streaming, and object generation"]
+        FL3["Handle provider selection based on configured roles (main, research, fallback)"]
+        FL4["Implement retry logic with exponential backoff for transient failures"]
+        FL5["Resolve API keys from environment variables or MCP session"]
+        FL6["Configure provider-specific parameters (Vertex AI project, Azure endpoints)"]
+        FL7["Execute AI service calls with proper error handling and logging"]
+        FL8["Track usage telemetry including token consumption and costs"]
+        FL9["Return structured results with telemetry data and tag information"]
+        FL10["Support role-based fallback sequence when primary providers fail"]
+    end
+    
+    subgraph aiServicesUnified["ai-services-unified.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+```

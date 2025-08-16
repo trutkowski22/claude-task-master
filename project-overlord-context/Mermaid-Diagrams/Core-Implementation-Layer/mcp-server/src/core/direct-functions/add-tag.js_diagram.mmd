@@ -1,44 +1,78 @@
 ```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../tools/utils.js, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I1["IMPORT: createTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: createTagFromBranch, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I3["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     end
-    subgraph Dependencies["Dependencies"]
-        D1["DEP: Path resolution"]
-    end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: addTagDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addTagDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
         P1["PARAM: {Object} args - Command arguments"]
         P2["PARAM: {string} args.name - Name of the new tag to create"]
-        P3["PARAM: {string} [args.copyFromTag] - Specific tag to copy tasks from"]
-        P4["PARAM: {string} [args.description] - Optional description for the tag"]
-        P5["PARAM: {string} [args.tasksJsonPath] - Path to the tasks.json file (resolved by tool)"]
-        P6["PARAM: {string} [args.projectRoot] - Project root path"]
-        P7["PARAM: {Object} log - Logger object"]
-        P8["PARAM: {Object} context - Additional context (session)"]
+        P3["PARAM: {boolean} args.copyFromCurrent - Whether to copy tasks from current tag"]
+        P4["PARAM: {string} args.copyFromTag - Specific tag to copy tasks from"]
+        P5["PARAM: {boolean} args.fromBranch - Create tag name from current git branch"]
+        P6["PARAM: {string} args.description - Optional description for the tag"]
+        P7["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file"]
+        P8["PARAM: {string} args.projectRoot - Project root path"]
+        P9["PARAM: {Object} log - Logger object"]
+        P10["PARAM: {Object} context - Additional context (session)"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: mcpLog, VALUE: createLogWrapper(log)"]
-        C2["CONST: gitUtils, VALUE: await import("]
-        C3["CONST: currentBranch, VALUE: await gitUtils.getCurrentBranch(projectRoot)"]
-        C4["CONST: branchOptions, VALUE: {"]
-        C5["CONST: result, VALUE: await createTagFromBranch("]
-        C6["CONST: options, VALUE: {"]
-        C7["CONST: result, VALUE: await createTag("]
+        C1["CONST: tasksJsonPath, VALUE: destructured from args"]
+        C2["CONST: name, VALUE: destructured from args"]
+        C3["CONST: copyFromCurrent, VALUE: destructured from args with false default"]
+        C4["CONST: copyFromTag, VALUE: destructured from args"]
+        C5["CONST: fromBranch, VALUE: destructured from args with false default"]
+        C6["CONST: description, VALUE: destructured from args"]
+        C7["CONST: projectRoot, VALUE: destructured from args"]
+        C8["CONST: session, VALUE: destructured from context"]
+        C9["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C10["CONST: gitUtils, VALUE: dynamically imported git utilities"]
+        C11["CONST: currentBranch, VALUE: current git branch name"]
+        C12["CONST: branchOptions, VALUE: options for branch-based tag creation"]
+        C13["CONST: options, VALUE: options for regular tag creation"]
+        C14["CONST: result, VALUE: tag creation result"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Validate tasksJsonPath is provided and enable silent mode"]
+        FL2["Create logger wrapper for MCP compatibility"]
+        FL3["Check if creating tag from git branch or from user input"]
+        FL4["For branch mode: validate git repository and get current branch"]
+        FL5["For regular mode: validate tag name parameter"]
+        FL6["Prepare options object with copy settings and description"]
+        FL7["Call appropriate tag creation function (createTag or createTagFromBranch)"]
+        FL8["Restore normal logging and return success result with tag details"]
+        FL9["Handle errors by restoring logging and returning error response"]
     end
-    subgraph FileName["add-tag.js"]
+    
+    subgraph addTag["add-tag.js"]
         Imports
-        Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
 ```

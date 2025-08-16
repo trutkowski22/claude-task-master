@@ -1,62 +1,93 @@
-```mermaid
 flowchart TB
     subgraph Imports["Imports"]
-        I1["IMPORT: ../../../../src/constants/profiles.js, FROM: /claude-task-master/src/constants/profiles.js"]
-        I2["IMPORT: ../../../../src/constants/rules-actions.js, FROM: /claude-task-master/src/constants/rules-actions.js"]
-        I3["IMPORT: path, FROM: path"]
-        I4["IMPORT: fs, FROM: fs"]
+        I1["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: convertAllRulesToProfileRules, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I4["IMPORT: removeProfileRules, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I5["IMPORT: getRulesProfile, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I6["IMPORT: isValidProfile, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+        I7["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+        I8["IMPORT: RULES_ACTIONS, FROM: /claude-task-master/src/constants/rules-actions.js"]
+        I9["IMPORT: wouldRemovalLeaveNoProfiles, FROM: /claude-task-master/src/utils/profiles.js"]
+        I10["IMPORT: getInstalledProfiles, FROM: /claude-task-master/src/utils/profiles.js"]
+        I11["IMPORT: path, FROM: path"]
+        I12["IMPORT: fs, FROM: fs"]
     end
+    
     subgraph Dependencies["Dependencies"]
-        D1["DEP: File system"]
-        D2["DEP: Path resolution"]
+        D1["DEP: Node.js file system for reading and writing rule files"]
+        D2["DEP: Node.js path module for handling file paths"]
     end
+    
     subgraph FunctionsDefined["Functions Defined"]
         FU1["FUNCTION: rulesDirect"]
     end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: rulesDirect"]
+    end
+    
     subgraph Parameters["Parameters"]
-        P1["PARAM: {Object} args - Command arguments"]
-        P2["PARAM: {\"add\"|\"remove\"} args.action - Action to perform: add or remove rules"]
+        P1["PARAM: {Object} args - Command arguments with action, profiles, projectRoot, yes, and force"]
+        P2["PARAM: {string} args.action - Action to perform: add or remove rules"]
         P3["PARAM: {string[]} args.profiles - List of profiles to add or remove"]
         P4["PARAM: {string} args.projectRoot - Absolute path to the project root"]
-        P5["PARAM: {Object} log - Logger object"]
-        P6["PARAM: {Object} context - Additional context (session)"]
+        P5["PARAM: {boolean} args.yes - Run non-interactively"]
+        P6["PARAM: {Object} log - Logger object"]
+        P7["PARAM: {Object} context - Additional context with session"]
     end
+    
     subgraph Constants["Const Declarations"]
-        C1["CONST: removalResults, VALUE: []"]
-        C2["CONST: addResults, VALUE: []"]
-        C3["CONST: installedProfiles, VALUE: getInstalledProfiles(projectRoot)"]
-        C4["CONST: remainingProfiles, VALUE: installedProfiles.filter("]
-        C5["CONST: profileConfig, VALUE: getRulesProfile(profile)"]
-        C6["CONST: result, VALUE: removeProfileRules(projectRoot, profileConfig)"]
-        C7["CONST: successes, VALUE: removalResults"]
-        C8["CONST: skipped, VALUE: removalResults"]
-        C9["CONST: errors, VALUE: removalResults.filter("]
-        C10["CONST: withNotices, VALUE: removalResults.filter((r) => r.notice)"]
-        C11["CONST: profileConfig, VALUE: getRulesProfile(profile)"]
-        C12["CONST: rulesDir, VALUE: profileConfig.rulesDir"]
-        C13["CONST: profileRulesDir, VALUE: path.join(projectRoot, rulesDir)"]
-        C14["CONST: profileDir, VALUE: profileConfig.profileDir"]
-        C15["CONST: mcpConfig, VALUE: profileConfig.mcpConfig !== false"]
-        C16["CONST: mcpPath, VALUE: mcpConfig && profileConfig.mcpConfigPath"]
-        C17["CONST: mcpConfigCreated, VALUE: mcpConfig && mcpPath ? fs.existsSync(mcpPath) : undefined"]
-        C18["CONST: rulesDirCreated, VALUE: fs.existsSync(profileRulesDir)"]
-        C19["CONST: profileFolderCreated, VALUE: fs.existsSync("]
-        C20["CONST: error, VALUE: failed > 0 ? `${failed} rule files failed to convert.` : null"]
-        C21["CONST: resultObj, VALUE: {"]
-        C22["CONST: successes, VALUE: addResults"]
-        C23["CONST: errors, VALUE: addResults.filter((r) => r.error && !r.success)"]
+        C1["CONST: action, VALUE: destructured from args for operation type"]
+        C2["CONST: profiles, VALUE: destructured from args for profile list"]
+        C3["CONST: projectRoot, VALUE: destructured from args for project location"]
+        C4["CONST: yes, VALUE: destructured from args for non-interactive mode"]
+        C5["CONST: force, VALUE: destructured from args for forced operations"]
+        C6["CONST: removalResults, VALUE: array to store removal operation results"]
+        C7["CONST: addResults, VALUE: array to store addition operation results"]
+        C8["CONST: installedProfiles, VALUE: getInstalledProfiles result for safety checks"]
+        C9["CONST: remainingProfiles, VALUE: filtered profiles after removal"]
+        C10["CONST: profileConfig, VALUE: getRulesProfile result for profile configuration"]
+        C11["CONST: rulesDir, VALUE: profile configuration rules directory"]
+        C12["CONST: profileRulesDir, VALUE: path join result for full rules directory path"]
+        C13["CONST: profileDir, VALUE: profile configuration directory"]
+        C14["CONST: mcpConfig, VALUE: profile MCP configuration setting"]
+        C15["CONST: mcpPath, VALUE: path join result for MCP configuration file"]
+        C16["CONST: mcpConfigCreated, VALUE: file existence check for MCP config"]
+        C17["CONST: rulesDirCreated, VALUE: directory existence check for rules"]
+        C18["CONST: profileFolderCreated, VALUE: directory existence check for profile folder"]
+        C19["CONST: successes, VALUE: filtered successful operations"]
+        C20["CONST: errors, VALUE: filtered error operations"]
+        C21["CONST: summary, VALUE: operation summary message"]
     end
+    
     subgraph ExecutionFlow["Execution Flow"]
-        FL1["Identify and load dependencies and modules"]
-        FL2["Define functions and core logic for this module"]
+        FL1["Enable silent mode and validate required arguments"]
+        FL2["Check if action is REMOVE and perform safety validations"]
+        FL3["For each profile, validate and execute removal operations"]
+        FL4["Generate removal summary with successes, skips, and errors"]
+        FL5["For ADD action, validate profiles and convert rules"]
+        FL6["Create necessary directories and MCP configurations"]
+        FL7["Check creation status and build result objects"]
+        FL8["Generate addition summary and return final results"]
+        FL9["Handle errors and ensure silent mode is always disabled"]
     end
-    subgraph FileName["rules.js"]
+    
+    subgraph rules["rules.js"]
         Imports
         Dependencies
         FunctionsDefined
+        Exports
         Parameters
         Constants
         ExecutionFlow
     end
+    
     FL1 --> FL2
-```
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
