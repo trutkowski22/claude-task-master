@@ -153,23 +153,23 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┣ src
  ┃  ┃  ┃  ┣ core
  ┃  ┃  ┃  ┃  ┣ direct-functions
- ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js 
- ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js 
- ┃  ┃  ┃  ┃  ┃  ┣ add-task.js 
- ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js 
- ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js 
- ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
- ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js 
- ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js 
- ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js 
- ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js  - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js  - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ models.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
@@ -191,37 +191,37 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
  ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
  ┃  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js 
- ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js
- ┃  ┃  ┃  ┃  ┣ context-manager.js 
- ┃  ┃  ┃  ┃  ┗ task-master-core.js 
+ ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js - DONE
+ ┃  ┃  ┃  ┃  ┣ context-manager.js  - DONE
+ ┃  ┃  ┃  ┃  ┗ task-master-core.js  - DONE
  ┃  ┃  ┃  ┣ custom-sdk
- ┃  ┃  ┃  ┃  ┣ errors.js
- ┃  ┃  ┃  ┃  ┣ index.js
- ┃  ┃  ┃  ┃  ┣ json-extractor.js
- ┃  ┃  ┃  ┃  ┣ language-model.js
- ┃  ┃  ┃  ┃  ┣ message-converter.js
- ┃  ┃  ┃  ┃  ┗ schema-converter.js
+ ┃  ┃  ┃  ┃  ┣ errors.js - DONE
+ ┃  ┃  ┃  ┃  ┣ index.js - DONE
+ ┃  ┃  ┃  ┃  ┣ json-extractor.js - DONE
+ ┃  ┃  ┃  ┃  ┣ language-model.js - DONE
+ ┃  ┃  ┃  ┃  ┣ message-converter.js - DONE
+ ┃  ┃  ┃  ┃  ┗ schema-converter.js - DONE
  ┃  ┃  ┃  ┣ providers
  ┃  ┃  ┃  ┃  ┗ mcp-provider.js
  ┃  ┃  ┃  ┣ tools
- ┃  ┃  ┃  ┃  ┣ add-dependency.js 
- ┃  ┃  ┃  ┃  ┣ add-subtask.js 
- ┃  ┃  ┃  ┃  ┣ add-tag.js 
- ┃  ┃  ┃  ┃  ┣ add-task.js 
- ┃  ┃  ┃  ┃  ┣ analyze.js 
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
- ┃  ┃  ┃  ┃  ┣ complexity-report.js 
- ┃  ┃  ┃  ┃  ┣ copy-tag.js 
- ┃  ┃  ┃  ┃  ┣ delete-tag.js 
- ┃  ┃  ┃  ┃  ┣ expand-all.js 
+ ┃  ┃  ┃  ┃  ┣ add-dependency.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ add-tag.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ analyze.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ complexity-report.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ copy-tag.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ delete-tag.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ expand-all.js  - DONE
  ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
  ┃  ┃  ┃  ┃  ┣ generate.js - DONE
  ┃  ┃  ┃  ┃  ┣ get-operation-status.js - DONE
  ┃  ┃  ┃  ┃  ┣ get-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ get-tasks.js 
- ┃  ┃  ┃  ┃  ┣ index.js 
+ ┃  ┃  ┃  ┃  ┣ get-tasks.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ index.js  - DONE
  ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
  ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
  ┃  ┃  ┃  ┃  ┣ models.js - DONE
@@ -242,7 +242,7 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ update-task.js - DONE
  ┃  ┃  ┃  ┃  ┣ update.js - DONE
  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
- ┃  ┃  ┃  ┃  ┣ utils.js 
+ ┃  ┃  ┃  ┃  ┣ utils.js  - DONE
  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
  ┃  ┃  ┃  ┣ index.js
  ┃  ┃  ┃  ┗ logger.js
@@ -250,16 +250,16 @@ CLAUDE-TASK-MASTER
  ┃  ┣ scripts
  ┃  ┃  ┣ modules
  ┃  ┃  ┃  ┣ task-manager
- ┃  ┃  ┃  ┃  ┣ add-subtask.js 
- ┃  ┃  ┃  ┃  ┣ add-task.js 
- ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js 
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
- ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js 
- ┃  ┃  ┃  ┃  ┣ expand-task.js 
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js  - DONE
+ ┃  ┃  ┃  ┃  ┣ expand-task.js  - DONE
  ┃  ┃  ┃  ┃  ┣ find-next-task.js - DONE
  ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
  ┃  ┃  ┃  ┃  ┣ is-task-dependent.js - DONE
- ┃  ┃  ┃  ┃  ┣ list-tasks.js 
+ ┃  ┃  ┃  ┃  ┣ list-tasks.js  - DONE
  ┃  ┃  ┃  ┃  ┣ migrate.js - DONE
  ┃  ┃  ┃  ┃  ┣ models.js - DONE
  ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
@@ -280,31 +280,31 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┃  ┃  ┣ contextGatherer.js - DONE
  ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js - DONE
  ┃  ┃  ┃  ┃  ┗ git-utils.js - DONE
- ┃  ┃  ┃  ┣ ai-services-unified.js 
- ┃  ┃  ┃  ┣ commands.js 
- ┃  ┃  ┃  ┣ config-manager.js 
- ┃  ┃  ┃  ┣ dependency-manager.js 
- ┃  ┃  ┃  ┣ index.js 
- ┃  ┃  ┃  ┣ prompt-manager.js 
+ ┃  ┃  ┃  ┣ ai-services-unified.js  - DONE
+ ┃  ┃  ┃  ┣ commands.js  - DONE
+ ┃  ┃  ┃  ┣ config-manager.js  - DONE
+ ┃  ┃  ┃  ┣ dependency-manager.js  - DONE
+ ┃  ┃  ┃  ┣ index.js  - DONE
+ ┃  ┃  ┃  ┣ prompt-manager.js  - DONE
  ┃  ┃  ┃  ┣ supported-models.json
- ┃  ┃  ┃  ┣ sync-readme.js
- ┃  ┃  ┃  ┣ task-manager.js 
- ┃  ┃  ┃  ┣ ui.js 
- ┃  ┃  ┃  ┣ update-config-tokens.js
- ┃  ┃  ┃  ┗ utils.js 
- ┃  ┃  ┣ dev.js 
- ┃  ┃  ┣ init.js 
+ ┃  ┃  ┃  ┣ sync-readme.js - DONE
+ ┃  ┃  ┃  ┣ task-manager.js  - DONE
+ ┃  ┃  ┃  ┣ ui.js  - DONE
+ ┃  ┃  ┃  ┣ update-config-tokens.js - DONE
+ ┃  ┃  ┃  ┗ utils.js  - DONE
+ ┃  ┃  ┣ dev.js  - DONE
+ ┃  ┃  ┣ init.js  - DONE
  ┃  ┃  ┗ task-complexity-report.json
  ┃  ┣ src
  ┃  ┃  ┣ ai-providers
  ┃  ┃  ┃  ┣ custom-sdk
  ┃  ┃  ┃  ┃  ┗ claude-code
- ┃  ┃  ┃  ┃     ┣ errors.js
- ┃  ┃  ┃  ┃     ┣ index.js
- ┃  ┃  ┃  ┃     ┣ json-extractor.js
- ┃  ┃  ┃  ┃     ┣ language-model.js
- ┃  ┃  ┃  ┃     ┣ message-converter.js
- ┃  ┃  ┃  ┃     ┗ types.js
+ ┃  ┃  ┃  ┃     ┣ errors.js - DONE
+ ┃  ┃  ┃  ┃     ┣ index.js - DONE
+ ┃  ┃  ┃  ┃     ┣ json-extractor.js - DONE
+ ┃  ┃  ┃  ┃     ┣ language-model.js - DONE
+ ┃  ┃  ┃  ┃     ┣ message-converter.js - DONE
+ ┃  ┃  ┃  ┃     ┗ types.js - DONE
  ┃  ┃  ┃  ┣ anthropic.js 
  ┃  ┃  ┃  ┣ base-provider.js 
  ┃  ┃  ┃  ┣ claude-code.js
