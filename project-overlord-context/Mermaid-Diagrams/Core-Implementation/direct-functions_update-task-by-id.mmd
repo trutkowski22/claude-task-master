@@ -1,0 +1,93 @@
+flowchart TB
+    subgraph updateTaskByIdImports["direct-functions_update-task-by-id-Imports"]
+        I1["IMPORT: updateTaskById, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph updateTaskByIdDependencies["direct-functions_update-task-by-id-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: AI task update capabilities"]
+    end
+    
+    subgraph updateTaskByIdFunctionsDefined["direct-functions_update-task-by-id-Functions Defined"]
+        FU1["FUNCTION: updateTaskByIdDirect"]
+    end
+    
+    subgraph updateTaskByIdExports["direct-functions_update-task-by-id-Exports"]
+        E1["EXP: updateTaskByIdDirect"]
+    end
+    
+    subgraph updateTaskByIdParameters["direct-functions_update-task-by-id-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.id - Task ID or subtask ID like 1.2"]
+        P4["PARAM: {string} args.prompt - New information/context prompt"]
+        P5["PARAM: {boolean} args.research - Whether to use research role"]
+        P6["PARAM: {boolean} args.append - Whether to append timestamped information"]
+        P7["PARAM: {string} args.projectRoot - Project root path"]
+        P8["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P9["PARAM: {Object} log - Logger object"]
+        P10["PARAM: {Object} context - Context object containing session data"]
+    end
+    
+    subgraph updateTaskByIdConstants["direct-functions_update-task-by-id-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C3["CONST: id, VALUE: extracted from args"]
+        C4["CONST: prompt, VALUE: extracted from args"]
+        C5["CONST: research, VALUE: extracted from args"]
+        C6["CONST: append, VALUE: extracted from args"]
+        C7["CONST: projectRoot, VALUE: extracted from args"]
+        C8["CONST: tag, VALUE: extracted from args"]
+        C9["CONST: logWrapper, VALUE: createLogWrapper result"]
+        C10["CONST: taskId, VALUE: parsed ID handling string and number types"]
+        C11["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C12["CONST: useResearch, VALUE: boolean conversion of research"]
+        C13["CONST: wasSilent, VALUE: isSilentMode result"]
+        C14["CONST: coreResult, VALUE: updateTaskById execution result"]
+    end
+    
+    subgraph updateTaskByIdExecutionFlow["direct-functions_update-task-by-id-Execution Flow"]
+        FL1["Destructure session from context and arguments from args"]
+        FL2["Create logger wrapper for consistent logging interface"]
+        FL3["Log update operation details with ID and project root"]
+        FL4["Validate required tasksJsonPath parameter is provided"]
+        FL5["Validate required id parameter is provided"]
+        FL6["Validate required prompt parameter is provided"]
+        FL7["Parse task ID handling both string and number formats"]
+        FL8["Prepare parameters for core function call"]
+        FL9["Check and enable silent mode if not already silent"]
+        FL10["Call core updateTaskById function with formatted parameters"]
+        FL11["Check core result and handle null or unsuccessful updates"]
+        FL12["Return successful result with task data and telemetry"]
+        FL13["Restore silent mode state in finally block"]
+        FL14["Handle errors and ensure silent mode is properly restored"]
+    end
+    
+    subgraph updateTaskById["direct-functions_update-task-by-id.js"]
+        updateTaskByIdImports
+        updateTaskByIdDependencies
+        updateTaskByIdFunctionsDefined
+        updateTaskByIdExports
+        updateTaskByIdParameters
+        updateTaskByIdConstants
+        updateTaskByIdExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

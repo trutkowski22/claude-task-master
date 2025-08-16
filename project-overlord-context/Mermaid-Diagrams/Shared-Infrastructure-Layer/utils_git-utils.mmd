@@ -1,0 +1,113 @@
+flowchart TB
+    subgraph gitUtils-Imports["gitUtils-Imports"]
+        I1["IMPORT: exec, execSync, FROM: child_process"]
+        I2["IMPORT: promisify, FROM: util"]
+        I3["IMPORT: path, FROM: path"]
+        I4["IMPORT: fs, FROM: fs"]
+    end
+    subgraph gitUtils-Dependencies["gitUtils-Dependencies"]
+        D1["DEP: Child process execution"]
+        D2["DEP: Git CLI commands"]
+        D3["DEP: GitHub CLI (gh)"]
+        D4["DEP: File system"]
+    end
+    subgraph gitUtils-FunctionsDefined["gitUtils-Functions Defined"]
+        FU1["FUNCTION: isGitRepository"]
+        FU2["FUNCTION: getCurrentBranch"]
+        FU3["FUNCTION: getLocalBranches"]
+        FU4["FUNCTION: getRemoteBranches"]
+        FU5["FUNCTION: isGhCliAvailable"]
+        FU6["FUNCTION: getGitHubRepoInfo"]
+        FU7["FUNCTION: sanitizeBranchNameForTag"]
+        FU8["FUNCTION: isValidBranchForTag"]
+        FU9["FUNCTION: getGitRepositoryRoot"]
+        FU10["FUNCTION: isGitRepositoryRoot"]
+        FU11["FUNCTION: getDefaultBranch"]
+        FU12["FUNCTION: isOnDefaultBranch"]
+        FU13["FUNCTION: checkAndAutoSwitchGitTag"]
+        FU14["FUNCTION: checkAndAutoSwitchGitTagSync"]
+        FU15["FUNCTION: isGitRepositorySync"]
+        FU16["FUNCTION: getCurrentBranchSync"]
+        FU17["FUNCTION: insideGitWorkTree"]
+    end
+    subgraph gitUtils-Exports["gitUtils-Exports"]
+        E1["EXP: isGitRepository"]
+        E2["EXP: getCurrentBranch"]
+        E3["EXP: getLocalBranches"]
+        E4["EXP: getRemoteBranches"]
+        E5["EXP: isGhCliAvailable"]
+        E6["EXP: getGitHubRepoInfo"]
+        E7["EXP: sanitizeBranchNameForTag"]
+        E8["EXP: isValidBranchForTag"]
+        E9["EXP: getGitRepositoryRoot"]
+        E10["EXP: isGitRepositoryRoot"]
+        E11["EXP: getDefaultBranch"]
+        E12["EXP: isOnDefaultBranch"]
+        E13["EXP: checkAndAutoSwitchGitTag"]
+        E14["EXP: checkAndAutoSwitchGitTagSync"]
+        E15["EXP: isGitRepositorySync"]
+        E16["EXP: getCurrentBranchSync"]
+        E17["EXP: insideGitWorkTree"]
+    end
+    subgraph gitUtils-Parameters["gitUtils-Parameters"]
+        P1["PARAM: {string} projectRoot - Directory to check (required)"]
+        P2["PARAM: {string} [projectRoot] - Directory context (optional for some functions)"]
+        P3["PARAM: {string} branchName - Git branch name"]
+        P4["PARAM: {string} tasksPath - Path to tasks.json file"]
+    end
+    subgraph gitUtils-Constants["gitUtils-Constants"]
+        C1["CONST: execAsync, VALUE: promisify(exec)"]
+        C2["CONST: reservedBranches, VALUE: ['main', 'master', 'develop', 'dev', 'HEAD']"]
+        C3["CONST: commonDefaults, VALUE: ['main', 'master']"]
+        C4["CONST: sanitized, VALUE: sanitizeBranchNameForTag(branchName)"]
+        C5["CONST: { stdout }, VALUE: await execAsync(gitCommand, { cwd: projectRoot })"]
+        C6["CONST: branches, VALUE: await getLocalBranches(projectRoot)"]
+        C7["CONST: repoInfo, VALUE: await getGitHubRepoInfo(projectRoot)"]
+        C8["CONST: currentBranch, VALUE: await getCurrentBranch(projectRoot)"]
+        C9["CONST: defaultBranch, VALUE: await getDefaultBranch(projectRoot)"]
+        C10["CONST: gitRoot, VALUE: await getGitRepositoryRoot(projectRoot)"]
+    end
+    subgraph gitUtils-ExecutionFlow["gitUtils-Execution Flow"]
+        FL1["Execute git rev-parse --git-dir to check repository status"]
+        FL2["Get current branch using git rev-parse --abbrev-ref HEAD"]
+        FL3["List local branches using git branch --format command"]
+        FL4["List remote branches and filter out HEAD references"]
+        FL5["Check GitHub CLI availability and authentication status"]
+        FL6["Retrieve GitHub repository info using gh repo view"]
+        FL7["Sanitize branch names for tag creation by replacing invalid characters"]
+        FL8["Validate branch names against reserved names and meaningfulness"]
+        FL9["Find git repository root using git rev-parse --show-toplevel"]
+        FL10["Compare paths to determine if directory is repository root"]
+        FL11["Get default branch from GitHub API or symbolic-ref fallback"]
+        FL12["Compare current and default branch to check position"]
+        FL13["Disabled automatic git tag switching functionality"]
+        FL14["Provide synchronous versions for use in readJSON operations"]
+        FL15["Check if inside git work-tree using git rev-parse"]
+        FL16["Handle errors gracefully and provide fallback values"]
+        FL17["Use execSync for synchronous operations where needed"]
+    end
+    subgraph gitUtils["git-utils.js"]
+        gitUtils-Imports
+        gitUtils-Dependencies
+        gitUtils-FunctionsDefined
+        gitUtils-Exports
+        gitUtils-Parameters
+        gitUtils-Constants
+        gitUtils-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17

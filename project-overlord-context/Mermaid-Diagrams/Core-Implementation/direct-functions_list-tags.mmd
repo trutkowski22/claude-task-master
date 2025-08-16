@@ -1,0 +1,77 @@
+flowchart TB
+    subgraph listTagsImports["direct-functions_list-tags-Imports"]
+        I1["IMPORT: tags, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph listTagsDependencies["direct-functions_list-tags-Dependencies"]
+        D1["DEP: FastMCP"]
+    end
+    
+    subgraph listTagsFunctionsDefined["direct-functions_list-tags-Functions Defined"]
+        FU1["FUNCTION: listTagsDirect"]
+    end
+    
+    subgraph listTagsExports["direct-functions_list-tags-Exports"]
+        E1["EXP: listTagsDirect"]
+    end
+    
+    subgraph listTagsParameters["direct-functions_list-tags-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {boolean} args.showMetadata - Whether to include metadata in the output"]
+        P3["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file resolved by tool"]
+        P4["PARAM: {string} args.projectRoot - Project root path"]
+        P5["PARAM: {Object} log - Logger object"]
+        P6["PARAM: {Object} context - Additional context containing session"]
+    end
+    
+    subgraph listTagsConstants["direct-functions_list-tags-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C3["CONST: options, VALUE: object with showMetadata setting"]
+        C4["CONST: result, VALUE: tags function execution result"]
+        C5["CONST: tagsSummary, VALUE: transformed tags with calculated statistics"]
+        C6["CONST: statusBreakdown, VALUE: task status count aggregation"]
+        C7["CONST: subtaskCounts, VALUE: subtask count and status statistics"]
+    end
+    
+    subgraph listTagsExecutionFlow["direct-functions_list-tags-Execution Flow"]
+        FL1["Destructure arguments and extract session from context"]
+        FL2["Enable silent mode to prevent console interference"]
+        FL3["Create MCP logger wrapper for consistent logging"]
+        FL4["Validate required tasksJsonPath parameter is provided"]
+        FL5["Log operation start and prepare options object"]
+        FL6["Call core tags function with path, options and context"]
+        FL7["Transform result to create summary with calculated statistics"]
+        FL8["Calculate status breakdown for each tag's tasks"]
+        FL9["Calculate subtask counts and status distribution"]
+        FL10["Create summary objects with key metrics per tag"]
+        FL11["Disable silent mode to restore normal logging"]
+        FL12["Return success response with transformed tag data"]
+        FL13["Handle errors and ensure logging state restoration"]
+    end
+    
+    subgraph listTags["direct-functions_list-tags.js"]
+        listTagsImports
+        listTagsDependencies
+        listTagsFunctionsDefined
+        listTagsExports
+        listTagsParameters
+        listTagsConstants
+        listTagsExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13

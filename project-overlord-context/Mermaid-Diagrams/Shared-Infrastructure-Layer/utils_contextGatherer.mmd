@@ -1,0 +1,132 @@
+flowchart TB
+    subgraph contextGatherer-Imports["contextGatherer-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: pkg, FROM: gpt-tokens"]
+        I4["IMPORT: Fuse, FROM: fuse.js"]
+        I5["IMPORT: readJSON, findTaskById, truncate, flattenTasksWithSubtasks, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph contextGatherer-Dependencies["contextGatherer-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: GPT Tokens"]
+        D3["DEP: Fuse.js fuzzy search"]
+    end
+    subgraph contextGatherer-FunctionsDefined["contextGatherer-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: _loadAllTasks"]
+        FU3["FUNCTION: countTokens"]
+        FU4["FUNCTION: gather"]
+        FU5["FUNCTION: _performSemanticSearch"]
+        FU6["FUNCTION: _buildDependencyContext"]
+        FU7["FUNCTION: _buildDependencyGraphs"]
+        FU8["FUNCTION: _buildDependencyGraph"]
+        FU9["FUNCTION: _formatDependencyChain"]
+        FU10["FUNCTION: _parseTaskIds"]
+        FU11["FUNCTION: _gatherTaskContext"]
+        FU12["FUNCTION: _formatTaskForContext"]
+        FU13["FUNCTION: _formatSubtaskForContext"]
+        FU14["FUNCTION: _gatherFileContext"]
+        FU15["FUNCTION: _gatherProjectTreeContext"]
+        FU16["FUNCTION: _formatSingleFileForContext"]
+        FU17["FUNCTION: _generateFileTree"]
+        FU18["FUNCTION: _formatCustomContext"]
+        FU19["FUNCTION: _formatTaskContextSection"]
+        FU20["FUNCTION: _formatFileContextSection"]
+        FU21["FUNCTION: _formatProjectTreeSection"]
+        FU22["FUNCTION: _renderFileTree"]
+        FU23["FUNCTION: _joinContextSections"]
+        FU24["FUNCTION: createContextGatherer"]
+    end
+    subgraph contextGatherer-Exports["contextGatherer-Exports"]
+        E1["EXP: ContextGatherer"]
+        E2["EXP: createContextGatherer"]
+    end
+    subgraph contextGatherer-Parameters["contextGatherer-Parameters"]
+        P1["PARAM: {string} projectRoot - Project root directory"]
+        P2["PARAM: {string} tag - Tag for the task"]
+        P3["PARAM: {string} text - Text to count tokens for"]
+        P4["PARAM: {Object} options - Context gathering options"]
+        P5["PARAM: {Array<string>} [options.tasks] - Task/subtask IDs to include"]
+        P6["PARAM: {Array<string>} [options.files] - File paths to include"]
+        P7["PARAM: {string} [options.customContext] - Additional custom context"]
+        P8["PARAM: {boolean} [options.includeProjectTree] - Include project file tree"]
+        P9["PARAM: {string} [options.format] - Output format: research, chat, system-prompt"]
+        P10["PARAM: {boolean} [options.includeTokenCounts] - Whether to include token breakdown"]
+        P11["PARAM: {string} [options.semanticQuery] - A query string for semantic task searching"]
+        P12["PARAM: {number} [options.maxSemanticResults] - Max number of semantic results"]
+        P13["PARAM: {Array<number>} [options.dependencyTasks] - Array of task IDs to build dependency graphs from"]
+        P14["PARAM: {string} query - Search query string"]
+        P15["PARAM: {number} maxResults - Maximum number of results to return"]
+        P16["PARAM: {Array<string>} taskIds - Task/subtask IDs"]
+        P17["PARAM: {Array<string>} filePaths - File paths to read"]
+        P18["PARAM: {string} dirPath - Directory path"]
+        P19["PARAM: {number} maxDepth - Maximum depth to traverse"]
+    end
+    subgraph contextGatherer-Constants["contextGatherer-Const Declarations"]
+        C1["CONST: { encode }, VALUE: pkg"]
+        C2["CONST: tasksPath, VALUE: path.join(projectRoot, '.taskmaster', 'tasks', 'tasks.json')"]
+        C3["CONST: data, VALUE: readJSON(this.tasksPath, this.projectRoot, this.tag)"]
+        C4["CONST: tasks, VALUE: data?.tasks || []"]
+        C5["CONST: contextSections, VALUE: []"]
+        C6["CONST: finalTaskIds, VALUE: new Set(tasks.map(String))"]
+        C7["CONST: tokenBreakdown, VALUE: token counting breakdown object"]
+        C8["CONST: searchOptions, VALUE: Fuse.js search configuration"]
+        C9["CONST: fuse, VALUE: new Fuse(searchableTasks, searchOptions)"]
+        C10["CONST: promptWords, VALUE: significant words extracted from query"]
+        C11["CONST: fuzzyResults, VALUE: fuse.search(query)"]
+        C12["CONST: parsedIds, VALUE: this._parseTaskIds(taskIds)"]
+        C13["CONST: contextItems, VALUE: formatted context items array"]
+        C14["CONST: breakdown, VALUE: token breakdown array"]
+        C15["CONST: fileContents, VALUE: array of file data objects"]
+        C16["CONST: tree, VALUE: this._generateFileTree(this.projectRoot, 5)"]
+        C17["CONST: ignoreDirs, VALUE: ['.git', 'node_modules', '.env', 'coverage', 'dist', 'build']"]
+        C18["CONST: ignoreFiles, VALUE: ['.DS_Store', '.env', '.env.local', '.env.production']"]
+    end
+    subgraph contextGatherer-ExecutionFlow["contextGatherer-Execution Flow"]
+        FL1["Initialize ContextGatherer with project root and tag"]
+        FL2["Load all tasks from tasks.json using readJSON"]
+        FL3["Set up file paths and initialize task data"]
+        FL4["Count tokens in text using gpt-tokens package"]
+        FL5["Gather context from multiple sources based on options"]
+        FL6["Perform semantic search using Fuse.js with configurable options"]
+        FL7["Extract significant words from search query"]
+        FL8["Execute fuzzy search and word-based search"]
+        FL9["Group results by relevance score (high/medium/recent)"]
+        FL10["Build dependency graphs for related tasks"]
+        FL11["Parse task IDs supporting both task and subtask formats"]
+        FL12["Gather task context with detailed formatting"]
+        FL13["Format tasks and subtasks for context inclusion"]
+        FL14["Gather file context with size and content validation"]
+        FL15["Generate project tree structure with depth limiting"]
+        FL16["Apply format-specific rendering (research/chat/system-prompt)"]
+        FL17["Calculate token counts and character breakdowns"]
+        FL18["Join context sections with format-appropriate separators"]
+        FL19["Return comprehensive context object with analysis data"]
+    end
+    subgraph contextGatherer["contextGatherer.js"]
+        contextGatherer-Imports
+        contextGatherer-Dependencies
+        contextGatherer-FunctionsDefined
+        contextGatherer-Exports
+        contextGatherer-Parameters
+        contextGatherer-Constants
+        contextGatherer-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17
+    FL17 --> FL18
+    FL18 --> FL19

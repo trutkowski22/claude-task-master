@@ -1,0 +1,48 @@
+flowchart TB
+    subgraph tools_rename-tag-Imports["tools_rename-tag-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: renameTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    end
+    subgraph tools_rename-tag-Dependencies["tools_rename-tag-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_rename-tag-FunctionsDefined["tools_rename-tag-Functions Defined"]
+        FU1["FUNCTION: registerRenameTagTool"]
+    end
+    subgraph tools_rename-tag-Exports["tools_rename-tag-Exports"]
+        E1["EXP: registerRenameTagTool"]
+    end
+    subgraph tools_rename-tag-Parameters["tools_rename-tag-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_rename-tag-Constants["tools_rename-tag-Constants"]
+        C1["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C2["CONST: result, VALUE: await renameTagDirect"]
+    end
+    subgraph tools_rename-tag-ExecutionFlow["tools_rename-tag-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with tag renaming options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Find and validate tasks.json file path"]
+        FL5["Call renameTagDirect with parameters and session"]
+        FL6["Return handled API result for tag renaming operation"]
+    end
+    subgraph tools_rename-tag["rename-tag.js"]
+        tools_rename-tag-Imports
+        tools_rename-tag-Dependencies
+        tools_rename-tag-FunctionsDefined
+        tools_rename-tag-Exports
+        tools_rename-tag-Parameters
+        tools_rename-tag-Constants
+        tools_rename-tag-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

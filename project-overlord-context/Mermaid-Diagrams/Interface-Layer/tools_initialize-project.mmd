@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph tools_initialize-project-Imports["tools_initialize-project-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: initializeProjectDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+    end
+    subgraph tools_initialize-project-Dependencies["tools_initialize-project-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Git"]
+        D4["DEP: Shell configuration"]
+    end
+    subgraph tools_initialize-project-FunctionsDefined["tools_initialize-project-Functions Defined"]
+        FU1["FUNCTION: registerInitializeProjectTool"]
+    end
+    subgraph tools_initialize-project-Exports["tools_initialize-project-Exports"]
+        E1["EXP: registerInitializeProjectTool"]
+    end
+    subgraph tools_initialize-project-Parameters["tools_initialize-project-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_initialize-project-Constants["tools_initialize-project-Constants"]
+        C1["CONST: log, VALUE: context.log"]
+        C2["CONST: session, VALUE: context.session"]
+        C3["CONST: result, VALUE: await initializeProjectDirect"]
+        C4["CONST: errorMessage, VALUE: project initialization tool failed message"]
+    end
+    subgraph tools_initialize-project-ExecutionFlow["tools_initialize-project-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with project initialization options"]
+        FL3["Extract log and session from context"]
+        FL4["Log execution start with provided arguments"]
+        FL5["Call initializeProjectDirect with arguments and session"]
+        FL6["Return handled API result for initialization operation"]
+        FL7["Handle errors with detailed error response"]
+    end
+    subgraph tools_initialize-project["initialize-project.js"]
+        tools_initialize-project-Imports
+        tools_initialize-project-Dependencies
+        tools_initialize-project-FunctionsDefined
+        tools_initialize-project-Exports
+        tools_initialize-project-Parameters
+        tools_initialize-project-Constants
+        tools_initialize-project-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

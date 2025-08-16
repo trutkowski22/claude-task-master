@@ -1,0 +1,96 @@
+flowchart TB
+    subgraph parsePRDImports["direct-functions_parse-prd-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: parsePRD, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I8["IMPORT: getDefaultNumTasks, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I9["IMPORT: resolvePrdPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I10["IMPORT: resolveProjectPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I11["IMPORT: TASKMASTER_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    
+    subgraph parsePRDDependencies["direct-functions_parse-prd-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Node.js path module"]
+        D3["DEP: Perplexity AI"]
+    end
+    
+    subgraph parsePRDFunctionsDefined["direct-functions_parse-prd-Functions Defined"]
+        FU1["FUNCTION: parsePRDDirect"]
+    end
+    
+    subgraph parsePRDExports["direct-functions_parse-prd-Exports"]
+        E1["EXP: parsePRDDirect"]
+    end
+    
+    subgraph parsePRDParameters["direct-functions_parse-prd-Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing projectRoot, input, output, numTasks options"]
+        P2["PARAM: {string} args.input - Path to the input PRD file"]
+        P3["PARAM: {string} args.output - Path to the output directory"]
+        P4["PARAM: {string} args.numTasks - Number of tasks to generate"]
+        P5["PARAM: {boolean} args.force - Whether to force parsing"]
+        P6["PARAM: {boolean} args.append - Whether to append to the output file"]
+        P7["PARAM: {boolean} args.research - Whether to use research mode"]
+        P8["PARAM: {string} args.tag - Tag context for organizing tasks into separate task lists"]
+        P9["PARAM: {Object} log - Logger object"]
+        P10["PARAM: {Object} context - Context object containing session data"]
+    end
+    
+    subgraph parsePRDConstants["direct-functions_parse-prd-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: logWrapper, VALUE: createLogWrapper result"]
+        C3["CONST: inputPath, VALUE: resolvePrdPath result"]
+        C4["CONST: outputPath, VALUE: resolved output path with fallback"]
+        C5["CONST: outputDir, VALUE: path.dirname result"]
+        C6["CONST: numTasks, VALUE: parsed and validated task count"]
+        C7["CONST: wasSilent, VALUE: isSilentMode result"]
+        C8["CONST: result, VALUE: parsePRD execution result"]
+        C9["CONST: successMsg, VALUE: formatted success message"]
+    end
+    
+    subgraph parsePRDExecutionFlow["direct-functions_parse-prd-Execution Flow"]
+        FL1["Extract session from context and destructure arguments"]
+        FL2["Create standard logger wrapper for consistent logging"]
+        FL3["Validate required projectRoot argument is provided"]
+        FL4["Resolve input PRD path using path utilities with error handling"]
+        FL5["Resolve output path with absolute path validation and fallback"]
+        FL6["Check input file existence and return error if not found"]
+        FL7["Create output directory if it doesn't exist"]
+        FL8["Parse and validate numTasks parameter with fallback to default"]
+        FL9["Log configuration flags for append and research modes"]
+        FL10["Log operation details with all resolved paths and parameters"]
+        FL11["Manage silent mode state to prevent console interference"]
+        FL12["Call core parsePRD function with all parameters and context"]
+        FL13["Check result structure and format success response"]
+        FL14["Handle core function errors and format error response"]
+        FL15["Always restore original silent mode state in finally block"]
+    end
+    
+    subgraph parsePRD["direct-functions_parse-prd.js"]
+        parsePRDImports
+        parsePRDDependencies
+        parsePRDFunctionsDefined
+        parsePRDExports
+        parsePRDParameters
+        parsePRDConstants
+        parsePRDExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

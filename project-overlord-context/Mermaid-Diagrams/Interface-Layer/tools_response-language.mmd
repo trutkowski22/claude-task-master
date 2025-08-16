@@ -1,0 +1,44 @@
+flowchart TB
+    subgraph tools_response-language-Imports["tools_response-language-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: responseLanguageDirect, FROM: /claude-task-master/mcp-server/src/core/direct-functions/response-language.js"]
+    end
+    subgraph tools_response-language-Dependencies["tools_response-language-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: Configuration management"]
+    end
+    subgraph tools_response-language-FunctionsDefined["tools_response-language-Functions Defined"]
+        FU1["FUNCTION: registerResponseLanguageTool"]
+    end
+    subgraph tools_response-language-Exports["tools_response-language-Exports"]
+        E1["EXP: registerResponseLanguageTool"]
+    end
+    subgraph tools_response-language-Parameters["tools_response-language-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_response-language-Constants["tools_response-language-Constants"]
+        C1["CONST: result, VALUE: await responseLanguageDirect"]
+    end
+    subgraph tools_response-language-ExecutionFlow["tools_response-language-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with language options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Call responseLanguageDirect with parameters and session"]
+        FL5["Return handled API result for language setting operation"]
+    end
+    subgraph tools_response-language["response-language.js"]
+        tools_response-language-Imports
+        tools_response-language-Dependencies
+        tools_response-language-FunctionsDefined
+        tools_response-language-Exports
+        tools_response-language-Parameters
+        tools_response-language-Constants
+        tools_response-language-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5

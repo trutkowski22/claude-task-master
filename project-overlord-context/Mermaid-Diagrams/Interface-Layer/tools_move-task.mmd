@@ -1,0 +1,69 @@
+flowchart TB
+    subgraph tools_move-task-Imports["tools_move-task-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: moveTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_move-task-Dependencies["tools_move-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_move-task-FunctionsDefined["tools_move-task-Functions Defined"]
+        FU1["FUNCTION: registerMoveTaskTool"]
+    end
+    subgraph tools_move-task-Exports["tools_move-task-Exports"]
+        E1["EXP: registerMoveTaskTool"]
+    end
+    subgraph tools_move-task-Parameters["tools_move-task-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_move-task-Constants["tools_move-task-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: args.file or findTasksPath result"]
+        C3["CONST: fromIds, VALUE: args.from split and trimmed"]
+        C4["CONST: toIds, VALUE: args.to split and trimmed"]
+        C5["CONST: results, VALUE: array for multiple move results"]
+        C6["CONST: fromId, VALUE: current iteration fromIds element"]
+        C7["CONST: toId, VALUE: current iteration toIds element"]
+        C8["CONST: shouldGenerateFiles, VALUE: boolean for last move"]
+        C9["CONST: result, VALUE: await moveTaskDirect"]
+    end
+    subgraph tools_move-task-ExecutionFlow["tools_move-task-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with task movement options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Find tasks.json path if not provided"]
+        FL5["Parse comma-separated source and destination IDs"]
+        FL6["Validate matching ID counts"]
+        FL7["Check if moving multiple tasks"]
+        FL8["Loop through multiple tasks if applicable"]
+        FL9["Skip if source and destination IDs are same"]
+        FL10["Call moveTaskDirect for each task"]
+        FL11["Handle single task move operation"]
+        FL12["Return handled API result for move operation"]
+    end
+    subgraph tools_move-task["move-task.js"]
+        tools_move-task-Imports
+        tools_move-task-Dependencies
+        tools_move-task-FunctionsDefined
+        tools_move-task-Exports
+        tools_move-task-Parameters
+        tools_move-task-Constants
+        tools_move-task-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL7 --> FL11
+    FL10 --> FL12
+    FL11 --> FL12

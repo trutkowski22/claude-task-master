@@ -1,0 +1,59 @@
+flowchart TB
+    subgraph tools_next-task-Imports["tools_next-task-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: nextTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: resolveTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I8["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_next-task-Dependencies["tools_next-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Task dependency analysis"]
+    end
+    subgraph tools_next-task-FunctionsDefined["tools_next-task-Functions Defined"]
+        FU1["FUNCTION: registerNextTaskTool"]
+    end
+    subgraph tools_next-task-Exports["tools_next-task-Exports"]
+        E1["EXP: registerNextTaskTool"]
+    end
+    subgraph tools_next-task-Parameters["tools_next-task-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_next-task-Constants["tools_next-task-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: resolveTasksPath result"]
+        C3["CONST: complexityReportPath, VALUE: resolveComplexityReportPath result"]
+        C4["CONST: result, VALUE: await nextTaskDirect"]
+    end
+    subgraph tools_next-task-ExecutionFlow["tools_next-task-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with next task options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Resolve tasks.json path using path utilities"]
+        FL6["Resolve complexity report path (optional)"]
+        FL7["Call nextTaskDirect with parameters and session"]
+        FL8["Log result status (found or none)"]
+        FL9["Return handled API result for next task operation"]
+    end
+    subgraph tools_next-task["next-task.js"]
+        tools_next-task-Imports
+        tools_next-task-Dependencies
+        tools_next-task-FunctionsDefined
+        tools_next-task-Exports
+        tools_next-task-Parameters
+        tools_next-task-Constants
+        tools_next-task-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

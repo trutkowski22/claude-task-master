@@ -1,0 +1,281 @@
+flowchart TB
+
+%% =================================================================================
+%% MCP INTERFACE LAYER - MASTER DIAGRAM
+%% All MCP wrapper tools from the Interface-Layer
+%% =================================================================================
+
+%% PROJECT OVERLORD IMPORTS - Shared across MCP Interface files
+subgraph ProjectOverlordImports["project-overlord-imports"]
+    I1["IMPORT: z, FROM: zod"]
+    I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I5["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I6["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+end
+
+%% PROJECT OVERLORD DEPENDENCIES - Common across MCP Interface
+subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
+    D1["DEP: FastMCP"]
+    D2["DEP: File system"]
+    D3["DEP: Zod validation"]
+end
+
+%% PROJECT OVERLORD PARAMETERS - Common parameter patterns
+subgraph ProjectOverlordParams["project-overlord-params"]
+    P1["PARAM: {Object} server - FastMCP server instance"]
+end
+
+%% PROJECT OVERLORD CONSTANTS - Shared constant patterns
+subgraph ProjectOverlordConstants["project-overlord-constants"]
+    C1["CONST: resolvedTag, VALUE: resolveTag result"]
+    C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+    C3["CONST: complexityReportPath, VALUE: findComplexityReportPath result"]
+end
+
+%% EXPAND TASK TOOL
+subgraph expandTaskTool-Imports["expandTaskTool-Imports"]
+    I8["IMPORT: expandTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph expandTaskTool-FunctionsDefined["expandTaskTool-Functions Defined"]
+    FU1["FUNCTION: registerExpandTaskTool"]
+end
+
+subgraph expandTaskTool-Exports["expandTaskTool-Exports"]
+    E1["EXP: registerExpandTaskTool"]
+end
+
+subgraph expandTaskTool-Constants["expandTaskTool-Constants"]
+    C4["CONST: result, VALUE: await expandTaskDirect"]
+end
+
+subgraph expandTaskTool-ExecutionFlow["expandTaskTool-Execution Flow"]
+    FL1["Register tool with server using name and description"]
+    FL2["Define parameter schema with task expansion options"]
+    FL3["Log execution start with provided arguments"]
+    FL4["Resolve tag context for operation scope"]
+    FL5["Find and validate tasks.json file path"]
+    FL6["Find complexity report path for analysis"]
+    FL7["Call expandTaskDirect with all parameters including session"]
+    FL8["Return handled API result for expansion success or failure"]
+end
+
+subgraph expandTaskTool["expand-task.js"]
+    expandTaskTool-Imports
+    expandTaskTool-FunctionsDefined
+    expandTaskTool-Exports
+    expandTaskTool-Constants
+    expandTaskTool-ExecutionFlow
+end
+
+%% GET TASK TOOL
+subgraph getTaskTool-Imports["getTaskTool-Imports"]
+    I9["IMPORT: showTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph getTaskTool-FunctionsDefined["getTaskTool-Functions Defined"]
+    FU2["FUNCTION: processTaskResponse"]
+    FU3["FUNCTION: registerShowTaskTool"]
+end
+
+subgraph getTaskTool-Exports["getTaskTool-Exports"]
+    E2["EXP: registerShowTaskTool"]
+end
+
+subgraph getTaskTool-Parameters["getTaskTool-Parameters"]
+    P2["PARAM: {Object} data - The data returned from showTaskDirect"]
+end
+
+subgraph getTaskTool-Constants["getTaskTool-Constants"]
+    C5["CONST: id, VALUE: args destructured property"]
+    C6["CONST: file, VALUE: args destructured property"]
+    C7["CONST: status, VALUE: args destructured property"]
+    C8["CONST: result, VALUE: await showTaskDirect"]
+end
+
+subgraph getTaskTool-ExecutionFlow["getTaskTool-Execution Flow"]
+    FL9["Register tool with server using name and description"]
+    FL10["Define parameter schema with task retrieval options"]
+    FL11["Extract and destructure arguments"]
+    FL12["Log task details retrieval request"]
+    FL13["Resolve tag context for operation scope"]
+    FL14["Find and validate tasks.json file path"]
+    FL15["Find complexity report path if specified"]
+    FL16["Call showTaskDirect with all parameters and session"]
+    FL17["Log success or failure of task retrieval"]
+    FL18["Return handled API result with custom processor function"]
+end
+
+subgraph getTaskTool["get-task.js"]
+    getTaskTool-Imports
+    getTaskTool-FunctionsDefined
+    getTaskTool-Exports
+    getTaskTool-Parameters
+    getTaskTool-Constants
+    getTaskTool-ExecutionFlow
+end
+
+%% UPDATE SUBTASK TOOL
+subgraph updateSubtaskTool-Imports["updateSubtaskTool-Imports"]
+    I10["IMPORT: updateSubtaskByIdDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph updateSubtaskTool-FunctionsDefined["updateSubtaskTool-Functions Defined"]
+    FU4["FUNCTION: registerUpdateSubtaskTool"]
+end
+
+subgraph updateSubtaskTool-Exports["updateSubtaskTool-Exports"]
+    E3["EXP: registerUpdateSubtaskTool"]
+end
+
+subgraph updateSubtaskTool-Constants["updateSubtaskTool-Constants"]
+    C9["CONST: toolName, VALUE: 'update_subtask'"]
+    C10["CONST: result, VALUE: await updateSubtaskByIdDirect"]
+end
+
+subgraph updateSubtaskTool-ExecutionFlow["updateSubtaskTool-Execution Flow"]
+    FL19["Register tool with server using name and description"]
+    FL20["Define parameter schema with subtask ID format specification"]
+    FL21["Set tool name constant for error context"]
+    FL22["Resolve tag context for operation scope"]
+    FL23["Find and validate tasks.json file path"]
+    FL24["Call updateSubtaskByIdDirect with parameters including research flag"]
+    FL25["Log success with subtask ID or failure with error message"]
+    FL26["Return handled API result or error response with tool context"]
+end
+
+subgraph updateSubtaskTool["update-subtask.js"]
+    updateSubtaskTool-Imports
+    updateSubtaskTool-FunctionsDefined
+    updateSubtaskTool-Exports
+    updateSubtaskTool-Constants
+    updateSubtaskTool-ExecutionFlow
+end
+
+%% NEXT TASK TOOL
+subgraph nextTaskTool-Imports["nextTaskTool-Imports"]
+    I11["IMPORT: nextTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph nextTaskTool-FunctionsDefined["nextTaskTool-Functions Defined"]
+    FU5["FUNCTION: registerNextTaskTool"]
+end
+
+subgraph nextTaskTool-Exports["nextTaskTool-Exports"]
+    E4["EXP: registerNextTaskTool"]
+end
+
+subgraph nextTaskTool-Constants["nextTaskTool-Constants"]
+    C11["CONST: result, VALUE: await nextTaskDirect"]
+end
+
+subgraph nextTaskTool-ExecutionFlow["nextTaskTool-Execution Flow"]
+    FL27["Register tool with server using name and description"]
+    FL28["Define parameter schema with next task options"]
+    FL29["Log execution start with provided arguments"]
+    FL30["Resolve tag context for operation scope"]
+    FL31["Find and validate tasks.json file path"]
+    FL32["Find complexity report path for task analysis"]
+    FL33["Call nextTaskDirect with all parameters and session context"]
+    FL34["Return handled API result for next task success or failure"]
+end
+
+subgraph nextTaskTool["next-task.js"]
+    nextTaskTool-Imports
+    nextTaskTool-FunctionsDefined
+    nextTaskTool-Exports
+    nextTaskTool-Constants
+    nextTaskTool-ExecutionFlow
+end
+
+%% SET TASK STATUS TOOL
+subgraph setTaskStatusTool-Imports["setTaskStatusTool-Imports"]
+    I12["IMPORT: setTaskStatusDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph setTaskStatusTool-FunctionsDefined["setTaskStatusTool-Functions Defined"]
+    FU6["FUNCTION: registerSetTaskStatusTool"]
+end
+
+subgraph setTaskStatusTool-Exports["setTaskStatusTool-Exports"]
+    E5["EXP: registerSetTaskStatusTool"]
+end
+
+subgraph setTaskStatusTool-Constants["setTaskStatusTool-Constants"]
+    C12["CONST: result, VALUE: await setTaskStatusDirect"]
+end
+
+subgraph setTaskStatusTool-ExecutionFlow["setTaskStatusTool-Execution Flow"]
+    FL35["Register tool with server using name and description"]
+    FL36["Define parameter schema with status change options"]
+    FL37["Log execution start with provided arguments"]
+    FL38["Resolve tag context for operation scope"]
+    FL39["Find and validate tasks.json file path"]
+    FL40["Call setTaskStatusDirect with all parameters and session context"]
+    FL41["Return handled API result for status change success or failure"]
+end
+
+subgraph setTaskStatusTool["set-task-status.js"]
+    setTaskStatusTool-Imports
+    setTaskStatusTool-FunctionsDefined
+    setTaskStatusTool-Exports
+    setTaskStatusTool-Constants
+    setTaskStatusTool-ExecutionFlow
+end
+
+%% RELATIONSHIP ARROWS - ProjectOverlord to individual files
+I1 & I2 & I3 & I4 --> expandTaskTool-Imports & getTaskTool-Imports & updateSubtaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
+I5 & I6 --> expandTaskTool-Imports & getTaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
+I7 --> expandTaskTool-Imports & getTaskTool-Imports & updateSubtaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
+D1 & D2 & D3 --> expandTaskTool-Dependencies & getTaskTool-Dependencies & updateSubtaskTool-Dependencies & nextTaskTool-Dependencies & setTaskStatusTool-Dependencies
+P1 --> expandTaskTool-Parameters & getTaskTool-Parameters & updateSubtaskTool-Parameters & nextTaskTool-Parameters & setTaskStatusTool-Parameters
+C1 & C2 & C3 --> expandTaskTool-Constants & getTaskTool-Constants & updateSubtaskTool-Constants & nextTaskTool-Constants & setTaskStatusTool-Constants
+
+%% EXECUTION FLOW CONNECTIONS - expandTaskTool
+FL1 --> FL2
+FL2 --> FL3
+FL3 --> FL4
+FL4 --> FL5
+FL5 --> FL6
+FL6 --> FL7
+FL7 --> FL8
+
+%% EXECUTION FLOW CONNECTIONS - getTaskTool
+FL9 --> FL10
+FL10 --> FL11
+FL11 --> FL12
+FL12 --> FL13
+FL13 --> FL14
+FL14 --> FL15
+FL15 --> FL16
+FL16 --> FL17
+FL17 --> FL18
+
+%% EXECUTION FLOW CONNECTIONS - updateSubtaskTool
+FL19 --> FL20
+FL20 --> FL21
+FL21 --> FL22
+FL22 --> FL23
+FL23 --> FL24
+FL24 --> FL25
+FL25 --> FL26
+
+%% EXECUTION FLOW CONNECTIONS - nextTaskTool
+FL27 --> FL28
+FL28 --> FL29
+FL29 --> FL30
+FL30 --> FL31
+FL31 --> FL32
+FL32 --> FL33
+FL33 --> FL34
+
+%% EXECUTION FLOW CONNECTIONS - setTaskStatusTool
+FL35 --> FL36
+FL36 --> FL37
+FL37 --> FL38
+FL38 --> FL39
+FL39 --> FL40
+FL40 --> FL41

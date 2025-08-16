@@ -1,0 +1,72 @@
+flowchart TB
+    subgraph useTagImports["direct-functions_use-tag-Imports"]
+        I1["IMPORT: useTag, FROM: /claude-task-master/scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph useTagDependencies["direct-functions_use-tag-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Tag management system"]
+    end
+    
+    subgraph useTagFunctionsDefined["direct-functions_use-tag-Functions Defined"]
+        FU1["FUNCTION: useTagDirect"]
+    end
+    
+    subgraph useTagExports["direct-functions_use-tag-Exports"]
+        E1["EXP: useTagDirect"]
+    end
+    
+    subgraph useTagParameters["direct-functions_use-tag-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.name - Name of the tag to switch to"]
+        P3["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file"]
+        P4["PARAM: {string} args.projectRoot - Project root path"]
+        P5["PARAM: {Object} log - Logger object"]
+        P6["PARAM: {Object} context - Additional context containing session"]
+    end
+    
+    subgraph useTagConstants["direct-functions_use-tag-Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: name, VALUE: extracted from args"]
+        C3["CONST: projectRoot, VALUE: extracted from args"]
+        C4["CONST: session, VALUE: extracted from context"]
+        C5["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C6["CONST: result, VALUE: useTag execution result"]
+    end
+    
+    subgraph useTagExecutionFlow["direct-functions_use-tag-Execution Flow"]
+        FL1["Destructure function arguments and extract session from context"]
+        FL2["Enable silent mode to suppress console output"]
+        FL3["Create MCP logger wrapper for consistent logging interface"]
+        FL4["Validate required tasksJsonPath parameter is provided"]
+        FL5["Validate required name parameter and ensure it's a string"]
+        FL6["Log the tag switch operation details"]
+        FL7["Call core useTag function with formatted parameters and JSON output"]
+        FL8["Disable silent mode to restore normal output"]
+        FL9["Return successful result with tag switch details"]
+        FL10["Handle errors and ensure silent mode is disabled in catch block"]
+    end
+    
+    subgraph useTag["direct-functions_use-tag.js"]
+        useTagImports
+        useTagDependencies
+        useTagFunctionsDefined
+        useTagExports
+        useTagParameters
+        useTagConstants
+        useTagExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

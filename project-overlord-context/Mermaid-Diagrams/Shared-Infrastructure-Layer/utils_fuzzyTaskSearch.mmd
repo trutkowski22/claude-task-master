@@ -1,0 +1,97 @@
+flowchart TB
+    subgraph fuzzyTaskSearch-Imports["fuzzyTaskSearch-Imports"]
+        I1["IMPORT: Fuse, FROM: fuse.js"]
+    end
+    subgraph fuzzyTaskSearch-Dependencies["fuzzyTaskSearch-Dependencies"]
+        D1["DEP: Fuse.js fuzzy search library"]
+    end
+    subgraph fuzzyTaskSearch-FunctionsDefined["fuzzyTaskSearch-Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: _prepareSearchableTasks"]
+        FU3["FUNCTION: _extractPromptWords"]
+        FU4["FUNCTION: findRelevantTasks"]
+        FU5["FUNCTION: getTaskIds"]
+        FU6["FUNCTION: getTaskIdsWithSubtasks"]
+        FU7["FUNCTION: formatSearchSummary"]
+        FU8["FUNCTION: createFuzzyTaskSearch"]
+        FU9["FUNCTION: findRelevantTaskIds"]
+    end
+    subgraph fuzzyTaskSearch-Exports["fuzzyTaskSearch-Exports"]
+        E1["EXP: FuzzyTaskSearch"]
+        E2["EXP: createFuzzyTaskSearch"]
+        E3["EXP: findRelevantTaskIds"]
+    end
+    subgraph fuzzyTaskSearch-Parameters["fuzzyTaskSearch-Parameters"]
+        P1["PARAM: {Array} tasks - Array of task objects"]
+        P2["PARAM: {string} searchType - Type of search configuration to use"]
+        P3["PARAM: {string} prompt - The search prompt"]
+        P4["PARAM: {Object} options - Search options"]
+        P5["PARAM: {number} [options.maxResults=8] - Maximum number of results to return"]
+        P6["PARAM: {boolean} [options.includeRecent=true] - Include recent tasks in results"]
+        P7["PARAM: {boolean} [options.includeCategoryMatches=true] - Include category-based matches"]
+        P8["PARAM: {Object} searchResults - Results from findRelevantTasks"]
+        P9["PARAM: {boolean} [includeSubtasks=false] - Whether to include subtask IDs"]
+        P10["PARAM: {boolean} [includeScores=false] - Whether to include relevance scores"]
+        P11["PARAM: {boolean} [includeBreakdown=false] - Whether to include breakdown details"]
+    end
+    subgraph fuzzyTaskSearch-Constants["fuzzyTaskSearch-Const Declarations"]
+        C1["CONST: SEARCH_CONFIGS, VALUE: configuration objects for different search contexts"]
+        C2["CONST: PURPOSE_CATEGORIES, VALUE: pattern-based task matching categories"]
+        C3["CONST: RELEVANCE_THRESHOLDS, VALUE: { high: 0.25, medium: 0.4, low: 0.6 }"]
+        C4["CONST: config, VALUE: SEARCH_CONFIGS[searchType] || SEARCH_CONFIGS.default"]
+        C5["CONST: searchableTasks, VALUE: this._prepareSearchableTasks(tasks)"]
+        C6["CONST: fuse, VALUE: new Fuse(searchableTasks, fuseOptions)"]
+        C7["CONST: dependencyTitles, VALUE: joined titles of task dependencies"]
+        C8["CONST: promptWords, VALUE: this._extractPromptWords(prompt)"]
+        C9["CONST: fuzzyResults, VALUE: this.fuse.search(prompt)"]
+        C10["CONST: wordResults, VALUE: results from individual word searches"]
+        C11["CONST: mergedResults, VALUE: combined fuzzy and word search results"]
+        C12["CONST: highRelevance, VALUE: results with score < 0.25"]
+        C13["CONST: mediumRelevance, VALUE: results with score 0.25-0.4"]
+        C14["CONST: lowRelevance, VALUE: results with score 0.4-0.6"]
+        C15["CONST: recentTasks, VALUE: newest tasks sorted by ID"]
+        C16["CONST: categoryTasks, VALUE: tasks matching detected category pattern"]
+        C17["CONST: promptCategory, VALUE: detected purpose category from prompt"]
+        C18["CONST: allRelevantTasks, VALUE: combined tasks prioritized by relevance"]
+        C19["CONST: finalResults, VALUE: top N results slice"]
+    end
+    subgraph fuzzyTaskSearch-ExecutionFlow["fuzzyTaskSearch-Execution Flow"]
+        FL1["Initialize FuzzyTaskSearch with tasks and search configuration"]
+        FL2["Prepare searchable tasks by expanding dependency titles"]
+        FL3["Create Fuse.js instance with configured search parameters"]
+        FL4["Extract significant words from search prompt (length > 3)"]
+        FL5["Perform fuzzy search with full prompt using Fuse.js"]
+        FL6["Execute individual word searches for broader coverage"]
+        FL7["Merge and deduplicate fuzzy and word search results"]
+        FL8["Group results by relevance score thresholds"]
+        FL9["Get recent tasks sorted by newest ID if requested"]
+        FL10["Find category-based matches using pattern matching"]
+        FL11["Combine all relevant tasks prioritizing by relevance level"]
+        FL12["Return comprehensive search results with breakdown and metadata"]
+        FL13["Extract task IDs from search results for external use"]
+        FL14["Optionally include subtask IDs in result ID arrays"]
+        FL15["Format search results summary with optional breakdown"]
+    end
+    subgraph fuzzyTaskSearch["fuzzyTaskSearch.js"]
+        fuzzyTaskSearch-Imports
+        fuzzyTaskSearch-Dependencies
+        fuzzyTaskSearch-FunctionsDefined
+        fuzzyTaskSearch-Exports
+        fuzzyTaskSearch-Parameters
+        fuzzyTaskSearch-Constants
+        fuzzyTaskSearch-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

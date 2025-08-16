@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph tools_fix-dependencies-Imports["tools_fix-dependencies-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: fixDependenciesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_fix-dependencies-Dependencies["tools_fix-dependencies-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_fix-dependencies-FunctionsDefined["tools_fix-dependencies-Functions Defined"]
+        FU1["FUNCTION: registerFixDependenciesTool"]
+    end
+    subgraph tools_fix-dependencies-Exports["tools_fix-dependencies-Exports"]
+        E1["EXP: registerFixDependenciesTool"]
+    end
+    subgraph tools_fix-dependencies-Parameters["tools_fix-dependencies-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_fix-dependencies-Constants["tools_fix-dependencies-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: result, VALUE: await fixDependenciesDirect"]
+    end
+    subgraph tools_fix-dependencies-ExecutionFlow["tools_fix-dependencies-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with dependency fixing options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Call fixDependenciesDirect with parameters"]
+        FL7["Log success or failure of dependency fixing"]
+        FL8["Return handled API result for fix operation"]
+    end
+    subgraph tools_fix-dependencies["fix-dependencies.js"]
+        tools_fix-dependencies-Imports
+        tools_fix-dependencies-Dependencies
+        tools_fix-dependencies-FunctionsDefined
+        tools_fix-dependencies-Exports
+        tools_fix-dependencies-Parameters
+        tools_fix-dependencies-Constants
+        tools_fix-dependencies-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

@@ -1,0 +1,85 @@
+flowchart TB
+    subgraph showTaskImports["direct-functions_show-task-Imports"]
+        I1["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    end
+    
+    subgraph showTaskDependencies["direct-functions_show-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Path resolution utilities"]
+    end
+    
+    subgraph showTaskFunctionsDefined["direct-functions_show-task-Functions Defined"]
+        FU1["FUNCTION: showTaskDirect"]
+    end
+    
+    subgraph showTaskExports["direct-functions_show-task-Exports"]
+        E1["EXP: showTaskDirect"]
+    end
+    
+    subgraph showTaskParameters["direct-functions_show-task-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.id - Task ID to show"]
+        P3["PARAM: {string} args.file - Optional path to the tasks file"]
+        P4["PARAM: {string} args.reportPath - Explicit path to the complexity report file"]
+        P5["PARAM: {string} args.status - Optional status to filter subtasks by"]
+        P6["PARAM: {string} args.projectRoot - Absolute path to the project root"]
+        P7["PARAM: {string} args.tag - Tag for the task"]
+        P8["PARAM: {Object} log - Logger object"]
+        P9["PARAM: {Object} context - Context object containing session data"]
+    end
+    
+    subgraph showTaskConstants["direct-functions_show-task-Const Declarations"]
+        C1["CONST: id, VALUE: extracted from args"]
+        C2["CONST: file, VALUE: extracted from args"]
+        C3["CONST: reportPath, VALUE: extracted from args"]
+        C4["CONST: status, VALUE: extracted from args"]
+        C5["CONST: projectRoot, VALUE: extracted from args"]
+        C6["CONST: tag, VALUE: extracted from args"]
+        C7["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C8["CONST: tasksData, VALUE: readJSON result"]
+        C9["CONST: complexityReport, VALUE: readComplexityReport result"]
+        C10["CONST: taskIds, VALUE: comma-separated ID split and trimmed"]
+        C11["CONST: task, VALUE: findTaskById result for single task"]
+        C12["CONST: originalSubtaskCount, VALUE: subtask count from findTaskById"]
+        C13["CONST: foundTasks, VALUE: array for multiple tasks results"]
+        C14["CONST: notFoundIds, VALUE: array for not found task IDs"]
+    end
+    
+    subgraph showTaskExecutionFlow["direct-functions_show-task-Execution Flow"]
+        FL1["Destructure function arguments and log operation details"]
+        FL2["Resolve tasks file path using findTasksPath utility"]
+        FL3["Read tasks data from resolved JSON file path"]
+        FL4["Validate tasks data structure contains tasks array"]
+        FL5["Read complexity report from provided report path"]
+        FL6["Parse comma-separated task IDs and filter empty values"]
+        FL7["Validate at least one valid task ID was provided"]
+        FL8["Handle single task ID case with findTaskById"]
+        FL9["Handle multiple task IDs case with forEach loop"]
+        FL10["Return appropriate result based on single or multiple tasks"]
+        FL11["Handle errors with proper error codes and messages"]
+    end
+    
+    subgraph showTask["direct-functions_show-task.js"]
+        showTaskImports
+        showTaskDependencies
+        showTaskFunctionsDefined
+        showTaskExports
+        showTaskParameters
+        showTaskConstants
+        showTaskExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

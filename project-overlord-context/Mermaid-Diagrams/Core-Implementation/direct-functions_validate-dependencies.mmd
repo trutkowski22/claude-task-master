@@ -1,0 +1,70 @@
+flowchart TB
+    subgraph validateDependenciesImports["direct-functions_validate-dependencies-Imports"]
+        I1["IMPORT: validateDependenciesCommand, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: fs, FROM: fs"]
+    end
+    
+    subgraph validateDependenciesDependencies["direct-functions_validate-dependencies-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Dependency validation system"]
+    end
+    
+    subgraph validateDependenciesFunctionsDefined["direct-functions_validate-dependencies-Functions Defined"]
+        FU1["FUNCTION: validateDependenciesDirect"]
+    end
+    
+    subgraph validateDependenciesExports["direct-functions_validate-dependencies-Exports"]
+        E1["EXP: validateDependenciesDirect"]
+    end
+    
+    subgraph validateDependenciesParameters["direct-functions_validate-dependencies-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.projectRoot - Project root path"]
+        P4["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P5["PARAM: {Object} log - Logger object"]
+    end
+    
+    subgraph validateDependenciesConstants["direct-functions_validate-dependencies-Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: projectRoot, VALUE: extracted from args"]
+        C3["CONST: tag, VALUE: extracted from args"]
+        C4["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C5["CONST: options, VALUE: object with projectRoot and tag"]
+    end
+    
+    subgraph validateDependenciesExecutionFlow["direct-functions_validate-dependencies-Execution Flow"]
+        FL1["Destructure function arguments to extract required parameters"]
+        FL2["Validate required tasksJsonPath parameter is provided"]
+        FL3["Log dependency validation operation details"]
+        FL4["Verify the tasks file exists at the specified path"]
+        FL5["Enable silent mode to suppress console output"]
+        FL6["Prepare options object with projectRoot and tag"]
+        FL7["Call core validateDependenciesCommand with tasks path and options"]
+        FL8["Disable silent mode to restore normal output"]
+        FL9["Return successful result with validation confirmation"]
+        FL10["Handle errors and ensure silent mode is disabled in catch block"]
+    end
+    
+    subgraph validateDependencies["direct-functions_validate-dependencies.js"]
+        validateDependenciesImports
+        validateDependenciesDependencies
+        validateDependenciesFunctionsDefined
+        validateDependenciesExports
+        validateDependenciesParameters
+        validateDependenciesConstants
+        validateDependenciesExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

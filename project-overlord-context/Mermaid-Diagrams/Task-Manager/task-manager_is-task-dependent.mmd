@@ -1,0 +1,35 @@
+flowchart TB
+    subgraph isTaskDependent-FunctionsDefined["isTaskDependent-Functions Defined"]
+        FU1["FUNCTION: isTaskDependentOn"]
+    end
+    subgraph isTaskDependent-Exports["isTaskDependent-Exports"]
+        E1["EXP: isTaskDependentOn"]
+    end
+    subgraph isTaskDependent-Parameters["isTaskDependent-Parameters"]
+        P1["PARAM: {Array} allTasks - Array of all tasks"]
+        P2["PARAM: {Object} task - The task to check"]
+        P3["PARAM: {number} targetTaskId - The task ID to check dependency against"]
+    end
+    subgraph isTaskDependent-ExecutionFlow["isTaskDependent-Execution Flow"]
+        FL1["Check if task's parent is the target task"]
+        FL2["Check if target task is in direct dependencies"]
+        FL3["Recursively check dependencies of dependencies"]
+        FL4["Find dependent task in all tasks array"]
+        FL5["Recursively call isTaskDependentOn on dependent task"]
+        FL6["Check subtasks for dependencies on target"]
+        FL7["Recursively call isTaskDependentOn on each subtask"]
+        FL8["Return true if any dependency found, false otherwise"]
+    end
+    subgraph isTaskDependent["is-task-dependent.js"]
+        isTaskDependent-FunctionsDefined
+        isTaskDependent-Exports
+        isTaskDependent-Parameters
+        isTaskDependent-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

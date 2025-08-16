@@ -1,0 +1,56 @@
+flowchart TB
+    subgraph tools_remove-task-Imports["tools_remove-task-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: removeTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_remove-task-Dependencies["tools_remove-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_remove-task-FunctionsDefined["tools_remove-task-Functions Defined"]
+        FU1["FUNCTION: registerRemoveTaskTool"]
+    end
+    subgraph tools_remove-task-Exports["tools_remove-task-Exports"]
+        E1["EXP: registerRemoveTaskTool"]
+    end
+    subgraph tools_remove-task-Parameters["tools_remove-task-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_remove-task-Constants["tools_remove-task-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: result, VALUE: await removeTaskDirect"]
+    end
+    subgraph tools_remove-task-ExecutionFlow["tools_remove-task-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with task removal options"]
+        FL3["Log task removal request"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Log tasks file path usage"]
+        FL7["Call removeTaskDirect with parameters and session"]
+        FL8["Log success or failure of task removal"]
+        FL9["Return handled API result for removal operation"]
+    end
+    subgraph tools_remove-task["remove-task.js"]
+        tools_remove-task-Imports
+        tools_remove-task-Dependencies
+        tools_remove-task-FunctionsDefined
+        tools_remove-task-Exports
+        tools_remove-task-Parameters
+        tools_remove-task-Constants
+        tools_remove-task-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

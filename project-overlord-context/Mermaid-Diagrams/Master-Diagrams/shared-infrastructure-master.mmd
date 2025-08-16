@@ -1,0 +1,340 @@
+flowchart TB
+
+%% =================================================================================
+%% SHARED INFRASTRUCTURE LAYER - MASTER DIAGRAM
+%% Common utilities and constants across all layers
+%% =================================================================================
+
+%% PROJECT OVERLORD IMPORTS - Shared across Infrastructure files
+subgraph ProjectOverlordImports["project-overlord-imports"]
+    I1["IMPORT: fs, FROM: fs"]
+    I2["IMPORT: path, FROM: path"]
+    I3["IMPORT: crypto, FROM: crypto"]
+    I4["IMPORT: util, FROM: util"]
+    I5["IMPORT: Fuse, FROM: fuse.js"]
+    I6["IMPORT: pkg, FROM: gpt-tokens"]
+    I7["IMPORT: chalk, FROM: chalk"]
+end
+
+%% PROJECT OVERLORD DEPENDENCIES - Common across Infrastructure
+subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
+    D1["DEP: File system"]
+    D2["DEP: Path utilities"]
+    D3["DEP: Cryptographic functions"]
+    D4["DEP: Node.js utilities"]
+    D5["DEP: Fuzzy search (Fuse.js)"]
+    D6["DEP: GPT token counting"]
+    D7["DEP: Terminal colors (chalk)"]
+    D8["DEP: Git operations"]
+end
+
+%% PROJECT OVERLORD PARAMETERS - Common parameter patterns
+subgraph ProjectOverlordParams["project-overlord-params"]
+    P1["PARAM: {string} projectRoot - Project root directory"]
+    P2["PARAM: {string} tag - Tag for the task"]
+    P3["PARAM: {string} filePath - File path to process"]
+    P4["PARAM: {Object} options - Configuration options"]
+end
+
+%% PROJECT OVERLORD CONSTANTS - Shared constant patterns
+subgraph ProjectOverlordConstants["project-overlord-constants"]
+    C1["CONST: DEFAULT_ENCODING, VALUE: 'utf8'"]
+    C2["CONST: MAX_FILE_SIZE, VALUE: 10 * 1024 * 1024"]
+    C3["CONST: TASK_STATUSES, VALUE: ['pending', 'in-progress', 'review', 'done', 'cancelled']"]
+    C4["CONST: PRIORITY_LEVELS, VALUE: ['low', 'medium', 'high']"]
+end
+
+%% CONTEXT GATHERER
+subgraph contextGatherer-Imports["contextGatherer-Imports"]
+    I8["IMPORT: readJSON, findTaskById, truncate, flattenTasksWithSubtasks, FROM: /claude-task-master/scripts/modules/utils.js"]
+end
+
+subgraph contextGatherer-FunctionsDefined["contextGatherer-Functions Defined"]
+    FU1["FUNCTION: constructor"]
+    FU2["FUNCTION: _loadAllTasks"]
+    FU3["FUNCTION: countTokens"]
+    FU4["FUNCTION: gather"]
+    FU5["FUNCTION: _performSemanticSearch"]
+    FU6["FUNCTION: _buildDependencyContext"]
+    FU7["FUNCTION: _buildDependencyGraphs"]
+    FU8["FUNCTION: _buildDependencyGraph"]
+    FU9["FUNCTION: _formatDependencyChain"]
+    FU10["FUNCTION: _parseTaskIds"]
+    FU11["FUNCTION: _gatherTaskContext"]
+    FU12["FUNCTION: _formatTaskForContext"]
+    FU13["FUNCTION: _formatSubtaskForContext"]
+    FU14["FUNCTION: _gatherFileContext"]
+    FU15["FUNCTION: _gatherProjectTreeContext"]
+    FU16["FUNCTION: _formatSingleFileForContext"]
+    FU17["FUNCTION: _generateFileTree"]
+    FU18["FUNCTION: _formatCustomContext"]
+    FU19["FUNCTION: _formatTaskContextSection"]
+    FU20["FUNCTION: _formatFileContextSection"]
+    FU21["FUNCTION: _formatProjectTreeSection"]
+    FU22["FUNCTION: _renderFileTree"]
+    FU23["FUNCTION: _joinContextSections"]
+    FU24["FUNCTION: createContextGatherer"]
+end
+
+subgraph contextGatherer-Exports["contextGatherer-Exports"]
+    E1["EXP: ContextGatherer"]
+    E2["EXP: createContextGatherer"]
+end
+
+subgraph contextGatherer-Parameters["contextGatherer-Parameters"]
+    P5["PARAM: {string} text - Text to count tokens for"]
+    P6["PARAM: {Object} options - Context gathering options"]
+    P7["PARAM: {Array<string>} [options.tasks] - Task/subtask IDs to include"]
+    P8["PARAM: {Array<string>} [options.files] - File paths to include"]
+    P9["PARAM: {string} [options.customContext] - Additional custom context"]
+    P10["PARAM: {boolean} [options.includeProjectTree] - Include project file tree"]
+    P11["PARAM: {string} [options.format] - Output format: research, chat, system-prompt"]
+    P12["PARAM: {boolean} [options.includeTokenCounts] - Whether to include token breakdown"]
+    P13["PARAM: {string} [options.semanticQuery] - A query string for semantic task searching"]
+    P14["PARAM: {number} [options.maxSemanticResults] - Max number of semantic results"]
+    P15["PARAM: {Array<number>} [options.dependencyTasks] - Array of task IDs to build dependency graphs from"]
+end
+
+subgraph contextGatherer-Constants["contextGatherer-Constants"]
+    C5["CONST: { encode }, VALUE: pkg"]
+    C6["CONST: tasksPath, VALUE: path.join(projectRoot, '.taskmaster', 'tasks', 'tasks.json')"]
+    C7["CONST: data, VALUE: readJSON(this.tasksPath, this.projectRoot, this.tag)"]
+    C8["CONST: tasks, VALUE: data?.tasks || []"]
+    C9["CONST: contextSections, VALUE: []"]
+    C10["CONST: finalTaskIds, VALUE: new Set(tasks.map(String))"]
+    C11["CONST: tokenBreakdown, VALUE: token counting breakdown object"]
+    C12["CONST: searchOptions, VALUE: Fuse.js search configuration"]
+    C13["CONST: fuse, VALUE: new Fuse(searchableTasks, searchOptions)"]
+    C14["CONST: promptWords, VALUE: significant words extracted from query"]
+    C15["CONST: fuzzyResults, VALUE: fuse.search(query)"]
+    C16["CONST: ignoreDirs, VALUE: ['.git', 'node_modules', '.env', 'coverage', 'dist', 'build']"]
+    C17["CONST: ignoreFiles, VALUE: ['.DS_Store', '.env', '.env.local', '.env.production']"]
+end
+
+subgraph contextGatherer-ExecutionFlow["contextGatherer-Execution Flow"]
+    FL1["Initialize ContextGatherer with project root and tag"]
+    FL2["Load all tasks from tasks.json using readJSON"]
+    FL3["Set up file paths and initialize task data"]
+    FL4["Count tokens in text using gpt-tokens package"]
+    FL5["Gather context from multiple sources based on options"]
+    FL6["Perform semantic search using Fuse.js with configurable options"]
+    FL7["Extract significant words from search query"]
+    FL8["Execute fuzzy search and word-based search"]
+    FL9["Group results by relevance score (high/medium/recent)"]
+    FL10["Build dependency graphs for related tasks"]
+    FL11["Parse task IDs supporting both task and subtask formats"]
+    FL12["Gather task context with detailed formatting"]
+    FL13["Format tasks and subtasks for context inclusion"]
+    FL14["Gather file context with size and content validation"]
+    FL15["Generate project tree structure with depth limiting"]
+    FL16["Apply format-specific rendering (research/chat/system-prompt)"]
+    FL17["Calculate token counts and character breakdowns"]
+    FL18["Join context sections with format-appropriate separators"]
+    FL19["Return comprehensive context object with analysis data"]
+end
+
+subgraph contextGatherer["contextGatherer.js"]
+    contextGatherer-Imports
+    contextGatherer-FunctionsDefined
+    contextGatherer-Exports
+    contextGatherer-Parameters
+    contextGatherer-Constants
+    contextGatherer-ExecutionFlow
+end
+
+%% FUZZY TASK SEARCH
+subgraph fuzzyTaskSearch-FunctionsDefined["fuzzyTaskSearch-Functions Defined"]
+    FU25["FUNCTION: createFuzzySearch"]
+    FU26["FUNCTION: searchTasks"]
+    FU27["FUNCTION: searchSubtasks"]
+    FU28["FUNCTION: rankResults"]
+end
+
+subgraph fuzzyTaskSearch-Exports["fuzzyTaskSearch-Exports"]
+    E3["EXP: createFuzzySearch"]
+    E4["EXP: searchTasks"]
+    E5["EXP: searchSubtasks"]
+end
+
+subgraph fuzzyTaskSearch-Parameters["fuzzyTaskSearch-Parameters"]
+    P16["PARAM: {Array} tasks - Array of tasks to search"]
+    P17["PARAM: {string} query - Search query string"]
+    P18["PARAM: {Object} options - Search configuration options"]
+    P19["PARAM: {number} [options.threshold] - Fuse.js search threshold"]
+    P20["PARAM: {number} [options.maxResults] - Maximum number of results"]
+end
+
+subgraph fuzzyTaskSearch-Constants["fuzzyTaskSearch-Constants"]
+    C18["CONST: defaultOptions, VALUE: Fuse.js configuration object"]
+    C19["CONST: taskKeys, VALUE: ['title', 'description', 'tags']"]
+    C20["CONST: subtaskKeys, VALUE: ['title', 'description', 'notes']"]
+    C21["CONST: fuseInstance, VALUE: new Fuse(tasks, options)"]
+end
+
+subgraph fuzzyTaskSearch-ExecutionFlow["fuzzyTaskSearch-Execution Flow"]
+    FL20["Initialize Fuse.js instance with task data and search options"]
+    FL21["Configure search keys and weights for different fields"]
+    FL22["Execute fuzzy search against task titles and descriptions"]
+    FL23["Execute fuzzy search against subtask content"]
+    FL24["Rank and score search results by relevance"]
+    FL25["Filter results by threshold and maximum count"]
+    FL26["Return formatted search results with scores"]
+end
+
+subgraph fuzzyTaskSearch["fuzzyTaskSearch.js"]
+    fuzzyTaskSearch-FunctionsDefined
+    fuzzyTaskSearch-Exports
+    fuzzyTaskSearch-Parameters
+    fuzzyTaskSearch-Constants
+    fuzzyTaskSearch-ExecutionFlow
+end
+
+%% GIT UTILS
+subgraph gitUtils-FunctionsDefined["gitUtils-Functions Defined"]
+    FU29["FUNCTION: getGitStatus"]
+    FU30["FUNCTION: getGitBranch"]
+    FU31["FUNCTION: getGitCommitHash"]
+    FU32["FUNCTION: isGitRepo"]
+    FU33["FUNCTION: getGitRemotes"]
+end
+
+subgraph gitUtils-Exports["gitUtils-Exports"]
+    E6["EXP: getGitStatus"]
+    E7["EXP: getGitBranch"]
+    E8["EXP: getGitCommitHash"]
+    E9["EXP: isGitRepo"]
+    E10["EXP: getGitRemotes"]
+end
+
+subgraph gitUtils-Parameters["gitUtils-Parameters"]
+    P21["PARAM: {string} repoPath - Path to git repository"]
+    P22["PARAM: {Object} options - Git operation options"]
+end
+
+subgraph gitUtils-Constants["gitUtils-Constants"]
+    C22["CONST: gitCommand, VALUE: 'git' executable path"]
+    C23["CONST: gitArgs, VALUE: array of git command arguments"]
+    C24["CONST: execOptions, VALUE: child_process execution options"]
+end
+
+subgraph gitUtils-ExecutionFlow["gitUtils-Execution Flow"]
+    FL27["Check if directory is a valid git repository"]
+    FL28["Execute git status command and parse output"]
+    FL29["Get current branch name from git"]
+    FL30["Get latest commit hash from git log"]
+    FL31["List configured remote repositories"]
+    FL32["Parse git command output and format results"]
+    FL33["Handle git command errors gracefully"]
+end
+
+subgraph gitUtils["git-utils.js"]
+    gitUtils-FunctionsDefined
+    gitUtils-Exports
+    gitUtils-Parameters
+    gitUtils-Constants
+    gitUtils-ExecutionFlow
+end
+
+%% UTILS CORE
+subgraph utilsCore-FunctionsDefined["utilsCore-Functions Defined"]
+    FU34["FUNCTION: readJSON"]
+    FU35["FUNCTION: writeJSON"]
+    FU36["FUNCTION: findTaskById"]
+    FU37["FUNCTION: flattenTasksWithSubtasks"]
+    FU38["FUNCTION: log"]
+    FU39["FUNCTION: truncate"]
+    FU40["FUNCTION: resolveTag"]
+    FU41["FUNCTION: enableSilentMode"]
+    FU42["FUNCTION: disableSilentMode"]
+end
+
+subgraph utilsCore-Exports["utilsCore-Exports"]
+    E11["EXP: readJSON"]
+    E12["EXP: writeJSON"]
+    E13["EXP: findTaskById"]
+    E14["EXP: flattenTasksWithSubtasks"]
+    E15["EXP: log"]
+    E16["EXP: truncate"]
+    E17["EXP: resolveTag"]
+    E18["EXP: enableSilentMode"]
+    E19["EXP: disableSilentMode"]
+end
+
+subgraph utilsCore-Parameters["utilsCore-Parameters"]
+    P23["PARAM: {string} filePath - Path to JSON file"]
+    P24["PARAM: {Object} data - Data to write to JSON file"]
+    P25["PARAM: {string} taskId - Task ID to find"]
+    P26["PARAM: {Array} tasks - Array of tasks to search"]
+    P27["PARAM: {string} text - Text to truncate"]
+    P28["PARAM: {number} maxLength - Maximum length for truncation"]
+end
+
+subgraph utilsCore-ExecutionFlow["utilsCore-Execution Flow"]
+    FL34["Read and parse JSON files with error handling"]
+    FL35["Write JSON data with proper formatting and validation"]
+    FL36["Search for tasks by ID across nested structures"]
+    FL37["Flatten task hierarchies for easier processing"]
+    FL38["Provide consistent logging interface across modules"]
+    FL39["Truncate text content to specified lengths"]
+    FL40["Resolve tag contexts and configurations"]
+    FL41["Manage silent mode for suppressing output"]
+end
+
+subgraph utilsCore["utils.js"]
+    utilsCore-FunctionsDefined
+    utilsCore-Exports
+    utilsCore-Parameters
+    utilsCore-ExecutionFlow
+end
+
+%% RELATIONSHIP ARROWS - ProjectOverlord to individual files
+I1 & I2 & I3 & I4 --> contextGatherer-Imports & fuzzyTaskSearch-Imports & gitUtils-Imports & utilsCore-Imports
+I5 & I6 & I7 --> contextGatherer-Imports & fuzzyTaskSearch-Imports
+D1 & D2 & D3 & D4 & D5 & D6 & D7 & D8 --> contextGatherer-Dependencies & fuzzyTaskSearch-Dependencies & gitUtils-Dependencies & utilsCore-Dependencies
+P1 & P2 & P3 & P4 --> contextGatherer-Parameters & fuzzyTaskSearch-Parameters & gitUtils-Parameters & utilsCore-Parameters
+C1 & C2 & C3 & C4 --> contextGatherer-Constants & fuzzyTaskSearch-Constants & gitUtils-Constants & utilsCore-Constants
+
+%% EXECUTION FLOW CONNECTIONS - contextGatherer
+FL1 --> FL2
+FL2 --> FL3
+FL3 --> FL4
+FL4 --> FL5
+FL5 --> FL6
+FL6 --> FL7
+FL7 --> FL8
+FL8 --> FL9
+FL9 --> FL10
+FL10 --> FL11
+FL11 --> FL12
+FL12 --> FL13
+FL13 --> FL14
+FL14 --> FL15
+FL15 --> FL16
+FL16 --> FL17
+FL17 --> FL18
+FL18 --> FL19
+
+%% EXECUTION FLOW CONNECTIONS - fuzzyTaskSearch
+FL20 --> FL21
+FL21 --> FL22
+FL22 --> FL23
+FL23 --> FL24
+FL24 --> FL25
+FL25 --> FL26
+
+%% EXECUTION FLOW CONNECTIONS - gitUtils
+FL27 --> FL28
+FL28 --> FL29
+FL29 --> FL30
+FL30 --> FL31
+FL31 --> FL32
+FL32 --> FL33
+
+%% EXECUTION FLOW CONNECTIONS - utilsCore
+FL34 --> FL35
+FL35 --> FL36
+FL36 --> FL37
+FL37 --> FL38
+FL38 --> FL39
+FL39 --> FL40
+FL40 --> FL41

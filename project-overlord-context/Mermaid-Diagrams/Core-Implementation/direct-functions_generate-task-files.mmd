@@ -1,0 +1,70 @@
+flowchart TB
+    subgraph generateTaskFilesImports["direct-functions_generate-task-files-Imports"]
+        I1["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph generateTaskFilesDependencies["direct-functions_generate-task-files-Dependencies"]
+        D1["DEP: File system"]
+    end
+    
+    subgraph generateTaskFilesFunctionsDefined["direct-functions_generate-task-files-Functions Defined"]
+        FU1["FUNCTION: generateTaskFilesDirect"]
+    end
+    
+    subgraph generateTaskFilesExports["direct-functions_generate-task-files-Exports"]
+        E1["EXP: generateTaskFilesDirect"]
+    end
+    
+    subgraph generateTaskFilesParameters["direct-functions_generate-task-files-Parameters"]
+        P1["PARAM: {Object} args - Command arguments containing tasksJsonPath and outputDir"]
+        P2["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file"]
+        P3["PARAM: {string} args.outputDir - Path to the output directory"]
+        P4["PARAM: {string} args.projectRoot - Project root path for MCP/env fallback"]
+        P5["PARAM: {string} args.tag - Tag for the task"]
+        P6["PARAM: {Object} log - Logger object"]
+    end
+    
+    subgraph generateTaskFilesConstants["direct-functions_generate-task-files-Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: resolvedOutputDir, VALUE: outputDir"]
+        C3["CONST: errorMessage, VALUE: validation error text"]
+    end
+    
+    subgraph generateTaskFilesExecutionFlow["direct-functions_generate-task-files-Execution Flow"]
+        FL1["Destructure function arguments from args parameter"]
+        FL2["Log generation start with provided arguments"]
+        FL3["Validate required tasksJsonPath parameter is provided"]
+        FL4["Validate required outputDir parameter is provided"]
+        FL5["Set resolved paths using provided arguments"]
+        FL6["Log task file generation operation details"]
+        FL7["Enable silent mode to prevent stdout interference"]
+        FL8["Call core generateTaskFiles with paths and context options"]
+        FL9["Disable silent mode to restore normal logging"]
+        FL10["Return success response with generation details"]
+        FL11["Handle generation errors and restore logging state"]
+        FL12["Handle outer try-catch errors and ensure logging restoration"]
+    end
+    
+    subgraph generateTaskFiles["direct-functions_generate-task-files.js"]
+        generateTaskFilesImports
+        generateTaskFilesDependencies
+        generateTaskFilesFunctionsDefined
+        generateTaskFilesExports
+        generateTaskFilesParameters
+        generateTaskFilesConstants
+        generateTaskFilesExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

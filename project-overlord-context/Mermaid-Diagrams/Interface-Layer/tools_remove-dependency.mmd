@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph tools_remove-dependency-Imports["tools_remove-dependency-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: removeDependencyDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_remove-dependency-Dependencies["tools_remove-dependency-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_remove-dependency-FunctionsDefined["tools_remove-dependency-Functions Defined"]
+        FU1["FUNCTION: registerRemoveDependencyTool"]
+    end
+    subgraph tools_remove-dependency-Exports["tools_remove-dependency-Exports"]
+        E1["EXP: registerRemoveDependencyTool"]
+    end
+    subgraph tools_remove-dependency-Parameters["tools_remove-dependency-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_remove-dependency-Constants["tools_remove-dependency-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: result, VALUE: await removeDependencyDirect"]
+    end
+    subgraph tools_remove-dependency-ExecutionFlow["tools_remove-dependency-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with dependency removal options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Log dependency removal request"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Call removeDependencyDirect with parameters"]
+        FL7["Log success or failure of dependency removal"]
+        FL8["Return handled API result for removal operation"]
+    end
+    subgraph tools_remove-dependency["remove-dependency.js"]
+        tools_remove-dependency-Imports
+        tools_remove-dependency-Dependencies
+        tools_remove-dependency-FunctionsDefined
+        tools_remove-dependency-Exports
+        tools_remove-dependency-Parameters
+        tools_remove-dependency-Constants
+        tools_remove-dependency-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

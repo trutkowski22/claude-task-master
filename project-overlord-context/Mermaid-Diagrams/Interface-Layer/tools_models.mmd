@@ -1,0 +1,45 @@
+flowchart TB
+    subgraph tools_models-Imports["tools_models-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: modelsDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    end
+    subgraph tools_models-Dependencies["tools_models-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: AI model providers"]
+        D3["DEP: Configuration management"]
+    end
+    subgraph tools_models-FunctionsDefined["tools_models-Functions Defined"]
+        FU1["FUNCTION: registerModelsTool"]
+    end
+    subgraph tools_models-Exports["tools_models-Exports"]
+        E1["EXP: registerModelsTool"]
+    end
+    subgraph tools_models-Parameters["tools_models-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_models-Constants["tools_models-Constants"]
+        C1["CONST: result, VALUE: await modelsDirect"]
+    end
+    subgraph tools_models-ExecutionFlow["tools_models-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with AI model configuration options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Call modelsDirect with arguments and session"]
+        FL5["Return handled API result for model management operation"]
+    end
+    subgraph tools_models["models.js"]
+        tools_models-Imports
+        tools_models-Dependencies
+        tools_models-FunctionsDefined
+        tools_models-Exports
+        tools_models-Parameters
+        tools_models-Constants
+        tools_models-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5

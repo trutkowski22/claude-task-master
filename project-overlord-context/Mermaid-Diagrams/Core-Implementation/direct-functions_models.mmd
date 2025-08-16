@@ -1,0 +1,83 @@
+flowchart TB
+    subgraph modelsImports["direct-functions_models-Imports"]
+        I1["IMPORT: getModelConfiguration, FROM: /claude-task-master/scripts/modules/task-manager/models.js"]
+        I2["IMPORT: getAvailableModelsList, FROM: /claude-task-master/scripts/modules/task-manager/models.js"]
+        I3["IMPORT: setModel, FROM: /claude-task-master/scripts/modules/task-manager/models.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I7["IMPORT: CUSTOM_PROVIDERS_ARRAY, FROM: /claude-task-master/src/constants/providers.js"]
+    end
+    
+    subgraph modelsDependencies["direct-functions_models-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: AI provider systems"]
+    end
+    
+    subgraph modelsFunctionsDefined["direct-functions_models-Functions Defined"]
+        FU1["FUNCTION: getProviderHint"]
+        FU2["FUNCTION: handleModelSetting"]
+        FU3["FUNCTION: modelsDirect"]
+    end
+    
+    subgraph modelsExports["direct-functions_models-Exports"]
+        E1["EXP: modelsDirect"]
+    end
+    
+    subgraph modelsParameters["direct-functions_models-Parameters"]
+        P1["PARAM: {Object} args - Arguments containing provider flags"]
+        P2["PARAM: {Object} args - Arguments containing role-specific model IDs"]
+        P3["PARAM: {Object} context - Context object with session, mcpLog, projectRoot"]
+        P4["PARAM: {Object} args - Arguments passed by the MCP tool"]
+        P5["PARAM: {Object} log - MCP logger"]
+        P6["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph modelsConstants["direct-functions_models-Const Declarations"]
+        C1["CONST: MODEL_ROLES, VALUE: array with main, research, fallback"]
+        C2["CONST: session, VALUE: extracted from context"]
+        C3["CONST: projectRoot, VALUE: extracted from args"]
+        C4["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C5["CONST: customProviderFlags, VALUE: filtered active provider flags"]
+        C6["CONST: roleKey, VALUE: constructed role setting key"]
+        C7["CONST: providerHint, VALUE: getProviderHint result"]
+        C8["CONST: modelContext, VALUE: object with session, mcpLog, projectRoot"]
+        C9["CONST: modelSetResult, VALUE: handleModelSetting execution result"]
+    end
+    
+    subgraph modelsExecutionFlow["direct-functions_models-Execution Flow"]
+        FL1["Extract session and projectRoot from context and args"]
+        FL2["Create MCP logger wrapper for consistent logging interface"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Validate only one custom provider flag is active"]
+        FL5["Return error if multiple provider flags detected"]
+        FL6["Enable silent mode to suppress console output"]
+        FL7["Check if listAvailableModels flag is set and return models list"]
+        FL8["Handle model setting for any specified role using unified function"]
+        FL9["Return model setting result if a model was configured"]
+        FL10["Default to getting current model configuration"]
+        FL11["Always disable silent mode in finally block"]
+        FL12["Handle errors with detailed error response formatting"]
+    end
+    
+    subgraph models["direct-functions_models.js"]
+        modelsImports
+        modelsDependencies
+        modelsFunctionsDefined
+        modelsExports
+        modelsParameters
+        modelsConstants
+        modelsExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

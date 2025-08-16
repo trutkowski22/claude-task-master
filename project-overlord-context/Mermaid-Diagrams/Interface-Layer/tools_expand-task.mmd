@@ -1,0 +1,56 @@
+flowchart TB
+    subgraph tools_expand-task-Imports["tools_expand-task-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: expandTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I8["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_expand-task-Dependencies["tools_expand-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_expand-task-FunctionsDefined["tools_expand-task-Functions Defined"]
+        FU1["FUNCTION: registerExpandTaskTool"]
+    end
+    subgraph tools_expand-task-Exports["tools_expand-task-Exports"]
+        E1["EXP: registerExpandTaskTool"]
+    end
+    subgraph tools_expand-task-Parameters["tools_expand-task-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_expand-task-Constants["tools_expand-task-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: complexityReportPath, VALUE: findComplexityReportPath result"]
+        C4["CONST: result, VALUE: await expandTaskDirect"]
+    end
+    subgraph tools_expand-task-ExecutionFlow["tools_expand-task-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with task expansion options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Find complexity report path for analysis"]
+        FL7["Call expandTaskDirect with all parameters including session"]
+        FL8["Return handled API result for expansion success or failure"]
+    end
+    subgraph tools_expand-task["expand-task.js"]
+        tools_expand-task-Imports
+        tools_expand-task-Dependencies
+        tools_expand-task-FunctionsDefined
+        tools_expand-task-Exports
+        tools_expand-task-Parameters
+        tools_expand-task-Constants
+        tools_expand-task-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

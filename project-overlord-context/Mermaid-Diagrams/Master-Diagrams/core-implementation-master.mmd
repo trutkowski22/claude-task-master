@@ -1,0 +1,316 @@
+flowchart TB
+
+%% =================================================================================
+%% CORE IMPLEMENTATION LAYER - MASTER DIAGRAM
+%% All direct function implementations from the Core-Implementation layer
+%% =================================================================================
+
+%% PROJECT OVERLORD IMPORTS - Shared across Core Implementation files
+subgraph ProjectOverlordImports["project-overlord-imports"]
+    I1["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I2["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I3["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I4["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I5["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I6["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I7["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I8["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I9["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+end
+
+%% PROJECT OVERLORD DEPENDENCIES - Common across Core Implementation
+subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
+    D1["DEP: FastMCP"]
+    D2["DEP: File system"]
+    D3["DEP: Path resolution utilities"]
+end
+
+%% PROJECT OVERLORD PARAMETERS - Common parameter patterns
+subgraph ProjectOverlordParams["project-overlord-params"]
+    P1["PARAM: {Object} args - Function arguments"]
+    P2["PARAM: {string} args.projectRoot - Project root path"]
+    P3["PARAM: {string} args.tag - Tag for the task"]
+    P4["PARAM: {Object} log - Logger object from FastMCP"]
+    P5["PARAM: {Object} context - Context object containing session"]
+end
+
+%% PROJECT OVERLORD CONSTANTS - Shared constant patterns
+subgraph ProjectOverlordConstants["project-overlord-constants"]
+    C1["CONST: session, VALUE: extracted from context"]
+    C2["CONST: mcpLog, VALUE: createLogWrapper result"]
+    C3["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+    C4["CONST: tasksData, VALUE: readJSON result"]
+    C5["CONST: complexityReport, VALUE: readComplexityReport result"]
+end
+
+%% EXPAND ALL TASKS
+subgraph expandAllTasks-Imports["expandAllTasks-Imports"]
+    I10["IMPORT: expandAllTasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+end
+
+subgraph expandAllTasks-FunctionsDefined["expandAllTasks-Functions Defined"]
+    FU1["FUNCTION: expandAllTasksDirect"]
+end
+
+subgraph expandAllTasks-Exports["expandAllTasks-Exports"]
+    E1["EXP: expandAllTasksDirect"]
+end
+
+subgraph expandAllTasks-Parameters["expandAllTasks-Parameters"]
+    P6["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+    P7["PARAM: {number|string} args.num - Number of subtasks to generate"]
+    P8["PARAM: {boolean} args.research - Enable research-backed subtask generation"]
+end
+
+subgraph expandAllTasks-Constants["expandAllTasks-Constants"]
+    C6["CONST: numSubtasks, VALUE: parsed integer from num parameter"]
+    C7["CONST: useResearch, VALUE: boolean conversion of research parameter"]
+    C8["CONST: result, VALUE: expandAllTasks execution result"]
+end
+
+subgraph expandAllTasks-ExecutionFlow["expandAllTasks-Execution Flow"]
+    FL1["Extract session from context and destructure function arguments"]
+    FL2["Create MCP logger wrapper for consistent logging interface"]
+    FL3["Validate required tasksJsonPath parameter is provided"]
+    FL4["Enable silent mode to suppress console output during core function execution"]
+    FL5["Parse and convert parameters to correct data types"]
+    FL6["Call core expandAllTasks with parsed parameters and context"]
+    FL7["Process successful result and format response with telemetry data"]
+    FL8["Handle any errors during execution and format error response"]
+    FL9["Always disable silent mode in finally block to restore normal output"]
+end
+
+subgraph expandAllTasks["direct-functions_expand-all-tasks.js"]
+    expandAllTasks-Imports
+    expandAllTasks-FunctionsDefined
+    expandAllTasks-Exports
+    expandAllTasks-Parameters
+    expandAllTasks-Constants
+    expandAllTasks-ExecutionFlow
+end
+
+%% EXPAND TASK
+subgraph expandTask-Imports["expandTask-Imports"]
+    I11["IMPORT: expandTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+end
+
+subgraph expandTask-FunctionsDefined["expandTask-Functions Defined"]
+    FU2["FUNCTION: expandTaskDirect"]
+end
+
+subgraph expandTask-Exports["expandTask-Exports"]
+    E2["EXP: expandTaskDirect"]
+end
+
+subgraph expandTask-Parameters["expandTask-Parameters"]
+    P9["PARAM: {string} args.id - Task ID to expand"]
+    P10["PARAM: {number|string} args.num - Number of subtasks to generate"]
+    P11["PARAM: {boolean} args.research - Enable research-backed subtask generation"]
+end
+
+subgraph expandTask-Constants["expandTask-Constants"]
+    C9["CONST: id, VALUE: extracted from args"]
+    C10["CONST: numSubtasks, VALUE: parsed integer from num parameter"]
+    C11["CONST: useResearch, VALUE: boolean conversion of research parameter"]
+end
+
+subgraph expandTask-ExecutionFlow["expandTask-Execution Flow"]
+    FL10["Extract session from context and destructure function arguments"]
+    FL11["Create MCP logger wrapper for consistent logging interface"]
+    FL12["Validate required task ID and parameters are provided"]
+    FL13["Enable silent mode to suppress console output during core function execution"]
+    FL14["Parse and convert parameters to correct data types"]
+    FL15["Call core expandTask with parsed parameters and context"]
+    FL16["Process successful result and format response with telemetry data"]
+    FL17["Handle any errors during execution and format error response"]
+    FL18["Always disable silent mode in finally block to restore normal output"]
+end
+
+subgraph expandTask["direct-functions_expand-task.js"]
+    expandTask-Imports
+    expandTask-FunctionsDefined
+    expandTask-Exports
+    expandTask-Parameters
+    expandTask-Constants
+    expandTask-ExecutionFlow
+end
+
+%% SHOW TASK
+subgraph showTask-FunctionsDefined["showTask-Functions Defined"]
+    FU3["FUNCTION: showTaskDirect"]
+end
+
+subgraph showTask-Exports["showTask-Exports"]
+    E3["EXP: showTaskDirect"]
+end
+
+subgraph showTask-Parameters["showTask-Parameters"]
+    P12["PARAM: {string} args.id - Task ID to show"]
+    P13["PARAM: {string} args.file - Optional path to the tasks file"]
+    P14["PARAM: {string} args.reportPath - Explicit path to the complexity report file"]
+    P15["PARAM: {string} args.status - Optional status to filter subtasks by"]
+end
+
+subgraph showTask-Constants["showTask-Constants"]
+    C12["CONST: taskIds, VALUE: comma-separated ID split and trimmed"]
+    C13["CONST: task, VALUE: findTaskById result for single task"]
+    C14["CONST: foundTasks, VALUE: array for multiple tasks results"]
+    C15["CONST: notFoundIds, VALUE: array for not found task IDs"]
+end
+
+subgraph showTask-ExecutionFlow["showTask-Execution Flow"]
+    FL19["Destructure function arguments and log operation details"]
+    FL20["Resolve tasks file path using findTasksPath utility"]
+    FL21["Read tasks data from resolved JSON file path"]
+    FL22["Validate tasks data structure contains tasks array"]
+    FL23["Read complexity report from provided report path"]
+    FL24["Parse comma-separated task IDs and filter empty values"]
+    FL25["Validate at least one valid task ID was provided"]
+    FL26["Handle single task ID case with findTaskById"]
+    FL27["Handle multiple task IDs case with forEach loop"]
+    FL28["Return appropriate result based on single or multiple tasks"]
+    FL29["Handle errors with proper error codes and messages"]
+end
+
+subgraph showTask["direct-functions_show-task.js"]
+    showTask-FunctionsDefined
+    showTask-Exports
+    showTask-Parameters
+    showTask-Constants
+    showTask-ExecutionFlow
+end
+
+%% UPDATE SUBTASK BY ID
+subgraph updateSubtaskById-Imports["updateSubtaskById-Imports"]
+    I12["IMPORT: updateSubtaskById, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+end
+
+subgraph updateSubtaskById-FunctionsDefined["updateSubtaskById-Functions Defined"]
+    FU4["FUNCTION: updateSubtaskByIdDirect"]
+end
+
+subgraph updateSubtaskById-Exports["updateSubtaskById-Exports"]
+    E4["EXP: updateSubtaskByIdDirect"]
+end
+
+subgraph updateSubtaskById-Parameters["updateSubtaskById-Parameters"]
+    P16["PARAM: {string} args.subtaskId - Subtask ID to update"]
+    P17["PARAM: {Object} args.updates - Update object with new values"]
+    P18["PARAM: {boolean} args.research - Enable research for update"]
+end
+
+subgraph updateSubtaskById-Constants["updateSubtaskById-Constants"]
+    C16["CONST: subtaskId, VALUE: extracted from args"]
+    C17["CONST: updates, VALUE: extracted from args"]
+    C18["CONST: useResearch, VALUE: boolean conversion of research parameter"]
+end
+
+subgraph updateSubtaskById-ExecutionFlow["updateSubtaskById-Execution Flow"]
+    FL30["Extract session from context and destructure function arguments"]
+    FL31["Create MCP logger wrapper for consistent logging interface"]
+    FL32["Validate required subtask ID and updates are provided"]
+    FL33["Enable silent mode to suppress console output during core function execution"]
+    FL34["Parse and convert parameters to correct data types"]
+    FL35["Call core updateSubtaskById with parsed parameters and context"]
+    FL36["Process successful result and format response with telemetry data"]
+    FL37["Handle any errors during execution and format error response"]
+    FL38["Always disable silent mode in finally block to restore normal output"]
+end
+
+subgraph updateSubtaskById["direct-functions_update-subtask-by-id.js"]
+    updateSubtaskById-Imports
+    updateSubtaskById-FunctionsDefined
+    updateSubtaskById-Exports
+    updateSubtaskById-Parameters
+    updateSubtaskById-Constants
+    updateSubtaskById-ExecutionFlow
+end
+
+%% PATH UTILS
+subgraph pathUtils-FunctionsDefined["pathUtils-Functions Defined"]
+    FU5["FUNCTION: findTasksPath"]
+    FU6["FUNCTION: findComplexityReportPath"]
+    FU7["FUNCTION: findProjectRoot"]
+end
+
+subgraph pathUtils-Exports["pathUtils-Exports"]
+    E5["EXP: findTasksPath"]
+    E6["EXP: findComplexityReportPath"]
+    E7["EXP: findProjectRoot"]
+end
+
+subgraph pathUtils-Parameters["pathUtils-Parameters"]
+    P19["PARAM: {string} projectRoot - Project root directory"]
+    P20["PARAM: {string} tag - Tag for the task"]
+end
+
+subgraph pathUtils-ExecutionFlow["pathUtils-Execution Flow"]
+    FL39["Resolve project root directory from given path"]
+    FL40["Construct tasks.json file path using project structure"]
+    FL41["Construct complexity report file path using project structure"]
+    FL42["Validate file paths exist and are accessible"]
+    FL43["Return resolved absolute file paths"]
+end
+
+subgraph pathUtils["direct-functions_path-utils.js"]
+    pathUtils-FunctionsDefined
+    pathUtils-Exports
+    pathUtils-Parameters
+    pathUtils-ExecutionFlow
+end
+
+%% RELATIONSHIP ARROWS - ProjectOverlord to individual files
+I1 & I2 & I3 --> expandAllTasks-Imports & expandTask-Imports
+I4 & I5 --> expandAllTasks-Imports & expandTask-Imports & showTask-Imports & updateSubtaskById-Imports
+I6 & I7 & I8 & I9 --> showTask-Imports & updateSubtaskById-Imports
+D1 & D2 & D3 --> expandAllTasks-Dependencies & expandTask-Dependencies & showTask-Dependencies & updateSubtaskById-Dependencies
+P1 & P2 & P3 & P4 & P5 --> expandAllTasks-Parameters & expandTask-Parameters & showTask-Parameters & updateSubtaskById-Parameters & pathUtils-Parameters
+C1 & C2 & C3 & C4 & C5 --> expandAllTasks-Constants & expandTask-Constants & showTask-Constants & updateSubtaskById-Constants
+
+%% EXECUTION FLOW CONNECTIONS - expandAllTasks
+FL1 --> FL2
+FL2 --> FL3
+FL3 --> FL4
+FL4 --> FL5
+FL5 --> FL6
+FL6 --> FL7
+FL7 --> FL8
+FL8 --> FL9
+
+%% EXECUTION FLOW CONNECTIONS - expandTask
+FL10 --> FL11
+FL11 --> FL12
+FL12 --> FL13
+FL13 --> FL14
+FL14 --> FL15
+FL15 --> FL16
+FL16 --> FL17
+FL17 --> FL18
+
+%% EXECUTION FLOW CONNECTIONS - showTask
+FL19 --> FL20
+FL20 --> FL21
+FL21 --> FL22
+FL22 --> FL23
+FL23 --> FL24
+FL24 --> FL25
+FL25 --> FL26
+FL26 --> FL27
+FL27 --> FL28
+FL28 --> FL29
+
+%% EXECUTION FLOW CONNECTIONS - updateSubtaskById
+FL30 --> FL31
+FL31 --> FL32
+FL32 --> FL33
+FL33 --> FL34
+FL34 --> FL35
+FL35 --> FL36
+FL36 --> FL37
+FL37 --> FL38
+
+%% EXECUTION FLOW CONNECTIONS - pathUtils
+FL39 --> FL40
+FL40 --> FL41
+FL41 --> FL42
+FL42 --> FL43

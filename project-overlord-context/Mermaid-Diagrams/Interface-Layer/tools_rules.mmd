@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph tools_rules-Imports["tools_rules-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: rulesDirect, FROM: /claude-task-master/mcp-server/src/core/direct-functions/rules.js"]
+        I6["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+    end
+    subgraph tools_rules-Dependencies["tools_rules-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: Rule management system"]
+        D3["DEP: File system"]
+    end
+    subgraph tools_rules-FunctionsDefined["tools_rules-Functions Defined"]
+        FU1["FUNCTION: registerRulesTool"]
+    end
+    subgraph tools_rules-Exports["tools_rules-Exports"]
+        E1["EXP: registerRulesTool"]
+    end
+    subgraph tools_rules-Parameters["tools_rules-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_rules-Constants["tools_rules-Constants"]
+        C1["CONST: result, VALUE: await rulesDirect"]
+    end
+    subgraph tools_rules-ExecutionFlow["tools_rules-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with rule profile management options"]
+        FL3["Log action execution with profiles and project root"]
+        FL4["Call rulesDirect with arguments and session"]
+        FL5["Return handled API result for rule management operation"]
+    end
+    subgraph tools_rules["rules.js"]
+        tools_rules-Imports
+        tools_rules-Dependencies
+        tools_rules-FunctionsDefined
+        tools_rules-Exports
+        tools_rules-Parameters
+        tools_rules-Constants
+        tools_rules-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5

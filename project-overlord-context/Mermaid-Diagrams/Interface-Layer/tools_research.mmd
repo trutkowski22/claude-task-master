@@ -1,0 +1,50 @@
+flowchart TB
+    subgraph tools_research-Imports["tools_research-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: researchDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_research-Dependencies["tools_research-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: AI research capabilities"]
+        D3["DEP: File system"]
+        D4["DEP: Project context analysis"]
+    end
+    subgraph tools_research-FunctionsDefined["tools_research-Functions Defined"]
+        FU1["FUNCTION: registerResearchTool"]
+    end
+    subgraph tools_research-Exports["tools_research-Exports"]
+        E1["EXP: registerResearchTool"]
+    end
+    subgraph tools_research-Parameters["tools_research-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_research-Constants["tools_research-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: result, VALUE: await researchDirect"]
+    end
+    subgraph tools_research-ExecutionFlow["tools_research-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with research options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Log research query start with truncated query"]
+        FL5["Call researchDirect with comprehensive parameters and session"]
+        FL6["Return handled API result for research operation"]
+    end
+    subgraph tools_research["research.js"]
+        tools_research-Imports
+        tools_research-Dependencies
+        tools_research-FunctionsDefined
+        tools_research-Exports
+        tools_research-Parameters
+        tools_research-Constants
+        tools_research-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

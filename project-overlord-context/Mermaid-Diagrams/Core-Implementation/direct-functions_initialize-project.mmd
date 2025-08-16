@@ -1,0 +1,79 @@
+flowchart TB
+    subgraph initializeProjectImports["direct-functions_initialize-project-Imports"]
+        I1["IMPORT: initializeProject, FROM: /claude-task-master/scripts/init.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: os, FROM: os"]
+        I5["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+        I6["IMPORT: convertAllRulesToProfileRules, FROM: /claude-task-master/src/utils/rule-transformer.js"]
+    end
+    
+    subgraph initializeProjectDependencies["direct-functions_initialize-project-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Node.js os module"]
+        D3["DEP: Process control"]
+    end
+    
+    subgraph initializeProjectFunctionsDefined["direct-functions_initialize-project-Functions Defined"]
+        FU1["FUNCTION: initializeProjectDirect"]
+    end
+    
+    subgraph initializeProjectExports["direct-functions_initialize-project-Exports"]
+        E1["EXP: initializeProjectDirect"]
+    end
+    
+    subgraph initializeProjectParameters["direct-functions_initialize-project-Parameters"]
+        P1["PARAM: {object} args - Arguments containing initialization options"]
+        P2["PARAM: {object} log - The FastMCP logger instance"]
+        P3["PARAM: {object} context - The context object, must contain session"]
+    end
+    
+    subgraph initializeProjectConstants["direct-functions_initialize-project-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: homeDir, VALUE: os.homedir result"]
+        C3["CONST: targetDirectory, VALUE: args.projectRoot"]
+        C4["CONST: originalCwd, VALUE: process.cwd result"]
+        C5["CONST: options, VALUE: constructed initialization options"]
+        C6["CONST: result, VALUE: initializeProject execution result"]
+    end
+    
+    subgraph initializeProjectExecutionFlow["direct-functions_initialize-project-Execution Flow"]
+        FL1["Extract session from context and get home directory"]
+        FL2["Log received arguments for debugging"]
+        FL3["Determine target directory from args.projectRoot"]
+        FL4["Validate target directory with basic sanity checks"]
+        FL5["Log validated target directory for initialization"]
+        FL6["Store original CWD and change to target directory"]
+        FL7["Enable silent mode to suppress console output"]
+        FL8["Construct initialization options from provided arguments"]
+        FL9["Handle rules configuration with MCP-specific defaults"]
+        FL10["Call core initializeProject with constructed options"]
+        FL11["Format successful result with next steps guidance"]
+        FL12["Handle initialization errors and format error response"]
+        FL13["Always restore original CWD and disable silent mode"]
+        FL14["Return final success or error result"]
+    end
+    
+    subgraph initializeProject["direct-functions_initialize-project.js"]
+        initializeProjectImports
+        initializeProjectDependencies
+        initializeProjectFunctionsDefined
+        initializeProjectExports
+        initializeProjectParameters
+        initializeProjectConstants
+        initializeProjectExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

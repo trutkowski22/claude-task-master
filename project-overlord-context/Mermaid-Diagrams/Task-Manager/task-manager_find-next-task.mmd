@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph findNextTask-Imports["findNextTask-Imports"]
+        I1["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I2["IMPORT: addComplexityToTask, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph findNextTask-FunctionsDefined["findNextTask-Functions Defined"]
+        FU1["FUNCTION: findNextTask"]
+        FU2["FUNCTION: toFullSubId"]
+    end
+    subgraph findNextTask-Exports["findNextTask-Exports"]
+        E1["EXP: findNextTask"]
+    end
+    subgraph findNextTask-Parameters["findNextTask-Parameters"]
+        P1["PARAM: {Object[]} tasks - full array of top-level tasks, each may contain .subtasks[]"]
+        P2["PARAM: {Object} complexityReport - Optional complexity report object"]
+    end
+    subgraph findNextTask-Constants["findNextTask-Const Declarations"]
+        C1["CONST: priorityValues, VALUE: { high: 3, medium: 2, low: 1 }"]
+        C2["CONST: completedIds, VALUE: new Set()"]
+        C3["CONST: candidateSubtasks, VALUE: []"]
+        C4["CONST: eligibleTasks, VALUE: filtered tasks array"]
+        C5["CONST: nextTask, VALUE: sorted task selection result"]
+    end
+    subgraph findNextTask-ExecutionFlow["findNextTask-Execution Flow"]
+        FL1["Define priority values and helper function toFullSubId"]
+        FL2["Build set of completed task and subtask IDs"]
+        FL3["Search for eligible subtasks from in-progress parent tasks"]
+        FL4["Filter subtasks by pending/in-progress status and satisfied dependencies"]
+        FL5["Sort candidate subtasks by priority, dependency count, and ID"]
+        FL6["Return first subtask if any candidates exist"]
+        FL7["Fall back to top-level task search if no subtasks found"]
+        FL8["Filter top-level tasks by status and dependency satisfaction"]
+        FL9["Sort eligible tasks by priority, dependency count, and ID"]
+        FL10["Add complexity data to selected task if complexity report provided"]
+        FL11["Return next task or null if no eligible tasks found"]
+    end
+    subgraph findNextTask["find-next-task.js"]
+        findNextTask-Imports
+        findNextTask-FunctionsDefined
+        findNextTask-Exports
+        findNextTask-Parameters
+        findNextTask-Constants
+        findNextTask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

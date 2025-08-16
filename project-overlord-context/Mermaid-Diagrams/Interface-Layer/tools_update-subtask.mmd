@@ -1,0 +1,58 @@
+flowchart TB
+    subgraph tools_update-subtask-Imports["tools_update-subtask-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: updateSubtaskByIdDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_update-subtask-Dependencies["tools_update-subtask-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Perplexity AI"]
+    end
+    subgraph tools_update-subtask-FunctionsDefined["tools_update-subtask-Functions Defined"]
+        FU1["FUNCTION: registerUpdateSubtaskTool"]
+    end
+    subgraph tools_update-subtask-Exports["tools_update-subtask-Exports"]
+        E1["EXP: registerUpdateSubtaskTool"]
+    end
+    subgraph tools_update-subtask-Parameters["tools_update-subtask-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_update-subtask-Constants["tools_update-subtask-Constants"]
+        C1["CONST: toolName, VALUE: 'update_subtask'"]
+        C2["CONST: resolvedTag, VALUE: resolveTag result"]
+        C3["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C4["CONST: result, VALUE: await updateSubtaskByIdDirect"]
+    end
+    subgraph tools_update-subtask-ExecutionFlow["tools_update-subtask-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with subtask update options"]
+        FL3["Set tool name constant for error context"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Log subtask update request"]
+        FL6["Find and validate tasks.json file path"]
+        FL7["Call updateSubtaskByIdDirect with parameters and session"]
+        FL8["Log success or failure of subtask update"]
+        FL9["Return handled API result for update operation"]
+    end
+    subgraph tools_update-subtask["update-subtask.js"]
+        tools_update-subtask-Imports
+        tools_update-subtask-Dependencies
+        tools_update-subtask-FunctionsDefined
+        tools_update-subtask-Exports
+        tools_update-subtask-Parameters
+        tools_update-subtask-Constants
+        tools_update-subtask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

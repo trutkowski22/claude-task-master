@@ -1,0 +1,55 @@
+flowchart TB
+    subgraph responseLanguage-Imports["responseLanguage-Imports"]
+        I1["IMPORT: getConfig, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I2["IMPORT: isConfigFilePresent, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I3["IMPORT: writeConfig, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I4["IMPORT: findConfigPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I5["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph responseLanguage-FunctionsDefined["responseLanguage-Functions Defined"]
+        FU1["FUNCTION: setResponseLanguage"]
+    end
+    subgraph responseLanguage-Exports["responseLanguage-Exports"]
+        E1["EXP: setResponseLanguage"]
+    end
+    subgraph responseLanguage-Parameters["responseLanguage-Parameters"]
+        P1["PARAM: {string} lang - Language to set for responses"]
+        P2["PARAM: {Object} options - Additional options"]
+        P3["PARAM: {Object} options.mcpLog - MCP logger object"]
+        P4["PARAM: {string} options.projectRoot - Project root directory"]
+    end
+    subgraph responseLanguage-Constants["responseLanguage-Constants"]
+        C1["CONST: report, VALUE: logging function wrapper"]
+        C2["CONST: configPath, VALUE: findConfigPath result"]
+        C3["CONST: configExists, VALUE: isConfigFilePresent result"]
+        C4["CONST: currentConfig, VALUE: getConfig result"]
+        C5["CONST: writeResult, VALUE: writeConfig result"]
+        C6["CONST: successMessage, VALUE: success message string"]
+    end
+    subgraph responseLanguage-ExecutionFlow["responseLanguage-Execution Flow"]
+        FL1["Initialize logging and extract options"]
+        FL2["Find config file path using centralized method"]
+        FL3["Check if configuration file exists"]
+        FL4["Validate response language parameter format"]
+        FL5["Read current configuration from file"]
+        FL6["Update responseLanguage property in global config"]
+        FL7["Write updated configuration back to file"]
+        FL8["Return success result with confirmation message"]
+        FL9["Handle errors and return appropriate error responses"]
+    end
+    subgraph responseLanguage["response-language.js"]
+        responseLanguage-Imports
+        responseLanguage-FunctionsDefined
+        responseLanguage-Exports
+        responseLanguage-Parameters
+        responseLanguage-Constants
+        responseLanguage-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

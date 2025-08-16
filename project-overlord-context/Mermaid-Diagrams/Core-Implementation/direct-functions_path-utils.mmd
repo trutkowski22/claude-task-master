@@ -1,0 +1,92 @@
+flowchart TB
+    subgraph pathUtilsImports["direct-functions_path-utils-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: findTasksPath as coreFindTasksPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I3["IMPORT: findPRDPath as coreFindPrdPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I4["IMPORT: findComplexityReportPath as coreFindComplexityReportPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I5["IMPORT: findProjectRoot as coreFindProjectRoot, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I6["IMPORT: normalizeProjectRoot, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I7["IMPORT: PROJECT_MARKERS, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    
+    subgraph pathUtilsDependencies["direct-functions_path-utils-Dependencies"]
+        D1["DEP: Node.js path module"]
+        D2["DEP: Core path utilities"]
+        D3["DEP: File system"]
+    end
+    
+    subgraph pathUtilsFunctionsDefined["direct-functions_path-utils-Functions Defined"]
+        FU1["FUNCTION: findPrdPath"]
+        FU2["FUNCTION: resolveTasksPath"]
+        FU3["FUNCTION: resolvePrdPath"]
+        FU4["FUNCTION: resolveComplexityReportPath"]
+        FU5["FUNCTION: resolveProjectPath"]
+        FU6["FUNCTION: findProjectRoot"]
+        FU7["FUNCTION: findTasksPath"]
+        FU8["FUNCTION: findComplexityReportPath"]
+        FU9["FUNCTION: findPRDPath"]
+    end
+    
+    subgraph pathUtilsExports["direct-functions_path-utils-Exports"]
+        E1["EXP: findPrdPath"]
+        E2["EXP: resolveTasksPath"]
+        E3["EXP: resolvePrdPath"]
+        E4["EXP: resolveComplexityReportPath"]
+        E5["EXP: resolveProjectPath"]
+        E6["EXP: findProjectRoot"]
+        E7["EXP: findTasksPath"]
+        E8["EXP: findComplexityReportPath"]
+        E9["EXP: findPRDPath"]
+        E10["EXP: PROJECT_MARKERS"]
+        E11["EXP: lastFoundProjectRoot"]
+    end
+    
+    subgraph pathUtilsParameters["direct-functions_path-utils-Parameters"]
+        P1["PARAM: {string} explicitPath - Explicit path to file"]
+        P2["PARAM: {Object} args - Arguments object for context"]
+        P3["PARAM: {Object} log - Logger object to prevent console logging"]
+        P4["PARAM: {string} relativePath - Relative path to resolve"]
+        P5["PARAM: {string} startDir - Directory to start searching from"]
+    end
+    
+    subgraph pathUtilsConstants["direct-functions_path-utils-Const Declarations"]
+        C1["CONST: silentLogger, VALUE: object with no-op logging methods"]
+        C2["CONST: lastFoundProjectRoot, VALUE: null (cache for performance)"]
+        C3["CONST: explicitPath, VALUE: extracted from args"]
+        C4["CONST: rawProjectRoot, VALUE: extracted from args"]
+        C5["CONST: projectRoot, VALUE: normalized project root"]
+        C6["CONST: tag, VALUE: extracted from args"]
+    end
+    
+    subgraph pathUtilsExecutionFlow["direct-functions_path-utils-Execution Flow"]
+        FL1["Initialize silent logger for MCP context to prevent console output"]
+        FL2["Define cache variable for last found project root performance optimization"]
+        FL3["Implement path resolution functions that prioritize explicit paths"]
+        FL4["Handle absolute path detection and direct usage"]
+        FL5["Normalize project root to prevent double .taskmaster paths"]
+        FL6["Resolve relative paths against normalized project root"]
+        FL7["Delegate to core path utilities with proper context"]
+        FL8["Provide MCP-specific wrapper functions for primary usage"]
+        FL9["Export legacy aliases for backward compatibility"]
+        FL10["Re-export PROJECT_MARKERS constant for MCP tools"]
+    end
+    
+    subgraph pathUtils["direct-functions_path-utils.js"]
+        pathUtilsImports
+        pathUtilsDependencies
+        pathUtilsFunctionsDefined
+        pathUtilsExports
+        pathUtilsParameters
+        pathUtilsConstants
+        pathUtilsExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

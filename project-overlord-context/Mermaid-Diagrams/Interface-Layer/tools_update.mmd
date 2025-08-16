@@ -1,0 +1,66 @@
+flowchart TB
+    subgraph tools_update-Imports["tools_update-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: updateTasksDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_update-Dependencies["tools_update-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Perplexity AI"]
+    end
+    subgraph tools_update-FunctionsDefined["tools_update-Functions Defined"]
+        FU1["FUNCTION: registerUpdateTool"]
+    end
+    subgraph tools_update-Exports["tools_update-Exports"]
+        E1["EXP: registerUpdateTool"]
+    end
+    subgraph tools_update-Parameters["tools_update-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_update-Constants["tools_update-Constants"]
+        C1["CONST: toolName, VALUE: 'update'"]
+        C2["CONST: from, VALUE: args destructured property"]
+        C3["CONST: prompt, VALUE: args destructured property"]
+        C4["CONST: research, VALUE: args destructured property"]
+        C5["CONST: file, VALUE: args destructured property"]
+        C6["CONST: projectRoot, VALUE: args destructured property"]
+        C7["CONST: tag, VALUE: args destructured property"]
+        C8["CONST: resolvedTag, VALUE: resolveTag result"]
+        C9["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C10["CONST: result, VALUE: await updateTasksDirect"]
+    end
+    subgraph tools_update-ExecutionFlow["tools_update-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with bulk update options"]
+        FL3["Set tool name constant and destructure arguments"]
+        FL4["Resolve tag context for operation scope"]
+        FL5["Log execution start with normalized project root"]
+        FL6["Find and validate tasks.json file path"]
+        FL7["Log resolved tasks path"]
+        FL8["Call updateTasksDirect with parameters and session"]
+        FL9["Log direct function result status"]
+        FL10["Return handled API result for bulk update operation"]
+    end
+    subgraph tools_update["update.js"]
+        tools_update-Imports
+        tools_update-Dependencies
+        tools_update-FunctionsDefined
+        tools_update-Exports
+        tools_update-Parameters
+        tools_update-Constants
+        tools_update-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

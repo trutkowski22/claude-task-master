@@ -1,0 +1,79 @@
+flowchart TB
+    subgraph moveTask-Imports["moveTask-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: setTasksForTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: isTaskDependentOn, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I7["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+    end
+    subgraph moveTask-FunctionsDefined["moveTask-Functions Defined"]
+        FU1["FUNCTION: moveTask"]
+        FU2["FUNCTION: moveSubtaskToSubtask"]
+        FU3["FUNCTION: moveSubtaskToTask"]
+        FU4["FUNCTION: moveTaskToSubtask"]
+        FU5["FUNCTION: moveTaskToTask"]
+        FU6["FUNCTION: moveSubtaskToAnotherParent"]
+        FU7["FUNCTION: moveTaskToNewId"]
+    end
+    subgraph moveTask-Exports["moveTask-Exports"]
+        E1["EXP: moveTask"]
+    end
+    subgraph moveTask-Parameters["moveTask-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to tasks.json file"]
+        P2["PARAM: {string} sourceId - ID(s) of the task/subtask to move"]
+        P3["PARAM: {string} destinationId - ID(s) of the destination"]
+        P4["PARAM: {boolean} generateFiles - Whether to regenerate task files after moving"]
+        P5["PARAM: {Object} options - Additional options"]
+        P6["PARAM: {string} options.projectRoot - Project root directory for tag resolution"]
+        P7["PARAM: {string} options.tag - Explicit tag to use"]
+    end
+    subgraph moveTask-Constants["moveTask-Constants"]
+        C1["CONST: sourceIds, VALUE: sourceId.split(',').map() result"]
+        C2["CONST: destinationIds, VALUE: destinationId.split(',').map() result"]
+        C3["CONST: results, VALUE: batch move results array"]
+        C4["CONST: rawData, VALUE: readJSON result"]
+        C5["CONST: tasks, VALUE: rawData[tag].tasks"]
+        C6["CONST: isSourceSubtask, VALUE: sourceId.includes('.') result"]
+        C7["CONST: isDestSubtask, VALUE: destinationId.includes('.') result"]
+        C8["CONST: sourceParentTask, VALUE: tasks.find() result"]
+        C9["CONST: destParentTask, VALUE: tasks.find() result"]
+        C10["CONST: sourceSubtask, VALUE: subtask object"]
+        C11["CONST: newTask, VALUE: converted task object"]
+        C12["CONST: newSubtask, VALUE: converted subtask object"]
+        C13["CONST: movedTask, VALUE: task with updated ID"]
+    end
+    subgraph moveTask-ExecutionFlow["moveTask-Execution Flow"]
+        FL1["Parse source and destination IDs, check for batch operations"]
+        FL2["Process batch moves sequentially if multiple IDs provided"]
+        FL3["Read tasks.json and extract raw tagged data"]
+        FL4["Determine move type based on source and destination formats"]
+        FL5["Execute appropriate move function based on type"]
+        FL6["Move subtask to subtask position within or between parents"]
+        FL7["Convert subtask to standalone task with new ID"]
+        FL8["Convert task to subtask under specified parent"]
+        FL9["Move task to new ID and update all references"]
+        FL10["Update dependency references in other tasks"]
+        FL11["Write updated data structure back to file"]
+        FL12["Generate task files if requested"]
+    end
+    subgraph moveTask["move-task.js"]
+        moveTask-Imports
+        moveTask-FunctionsDefined
+        moveTask-Exports
+        moveTask-Parameters
+        moveTask-Constants
+        moveTask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

@@ -1,0 +1,83 @@
+flowchart TB
+    subgraph removeTask-Imports["removeTask-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I8["IMPORT: taskExists, FROM: /claude-task-master/scripts/modules/task-manager/task-exists.js"]
+    end
+    subgraph removeTask-Dependencies["removeTask-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Node.js path"]
+    end
+    subgraph removeTask-FunctionsDefined["removeTask-Functions Defined"]
+        FU1["FUNCTION: removeTask"]
+    end
+    subgraph removeTask-Exports["removeTask-Exports"]
+        E1["EXP: removeTask"]
+    end
+    subgraph removeTask-Parameters["removeTask-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks file"]
+        P2["PARAM: {string} taskIds - Comma-separated string of task/subtask IDs to remove"]
+        P3["PARAM: {Object} context - Context object containing projectRoot and tag information"]
+        P4["PARAM: {string} context.projectRoot - Project root path"]
+        P5["PARAM: {string} context.tag - Tag for the task"]
+    end
+    subgraph removeTask-Constants["removeTask-Constants"]
+        C1["CONST: results, VALUE: result object with success, messages, errors, removedTasks"]
+        C2["CONST: taskIdsToRemove, VALUE: taskIds.split(',').map().filter() result"]
+        C3["CONST: rawData, VALUE: readJSON result"]
+        C4["CONST: fullTaggedData, VALUE: rawData._rawTaggedData || rawData"]
+        C5["CONST: tasks, VALUE: fullTaggedData[tag].tasks"]
+        C6["CONST: tasksToDeleteFiles, VALUE: array for collecting task IDs"]
+        C7["CONST: parentTask, VALUE: tasks.find() result for subtask operations"]
+        C8["CONST: subtaskIndex, VALUE: parentTask.subtasks.findIndex() result"]
+        C9["CONST: removedSubtask, VALUE: subtask object before removal"]
+        C10["CONST: taskIndex, VALUE: tasks.findIndex() result"]
+        C11["CONST: removedTask, VALUE: task object before removal"]
+        C12["CONST: allRemovedIds, VALUE: new Set() of all removed IDs"]
+        C13["CONST: taskFileName, VALUE: path.join() result for file deletion"]
+    end
+    subgraph removeTask-ExecutionFlow["removeTask-Execution Flow"]
+        FL1["Parse comma-separated task IDs and filter valid entries"]
+        FL2["Read tasks file preserving full tagged structure"]
+        FL3["Extract tasks array from the specified tag"]
+        FL4["Iterate through each task ID to remove"]
+        FL5["Check if task exists before attempting removal"]
+        FL6["Handle subtask removal for IDs containing dots"]
+        FL7["Find parent task and locate subtask within it"]
+        FL8["Remove subtask from parent's subtasks array"]
+        FL9["Handle main task removal for numeric IDs"]
+        FL10["Remove task from main tasks array"]
+        FL11["Clean up dependencies across all tags"]
+        FL12["Remove references to deleted tasks from other tasks"]
+        FL13["Save updated data structure back to file"]
+        FL14["Delete associated task files from filesystem"]
+        FL15["Return results with success status and messages"]
+    end
+    subgraph removeTask["remove-task.js"]
+        removeTask-Imports
+        removeTask-Dependencies
+        removeTask-FunctionsDefined
+        removeTask-Exports
+        removeTask-Parameters
+        removeTask-Constants
+        removeTask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

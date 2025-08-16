@@ -1,0 +1,66 @@
+flowchart TB
+    subgraph tools_get-task-Imports["tools_get-task-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: showTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I8["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_get-task-Dependencies["tools_get-task-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_get-task-FunctionsDefined["tools_get-task-Functions Defined"]
+        FU1["FUNCTION: processTaskResponse"]
+        FU2["FUNCTION: registerShowTaskTool"]
+    end
+    subgraph tools_get-task-Exports["tools_get-task-Exports"]
+        E1["EXP: registerShowTaskTool"]
+    end
+    subgraph tools_get-task-Parameters["tools_get-task-Parameters"]
+        P1["PARAM: {Object} data - The data returned from showTaskDirect"]
+        P2["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_get-task-Constants["tools_get-task-Constants"]
+        C1["CONST: id, VALUE: args destructured property"]
+        C2["CONST: file, VALUE: args destructured property"]
+        C3["CONST: status, VALUE: args destructured property"]
+        C4["CONST: projectRoot, VALUE: args destructured property"]
+        C5["CONST: resolvedTag, VALUE: resolveTag result"]
+        C6["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C7["CONST: complexityReportPath, VALUE: findComplexityReportPath result"]
+        C8["CONST: result, VALUE: await showTaskDirect"]
+    end
+    subgraph tools_get-task-ExecutionFlow["tools_get-task-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with task retrieval options"]
+        FL3["Extract and destructure arguments"]
+        FL4["Log task details retrieval request"]
+        FL5["Resolve tag context for operation scope"]
+        FL6["Find and validate tasks.json file path"]
+        FL7["Find complexity report path if specified"]
+        FL8["Call showTaskDirect with all parameters and session"]
+        FL9["Log success or failure of task retrieval"]
+        FL10["Return handled API result with custom processor function"]
+    end
+    subgraph tools_get-task["get-task.js"]
+        tools_get-task-Imports
+        tools_get-task-Dependencies
+        tools_get-task-FunctionsDefined
+        tools_get-task-Exports
+        tools_get-task-Parameters
+        tools_get-task-Constants
+        tools_get-task-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

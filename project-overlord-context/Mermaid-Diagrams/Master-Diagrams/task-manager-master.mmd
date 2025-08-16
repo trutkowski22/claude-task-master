@@ -1,0 +1,312 @@
+flowchart TB
+
+%% =================================================================================
+%% TASK MANAGER LAYER - MASTER DIAGRAM
+%% All core business logic from the Task-Manager layer
+%% =================================================================================
+
+%% PROJECT OVERLORD IMPORTS - Shared across Task Manager files
+subgraph ProjectOverlordImports["project-overlord-imports"]
+    I1["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I2["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I3["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I4["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I5["IMPORT: flattenTasksWithSubtasks, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I6["IMPORT: addComplexityToTask, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I7["IMPORT: path, FROM: path"]
+    I8["IMPORT: fs, FROM: fs"]
+end
+
+%% PROJECT OVERLORD DEPENDENCIES - Common across Task Manager
+subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
+    D1["DEP: File system"]
+    D2["DEP: Path utilities"]
+    D3["DEP: JSON processing"]
+    D4["DEP: Task utilities"]
+end
+
+%% PROJECT OVERLORD PARAMETERS - Common parameter patterns
+subgraph ProjectOverlordParams["project-overlord-params"]
+    P1["PARAM: {Object[]} tasks - full array of top-level tasks"]
+    P2["PARAM: {string} projectRoot - Project root directory"]
+    P3["PARAM: {string} tag - Tag for the task"]
+    P4["PARAM: {Object} complexityReport - Optional complexity report object"]
+end
+
+%% PROJECT OVERLORD CONSTANTS - Shared constant patterns
+subgraph ProjectOverlordConstants["project-overlord-constants"]
+    C1["CONST: priorityValues, VALUE: { high: 3, medium: 2, low: 1 }"]
+    C2["CONST: tasksData, VALUE: readJSON result"]
+    C3["CONST: tasks, VALUE: data.tasks array"]
+end
+
+%% FIND NEXT TASK
+subgraph findNextTask-FunctionsDefined["findNextTask-Functions Defined"]
+    FU1["FUNCTION: findNextTask"]
+    FU2["FUNCTION: toFullSubId"]
+end
+
+subgraph findNextTask-Exports["findNextTask-Exports"]
+    E1["EXP: findNextTask"]
+end
+
+subgraph findNextTask-Parameters["findNextTask-Parameters"]
+    P5["PARAM: {Object[]} tasks - full array of top-level tasks, each may contain .subtasks[]"]
+    P6["PARAM: {Object} complexityReport - Optional complexity report object"]
+end
+
+subgraph findNextTask-Constants["findNextTask-Constants"]
+    C4["CONST: completedIds, VALUE: new Set()"]
+    C5["CONST: candidateSubtasks, VALUE: []"]
+    C6["CONST: eligibleTasks, VALUE: filtered tasks array"]
+    C7["CONST: nextTask, VALUE: sorted task selection result"]
+end
+
+subgraph findNextTask-ExecutionFlow["findNextTask-Execution Flow"]
+    FL1["Define priority values and helper function toFullSubId"]
+    FL2["Build set of completed task and subtask IDs"]
+    FL3["Search for eligible subtasks from in-progress parent tasks"]
+    FL4["Filter subtasks by pending/in-progress status and satisfied dependencies"]
+    FL5["Sort candidate subtasks by priority, dependency count, and ID"]
+    FL6["Return first subtask if any candidates exist"]
+    FL7["Fall back to top-level task search if no subtasks found"]
+    FL8["Filter top-level tasks by status and dependency satisfaction"]
+    FL9["Sort eligible tasks by priority, dependency count, and ID"]
+    FL10["Add complexity data to selected task if complexity report provided"]
+    FL11["Return next task or null if no eligible tasks found"]
+end
+
+subgraph findNextTask["find-next-task.js"]
+    findNextTask-FunctionsDefined
+    findNextTask-Exports
+    findNextTask-Parameters
+    findNextTask-Constants
+    findNextTask-ExecutionFlow
+end
+
+%% UPDATE SUBTASK BY ID
+subgraph updateSubtaskById-Imports["updateSubtaskById-Imports"]
+    I9["IMPORT: researchAI, FROM: /claude-task-master/scripts/modules/ai-research.js"]
+end
+
+subgraph updateSubtaskById-FunctionsDefined["updateSubtaskById-Functions Defined"]
+    FU3["FUNCTION: updateSubtaskById"]
+end
+
+subgraph updateSubtaskById-Exports["updateSubtaskById-Exports"]
+    E2["EXP: updateSubtaskById"]
+end
+
+subgraph updateSubtaskById-Parameters["updateSubtaskById-Parameters"]
+    P7["PARAM: {string} tasksJsonPath - Path to the tasks.json file"]
+    P8["PARAM: {string} subtaskId - Subtask ID in format 'taskId.subtaskId'"]
+    P9["PARAM: {Object} updates - Object with new values for the subtask"]
+    P10["PARAM: {boolean} research - Whether to enable AI research for the update"]
+    P11["PARAM: {string} projectRoot - Project root directory"]
+    P12["PARAM: {string} tag - Tag for the task"]
+end
+
+subgraph updateSubtaskById-Constants["updateSubtaskById-Constants"]
+    C8["CONST: data, VALUE: readJSON(tasksJsonPath, projectRoot, tag)"]
+    C9["CONST: tasks, VALUE: data.tasks || []"]
+    C10["CONST: [taskId, subId], VALUE: subtaskId.split('.')"]
+    C11["CONST: task, VALUE: tasks.find(t => t.id.toString() === taskId)"]
+    C12["CONST: subtask, VALUE: task.subtasks.find(s => s.id.toString() === subId)"]
+end
+
+subgraph updateSubtaskById-ExecutionFlow["updateSubtaskById-Execution Flow"]
+    FL12["Read tasks data from specified JSON file path"]
+    FL13["Parse subtask ID to extract task and subtask components"]
+    FL14["Find parent task by ID in the tasks array"]
+    FL15["Find target subtask within parent task's subtasks array"]
+    FL16["Validate subtask exists and is accessible"]
+    FL17["Apply updates to subtask properties with validation"]
+    FL18["Optionally perform AI research if research flag is enabled"]
+    FL19["Write updated tasks data back to JSON file"]
+    FL20["Return success confirmation with updated subtask data"]
+    FL21["Handle errors with descriptive error messages"]
+end
+
+subgraph updateSubtaskById["update-subtask-by-id.js"]
+    updateSubtaskById-Imports
+    updateSubtaskById-FunctionsDefined
+    updateSubtaskById-Exports
+    updateSubtaskById-Parameters
+    updateSubtaskById-Constants
+    updateSubtaskById-ExecutionFlow
+end
+
+%% SET TASK STATUS
+subgraph setTaskStatus-FunctionsDefined["setTaskStatus-Functions Defined"]
+    FU4["FUNCTION: setTaskStatus"]
+end
+
+subgraph setTaskStatus-Exports["setTaskStatus-Exports"]
+    E3["EXP: setTaskStatus"]
+end
+
+subgraph setTaskStatus-Parameters["setTaskStatus-Parameters"]
+    P13["PARAM: {string} tasksJsonPath - Path to the tasks.json file"]
+    P14["PARAM: {string} id - Task or subtask ID to update"]
+    P15["PARAM: {string} status - New status value"]
+    P16["PARAM: {string} projectRoot - Project root directory"]
+    P17["PARAM: {string} tag - Tag for the task"]
+end
+
+subgraph setTaskStatus-Constants["setTaskStatus-Constants"]
+    C13["CONST: data, VALUE: readJSON(tasksJsonPath, projectRoot, tag)"]
+    C14["CONST: tasks, VALUE: data.tasks || []"]
+    C15["CONST: isSubtask, VALUE: id.includes('.')"]
+    C16["CONST: task, VALUE: found task object"]
+    C17["CONST: subtask, VALUE: found subtask object if applicable"]
+end
+
+subgraph setTaskStatus-ExecutionFlow["setTaskStatus-Execution Flow"]
+    FL22["Read tasks data from specified JSON file path"]
+    FL23["Determine if ID refers to task or subtask based on format"]
+    FL24["Handle task status update for top-level tasks"]
+    FL25["Handle subtask status update for nested subtasks"]
+    FL26["Validate status value is allowed"]
+    FL27["Update status property on target task or subtask"]
+    FL28["Write updated tasks data back to JSON file"]
+    FL29["Return success confirmation with updated status"]
+    FL30["Handle errors with descriptive error messages"]
+end
+
+subgraph setTaskStatus["set-task-status.js"]
+    setTaskStatus-FunctionsDefined
+    setTaskStatus-Exports
+    setTaskStatus-Parameters
+    setTaskStatus-Constants
+    setTaskStatus-ExecutionFlow
+end
+
+%% TASK MANAGER MODELS
+subgraph taskManagerModels-FunctionsDefined["taskManagerModels-Functions Defined"]
+    FU5["FUNCTION: validateTask"]
+    FU6["FUNCTION: validateSubtask"]
+    FU7["FUNCTION: createTaskTemplate"]
+    FU8["FUNCTION: createSubtaskTemplate"]
+end
+
+subgraph taskManagerModels-Exports["taskManagerModels-Exports"]
+    E4["EXP: validateTask"]
+    E5["EXP: validateSubtask"]
+    E6["EXP: createTaskTemplate"]
+    E7["EXP: createSubtaskTemplate"]
+end
+
+subgraph taskManagerModels-Constants["taskManagerModels-Constants"]
+    C18["CONST: TASK_STATUS, VALUE: ['pending', 'in-progress', 'review', 'done', 'cancelled']"]
+    C19["CONST: TASK_PRIORITY, VALUE: ['low', 'medium', 'high']"]
+    C20["CONST: taskSchema, VALUE: validation schema object"]
+    C21["CONST: subtaskSchema, VALUE: validation schema object"]
+end
+
+subgraph taskManagerModels-ExecutionFlow["taskManagerModels-Execution Flow"]
+    FL31["Define task and subtask validation schemas"]
+    FL32["Validate task object structure and required properties"]
+    FL33["Validate subtask object structure and required properties"]
+    FL34["Create standardized task template with default values"]
+    FL35["Create standardized subtask template with default values"]
+    FL36["Ensure consistent data structure across task operations"]
+end
+
+subgraph taskManagerModels["models.js"]
+    taskManagerModels-FunctionsDefined
+    taskManagerModels-Exports
+    taskManagerModels-Constants
+    taskManagerModels-ExecutionFlow
+end
+
+%% TAG MANAGEMENT
+subgraph tagManagement-FunctionsDefined["tagManagement-Functions Defined"]
+    FU9["FUNCTION: addTag"]
+    FU10["FUNCTION: removeTag"]
+    FU11["FUNCTION: renameTag"]
+    FU12["FUNCTION: listTags"]
+end
+
+subgraph tagManagement-Exports["tagManagement-Exports"]
+    E8["EXP: addTag"]
+    E9["EXP: removeTag"]
+    E10["EXP: renameTag"]
+    E11["EXP: listTags"]
+end
+
+subgraph tagManagement-Parameters["tagManagement-Parameters"]
+    P18["PARAM: {string} tasksJsonPath - Path to the tasks.json file"]
+    P19["PARAM: {string} tagName - Name of the tag"]
+    P20["PARAM: {string} newTagName - New name for tag renaming"]
+    P21["PARAM: {string} projectRoot - Project root directory"]
+end
+
+subgraph tagManagement-ExecutionFlow["tagManagement-Execution Flow"]
+    FL37["Read tasks data and existing tag configuration"]
+    FL38["Add new tag with validation and conflict checking"]
+    FL39["Remove existing tag and clean up references"]
+    FL40["Rename tag and update all references consistently"]
+    FL41["List all available tags with usage statistics"]
+    FL42["Update tag configuration and save changes"]
+end
+
+subgraph tagManagement["tag-management.js"]
+    tagManagement-FunctionsDefined
+    tagManagement-Exports
+    tagManagement-Parameters
+    tagManagement-ExecutionFlow
+end
+
+%% RELATIONSHIP ARROWS - ProjectOverlord to individual files
+I1 & I2 & I3 & I4 & I5 & I6 --> findNextTask-Imports & updateSubtaskById-Imports & setTaskStatus-Imports & taskManagerModels-Imports & tagManagement-Imports
+I7 & I8 --> updateSubtaskById-Imports & setTaskStatus-Imports & tagManagement-Imports
+D1 & D2 & D3 & D4 --> findNextTask-Dependencies & updateSubtaskById-Dependencies & setTaskStatus-Dependencies & taskManagerModels-Dependencies & tagManagement-Dependencies
+P1 & P2 & P3 & P4 --> findNextTask-Parameters & updateSubtaskById-Parameters & setTaskStatus-Parameters & tagManagement-Parameters
+C1 & C2 & C3 --> findNextTask-Constants & updateSubtaskById-Constants & setTaskStatus-Constants & taskManagerModels-Constants
+
+%% EXECUTION FLOW CONNECTIONS - findNextTask
+FL1 --> FL2
+FL2 --> FL3
+FL3 --> FL4
+FL4 --> FL5
+FL5 --> FL6
+FL6 --> FL7
+FL7 --> FL8
+FL8 --> FL9
+FL9 --> FL10
+FL10 --> FL11
+
+%% EXECUTION FLOW CONNECTIONS - updateSubtaskById
+FL12 --> FL13
+FL13 --> FL14
+FL14 --> FL15
+FL15 --> FL16
+FL16 --> FL17
+FL17 --> FL18
+FL18 --> FL19
+FL19 --> FL20
+FL20 --> FL21
+
+%% EXECUTION FLOW CONNECTIONS - setTaskStatus
+FL22 --> FL23
+FL23 --> FL24
+FL24 --> FL25
+FL25 --> FL26
+FL26 --> FL27
+FL27 --> FL28
+FL28 --> FL29
+FL29 --> FL30
+
+%% EXECUTION FLOW CONNECTIONS - taskManagerModels
+FL31 --> FL32
+FL32 --> FL33
+FL33 --> FL34
+FL34 --> FL35
+FL35 --> FL36
+
+%% EXECUTION FLOW CONNECTIONS - tagManagement
+FL37 --> FL38
+FL38 --> FL39
+FL39 --> FL40
+FL40 --> FL41
+FL41 --> FL42

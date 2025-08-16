@@ -1,0 +1,74 @@
+flowchart TB
+    subgraph expandAllTasksImports["direct-functions_expand-all-tasks-Imports"]
+        I1["IMPORT: expandAllTasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph expandAllTasksDependencies["direct-functions_expand-all-tasks-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    
+    subgraph expandAllTasksFunctionsDefined["direct-functions_expand-all-tasks-Functions Defined"]
+        FU1["FUNCTION: expandAllTasksDirect"]
+    end
+    
+    subgraph expandAllTasksExports["direct-functions_expand-all-tasks-Exports"]
+        E1["EXP: expandAllTasksDirect"]
+    end
+    
+    subgraph expandAllTasksParameters["direct-functions_expand-all-tasks-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {number|string} args.num - Number of subtasks to generate"]
+        P4["PARAM: {boolean} args.research - Enable research-backed subtask generation"]
+        P5["PARAM: {string} args.prompt - Additional context to guide subtask generation"]
+        P6["PARAM: {boolean} args.force - Force regeneration of subtasks for tasks that already have them"]
+        P7["PARAM: {string} args.projectRoot - Project root path"]
+        P8["PARAM: {string} args.tag - Tag for the task"]
+        P9["PARAM: {Object} log - Logger object from FastMCP"]
+        P10["PARAM: {Object} context - Context object containing session"]
+    end
+    
+    subgraph expandAllTasksConstants["direct-functions_expand-all-tasks-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: mcpLog, VALUE: createLogWrapper result"]
+        C3["CONST: numSubtasks, VALUE: parsed integer from num parameter"]
+        C4["CONST: useResearch, VALUE: boolean conversion of research parameter"]
+        C5["CONST: additionalContext, VALUE: prompt parameter or empty string"]
+        C6["CONST: forceFlag, VALUE: boolean conversion of force parameter"]
+        C7["CONST: result, VALUE: expandAllTasks execution result"]
+    end
+    
+    subgraph expandAllTasksExecutionFlow["direct-functions_expand-all-tasks-Execution Flow"]
+        FL1["Extract session from context and destructure function arguments"]
+        FL2["Create MCP logger wrapper for consistent logging interface"]
+        FL3["Validate required tasksJsonPath parameter is provided"]
+        FL4["Enable silent mode to suppress console output during core function execution"]
+        FL5["Parse and convert parameters to correct data types"]
+        FL6["Call core expandAllTasks with parsed parameters and context"]
+        FL7["Process successful result and format response with telemetry data"]
+        FL8["Handle any errors during execution and format error response"]
+        FL9["Always disable silent mode in finally block to restore normal output"]
+    end
+    
+    subgraph expandAllTasks["direct-functions_expand-all-tasks.js"]
+        expandAllTasksImports
+        expandAllTasksDependencies
+        expandAllTasksFunctionsDefined
+        expandAllTasksExports
+        expandAllTasksParameters
+        expandAllTasksConstants
+        expandAllTasksExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

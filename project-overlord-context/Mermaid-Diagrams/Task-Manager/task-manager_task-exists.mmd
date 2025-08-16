@@ -1,0 +1,44 @@
+flowchart TB
+    subgraph taskExists-FunctionsDefined["taskExists-Functions Defined"]
+        FU1["FUNCTION: taskExists"]
+    end
+    subgraph taskExists-Exports["taskExists-Exports"]
+        E1["EXP: taskExists"]
+    end
+    subgraph taskExists-Parameters["taskExists-Parameters"]
+        P1["PARAM: {Array} tasks - Array of tasks to search"]
+        P2["PARAM: {string|number} taskId - ID of task or subtask to check"]
+    end
+    subgraph taskExists-Constants["taskExists-Const Declarations"]
+        C1["CONST: [parentIdStr, subtaskIdStr], VALUE: taskId.split('.')"]
+        C2["CONST: parentId, VALUE: parseInt(parentIdStr, 10)"]
+        C3["CONST: subtaskId, VALUE: parseInt(subtaskIdStr, 10)"]
+        C4["CONST: parentTask, VALUE: tasks.find((t) => t.id === parentId)"]
+        C5["CONST: id, VALUE: parseInt(taskId, 10)"]
+    end
+    subgraph taskExists-ExecutionFlow["taskExists-Execution Flow"]
+        FL1["Check if taskId is a string containing a dot (subtask format)"]
+        FL2["Split subtask ID into parent and subtask components"]
+        FL3["Parse parent and subtask IDs as integers"]
+        FL4["Find parent task in tasks array by ID"]
+        FL5["Check if parent task exists and has subtasks array"]
+        FL6["Search subtasks array for matching subtask ID"]
+        FL7["For regular task IDs, parse as integer"]
+        FL8["Search tasks array for matching task ID"]
+        FL9["Return boolean result of task existence check"]
+    end
+    subgraph taskExists["task-exists.js"]
+        taskExists-FunctionsDefined
+        taskExists-Exports
+        taskExists-Parameters
+        taskExists-Constants
+        taskExists-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

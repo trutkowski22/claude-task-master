@@ -1,0 +1,83 @@
+flowchart TB
+    subgraph nextTaskImports["direct-functions_next-task-Imports"]
+        I1["IMPORT: findNextTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    
+    subgraph nextTaskDependencies["direct-functions_next-task-Dependencies"]
+        D1["DEP: File system"]
+    end
+    
+    subgraph nextTaskFunctionsDefined["direct-functions_next-task-Functions Defined"]
+        FU1["FUNCTION: nextTaskDirect"]
+        FU2["FUNCTION: coreNextTaskAction"]
+    end
+    
+    subgraph nextTaskExports["direct-functions_next-task-Exports"]
+        E1["EXP: nextTaskDirect"]
+    end
+    
+    subgraph nextTaskParameters["direct-functions_next-task-Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.reportPath - Path to the report file"]
+        P4["PARAM: {string} args.projectRoot - Project root path for MCP/env fallback"]
+        P5["PARAM: {string} args.tag - Tag for the task"]
+        P6["PARAM: {Object} log - Logger object"]
+    end
+    
+    subgraph nextTaskConstants["direct-functions_next-task-Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: coreNextTaskAction, VALUE: async function for finding next task"]
+        C3["CONST: data, VALUE: readJSON result"]
+        C4["CONST: complexityReport, VALUE: readComplexityReport result"]
+        C5["CONST: nextTask, VALUE: findNextTask execution result"]
+        C6["CONST: isSubtask, VALUE: boolean check for subtask ID format"]
+        C7["CONST: taskOrSubtask, VALUE: string describing task type"]
+        C8["CONST: additionalAdvice, VALUE: contextual guidance text"]
+        C9["CONST: result, VALUE: coreNextTaskAction execution result"]
+    end
+    
+    subgraph nextTaskExecutionFlow["direct-functions_next-task-Execution Flow"]
+        FL1["Destructure arguments and extract session from context"]
+        FL2["Validate required tasksJsonPath parameter is provided"]
+        FL3["Define core action function for finding next task"]
+        FL4["Enable silent mode to prevent console interference"]
+        FL5["Log operation start and read tasks data using provided path"]
+        FL6["Validate tasks data contains valid task structure"]
+        FL7["Read complexity report from specified report path"]
+        FL8["Call findNextTask with tasks data and complexity report"]
+        FL9["Handle case where no eligible next task is found"]
+        FL10["Determine if found task is a subtask based on ID format"]
+        FL11["Generate contextual advice based on task or subtask type"]
+        FL12["Disable silent mode and return success with next task data"]
+        FL13["Handle errors and ensure silent mode restoration"]
+        FL14["Execute core action and return result with completion logging"]
+    end
+    
+    subgraph nextTask["direct-functions_next-task.js"]
+        nextTaskImports
+        nextTaskDependencies
+        nextTaskFunctionsDefined
+        nextTaskExports
+        nextTaskParameters
+        nextTaskConstants
+        nextTaskExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

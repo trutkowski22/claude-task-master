@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph tools_remove-subtask-Imports["tools_remove-subtask-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: removeSubtaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_remove-subtask-Dependencies["tools_remove-subtask-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+    end
+    subgraph tools_remove-subtask-FunctionsDefined["tools_remove-subtask-Functions Defined"]
+        FU1["FUNCTION: registerRemoveSubtaskTool"]
+    end
+    subgraph tools_remove-subtask-Exports["tools_remove-subtask-Exports"]
+        E1["EXP: registerRemoveSubtaskTool"]
+    end
+    subgraph tools_remove-subtask-Parameters["tools_remove-subtask-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_remove-subtask-Constants["tools_remove-subtask-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: result, VALUE: await removeSubtaskDirect"]
+    end
+    subgraph tools_remove-subtask-ExecutionFlow["tools_remove-subtask-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with subtask removal options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Log subtask removal request"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Call removeSubtaskDirect with parameters and session"]
+        FL7["Log success or failure of subtask removal"]
+        FL8["Return handled API result for removal operation"]
+    end
+    subgraph tools_remove-subtask["remove-subtask.js"]
+        tools_remove-subtask-Imports
+        tools_remove-subtask-Dependencies
+        tools_remove-subtask-FunctionsDefined
+        tools_remove-subtask-Exports
+        tools_remove-subtask-Parameters
+        tools_remove-subtask-Constants
+        tools_remove-subtask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

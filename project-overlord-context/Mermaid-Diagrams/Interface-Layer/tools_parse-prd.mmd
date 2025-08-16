@@ -1,0 +1,51 @@
+flowchart TB
+    subgraph tools_parse-prd-Imports["tools_parse-prd-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: parsePRDDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: PRD_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I7["IMPORT: TASKMASTER_DOCS_DIR, FROM: /claude-task-master/src/constants/paths.js"]
+        I8["IMPORT: TASKMASTER_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I9["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_parse-prd-Dependencies["tools_parse-prd-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Document parsing"]
+        D4["DEP: AI task generation"]
+    end
+    subgraph tools_parse-prd-FunctionsDefined["tools_parse-prd-Functions Defined"]
+        FU1["FUNCTION: registerParsePRDTool"]
+    end
+    subgraph tools_parse-prd-Exports["tools_parse-prd-Exports"]
+        E1["EXP: registerParsePRDTool"]
+    end
+    subgraph tools_parse-prd-Parameters["tools_parse-prd-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_parse-prd-Constants["tools_parse-prd-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: result, VALUE: await parsePRDDirect"]
+    end
+    subgraph tools_parse-prd-ExecutionFlow["tools_parse-prd-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with PRD parsing options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Call parsePRDDirect with arguments and session"]
+        FL5["Return handled API result for PRD parsing operation"]
+    end
+    subgraph tools_parse-prd["parse-prd.js"]
+        tools_parse-prd-Imports
+        tools_parse-prd-Dependencies
+        tools_parse-prd-FunctionsDefined
+        tools_parse-prd-Exports
+        tools_parse-prd-Parameters
+        tools_parse-prd-Constants
+        tools_parse-prd-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5

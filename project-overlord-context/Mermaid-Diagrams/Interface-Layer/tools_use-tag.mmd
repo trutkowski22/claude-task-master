@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph tools_use-tag-Imports["tools_use-tag-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: useTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    end
+    subgraph tools_use-tag-Dependencies["tools_use-tag-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Tag management system"]
+    end
+    subgraph tools_use-tag-FunctionsDefined["tools_use-tag-Functions Defined"]
+        FU1["FUNCTION: registerUseTagTool"]
+    end
+    subgraph tools_use-tag-Exports["tools_use-tag-Exports"]
+        E1["EXP: registerUseTagTool"]
+    end
+    subgraph tools_use-tag-Parameters["tools_use-tag-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_use-tag-Constants["tools_use-tag-Constants"]
+        C1["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C2["CONST: result, VALUE: await useTagDirect"]
+    end
+    subgraph tools_use-tag-ExecutionFlow["tools_use-tag-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with tag switching options"]
+        FL3["Log execution start with provided arguments"]
+        FL4["Find and validate tasks.json file path"]
+        FL5["Call useTagDirect with parameters and session"]
+        FL6["Return handled API result for tag switching operation"]
+    end
+    subgraph tools_use-tag["use-tag.js"]
+        tools_use-tag-Imports
+        tools_use-tag-Dependencies
+        tools_use-tag-FunctionsDefined
+        tools_use-tag-Exports
+        tools_use-tag-Parameters
+        tools_use-tag-Constants
+        tools_use-tag-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6

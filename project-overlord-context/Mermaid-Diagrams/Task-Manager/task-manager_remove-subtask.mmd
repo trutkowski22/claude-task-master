@@ -1,0 +1,73 @@
+flowchart TB
+    subgraph removeSubtask-Imports["removeSubtask-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+    end
+    subgraph removeSubtask-FunctionsDefined["removeSubtask-Functions Defined"]
+        FU1["FUNCTION: removeSubtask"]
+    end
+    subgraph removeSubtask-Exports["removeSubtask-Exports"]
+        E1["EXP: removeSubtask"]
+    end
+    subgraph removeSubtask-Parameters["removeSubtask-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} subtaskId - ID of the subtask to remove in format 'parentId.subtaskId'"]
+        P3["PARAM: {boolean} convertToTask - Whether to convert the subtask to a standalone task"]
+        P4["PARAM: {boolean} generateFiles - Whether to regenerate task files after removing the subtask"]
+        P5["PARAM: {Object} context - Context object containing projectRoot and tag information"]
+        P6["PARAM: {string} context.projectRoot - Project root path"]
+        P7["PARAM: {string} context.tag - Tag for the task"]
+    end
+    subgraph removeSubtask-Constants["removeSubtask-Constants"]
+        C1["CONST: data, VALUE: readJSON result"]
+        C2["CONST: parentIdStr, VALUE: subtaskId.split('.')[0]"]
+        C3["CONST: subtaskIdStr, VALUE: subtaskId.split('.')[1]"]
+        C4["CONST: parentId, VALUE: parseInt(parentIdStr, 10)"]
+        C5["CONST: subtaskIdNum, VALUE: parseInt(subtaskIdStr, 10)"]
+        C6["CONST: parentTask, VALUE: data.tasks.find() result"]
+        C7["CONST: subtaskIndex, VALUE: parentTask.subtasks.findIndex() result"]
+        C8["CONST: removedSubtask, VALUE: copy of subtask before removal"]
+        C9["CONST: convertedTask, VALUE: null or new task object"]
+        C10["CONST: highestId, VALUE: Math.max(...data.tasks.map()) result"]
+        C11["CONST: newTaskId, VALUE: highestId + 1"]
+    end
+    subgraph removeSubtask-ExecutionFlow["removeSubtask-Execution Flow"]
+        FL1["Read existing tasks from JSON file with context"]
+        FL2["Parse subtask ID to extract parent and subtask IDs"]
+        FL3["Find parent task by ID in tasks array"]
+        FL4["Verify parent task has subtasks array"]
+        FL5["Find subtask index within parent's subtasks"]
+        FL6["Create copy of subtask before removal"]
+        FL7["Remove subtask from parent's subtasks array"]
+        FL8["Clean up empty subtasks array if needed"]
+        FL9["Convert to standalone task if convertToTask flag is true"]
+        FL10["Determine next available task ID"]
+        FL11["Create new task object from subtask data"]
+        FL12["Add parent task as dependency to new task"]
+        FL13["Write updated data structure back to file"]
+        FL14["Generate task files if generateFiles flag is true"]
+    end
+    subgraph removeSubtask["remove-subtask.js"]
+        removeSubtask-Imports
+        removeSubtask-FunctionsDefined
+        removeSubtask-Exports
+        removeSubtask-Parameters
+        removeSubtask-Constants
+        removeSubtask-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

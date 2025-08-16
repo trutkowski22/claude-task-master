@@ -1,0 +1,104 @@
+flowchart TB
+    subgraph scopeAdjustment-Imports["scopeAdjustment-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: getCurrentTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: findTaskInComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I8["IMPORT: generateObjectService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I9["IMPORT: generateTextService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I10["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I11["IMPORT: taskExists, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I12["IMPORT: analyzeTaskComplexity, FROM: /claude-task-master/scripts/modules/task-manager/analyze-task-complexity.js"]
+        I13["IMPORT: findComplexityReportPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+    end
+    subgraph scopeAdjustment-Dependencies["scopeAdjustment-Dependencies"]
+        D1["DEP: AI services (OpenAI, Anthropic, etc.)"]
+        D2["DEP: Zod validation"]
+        D3["DEP: Complexity analysis"]
+        D4["DEP: File system"]
+    end
+    subgraph scopeAdjustment-FunctionsDefined["scopeAdjustment-Functions Defined"]
+        FU1["FUNCTION: validateStrength"]
+        FU2["FUNCTION: reanalyzeTaskComplexity"]
+        FU3["FUNCTION: getCurrentComplexityScore"]
+        FU4["FUNCTION: regenerateSubtasksForComplexity"]
+        FU5["FUNCTION: generateScopePrompt"]
+        FU6["FUNCTION: adjustTaskComplexity"]
+        FU7["FUNCTION: scopeUpTask"]
+        FU8["FUNCTION: scopeDownTask"]
+    end
+    subgraph scopeAdjustment-Exports["scopeAdjustment-Exports"]
+        E1["EXP: validateStrength"]
+        E2["EXP: scopeUpTask"]
+        E3["EXP: scopeDownTask"]
+    end
+    subgraph scopeAdjustment-Parameters["scopeAdjustment-Parameters"]
+        P1["PARAM: {string} strength - Strength level to validate"]
+        P2["PARAM: {Object} task - The task to analyze"]
+        P3["PARAM: {string} tasksPath - Path to tasks.json"]
+        P4["PARAM: {Object} context - Context containing projectRoot, tag, session"]
+        P5["PARAM: {number} taskId - Task ID to look up"]
+        P6["PARAM: {string} direction - Direction of scope change (up/down)"]
+        P7["PARAM: {string} customPrompt - Optional custom instructions"]
+        P8["PARAM: {Array<number>} taskIds - Array of task IDs to scope"]
+        P9["PARAM: {string} outputFormat - Output format ('text' or 'json')"]
+    end
+    subgraph scopeAdjustment-Constants["scopeAdjustment-Constants"]
+        C1["CONST: VALID_STRENGTHS, VALUE: ['light', 'regular', 'heavy']"]
+        C2["CONST: PRESERVE_STATUSES, VALUE: ['done', 'in-progress', 'review', 'cancelled', 'deferred', 'blocked']"]
+        C3["CONST: REGENERATE_STATUSES, VALUE: ['pending']"]
+        C4["CONST: tasksForAnalysis, VALUE: tasks data structure"]
+        C5["CONST: complexityReportPath, VALUE: findComplexityReportPath result"]
+        C6["CONST: complexityReport, VALUE: readComplexityReport result"]
+        C7["CONST: preservedSubtasks, VALUE: filtered subtasks array"]
+        C8["CONST: pendingSubtasks, VALUE: filtered subtasks array"]
+        C9["CONST: targetSubtaskCount, VALUE: calculated subtask count"]
+        C10["CONST: systemPrompt, VALUE: AI system prompt"]
+        C11["CONST: prompt, VALUE: generated AI prompt"]
+        C12["CONST: subtaskSchema, VALUE: Zod schema for subtasks"]
+        C13["CONST: taskSchema, VALUE: Zod schema for task"]
+        C14["CONST: aiResult, VALUE: AI service response"]
+        C15["CONST: updatedTasks, VALUE: array of updated tasks"]
+        C16["CONST: combinedTelemetryData, VALUE: combined telemetry"]
+    end
+    subgraph scopeAdjustment-ExecutionFlow["scopeAdjustment-Execution Flow"]
+        FL1["Validate strength parameter against allowed values"]
+        FL2["Read tasks data and validate task IDs exist"]
+        FL3["Get current complexity score from complexity report"]
+        FL4["Generate AI prompt for scope adjustment based on direction"]
+        FL5["Call AI service to adjust task complexity"]
+        FL6["Identify subtasks to preserve vs regenerate based on status"]
+        FL7["Calculate target subtask count based on complexity and direction"]
+        FL8["Generate new subtasks using AI for adjusted complexity"]
+        FL9["Merge preserved subtasks with newly generated ones"]
+        FL10["Re-analyze task complexity after adjustment"]
+        FL11["Update tasks in data structure"]
+        FL12["Write updated data back to file"]
+        FL13["Combine telemetry data from multiple operations"]
+        FL14["Return results with updated tasks and telemetry"]
+    end
+    subgraph scopeAdjustment["scope-adjustment.js"]
+        scopeAdjustment-Imports
+        scopeAdjustment-Dependencies
+        scopeAdjustment-FunctionsDefined
+        scopeAdjustment-Exports
+        scopeAdjustment-Parameters
+        scopeAdjustment-Constants
+        scopeAdjustment-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14

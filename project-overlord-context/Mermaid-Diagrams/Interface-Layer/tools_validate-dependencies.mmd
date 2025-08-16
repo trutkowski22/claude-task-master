@@ -1,0 +1,55 @@
+flowchart TB
+    subgraph tools_validate-dependencies-Imports["tools_validate-dependencies-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I5["IMPORT: validateDependenciesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph tools_validate-dependencies-Dependencies["tools_validate-dependencies-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: File system"]
+        D3["DEP: Dependency analysis system"]
+    end
+    subgraph tools_validate-dependencies-FunctionsDefined["tools_validate-dependencies-Functions Defined"]
+        FU1["FUNCTION: registerValidateDependenciesTool"]
+    end
+    subgraph tools_validate-dependencies-Exports["tools_validate-dependencies-Exports"]
+        E1["EXP: registerValidateDependenciesTool"]
+    end
+    subgraph tools_validate-dependencies-Parameters["tools_validate-dependencies-Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance"]
+    end
+    subgraph tools_validate-dependencies-Constants["tools_validate-dependencies-Constants"]
+        C1["CONST: resolvedTag, VALUE: resolveTag result"]
+        C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+        C3["CONST: result, VALUE: await validateDependenciesDirect"]
+    end
+    subgraph tools_validate-dependencies-ExecutionFlow["tools_validate-dependencies-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with dependency validation options"]
+        FL3["Resolve tag context for operation scope"]
+        FL4["Log dependency validation request"]
+        FL5["Find and validate tasks.json file path"]
+        FL6["Call validateDependenciesDirect with parameters"]
+        FL7["Log success or failure of dependency validation"]
+        FL8["Return handled API result for validation operation"]
+    end
+    subgraph tools_validate-dependencies["validate-dependencies.js"]
+        tools_validate-dependencies-Imports
+        tools_validate-dependencies-Dependencies
+        tools_validate-dependencies-FunctionsDefined
+        tools_validate-dependencies-Exports
+        tools_validate-dependencies-Parameters
+        tools_validate-dependencies-Constants
+        tools_validate-dependencies-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

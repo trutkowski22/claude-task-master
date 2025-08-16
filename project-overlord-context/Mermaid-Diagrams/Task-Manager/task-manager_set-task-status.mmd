@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph setTaskStatus-Imports["setTaskStatus-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: chalk, FROM: chalk"]
+        I3["IMPORT: boxen, FROM: boxen"]
+        I4["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I6["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I8["IMPORT: ensureTagMetadata, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I9["IMPORT: displayBanner, FROM: /claude-task-master/scripts/modules/ui.js"]
+        I10["IMPORT: validateTaskDependencies, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I11["IMPORT: getDebugFlag, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I12["IMPORT: updateSingleTaskStatus, FROM: /claude-task-master/scripts/modules/task-manager/update-single-task-status.js"]
+        I13["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I14["IMPORT: isValidTaskStatus, FROM: /claude-task-master/src/constants/task-status.js"]
+        I15["IMPORT: TASK_STATUS_OPTIONS, FROM: /claude-task-master/src/constants/task-status.js"]
+    end
+    subgraph setTaskStatus-Dependencies["setTaskStatus-Dependencies"]
+        D1["DEP: Terminal UI libraries"]
+        D2["DEP: File system"]
+        D3["DEP: Task validation"]
+    end
+    subgraph setTaskStatus-FunctionsDefined["setTaskStatus-Functions Defined"]
+        FU1["FUNCTION: setTaskStatus"]
+    end
+    subgraph setTaskStatus-Exports["setTaskStatus-Exports"]
+        E1["EXP: setTaskStatus"]
+    end
+    subgraph setTaskStatus-Parameters["setTaskStatus-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} taskIdInput - Task ID(s) to update"]
+        P3["PARAM: {string} newStatus - New status"]
+        P4["PARAM: {Object} options - Additional options"]
+        P5["PARAM: {string} options.projectRoot - Project root path"]
+        P6["PARAM: {string} options.tag - Optional tag to override current tag resolution"]
+        P7["PARAM: {string} options.mcpLog - MCP logger object"]
+    end
+    subgraph setTaskStatus-ExecutionFlow["setTaskStatus-Execution Flow"]
+        FL1["Validate new status against allowed task status options"]
+        FL2["Determine if running in MCP mode based on mcpLog presence"]
+        FL3["Display UI banner if in CLI mode"]
+        FL4["Parse task ID input for single or multiple tasks"]
+        FL5["Read tasks data from JSON file with context"]
+        FL6["Update each task status using updateSingleTaskStatus"]
+        FL7["Validate task dependencies after status changes"]
+        FL8["Write updated data back to file"]
+        FL9["Generate task files if requested"]
+        FL10["Return results in appropriate format"]
+    end
+    subgraph setTaskStatus["set-task-status.js"]
+        setTaskStatus-Imports
+        setTaskStatus-Dependencies
+        setTaskStatus-FunctionsDefined
+        setTaskStatus-Exports
+        setTaskStatus-Parameters
+        setTaskStatus-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

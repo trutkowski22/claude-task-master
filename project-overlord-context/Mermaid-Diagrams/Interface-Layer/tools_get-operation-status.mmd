@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph tools_get-operation-status-Imports["tools_get-operation-status-Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I3["IMPORT: createContentResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    subgraph tools_get-operation-status-Dependencies["tools_get-operation-status-Dependencies"]
+        D1["DEP: FastMCP"]
+        D2["DEP: AsyncOperationManager"]
+    end
+    subgraph tools_get-operation-status-FunctionsDefined["tools_get-operation-status-Functions Defined"]
+        FU1["FUNCTION: registerGetOperationStatusTool"]
+    end
+    subgraph tools_get-operation-status-Exports["tools_get-operation-status-Exports"]
+        E1["EXP: registerGetOperationStatusTool"]
+    end
+    subgraph tools_get-operation-status-Parameters["tools_get-operation-status-Parameters"]
+        P1["PARAM: {FastMCP} server - FastMCP server instance"]
+        P2["PARAM: {AsyncOperationManager} asyncManager - The async operation manager"]
+    end
+    subgraph tools_get-operation-status-Constants["tools_get-operation-status-Constants"]
+        C1["CONST: operationId, VALUE: args.operationId"]
+        C2["CONST: status, VALUE: asyncManager.getStatus result"]
+    end
+    subgraph tools_get-operation-status-ExecutionFlow["tools_get-operation-status-Execution Flow"]
+        FL1["Register tool with server using name and description"]
+        FL2["Define parameter schema with operation ID requirement"]
+        FL3["Extract operation ID from arguments"]
+        FL4["Log operation status check request"]
+        FL5["Get operation status from async manager"]
+        FL6["Check if operation was found"]
+        FL7["Return error response if operation not found"]
+        FL8["Log successful status retrieval"]
+        FL9["Return content response with operation status"]
+    end
+    subgraph tools_get-operation-status["get-operation-status.js"]
+        tools_get-operation-status-Imports
+        tools_get-operation-status-Dependencies
+        tools_get-operation-status-FunctionsDefined
+        tools_get-operation-status-Exports
+        tools_get-operation-status-Parameters
+        tools_get-operation-status-Constants
+        tools_get-operation-status-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL6 --> FL8
+    FL8 --> FL9

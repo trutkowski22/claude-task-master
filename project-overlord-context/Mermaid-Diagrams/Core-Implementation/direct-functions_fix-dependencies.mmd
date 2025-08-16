@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph fixDependenciesImports["direct-functions_fix-dependencies-Imports"]
+        I1["IMPORT: fixDependenciesCommand, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: fs, FROM: fs"]
+    end
+    
+    subgraph fixDependenciesDependencies["direct-functions_fix-dependencies-Dependencies"]
+        D1["DEP: File system"]
+    end
+    
+    subgraph fixDependenciesFunctionsDefined["direct-functions_fix-dependencies-Functions Defined"]
+        FU1["FUNCTION: fixDependenciesDirect"]
+    end
+    
+    subgraph fixDependenciesExports["direct-functions_fix-dependencies-Exports"]
+        E1["EXP: fixDependenciesDirect"]
+    end
+    
+    subgraph fixDependenciesParameters["direct-functions_fix-dependencies-Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.projectRoot - Project root directory"]
+        P4["PARAM: {string} args.tag - Tag for the project"]
+        P5["PARAM: {Object} log - Logger object"]
+    end
+    
+    subgraph fixDependenciesConstants["direct-functions_fix-dependencies-Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: options, VALUE: object with projectRoot and tag"]
+    end
+    
+    subgraph fixDependenciesExecutionFlow["direct-functions_fix-dependencies-Execution Flow"]
+        FL1["Destructure function arguments from args parameter"]
+        FL2["Log operation start with tasks file path"]
+        FL3["Validate required tasksJsonPath parameter is provided"]
+        FL4["Set tasksPath using provided tasksJsonPath"]
+        FL5["Verify tasks file exists at specified path"]
+        FL6["Enable silent mode to suppress console output"]
+        FL7["Create options object with projectRoot and tag"]
+        FL8["Call fixDependenciesCommand with tasks path and options"]
+        FL9["Disable silent mode to restore normal logging"]
+        FL10["Return success response with operation details"]
+        FL11["Handle errors and restore logging state in catch block"]
+    end
+    
+    subgraph fixDependencies["direct-functions_fix-dependencies.js"]
+        fixDependenciesImports
+        fixDependenciesDependencies
+        fixDependenciesFunctionsDefined
+        fixDependenciesExports
+        fixDependenciesParameters
+        fixDependenciesConstants
+        fixDependenciesExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11

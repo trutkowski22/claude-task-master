@@ -1,0 +1,111 @@
+flowchart TB
+    subgraph models-Imports["models-Imports"]
+        I1["IMPORT: https, FROM: https"]
+        I2["IMPORT: http, FROM: http"]
+        I3["IMPORT: getMainModelId, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I4["IMPORT: getResearchModelId, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I5["IMPORT: getFallbackModelId, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I6["IMPORT: getAvailableModels, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I7["IMPORT: getMainProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I8["IMPORT: getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I9["IMPORT: getFallbackProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I10["IMPORT: isApiKeySet, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I11["IMPORT: getMcpApiKeyStatus, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I12["IMPORT: getConfig, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I13["IMPORT: writeConfig, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I14["IMPORT: isConfigFilePresent, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I15["IMPORT: getAllProviders, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I16["IMPORT: getBaseUrlForRole, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I17["IMPORT: findConfigPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+        I18["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I19["IMPORT: CUSTOM_PROVIDERS, FROM: /claude-task-master/src/constants/providers.js"]
+    end
+    subgraph models-Dependencies["models-Dependencies"]
+        D1["DEP: HTTPS/HTTP clients"]
+        D2["DEP: OpenRouter API"]
+        D3["DEP: Ollama API"]
+        D4["DEP: Azure OpenAI"]
+        D5["DEP: AWS Bedrock"]
+        D6["DEP: Google Vertex AI"]
+        D7["DEP: Claude Code API"]
+        D8["DEP: Gemini CLI"]
+    end
+    subgraph models-FunctionsDefined["models-Functions Defined"]
+        FU1["FUNCTION: fetchOpenRouterModels"]
+        FU2["FUNCTION: fetchOllamaModels"]
+        FU3["FUNCTION: getModelConfiguration"]
+        FU4["FUNCTION: getAvailableModelsList"]
+        FU5["FUNCTION: setModel"]
+        FU6["FUNCTION: getApiKeyStatusReport"]
+    end
+    subgraph models-Exports["models-Exports"]
+        E1["EXP: getModelConfiguration"]
+        E2["EXP: getAvailableModelsList"]
+        E3["EXP: setModel"]
+        E4["EXP: getApiKeyStatusReport"]
+    end
+    subgraph models-Parameters["models-Parameters"]
+        P1["PARAM: {string} baseURL - The base URL for the Ollama API"]
+        P2["PARAM: {Object} options - Options for the operation"]
+        P3["PARAM: {Object} options.session - Session object containing environment variables"]
+        P4["PARAM: {Function} options.mcpLog - MCP logger object"]
+        P5["PARAM: {string} options.projectRoot - Project root directory"]
+        P6["PARAM: {string} role - The model role to update ('main', 'research', 'fallback')"]
+        P7["PARAM: {string} modelId - The model ID to set for the role"]
+        P8["PARAM: {string} options.providerHint - Provider hint if already determined"]
+    end
+    subgraph models-Constants["models-Constants"]
+        C1["CONST: CONFIG_MISSING_ERROR, VALUE: 'The configuration file is missing. Run \"task-master init\" to create it.'"]
+        C2["CONST: options, VALUE: HTTPS/HTTP request options"]
+        C3["CONST: req, VALUE: HTTP request object"]
+        C4["CONST: configPath, VALUE: findConfigPath result"]
+        C5["CONST: configExists, VALUE: isConfigFilePresent result"]
+        C6["CONST: mainProvider, VALUE: getMainProvider result"]
+        C7["CONST: mainModelId, VALUE: getMainModelId result"]
+        C8["CONST: researchProvider, VALUE: getResearchProvider result"]
+        C9["CONST: researchModelId, VALUE: getResearchModelId result"]
+        C10["CONST: fallbackProvider, VALUE: getFallbackProvider result"]
+        C11["CONST: fallbackModelId, VALUE: getFallbackModelId result"]
+        C12["CONST: availableModels, VALUE: getAvailableModels result"]
+        C13["CONST: currentConfig, VALUE: getConfig result"]
+        C14["CONST: determinedProvider, VALUE: provider determination result"]
+        C15["CONST: warningMessage, VALUE: warning message for custom models"]
+    end
+    subgraph models-ExecutionFlow["models-Execution Flow"]
+        FL1["Fetch models from OpenRouter API using HTTPS request"]
+        FL2["Parse JSON response and extract model data"]
+        FL3["Fetch models from Ollama instance using HTTP/HTTPS"]
+        FL4["Parse Ollama response and extract model objects"]
+        FL5["Get current model configuration from config manager"]
+        FL6["Check API key status for all providers"]
+        FL7["Retrieve available models list and filter by usage"]
+        FL8["Validate role and model ID parameters"]
+        FL9["Determine provider based on hint or internal lookup"]
+        FL10["Fetch live model data from external APIs if needed"]
+        FL11["Update configuration with new model settings"]
+        FL12["Write updated configuration to file"]
+        FL13["Generate API key status report for all providers"]
+        FL14["Return structured response with success/error data"]
+    end
+    subgraph models["models.js"]
+        models-Imports
+        models-Dependencies
+        models-FunctionsDefined
+        models-Exports
+        models-Parameters
+        models-Constants
+        models-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
