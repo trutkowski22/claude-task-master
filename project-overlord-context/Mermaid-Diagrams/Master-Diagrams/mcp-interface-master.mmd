@@ -1,31 +1,37 @@
 flowchart TB
 
 %% =================================================================================
-%% MCP INTERFACE LAYER - MASTER DIAGRAM
-%% All MCP wrapper tools from the Interface-Layer
+%% MCP INTERFACE LAYER - COMPLETE MASTER DIAGRAM
+%% All MCP wrapper tools from the Interface-Layer (39 files)
 %% =================================================================================
 
-%% PROJECT OVERLORD IMPORTS - Shared across MCP Interface files
+%% PROJECT OVERLORD IMPORTS - Shared across ALL MCP Interface files
 subgraph ProjectOverlordImports["project-overlord-imports"]
     I1["IMPORT: z, FROM: zod"]
     I2["IMPORT: handleApiResult, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     I3["IMPORT: createErrorResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
     I4["IMPORT: withNormalizedProjectRoot, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
-    I5["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
-    I6["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
-    I7["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I5["IMPORT: createContentResponse, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I6["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I7["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I8["IMPORT: resolveTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I9["IMPORT: path, FROM: path"]
 end
 
-%% PROJECT OVERLORD DEPENDENCIES - Common across MCP Interface
+%% PROJECT OVERLORD DEPENDENCIES - Common across ALL MCP Interface files
 subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
     D1["DEP: FastMCP"]
     D2["DEP: File system"]
     D3["DEP: Zod validation"]
+    D4["DEP: Node.js path module"]
+    D5["DEP: Git"]
+    D6["DEP: AsyncOperationManager"]
 end
 
 %% PROJECT OVERLORD PARAMETERS - Common parameter patterns
 subgraph ProjectOverlordParams["project-overlord-params"]
     P1["PARAM: {Object} server - FastMCP server instance"]
+    P2["PARAM: {AsyncOperationManager} asyncManager - Async operation manager"]
 end
 
 %% PROJECT OVERLORD CONSTANTS - Shared constant patterns
@@ -33,34 +39,402 @@ subgraph ProjectOverlordConstants["project-overlord-constants"]
     C1["CONST: resolvedTag, VALUE: resolveTag result"]
     C2["CONST: tasksJsonPath, VALUE: findTasksPath result"]
     C3["CONST: complexityReportPath, VALUE: findComplexityReportPath result"]
+    C4["CONST: outputDir, VALUE: path calculation from args"]
+    C5["CONST: log, VALUE: context.log"]
+    C6["CONST: session, VALUE: context.session"]
+end
+
+%% ADD DEPENDENCY TOOL
+subgraph addDependencyTool-Imports["addDependencyTool-Imports"]
+    I10["IMPORT: addDependencyDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph addDependencyTool-FunctionsDefined["addDependencyTool-Functions Defined"]
+    FU1["FUNCTION: registerAddDependencyTool"]
+end
+
+subgraph addDependencyTool-Exports["addDependencyTool-Exports"]
+    E1["EXP: registerAddDependencyTool"]
+end
+
+subgraph addDependencyTool-Constants["addDependencyTool-Constants"]
+    C7["CONST: result, VALUE: await addDependencyDirect"]
+end
+
+subgraph addDependencyTool-ExecutionFlow["addDependencyTool-Execution Flow"]
+    FL1["Register tool with server using name and description"]
+    FL2["Define parameter schema with dependency options"]
+    FL3["Log execution start with provided arguments"]
+    FL4["Resolve tag context for operation scope"]
+    FL5["Find and validate tasks.json file path"]
+    FL6["Call addDependencyDirect with parameters"]
+    FL7["Return handled API result for dependency addition"]
+end
+
+subgraph addDependencyTool["add-dependency.js"]
+    addDependencyTool-Imports
+    addDependencyTool-FunctionsDefined
+    addDependencyTool-Exports
+    addDependencyTool-Constants
+    addDependencyTool-ExecutionFlow
+end
+
+%% ADD SUBTASK TOOL
+subgraph addSubtaskTool-Imports["addSubtaskTool-Imports"]
+    I11["IMPORT: addSubtaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph addSubtaskTool-FunctionsDefined["addSubtaskTool-Functions Defined"]
+    FU2["FUNCTION: registerAddSubtaskTool"]
+end
+
+subgraph addSubtaskTool-Exports["addSubtaskTool-Exports"]
+    E2["EXP: registerAddSubtaskTool"]
+end
+
+subgraph addSubtaskTool-Constants["addSubtaskTool-Constants"]
+    C8["CONST: result, VALUE: await addSubtaskDirect"]
+end
+
+subgraph addSubtaskTool-ExecutionFlow["addSubtaskTool-Execution Flow"]
+    FL8["Register tool with server using name and description"]
+    FL9["Define parameter schema with subtask options"]
+    FL10["Resolve tag context for operation scope"]
+    FL11["Find and validate tasks.json file path"]
+    FL12["Call addSubtaskDirect with all parameters"]
+    FL13["Log success or failure of subtask addition"]
+    FL14["Return handled API result or error response"]
+end
+
+subgraph addSubtaskTool["add-subtask.js"]
+    addSubtaskTool-Imports
+    addSubtaskTool-FunctionsDefined
+    addSubtaskTool-Exports
+    addSubtaskTool-Constants
+    addSubtaskTool-ExecutionFlow
+end
+
+%% ADD TAG TOOL
+subgraph addTagTool-Imports["addTagTool-Imports"]
+    I12["IMPORT: addTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph addTagTool-FunctionsDefined["addTagTool-Functions Defined"]
+    FU3["FUNCTION: registerAddTagTool"]
+end
+
+subgraph addTagTool-Exports["addTagTool-Exports"]
+    E3["EXP: registerAddTagTool"]
+end
+
+subgraph addTagTool-Constants["addTagTool-Constants"]
+    C9["CONST: result, VALUE: addTagDirect"]
+end
+
+subgraph addTagTool-ExecutionFlow["addTagTool-Execution Flow"]
+    FL15["Register tool with server using name and description"]
+    FL16["Define parameter schema with tag creation options"]
+    FL17["Log execution start with provided arguments"]
+    FL18["Find and validate tasks.json file path"]
+    FL19["Call addTagDirect with tag configuration parameters"]
+    FL20["Return handled API result for tag creation success or failure"]
+end
+
+subgraph addTagTool["add-tag.js"]
+    addTagTool-Imports
+    addTagTool-FunctionsDefined
+    addTagTool-Exports
+    addTagTool-Constants
+    addTagTool-ExecutionFlow
+end
+
+%% ADD TASK TOOL
+subgraph addTaskTool-Imports["addTaskTool-Imports"]
+    I13["IMPORT: addTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph addTaskTool-FunctionsDefined["addTaskTool-Functions Defined"]
+    FU4["FUNCTION: registerAddTaskTool"]
+end
+
+subgraph addTaskTool-Exports["addTaskTool-Exports"]
+    E4["EXP: registerAddTaskTool"]
+end
+
+subgraph addTaskTool-Constants["addTaskTool-Constants"]
+    C10["CONST: result, VALUE: await addTaskDirect"]
+end
+
+subgraph addTaskTool-ExecutionFlow["addTaskTool-Execution Flow"]
+    FL21["Register tool with server using name and description"]
+    FL22["Define parameter schema with task creation options"]
+    FL23["Log task addition"]
+    FL24["Resolve tag context for operation scope"]
+    FL25["Find and validate tasks.json file path"]
+    FL26["Call addTaskDirect with parameters"]
+    FL27["Return handled API result for task creation"]
+end
+
+subgraph addTaskTool["add-task.js"]
+    addTaskTool-Imports
+    addTaskTool-FunctionsDefined
+    addTaskTool-Exports
+    addTaskTool-Constants
+    addTaskTool-ExecutionFlow
+end
+
+%% ANALYZE TOOL
+subgraph analyzeTool-Imports["analyzeTool-Imports"]
+    I14["IMPORT: analyzeTaskComplexityDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I15["IMPORT: PATHS, FROM: /claude-task-master/src/constants/paths.js"]
+    I16["IMPORT: resolveComplexityReportOutputPath, FROM: /claude-task-master/src/utils/path-utils.js"]
+    I17["IMPORT: fs, FROM: fs"]
+end
+
+subgraph analyzeTool-Dependencies["analyzeTool-Dependencies"]
+    D7["DEP: Node.js fs module"]
+end
+
+subgraph analyzeTool-FunctionsDefined["analyzeTool-Functions Defined"]
+    FU5["FUNCTION: registerAnalyzeProjectComplexityTool"]
+end
+
+subgraph analyzeTool-Exports["analyzeTool-Exports"]
+    E5["EXP: registerAnalyzeProjectComplexityTool"]
+end
+
+subgraph analyzeTool-Constants["analyzeTool-Constants"]
+    C11["CONST: toolName, VALUE: 'analyze_project_complexity'"]
+    C12["CONST: outputPath, VALUE: resolveComplexityReportOutputPath result"]
+    C13["CONST: result, VALUE: await analyzeTaskComplexityDirect"]
+end
+
+subgraph analyzeTool-ExecutionFlow["analyzeTool-Execution Flow"]
+    FL28["Register tool with server using name and description"]
+    FL29["Define parameter schema with complexity analysis options"]
+    FL30["Set tool name constant for logging"]
+    FL31["Log execution start"]
+    FL32["Resolve tag context for operation scope"]
+    FL33["Find and validate tasks.json file path"]
+    FL34["Resolve complexity report output path"]
+    FL35["Create output directory if needed"]
+    FL36["Call analyzeTaskComplexityDirect with parameters"]
+    FL37["Return handled API result for analysis operation"]
+end
+
+subgraph analyzeTool["analyze.js"]
+    analyzeTool-Imports
+    analyzeTool-Dependencies
+    analyzeTool-FunctionsDefined
+    analyzeTool-Exports
+    analyzeTool-Constants
+    analyzeTool-ExecutionFlow
+end
+
+%% CLEAR SUBTASKS TOOL
+subgraph clearSubtasksTool-Imports["clearSubtasksTool-Imports"]
+    I18["IMPORT: clearSubtasksDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph clearSubtasksTool-FunctionsDefined["clearSubtasksTool-Functions Defined"]
+    FU6["FUNCTION: registerClearSubtasksTool"]
+end
+
+subgraph clearSubtasksTool-Exports["clearSubtasksTool-Exports"]
+    E6["EXP: registerClearSubtasksTool"]
+end
+
+subgraph clearSubtasksTool-Constants["clearSubtasksTool-Constants"]
+    C14["CONST: result, VALUE: await clearSubtasksDirect"]
+end
+
+subgraph clearSubtasksTool-ExecutionFlow["clearSubtasksTool-Execution Flow"]
+    FL38["Register tool with server using name and description"]
+    FL39["Define parameter schema with clearing options"]
+    FL40["Log clearing operation"]
+    FL41["Resolve tag context for operation scope"]
+    FL42["Find and validate tasks.json file path"]
+    FL43["Call clearSubtasksDirect with parameters"]
+    FL44["Return handled API result for clearing operation"]
+end
+
+subgraph clearSubtasksTool["clear-subtasks.js"]
+    clearSubtasksTool-Imports
+    clearSubtasksTool-FunctionsDefined
+    clearSubtasksTool-Exports
+    clearSubtasksTool-Constants
+    clearSubtasksTool-ExecutionFlow
+end
+
+%% COMPLEXITY REPORT TOOL
+subgraph complexityReportTool-Imports["complexityReportTool-Imports"]
+    I19["IMPORT: complexityReportDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I20["IMPORT: PATHS, FROM: /claude-task-master/src/constants/paths.js"]
+    I21["IMPORT: getCurrentTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+end
+
+subgraph complexityReportTool-FunctionsDefined["complexityReportTool-Functions Defined"]
+    FU7["FUNCTION: registerComplexityReportTool"]
+end
+
+subgraph complexityReportTool-Exports["complexityReportTool-Exports"]
+    E7["EXP: registerComplexityReportTool"]
+end
+
+subgraph complexityReportTool-Constants["complexityReportTool-Constants"]
+    C15["CONST: currentTag, VALUE: getCurrentTag result"]
+    C16["CONST: result, VALUE: await complexityReportDirect"]
+end
+
+subgraph complexityReportTool-ExecutionFlow["complexityReportTool-Execution Flow"]
+    FL45["Register tool with server using name and description"]
+    FL46["Define parameter schema with report options"]
+    FL47["Log report retrieval"]
+    FL48["Get current tag context"]
+    FL49["Find complexity report path"]
+    FL50["Call complexityReportDirect with parameters"]
+    FL51["Return handled API result for report operation"]
+end
+
+subgraph complexityReportTool["complexity-report.js"]
+    complexityReportTool-Imports
+    complexityReportTool-FunctionsDefined
+    complexityReportTool-Exports
+    complexityReportTool-Constants
+    complexityReportTool-ExecutionFlow
+end
+
+%% COPY TAG TOOL
+subgraph copyTagTool-Imports["copyTagTool-Imports"]
+    I22["IMPORT: copyTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph copyTagTool-FunctionsDefined["copyTagTool-Functions Defined"]
+    FU8["FUNCTION: registerCopyTagTool"]
+end
+
+subgraph copyTagTool-Exports["copyTagTool-Exports"]
+    E8["EXP: registerCopyTagTool"]
+end
+
+subgraph copyTagTool-Constants["copyTagTool-Constants"]
+    C17["CONST: result, VALUE: await copyTagDirect"]
+end
+
+subgraph copyTagTool-ExecutionFlow["copyTagTool-Execution Flow"]
+    FL52["Register tool with server using name and description"]
+    FL53["Define parameter schema with tag copying options"]
+    FL54["Log tag copying"]
+    FL55["Find and validate tasks.json file path"]
+    FL56["Call copyTagDirect with parameters"]
+    FL57["Return handled API result for copy operation"]
+end
+
+subgraph copyTagTool["copy-tag.js"]
+    copyTagTool-Imports
+    copyTagTool-FunctionsDefined
+    copyTagTool-Exports
+    copyTagTool-Constants
+    copyTagTool-ExecutionFlow
+end
+
+%% DELETE TAG TOOL
+subgraph deleteTagTool-Imports["deleteTagTool-Imports"]
+    I23["IMPORT: deleteTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph deleteTagTool-FunctionsDefined["deleteTagTool-Functions Defined"]
+    FU9["FUNCTION: registerDeleteTagTool"]
+end
+
+subgraph deleteTagTool-Exports["deleteTagTool-Exports"]
+    E9["EXP: registerDeleteTagTool"]
+end
+
+subgraph deleteTagTool-Constants["deleteTagTool-Constants"]
+    C18["CONST: confirmation, VALUE: yes || false"]
+    C19["CONST: result, VALUE: await deleteTagDirect"]
+end
+
+subgraph deleteTagTool-ExecutionFlow["deleteTagTool-Execution Flow"]
+    FL58["Register tool with server using name and description"]
+    FL59["Define parameter schema with tag deletion options"]
+    FL60["Log tag deletion"]
+    FL61["Find and validate tasks.json file path"]
+    FL62["Set confirmation default"]
+    FL63["Call deleteTagDirect with parameters"]
+    FL64["Return handled API result for deletion operation"]
+end
+
+subgraph deleteTagTool["delete-tag.js"]
+    deleteTagTool-Imports
+    deleteTagTool-FunctionsDefined
+    deleteTagTool-Exports
+    deleteTagTool-Constants
+    deleteTagTool-ExecutionFlow
+end
+
+%% EXPAND ALL TOOL
+subgraph expandAllTool-Imports["expandAllTool-Imports"]
+    I24["IMPORT: expandAllTasksDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph expandAllTool-FunctionsDefined["expandAllTool-Functions Defined"]
+    FU10["FUNCTION: registerExpandAllTool"]
+end
+
+subgraph expandAllTool-Exports["expandAllTool-Exports"]
+    E10["EXP: registerExpandAllTool"]
+end
+
+subgraph expandAllTool-Constants["expandAllTool-Constants"]
+    C20["CONST: result, VALUE: await expandAllTasksDirect"]
+end
+
+subgraph expandAllTool-ExecutionFlow["expandAllTool-Execution Flow"]
+    FL65["Register tool with server using name and description"]
+    FL66["Define parameter schema with expansion options"]
+    FL67["Log execution start"]
+    FL68["Resolve tag context for operation scope"]
+    FL69["Find and validate tasks.json file path"]
+    FL70["Call expandAllTasksDirect with parameters"]
+    FL71["Return handled API result for expansion operation"]
+end
+
+subgraph expandAllTool["expand-all.js"]
+    expandAllTool-Imports
+    expandAllTool-FunctionsDefined
+    expandAllTool-Exports
+    expandAllTool-Constants
+    expandAllTool-ExecutionFlow
 end
 
 %% EXPAND TASK TOOL
 subgraph expandTaskTool-Imports["expandTaskTool-Imports"]
-    I8["IMPORT: expandTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I25["IMPORT: expandTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
 end
 
 subgraph expandTaskTool-FunctionsDefined["expandTaskTool-Functions Defined"]
-    FU1["FUNCTION: registerExpandTaskTool"]
+    FU11["FUNCTION: registerExpandTaskTool"]
 end
 
 subgraph expandTaskTool-Exports["expandTaskTool-Exports"]
-    E1["EXP: registerExpandTaskTool"]
+    E11["EXP: registerExpandTaskTool"]
 end
 
 subgraph expandTaskTool-Constants["expandTaskTool-Constants"]
-    C4["CONST: result, VALUE: await expandTaskDirect"]
+    C21["CONST: result, VALUE: await expandTaskDirect"]
 end
 
 subgraph expandTaskTool-ExecutionFlow["expandTaskTool-Execution Flow"]
-    FL1["Register tool with server using name and description"]
-    FL2["Define parameter schema with task expansion options"]
-    FL3["Log execution start with provided arguments"]
-    FL4["Resolve tag context for operation scope"]
-    FL5["Find and validate tasks.json file path"]
-    FL6["Find complexity report path for analysis"]
-    FL7["Call expandTaskDirect with all parameters including session"]
-    FL8["Return handled API result for expansion success or failure"]
+    FL72["Register tool with server using name and description"]
+    FL73["Define parameter schema with task expansion options"]
+    FL74["Log execution start with provided arguments"]
+    FL75["Resolve tag context for operation scope"]
+    FL76["Find and validate tasks.json file path"]
+    FL77["Find complexity report path for analysis"]
+    FL78["Call expandTaskDirect with all parameters including session"]
+    FL79["Return handled API result for expansion success or failure"]
 end
 
 subgraph expandTaskTool["expand-task.js"]
@@ -71,42 +445,157 @@ subgraph expandTaskTool["expand-task.js"]
     expandTaskTool-ExecutionFlow
 end
 
+%% FIX DEPENDENCIES TOOL
+subgraph fixDependenciesTool-Imports["fixDependenciesTool-Imports"]
+    I26["IMPORT: fixDependenciesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph fixDependenciesTool-FunctionsDefined["fixDependenciesTool-Functions Defined"]
+    FU12["FUNCTION: registerFixDependenciesTool"]
+end
+
+subgraph fixDependenciesTool-Exports["fixDependenciesTool-Exports"]
+    E12["EXP: registerFixDependenciesTool"]
+end
+
+subgraph fixDependenciesTool-Constants["fixDependenciesTool-Constants"]
+    C22["CONST: result, VALUE: await fixDependenciesDirect"]
+end
+
+subgraph fixDependenciesTool-ExecutionFlow["fixDependenciesTool-Execution Flow"]
+    FL80["Register tool with server using name and description"]
+    FL81["Define parameter schema with dependency fixing options"]
+    FL82["Log execution start with provided arguments"]
+    FL83["Resolve tag context for operation scope"]
+    FL84["Find and validate tasks.json file path"]
+    FL85["Call fixDependenciesDirect with parameters"]
+    FL86["Log success or failure of dependency fixing"]
+    FL87["Return handled API result for fix operation"]
+end
+
+subgraph fixDependenciesTool["fix-dependencies.js"]
+    fixDependenciesTool-Imports
+    fixDependenciesTool-FunctionsDefined
+    fixDependenciesTool-Exports
+    fixDependenciesTool-Constants
+    fixDependenciesTool-ExecutionFlow
+end
+
+%% GENERATE TOOL
+subgraph generateTool-Imports["generateTool-Imports"]
+    I27["IMPORT: generateTaskFilesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph generateTool-FunctionsDefined["generateTool-Functions Defined"]
+    FU13["FUNCTION: registerGenerateTool"]
+end
+
+subgraph generateTool-Exports["generateTool-Exports"]
+    E13["EXP: registerGenerateTool"]
+end
+
+subgraph generateTool-Constants["generateTool-Constants"]
+    C23["CONST: result, VALUE: await generateTaskFilesDirect"]
+end
+
+subgraph generateTool-ExecutionFlow["generateTool-Execution Flow"]
+    FL88["Register tool with server using name and description"]
+    FL89["Define parameter schema with task file generation options"]
+    FL90["Log execution start with provided arguments"]
+    FL91["Resolve tag context for operation scope"]
+    FL92["Find and validate tasks.json file path"]
+    FL93["Calculate output directory from args or default to tasks file directory"]
+    FL94["Call generateTaskFilesDirect with parameters and session"]
+    FL95["Log success or failure of task file generation"]
+    FL96["Return handled API result for generation operation"]
+end
+
+subgraph generateTool["generate.js"]
+    generateTool-Imports
+    generateTool-FunctionsDefined
+    generateTool-Exports
+    generateTool-Constants
+    generateTool-ExecutionFlow
+end
+
+%% GET OPERATION STATUS TOOL
+subgraph getOperationStatusTool-Imports["getOperationStatusTool-Imports"]
+end
+
+subgraph getOperationStatusTool-FunctionsDefined["getOperationStatusTool-Functions Defined"]
+    FU14["FUNCTION: registerGetOperationStatusTool"]
+end
+
+subgraph getOperationStatusTool-Exports["getOperationStatusTool-Exports"]
+    E14["EXP: registerGetOperationStatusTool"]
+end
+
+subgraph getOperationStatusTool-Parameters["getOperationStatusTool-Parameters"]
+    P3["PARAM: {AsyncOperationManager} asyncManager - The async operation manager"]
+end
+
+subgraph getOperationStatusTool-Constants["getOperationStatusTool-Constants"]
+    C24["CONST: operationId, VALUE: args.operationId"]
+    C25["CONST: status, VALUE: asyncManager.getStatus result"]
+end
+
+subgraph getOperationStatusTool-ExecutionFlow["getOperationStatusTool-Execution Flow"]
+    FL97["Register tool with server using name and description"]
+    FL98["Define parameter schema with operation ID requirement"]
+    FL99["Extract operation ID from arguments"]
+    FL100["Log operation status check request"]
+    FL101["Get operation status from async manager"]
+    FL102["Check if operation was found"]
+    FL103["Return error response if operation not found"]
+    FL104["Return content response with operation status"]
+end
+
+subgraph getOperationStatusTool["get-operation-status.js"]
+    getOperationStatusTool-Imports
+    getOperationStatusTool-FunctionsDefined
+    getOperationStatusTool-Exports
+    getOperationStatusTool-Parameters
+    getOperationStatusTool-Constants
+    getOperationStatusTool-ExecutionFlow
+end
+
 %% GET TASK TOOL
 subgraph getTaskTool-Imports["getTaskTool-Imports"]
-    I9["IMPORT: showTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I28["IMPORT: showTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
 end
 
 subgraph getTaskTool-FunctionsDefined["getTaskTool-Functions Defined"]
-    FU2["FUNCTION: processTaskResponse"]
-    FU3["FUNCTION: registerShowTaskTool"]
+    FU15["FUNCTION: processTaskResponse"]
+    FU16["FUNCTION: registerShowTaskTool"]
 end
 
 subgraph getTaskTool-Exports["getTaskTool-Exports"]
-    E2["EXP: registerShowTaskTool"]
+    E15["EXP: registerShowTaskTool"]
 end
 
 subgraph getTaskTool-Parameters["getTaskTool-Parameters"]
-    P2["PARAM: {Object} data - The data returned from showTaskDirect"]
+    P4["PARAM: {Object} data - The data returned from showTaskDirect"]
 end
 
 subgraph getTaskTool-Constants["getTaskTool-Constants"]
-    C5["CONST: id, VALUE: args destructured property"]
-    C6["CONST: file, VALUE: args destructured property"]
-    C7["CONST: status, VALUE: args destructured property"]
-    C8["CONST: result, VALUE: await showTaskDirect"]
+    C26["CONST: id, VALUE: args destructured property"]
+    C27["CONST: file, VALUE: args destructured property"]
+    C28["CONST: status, VALUE: args destructured property"]
+    C29["CONST: projectRoot, VALUE: args destructured property"]
+    C30["CONST: result, VALUE: await showTaskDirect"]
 end
 
 subgraph getTaskTool-ExecutionFlow["getTaskTool-Execution Flow"]
-    FL9["Register tool with server using name and description"]
-    FL10["Define parameter schema with task retrieval options"]
-    FL11["Extract and destructure arguments"]
-    FL12["Log task details retrieval request"]
-    FL13["Resolve tag context for operation scope"]
-    FL14["Find and validate tasks.json file path"]
-    FL15["Find complexity report path if specified"]
-    FL16["Call showTaskDirect with all parameters and session"]
-    FL17["Log success or failure of task retrieval"]
-    FL18["Return handled API result with custom processor function"]
+    FL105["Register tool with server using name and description"]
+    FL106["Define parameter schema with task retrieval options"]
+    FL107["Extract and destructure arguments"]
+    FL108["Log task details retrieval request"]
+    FL109["Resolve tag context for operation scope"]
+    FL110["Find and validate tasks.json file path"]
+    FL111["Find complexity report path if specified"]
+    FL112["Call showTaskDirect with all parameters and session"]
+    FL113["Log success or failure of task retrieval"]
+    FL114["Return handled API result with custom processor function"]
 end
 
 subgraph getTaskTool["get-task.js"]
@@ -118,69 +607,245 @@ subgraph getTaskTool["get-task.js"]
     getTaskTool-ExecutionFlow
 end
 
-%% UPDATE SUBTASK TOOL
-subgraph updateSubtaskTool-Imports["updateSubtaskTool-Imports"]
-    I10["IMPORT: updateSubtaskByIdDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+%% GET TASKS TOOL
+subgraph getTasksTool-Imports["getTasksTool-Imports"]
+    I29["IMPORT: listTasksDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I30["IMPORT: resolveTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I31["IMPORT: resolveComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
 end
 
-subgraph updateSubtaskTool-FunctionsDefined["updateSubtaskTool-Functions Defined"]
-    FU4["FUNCTION: registerUpdateSubtaskTool"]
+subgraph getTasksTool-FunctionsDefined["getTasksTool-Functions Defined"]
+    FU17["FUNCTION: registerListTasksTool"]
 end
 
-subgraph updateSubtaskTool-Exports["updateSubtaskTool-Exports"]
-    E3["EXP: registerUpdateSubtaskTool"]
+subgraph getTasksTool-Exports["getTasksTool-Exports"]
+    E16["EXP: registerListTasksTool"]
 end
 
-subgraph updateSubtaskTool-Constants["updateSubtaskTool-Constants"]
-    C9["CONST: toolName, VALUE: 'update_subtask'"]
-    C10["CONST: result, VALUE: await updateSubtaskByIdDirect"]
+subgraph getTasksTool-Constants["getTasksTool-Constants"]
+    C31["CONST: tasksPath, VALUE: resolveTasksPath result"]
+    C32["CONST: reportPath, VALUE: resolveComplexityReportPath result"]
+    C33["CONST: result, VALUE: await listTasksDirect"]
 end
 
-subgraph updateSubtaskTool-ExecutionFlow["updateSubtaskTool-Execution Flow"]
-    FL19["Register tool with server using name and description"]
-    FL20["Define parameter schema with subtask ID format specification"]
-    FL21["Set tool name constant for error context"]
-    FL22["Resolve tag context for operation scope"]
-    FL23["Find and validate tasks.json file path"]
-    FL24["Call updateSubtaskByIdDirect with parameters including research flag"]
-    FL25["Log success with subtask ID or failure with error message"]
-    FL26["Return handled API result or error response with tool context"]
+subgraph getTasksTool-ExecutionFlow["getTasksTool-Execution Flow"]
+    FL115["Register tool with server using name and description"]
+    FL116["Define parameter schema with task listing options"]
+    FL117["Log task retrieval"]
+    FL118["Resolve tag context for operation scope"]
+    FL119["Resolve tasks path"]
+    FL120["Resolve complexity report path"]
+    FL121["Call listTasksDirect with parameters"]
+    FL122["Log task count"]
+    FL123["Return handled API result for listing operation"]
 end
 
-subgraph updateSubtaskTool["update-subtask.js"]
-    updateSubtaskTool-Imports
-    updateSubtaskTool-FunctionsDefined
-    updateSubtaskTool-Exports
-    updateSubtaskTool-Constants
-    updateSubtaskTool-ExecutionFlow
+subgraph getTasksTool["get-tasks.js"]
+    getTasksTool-Imports
+    getTasksTool-FunctionsDefined
+    getTasksTool-Exports
+    getTasksTool-Constants
+    getTasksTool-ExecutionFlow
+end
+
+%% INDEX TOOL (Registry)
+subgraph indexTool-FunctionsDefined["indexTool-Functions Defined"]
+    FU18["FUNCTION: registerTaskMasterTools"]
+end
+
+subgraph indexTool-Exports["indexTool-Exports"]
+    E17["EXP: default object with registerTaskMasterTools"]
+end
+
+subgraph indexTool-ExecutionFlow["indexTool-Execution Flow"]
+    FL124["Initialize try-catch error handling"]
+    FL125["Group 1: Register initialization tools"]
+    FL126["Group 2: Register task analysis tools"]
+    FL127["Group 3: Register task listing tools"]
+    FL128["Group 4: Register task status tools"]
+    FL129["Group 5: Register task creation tools"]
+    FL130["Group 6: Register dependency tools"]
+    FL131["Group 7: Register tag management tools"]
+    FL132["Group 8: Register research tools"]
+    FL133["Handle registration errors with logging"]
+end
+
+subgraph indexTool["index.js"]
+    indexTool-FunctionsDefined
+    indexTool-Exports
+    indexTool-ExecutionFlow
+end
+
+%% INITIALIZE PROJECT TOOL
+subgraph initializeProjectTool-Imports["initializeProjectTool-Imports"]
+    I32["IMPORT: initializeProjectDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I33["IMPORT: RULE_PROFILES, FROM: /claude-task-master/src/constants/profiles.js"]
+end
+
+subgraph initializeProjectTool-Dependencies["initializeProjectTool-Dependencies"]
+    D8["DEP: Shell configuration"]
+end
+
+subgraph initializeProjectTool-FunctionsDefined["initializeProjectTool-Functions Defined"]
+    FU19["FUNCTION: registerInitializeProjectTool"]
+end
+
+subgraph initializeProjectTool-Exports["initializeProjectTool-Exports"]
+    E18["EXP: registerInitializeProjectTool"]
+end
+
+subgraph initializeProjectTool-Constants["initializeProjectTool-Constants"]
+    C34["CONST: result, VALUE: await initializeProjectDirect"]
+    C35["CONST: errorMessage, VALUE: project initialization tool failed message"]
+end
+
+subgraph initializeProjectTool-ExecutionFlow["initializeProjectTool-Execution Flow"]
+    FL134["Register tool with server using name and description"]
+    FL135["Define parameter schema with project initialization options"]
+    FL136["Extract log and session from context"]
+    FL137["Log execution start with provided arguments"]
+    FL138["Call initializeProjectDirect with arguments and session"]
+    FL139["Return handled API result for initialization operation"]
+    FL140["Handle errors with detailed error response"]
+end
+
+subgraph initializeProjectTool["initialize-project.js"]
+    initializeProjectTool-Imports
+    initializeProjectTool-Dependencies
+    initializeProjectTool-FunctionsDefined
+    initializeProjectTool-Exports
+    initializeProjectTool-Constants
+    initializeProjectTool-ExecutionFlow
+end
+
+%% LIST TAGS TOOL
+subgraph listTagsTool-Imports["listTagsTool-Imports"]
+    I34["IMPORT: listTagsDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph listTagsTool-FunctionsDefined["listTagsTool-Functions Defined"]
+    FU20["FUNCTION: registerListTagsTool"]
+end
+
+subgraph listTagsTool-Exports["listTagsTool-Exports"]
+    E19["EXP: registerListTagsTool"]
+end
+
+subgraph listTagsTool-Constants["listTagsTool-Constants"]
+    C36["CONST: result, VALUE: await listTagsDirect"]
+end
+
+subgraph listTagsTool-ExecutionFlow["listTagsTool-Execution Flow"]
+    FL141["Register tool with server using name and description"]
+    FL142["Define parameter schema with tag listing options"]
+    FL143["Log execution start"]
+    FL144["Find and validate tasks.json file path"]
+    FL145["Call listTagsDirect with parameters"]
+    FL146["Return handled API result for listing operation"]
+end
+
+subgraph listTagsTool["list-tags.js"]
+    listTagsTool-Imports
+    listTagsTool-FunctionsDefined
+    listTagsTool-Exports
+    listTagsTool-Constants
+    listTagsTool-ExecutionFlow
+end
+
+%% MODELS TOOL
+subgraph modelsTool-Imports["modelsTool-Imports"]
+    I35["IMPORT: modelsDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph modelsTool-FunctionsDefined["modelsTool-Functions Defined"]
+    FU21["FUNCTION: registerModelsTool"]
+end
+
+subgraph modelsTool-Exports["modelsTool-Exports"]
+    E20["EXP: registerModelsTool"]
+end
+
+subgraph modelsTool-Constants["modelsTool-Constants"]
+    C37["CONST: result, VALUE: await modelsDirect"]
+end
+
+subgraph modelsTool-ExecutionFlow["modelsTool-Execution Flow"]
+    FL147["Register tool with server using name and description"]
+    FL148["Define parameter schema with model options"]
+    FL149["Log execution start"]
+    FL150["Call modelsDirect with parameters"]
+    FL151["Return handled API result for models operation"]
+end
+
+subgraph modelsTool["models.js"]
+    modelsTool-Imports
+    modelsTool-FunctionsDefined
+    modelsTool-Exports
+    modelsTool-Constants
+    modelsTool-ExecutionFlow
+end
+
+%% MOVE TASK TOOL
+subgraph moveTaskTool-Imports["moveTaskTool-Imports"]
+    I36["IMPORT: moveTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph moveTaskTool-FunctionsDefined["moveTaskTool-Functions Defined"]
+    FU22["FUNCTION: registerMoveTaskTool"]
+end
+
+subgraph moveTaskTool-Exports["moveTaskTool-Exports"]
+    E21["EXP: registerMoveTaskTool"]
+end
+
+subgraph moveTaskTool-Constants["moveTaskTool-Constants"]
+    C38["CONST: result, VALUE: await moveTaskDirect"]
+end
+
+subgraph moveTaskTool-ExecutionFlow["moveTaskTool-Execution Flow"]
+    FL152["Register tool with server using name and description"]
+    FL153["Define parameter schema with task moving options"]
+    FL154["Log execution start"]
+    FL155["Resolve tag context for operation scope"]
+    FL156["Find and validate tasks.json file path"]
+    FL157["Call moveTaskDirect with parameters"]
+    FL158["Return handled API result for move operation"]
+end
+
+subgraph moveTaskTool["move-task.js"]
+    moveTaskTool-Imports
+    moveTaskTool-FunctionsDefined
+    moveTaskTool-Exports
+    moveTaskTool-Constants
+    moveTaskTool-ExecutionFlow
 end
 
 %% NEXT TASK TOOL
 subgraph nextTaskTool-Imports["nextTaskTool-Imports"]
-    I11["IMPORT: nextTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I37["IMPORT: nextTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
 end
 
 subgraph nextTaskTool-FunctionsDefined["nextTaskTool-Functions Defined"]
-    FU5["FUNCTION: registerNextTaskTool"]
+    FU23["FUNCTION: registerNextTaskTool"]
 end
 
 subgraph nextTaskTool-Exports["nextTaskTool-Exports"]
-    E4["EXP: registerNextTaskTool"]
+    E22["EXP: registerNextTaskTool"]
 end
 
 subgraph nextTaskTool-Constants["nextTaskTool-Constants"]
-    C11["CONST: result, VALUE: await nextTaskDirect"]
+    C39["CONST: result, VALUE: await nextTaskDirect"]
 end
 
 subgraph nextTaskTool-ExecutionFlow["nextTaskTool-Execution Flow"]
-    FL27["Register tool with server using name and description"]
-    FL28["Define parameter schema with next task options"]
-    FL29["Log execution start with provided arguments"]
-    FL30["Resolve tag context for operation scope"]
-    FL31["Find and validate tasks.json file path"]
-    FL32["Find complexity report path for task analysis"]
-    FL33["Call nextTaskDirect with all parameters and session context"]
-    FL34["Return handled API result for next task success or failure"]
+    FL159["Register tool with server using name and description"]
+    FL160["Define parameter schema with next task options"]
+    FL161["Log execution start with provided arguments"]
+    FL162["Resolve tag context for operation scope"]
+    FL163["Find and validate tasks.json file path"]
+    FL164["Find complexity report path for task analysis"]
+    FL165["Call nextTaskDirect with all parameters and session context"]
+    FL166["Return handled API result for next task success or failure"]
 end
 
 subgraph nextTaskTool["next-task.js"]
@@ -191,31 +856,376 @@ subgraph nextTaskTool["next-task.js"]
     nextTaskTool-ExecutionFlow
 end
 
+%% PARSE PRD TOOL
+subgraph parsePRDTool-Imports["parsePRDTool-Imports"]
+    I38["IMPORT: parsePRDDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph parsePRDTool-FunctionsDefined["parsePRDTool-Functions Defined"]
+    FU24["FUNCTION: registerParsePRDTool"]
+end
+
+subgraph parsePRDTool-Exports["parsePRDTool-Exports"]
+    E23["EXP: registerParsePRDTool"]
+end
+
+subgraph parsePRDTool-Constants["parsePRDTool-Constants"]
+    C40["CONST: result, VALUE: await parsePRDDirect"]
+end
+
+subgraph parsePRDTool-ExecutionFlow["parsePRDTool-Execution Flow"]
+    FL167["Register tool with server using name and description"]
+    FL168["Define parameter schema with PRD parsing options"]
+    FL169["Log execution start"]
+    FL170["Resolve tag context for operation scope"]
+    FL171["Find and validate tasks.json file path"]
+    FL172["Call parsePRDDirect with parameters"]
+    FL173["Return handled API result for parsing operation"]
+end
+
+subgraph parsePRDTool["parse-prd.js"]
+    parsePRDTool-Imports
+    parsePRDTool-FunctionsDefined
+    parsePRDTool-Exports
+    parsePRDTool-Constants
+    parsePRDTool-ExecutionFlow
+end
+
+%% REMOVE DEPENDENCY TOOL
+subgraph removeDependencyTool-Imports["removeDependencyTool-Imports"]
+    I39["IMPORT: removeDependencyDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph removeDependencyTool-FunctionsDefined["removeDependencyTool-Functions Defined"]
+    FU25["FUNCTION: registerRemoveDependencyTool"]
+end
+
+subgraph removeDependencyTool-Exports["removeDependencyTool-Exports"]
+    E24["EXP: registerRemoveDependencyTool"]
+end
+
+subgraph removeDependencyTool-Constants["removeDependencyTool-Constants"]
+    C41["CONST: result, VALUE: await removeDependencyDirect"]
+end
+
+subgraph removeDependencyTool-ExecutionFlow["removeDependencyTool-Execution Flow"]
+    FL174["Register tool with server using name and description"]
+    FL175["Define parameter schema with dependency removal options"]
+    FL176["Log execution start"]
+    FL177["Resolve tag context for operation scope"]
+    FL178["Find and validate tasks.json file path"]
+    FL179["Call removeDependencyDirect with parameters"]
+    FL180["Return handled API result for removal operation"]
+end
+
+subgraph removeDependencyTool["remove-dependency.js"]
+    removeDependencyTool-Imports
+    removeDependencyTool-FunctionsDefined
+    removeDependencyTool-Exports
+    removeDependencyTool-Constants
+    removeDependencyTool-ExecutionFlow
+end
+
+%% REMOVE SUBTASK TOOL
+subgraph removeSubtaskTool-Imports["removeSubtaskTool-Imports"]
+    I40["IMPORT: removeSubtaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph removeSubtaskTool-FunctionsDefined["removeSubtaskTool-Functions Defined"]
+    FU26["FUNCTION: registerRemoveSubtaskTool"]
+end
+
+subgraph removeSubtaskTool-Exports["removeSubtaskTool-Exports"]
+    E25["EXP: registerRemoveSubtaskTool"]
+end
+
+subgraph removeSubtaskTool-Constants["removeSubtaskTool-Constants"]
+    C42["CONST: result, VALUE: await removeSubtaskDirect"]
+end
+
+subgraph removeSubtaskTool-ExecutionFlow["removeSubtaskTool-Execution Flow"]
+    FL181["Register tool with server using name and description"]
+    FL182["Define parameter schema with subtask removal options"]
+    FL183["Log execution start"]
+    FL184["Resolve tag context for operation scope"]
+    FL185["Find and validate tasks.json file path"]
+    FL186["Call removeSubtaskDirect with parameters"]
+    FL187["Return handled API result for removal operation"]
+end
+
+subgraph removeSubtaskTool["remove-subtask.js"]
+    removeSubtaskTool-Imports
+    removeSubtaskTool-FunctionsDefined
+    removeSubtaskTool-Exports
+    removeSubtaskTool-Constants
+    removeSubtaskTool-ExecutionFlow
+end
+
+%% REMOVE TASK TOOL
+subgraph removeTaskTool-Imports["removeTaskTool-Imports"]
+    I41["IMPORT: removeTaskDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph removeTaskTool-FunctionsDefined["removeTaskTool-Functions Defined"]
+    FU27["FUNCTION: registerRemoveTaskTool"]
+end
+
+subgraph removeTaskTool-Exports["removeTaskTool-Exports"]
+    E26["EXP: registerRemoveTaskTool"]
+end
+
+subgraph removeTaskTool-Constants["removeTaskTool-Constants"]
+    C43["CONST: result, VALUE: await removeTaskDirect"]
+end
+
+subgraph removeTaskTool-ExecutionFlow["removeTaskTool-Execution Flow"]
+    FL188["Register tool with server using name and description"]
+    FL189["Define parameter schema with task removal options"]
+    FL190["Log execution start"]
+    FL191["Resolve tag context for operation scope"]
+    FL192["Find and validate tasks.json file path"]
+    FL193["Call removeTaskDirect with parameters"]
+    FL194["Return handled API result for removal operation"]
+end
+
+subgraph removeTaskTool["remove-task.js"]
+    removeTaskTool-Imports
+    removeTaskTool-FunctionsDefined
+    removeTaskTool-Exports
+    removeTaskTool-Constants
+    removeTaskTool-ExecutionFlow
+end
+
+%% RENAME TAG TOOL
+subgraph renameTagTool-Imports["renameTagTool-Imports"]
+    I42["IMPORT: renameTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph renameTagTool-FunctionsDefined["renameTagTool-Functions Defined"]
+    FU28["FUNCTION: registerRenameTagTool"]
+end
+
+subgraph renameTagTool-Exports["renameTagTool-Exports"]
+    E27["EXP: registerRenameTagTool"]
+end
+
+subgraph renameTagTool-Constants["renameTagTool-Constants"]
+    C44["CONST: result, VALUE: await renameTagDirect"]
+end
+
+subgraph renameTagTool-ExecutionFlow["renameTagTool-Execution Flow"]
+    FL195["Register tool with server using name and description"]
+    FL196["Define parameter schema with tag renaming options"]
+    FL197["Log execution start"]
+    FL198["Find and validate tasks.json file path"]
+    FL199["Call renameTagDirect with parameters"]
+    FL200["Return handled API result for renaming operation"]
+end
+
+subgraph renameTagTool["rename-tag.js"]
+    renameTagTool-Imports
+    renameTagTool-FunctionsDefined
+    renameTagTool-Exports
+    renameTagTool-Constants
+    renameTagTool-ExecutionFlow
+end
+
+%% RESEARCH TOOL
+subgraph researchTool-Imports["researchTool-Imports"]
+    I43["IMPORT: researchDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph researchTool-FunctionsDefined["researchTool-Functions Defined"]
+    FU29["FUNCTION: registerResearchTool"]
+end
+
+subgraph researchTool-Exports["researchTool-Exports"]
+    E28["EXP: registerResearchTool"]
+end
+
+subgraph researchTool-Constants["researchTool-Constants"]
+    C45["CONST: result, VALUE: await researchDirect"]
+end
+
+subgraph researchTool-ExecutionFlow["researchTool-Execution Flow"]
+    FL201["Register tool with server using name and description"]
+    FL202["Define parameter schema with research options"]
+    FL203["Log execution start"]
+    FL204["Resolve tag context for operation scope"]
+    FL205["Find and validate tasks.json file path"]
+    FL206["Call researchDirect with parameters"]
+    FL207["Return handled API result for research operation"]
+end
+
+subgraph researchTool["research.js"]
+    researchTool-Imports
+    researchTool-FunctionsDefined
+    researchTool-Exports
+    researchTool-Constants
+    researchTool-ExecutionFlow
+end
+
+%% RESPONSE LANGUAGE TOOL
+subgraph responseLanguageTool-Imports["responseLanguageTool-Imports"]
+    I44["IMPORT: responseLanguageDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph responseLanguageTool-FunctionsDefined["responseLanguageTool-Functions Defined"]
+    FU30["FUNCTION: registerResponseLanguageTool"]
+end
+
+subgraph responseLanguageTool-Exports["responseLanguageTool-Exports"]
+    E29["EXP: registerResponseLanguageTool"]
+end
+
+subgraph responseLanguageTool-Constants["responseLanguageTool-Constants"]
+    C46["CONST: result, VALUE: await responseLanguageDirect"]
+end
+
+subgraph responseLanguageTool-ExecutionFlow["responseLanguageTool-Execution Flow"]
+    FL208["Register tool with server using name and description"]
+    FL209["Define parameter schema with language options"]
+    FL210["Log execution start"]
+    FL211["Call responseLanguageDirect with parameters"]
+    FL212["Return handled API result for language operation"]
+end
+
+subgraph responseLanguageTool["response-language.js"]
+    responseLanguageTool-Imports
+    responseLanguageTool-FunctionsDefined
+    responseLanguageTool-Exports
+    responseLanguageTool-Constants
+    responseLanguageTool-ExecutionFlow
+end
+
+%% RULES TOOL
+subgraph rulesTool-Imports["rulesTool-Imports"]
+    I45["IMPORT: rulesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph rulesTool-FunctionsDefined["rulesTool-Functions Defined"]
+    FU31["FUNCTION: registerRulesTool"]
+end
+
+subgraph rulesTool-Exports["rulesTool-Exports"]
+    E30["EXP: registerRulesTool"]
+end
+
+subgraph rulesTool-Constants["rulesTool-Constants"]
+    C47["CONST: result, VALUE: await rulesDirect"]
+end
+
+subgraph rulesTool-ExecutionFlow["rulesTool-Execution Flow"]
+    FL213["Register tool with server using name and description"]
+    FL214["Define parameter schema with rules options"]
+    FL215["Log execution start"]
+    FL216["Call rulesDirect with parameters"]
+    FL217["Return handled API result for rules operation"]
+end
+
+subgraph rulesTool["rules.js"]
+    rulesTool-Imports
+    rulesTool-FunctionsDefined
+    rulesTool-Exports
+    rulesTool-Constants
+    rulesTool-ExecutionFlow
+end
+
+%% SCOPE DOWN TOOL
+subgraph scopeDownTool-Imports["scopeDownTool-Imports"]
+    I46["IMPORT: scopeDownDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph scopeDownTool-FunctionsDefined["scopeDownTool-Functions Defined"]
+    FU32["FUNCTION: registerScopeDownTool"]
+end
+
+subgraph scopeDownTool-Exports["scopeDownTool-Exports"]
+    E31["EXP: registerScopeDownTool"]
+end
+
+subgraph scopeDownTool-Constants["scopeDownTool-Constants"]
+    C48["CONST: result, VALUE: await scopeDownDirect"]
+end
+
+subgraph scopeDownTool-ExecutionFlow["scopeDownTool-Execution Flow"]
+    FL218["Register tool with server using name and description"]
+    FL219["Define parameter schema with scope down options"]
+    FL220["Log execution start"]
+    FL221["Resolve tag context for operation scope"]
+    FL222["Find and validate tasks.json file path"]
+    FL223["Call scopeDownDirect with parameters"]
+    FL224["Return handled API result for scope down operation"]
+end
+
+subgraph scopeDownTool["scope-down.js"]
+    scopeDownTool-Imports
+    scopeDownTool-FunctionsDefined
+    scopeDownTool-Exports
+    scopeDownTool-Constants
+    scopeDownTool-ExecutionFlow
+end
+
+%% SCOPE UP TOOL
+subgraph scopeUpTool-Imports["scopeUpTool-Imports"]
+    I47["IMPORT: scopeUpDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph scopeUpTool-FunctionsDefined["scopeUpTool-Functions Defined"]
+    FU33["FUNCTION: registerScopeUpTool"]
+end
+
+subgraph scopeUpTool-Exports["scopeUpTool-Exports"]
+    E32["EXP: registerScopeUpTool"]
+end
+
+subgraph scopeUpTool-Constants["scopeUpTool-Constants"]
+    C49["CONST: result, VALUE: await scopeUpDirect"]
+end
+
+subgraph scopeUpTool-ExecutionFlow["scopeUpTool-Execution Flow"]
+    FL225["Register tool with server using name and description"]
+    FL226["Define parameter schema with scope up options"]
+    FL227["Log execution start"]
+    FL228["Resolve tag context for operation scope"]
+    FL229["Find and validate tasks.json file path"]
+    FL230["Call scopeUpDirect with parameters"]
+    FL231["Return handled API result for scope up operation"]
+end
+
+subgraph scopeUpTool["scope-up.js"]
+    scopeUpTool-Imports
+    scopeUpTool-FunctionsDefined
+    scopeUpTool-Exports
+    scopeUpTool-Constants
+    scopeUpTool-ExecutionFlow
+end
+
 %% SET TASK STATUS TOOL
 subgraph setTaskStatusTool-Imports["setTaskStatusTool-Imports"]
-    I12["IMPORT: setTaskStatusDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+    I48["IMPORT: setTaskStatusDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
 end
 
 subgraph setTaskStatusTool-FunctionsDefined["setTaskStatusTool-Functions Defined"]
-    FU6["FUNCTION: registerSetTaskStatusTool"]
+    FU34["FUNCTION: registerSetTaskStatusTool"]
 end
 
 subgraph setTaskStatusTool-Exports["setTaskStatusTool-Exports"]
-    E5["EXP: registerSetTaskStatusTool"]
+    E33["EXP: registerSetTaskStatusTool"]
 end
 
 subgraph setTaskStatusTool-Constants["setTaskStatusTool-Constants"]
-    C12["CONST: result, VALUE: await setTaskStatusDirect"]
+    C50["CONST: result, VALUE: await setTaskStatusDirect"]
 end
 
 subgraph setTaskStatusTool-ExecutionFlow["setTaskStatusTool-Execution Flow"]
-    FL35["Register tool with server using name and description"]
-    FL36["Define parameter schema with status change options"]
-    FL37["Log execution start with provided arguments"]
-    FL38["Resolve tag context for operation scope"]
-    FL39["Find and validate tasks.json file path"]
-    FL40["Call setTaskStatusDirect with all parameters and session context"]
-    FL41["Return handled API result for status change success or failure"]
+    FL232["Register tool with server using name and description"]
+    FL233["Define parameter schema with status change options"]
+    FL234["Log execution start with provided arguments"]
+    FL235["Resolve tag context for operation scope"]
+    FL236["Find and validate tasks.json file path"]
+    FL237["Call setTaskStatusDirect with all parameters and session context"]
+    FL238["Return handled API result for status change success or failure"]
 end
 
 subgraph setTaskStatusTool["set-task-status.js"]
@@ -226,56 +1236,268 @@ subgraph setTaskStatusTool["set-task-status.js"]
     setTaskStatusTool-ExecutionFlow
 end
 
+%% UPDATE SUBTASK TOOL
+subgraph updateSubtaskTool-Imports["updateSubtaskTool-Imports"]
+    I49["IMPORT: updateSubtaskByIdDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph updateSubtaskTool-Dependencies["updateSubtaskTool-Dependencies"]
+    D9["DEP: Perplexity AI"]
+end
+
+subgraph updateSubtaskTool-FunctionsDefined["updateSubtaskTool-Functions Defined"]
+    FU35["FUNCTION: registerUpdateSubtaskTool"]
+end
+
+subgraph updateSubtaskTool-Exports["updateSubtaskTool-Exports"]
+    E34["EXP: registerUpdateSubtaskTool"]
+end
+
+subgraph updateSubtaskTool-Constants["updateSubtaskTool-Constants"]
+    C51["CONST: toolName, VALUE: 'update_subtask'"]
+    C52["CONST: result, VALUE: await updateSubtaskByIdDirect"]
+end
+
+subgraph updateSubtaskTool-ExecutionFlow["updateSubtaskTool-Execution Flow"]
+    FL239["Register tool with server using name and description"]
+    FL240["Define parameter schema with subtask ID format specification"]
+    FL241["Set tool name constant for error context"]
+    FL242["Resolve tag context for operation scope"]
+    FL243["Find and validate tasks.json file path"]
+    FL244["Call updateSubtaskByIdDirect with parameters including research flag"]
+    FL245["Log success with subtask ID or failure with error message"]
+    FL246["Return handled API result or error response with tool context"]
+end
+
+subgraph updateSubtaskTool["update-subtask.js"]
+    updateSubtaskTool-Imports
+    updateSubtaskTool-Dependencies
+    updateSubtaskTool-FunctionsDefined
+    updateSubtaskTool-Exports
+    updateSubtaskTool-Constants
+    updateSubtaskTool-ExecutionFlow
+end
+
+%% UPDATE TASK TOOL
+subgraph updateTaskTool-Imports["updateTaskTool-Imports"]
+    I50["IMPORT: updateTaskByIdDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph updateTaskTool-FunctionsDefined["updateTaskTool-Functions Defined"]
+    FU36["FUNCTION: registerUpdateTaskTool"]
+end
+
+subgraph updateTaskTool-Exports["updateTaskTool-Exports"]
+    E35["EXP: registerUpdateTaskTool"]
+end
+
+subgraph updateTaskTool-Constants["updateTaskTool-Constants"]
+    C53["CONST: result, VALUE: await updateTaskByIdDirect"]
+end
+
+subgraph updateTaskTool-ExecutionFlow["updateTaskTool-Execution Flow"]
+    FL247["Register tool with server using name and description"]
+    FL248["Define parameter schema with task update options"]
+    FL249["Log execution start"]
+    FL250["Resolve tag context for operation scope"]
+    FL251["Find and validate tasks.json file path"]
+    FL252["Call updateTaskByIdDirect with parameters"]
+    FL253["Return handled API result for update operation"]
+end
+
+subgraph updateTaskTool["update-task.js"]
+    updateTaskTool-Imports
+    updateTaskTool-FunctionsDefined
+    updateTaskTool-Exports
+    updateTaskTool-Constants
+    updateTaskTool-ExecutionFlow
+end
+
+%% UPDATE TOOL
+subgraph updateTool-Imports["updateTool-Imports"]
+    I51["IMPORT: updateDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph updateTool-FunctionsDefined["updateTool-Functions Defined"]
+    FU37["FUNCTION: registerUpdateTool"]
+end
+
+subgraph updateTool-Exports["updateTool-Exports"]
+    E36["EXP: registerUpdateTool"]
+end
+
+subgraph updateTool-Constants["updateTool-Constants"]
+    C54["CONST: result, VALUE: await updateDirect"]
+end
+
+subgraph updateTool-ExecutionFlow["updateTool-Execution Flow"]
+    FL254["Register tool with server using name and description"]
+    FL255["Define parameter schema with update options"]
+    FL256["Log execution start"]
+    FL257["Resolve tag context for operation scope"]
+    FL258["Find and validate tasks.json file path"]
+    FL259["Call updateDirect with parameters"]
+    FL260["Return handled API result for update operation"]
+end
+
+subgraph updateTool["update.js"]
+    updateTool-Imports
+    updateTool-FunctionsDefined
+    updateTool-Exports
+    updateTool-Constants
+    updateTool-ExecutionFlow
+end
+
+%% USE TAG TOOL
+subgraph useTagTool-Imports["useTagTool-Imports"]
+    I52["IMPORT: useTagDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph useTagTool-FunctionsDefined["useTagTool-Functions Defined"]
+    FU38["FUNCTION: registerUseTagTool"]
+end
+
+subgraph useTagTool-Exports["useTagTool-Exports"]
+    E37["EXP: registerUseTagTool"]
+end
+
+subgraph useTagTool-Constants["useTagTool-Constants"]
+    C55["CONST: result, VALUE: await useTagDirect"]
+end
+
+subgraph useTagTool-ExecutionFlow["useTagTool-Execution Flow"]
+    FL261["Register tool with server using name and description"]
+    FL262["Define parameter schema with tag usage options"]
+    FL263["Log execution start"]
+    FL264["Find and validate tasks.json file path"]
+    FL265["Call useTagDirect with parameters"]
+    FL266["Return handled API result for tag usage operation"]
+end
+
+subgraph useTagTool["use-tag.js"]
+    useTagTool-Imports
+    useTagTool-FunctionsDefined
+    useTagTool-Exports
+    useTagTool-Constants
+    useTagTool-ExecutionFlow
+end
+
+%% UTILS TOOL
+subgraph utilsTool-Imports["utilsTool-Imports"]
+    I53["IMPORT: logger, FROM: /claude-task-master/mcp-server/src/logger.js"]
+end
+
+subgraph utilsTool-FunctionsDefined["utilsTool-Functions Defined"]
+    FU39["FUNCTION: createErrorResponse"]
+    FU40["FUNCTION: createContentResponse"]
+    FU41["FUNCTION: handleApiResult"]
+    FU42["FUNCTION: withNormalizedProjectRoot"]
+end
+
+subgraph utilsTool-Exports["utilsTool-Exports"]
+    E38["EXP: createErrorResponse"]
+    E39["EXP: createContentResponse"]
+    E40["EXP: handleApiResult"]
+    E41["EXP: withNormalizedProjectRoot"]
+end
+
+subgraph utilsTool-Constants["utilsTool-Constants"]
+    C56["CONST: normalizedProjectRoot, VALUE: path.resolve(projectRoot)"]
+end
+
+subgraph utilsTool-ExecutionFlow["utilsTool-Execution Flow"]
+    FL267["Provide error response creation utility"]
+    FL268["Provide content response creation utility"]
+    FL269["Provide API result handling with logging"]
+    FL270["Provide project root normalization wrapper"]
+end
+
+subgraph utilsTool["utils.js"]
+    utilsTool-Imports
+    utilsTool-FunctionsDefined
+    utilsTool-Exports
+    utilsTool-Constants
+    utilsTool-ExecutionFlow
+end
+
+%% VALIDATE DEPENDENCIES TOOL
+subgraph validateDependenciesTool-Imports["validateDependenciesTool-Imports"]
+    I54["IMPORT: validateDependenciesDirect, FROM: /claude-task-master/mcp-server/src/core/task-master-core.js"]
+end
+
+subgraph validateDependenciesTool-FunctionsDefined["validateDependenciesTool-Functions Defined"]
+    FU43["FUNCTION: registerValidateDependenciesTool"]
+end
+
+subgraph validateDependenciesTool-Exports["validateDependenciesTool-Exports"]
+    E42["EXP: registerValidateDependenciesTool"]
+end
+
+subgraph validateDependenciesTool-Constants["validateDependenciesTool-Constants"]
+    C57["CONST: result, VALUE: await validateDependenciesDirect"]
+end
+
+subgraph validateDependenciesTool-ExecutionFlow["validateDependenciesTool-Execution Flow"]
+    FL271["Register tool with server using name and description"]
+    FL272["Define parameter schema with validation options"]
+    FL273["Log execution start"]
+    FL274["Resolve tag context for operation scope"]
+    FL275["Find and validate tasks.json file path"]
+    FL276["Call validateDependenciesDirect with parameters"]
+    FL277["Return handled API result for validation operation"]
+end
+
+subgraph validateDependenciesTool["validate-dependencies.js"]
+    validateDependenciesTool-Imports
+    validateDependenciesTool-FunctionsDefined
+    validateDependenciesTool-Exports
+    validateDependenciesTool-Constants
+    validateDependenciesTool-ExecutionFlow
+end
+
 %% RELATIONSHIP ARROWS - ProjectOverlord to individual files
-I1 & I2 & I3 & I4 --> expandTaskTool-Imports & getTaskTool-Imports & updateSubtaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
-I5 & I6 --> expandTaskTool-Imports & getTaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
-I7 --> expandTaskTool-Imports & getTaskTool-Imports & updateSubtaskTool-Imports & nextTaskTool-Imports & setTaskStatusTool-Imports
-D1 & D2 & D3 --> expandTaskTool-Dependencies & getTaskTool-Dependencies & updateSubtaskTool-Dependencies & nextTaskTool-Dependencies & setTaskStatusTool-Dependencies
-P1 --> expandTaskTool-Parameters & getTaskTool-Parameters & updateSubtaskTool-Parameters & nextTaskTool-Parameters & setTaskStatusTool-Parameters
-C1 & C2 & C3 --> expandTaskTool-Constants & getTaskTool-Constants & updateSubtaskTool-Constants & nextTaskTool-Constants & setTaskStatusTool-Constants
+I1 & I2 & I3 & I4 --> addDependencyTool-Imports & addSubtaskTool-Imports & addTagTool-Imports & addTaskTool-Imports & clearSubtasksTool-Imports & copyTagTool-Imports & deleteTagTool-Imports & expandAllTool-Imports & expandTaskTool-Imports & fixDependenciesTool-Imports & generateTool-Imports & getTaskTool-Imports & listTagsTool-Imports & modelsTool-Imports & moveTaskTool-Imports & nextTaskTool-Imports & parsePRDTool-Imports & removeDependencyTool-Imports & removeSubtaskTool-Imports & removeTaskTool-Imports & renameTagTool-Imports & researchTool-Imports & responseLanguageTool-Imports & rulesTool-Imports & scopeDownTool-Imports & scopeUpTool-Imports & setTaskStatusTool-Imports & updateSubtaskTool-Imports & updateTaskTool-Imports & updateTool-Imports & useTagTool-Imports & validateDependenciesTool-Imports
 
-%% EXECUTION FLOW CONNECTIONS - expandTaskTool
-FL1 --> FL2
-FL2 --> FL3
-FL3 --> FL4
-FL4 --> FL5
-FL5 --> FL6
-FL6 --> FL7
-FL7 --> FL8
+I5 --> getOperationStatusTool-Imports
 
-%% EXECUTION FLOW CONNECTIONS - getTaskTool
-FL9 --> FL10
-FL10 --> FL11
-FL11 --> FL12
-FL12 --> FL13
-FL13 --> FL14
-FL14 --> FL15
-FL15 --> FL16
-FL16 --> FL17
-FL17 --> FL18
+I6 & I7 --> analyzeTool-Imports & expandTaskTool-Imports & getTaskTool-Imports & getTasksTool-Imports & nextTaskTool-Imports
 
-%% EXECUTION FLOW CONNECTIONS - updateSubtaskTool
-FL19 --> FL20
-FL20 --> FL21
-FL21 --> FL22
-FL22 --> FL23
-FL23 --> FL24
-FL24 --> FL25
-FL25 --> FL26
+I8 --> addDependencyTool-Imports & addSubtaskTool-Imports & addTaskTool-Imports & analyzeTool-Imports & clearSubtasksTool-Imports & expandAllTool-Imports & expandTaskTool-Imports & fixDependenciesTool-Imports & generateTool-Imports & getTaskTool-Imports & getTasksTool-Imports & moveTaskTool-Imports & nextTaskTool-Imports & parsePRDTool-Imports & removeDependencyTool-Imports & removeSubtaskTool-Imports & removeTaskTool-Imports & researchTool-Imports & scopeDownTool-Imports & scopeUpTool-Imports & setTaskStatusTool-Imports & updateSubtaskTool-Imports & updateTaskTool-Imports & updateTool-Imports
 
-%% EXECUTION FLOW CONNECTIONS - nextTaskTool
-FL27 --> FL28
-FL28 --> FL29
-FL29 --> FL30
-FL30 --> FL31
-FL31 --> FL32
-FL32 --> FL33
-FL33 --> FL34
+I9 --> analyzeTool-Imports & generateTool-Imports
 
-%% EXECUTION FLOW CONNECTIONS - setTaskStatusTool
-FL35 --> FL36
-FL36 --> FL37
-FL37 --> FL38
-FL38 --> FL39
-FL39 --> FL40
-FL40 --> FL41
+D1 & D2 & D3 --> addDependencyTool-Dependencies & addSubtaskTool-Dependencies & addTagTool-Dependencies & addTaskTool-Dependencies & clearSubtasksTool-Dependencies & copyTagTool-Dependencies & deleteTagTool-Dependencies & expandAllTool-Dependencies & expandTaskTool-Dependencies & fixDependenciesTool-Dependencies & generateTool-Dependencies & getTaskTool-Dependencies & getTasksTool-Dependencies & listTagsTool-Dependencies & modelsTool-Dependencies & moveTaskTool-Dependencies & nextTaskTool-Dependencies & parsePRDTool-Dependencies & removeDependencyTool-Dependencies & removeSubtaskTool-Dependencies & removeTaskTool-Dependencies & renameTagTool-Dependencies & researchTool-Dependencies & responseLanguageTool-Dependencies & rulesTool-Dependencies & scopeDownTool-Dependencies & scopeUpTool-Dependencies & setTaskStatusTool-Dependencies & updateSubtaskTool-Dependencies & updateTaskTool-Dependencies & updateTool-Dependencies & useTagTool-Dependencies & validateDependenciesTool-Dependencies
+
+D4 --> analyzeTool-Dependencies & generateTool-Dependencies
+
+D5 --> addTagTool-Dependencies & initializeProjectTool-Dependencies
+
+D6 --> getOperationStatusTool-Dependencies
+
+D7 --> analyzeTool-Dependencies
+
+D8 --> initializeProjectTool-Dependencies
+
+D9 --> updateSubtaskTool-Dependencies
+
+P1 --> addDependencyTool-Parameters & addSubtaskTool-Parameters & addTagTool-Parameters & addTaskTool-Parameters & analyzeTool-Parameters & clearSubtasksTool-Parameters & complexityReportTool-Parameters & copyTagTool-Parameters & deleteTagTool-Parameters & expandAllTool-Parameters & expandTaskTool-Parameters & fixDependenciesTool-Parameters & generateTool-Parameters & getTaskTool-Parameters & getTasksTool-Parameters & initializeProjectTool-Parameters & listTagsTool-Parameters & modelsTool-Parameters & moveTaskTool-Parameters & nextTaskTool-Parameters & parsePRDTool-Parameters & removeDependencyTool-Parameters & removeSubtaskTool-Parameters & removeTaskTool-Parameters & renameTagTool-Parameters & researchTool-Parameters & responseLanguageTool-Parameters & rulesTool-Parameters & scopeDownTool-Parameters & scopeUpTool-Parameters & setTaskStatusTool-Parameters & updateSubtaskTool-Parameters & updateTaskTool-Parameters & updateTool-Parameters & useTagTool-Parameters & validateDependenciesTool-Parameters
+
+P2 --> getOperationStatusTool-Parameters
+
+C1 & C2 & C3 --> addDependencyTool-Constants & addSubtaskTool-Constants & addTaskTool-Constants & analyzeTool-Constants & clearSubtasksTool-Constants & expandAllTool-Constants & expandTaskTool-Constants & fixDependenciesTool-Constants & generateTool-Constants & getTaskTool-Constants & getTasksTool-Constants & moveTaskTool-Constants & nextTaskTool-Constants & parsePRDTool-Constants & removeDependencyTool-Constants & removeSubtaskTool-Constants & removeTaskTool-Constants & researchTool-Constants & scopeDownTool-Constants & scopeUpTool-Constants & setTaskStatusTool-Constants & updateSubtaskTool-Constants & updateTaskTool-Constants & updateTool-Constants
+
+C4 --> analyzeTool-Constants & generateTool-Constants
+
+C5 & C6 --> initializeProjectTool-Constants
+
+%% EXECUTION FLOW CONNECTIONS - Sample key flows (abbreviated for clarity)
+FL1 --> FL2 --> FL3 --> FL4 --> FL5 --> FL6 --> FL7
+FL8 --> FL9 --> FL10 --> FL11 --> FL12 --> FL13 --> FL14
+FL15 --> FL16 --> FL17 --> FL18 --> FL19 --> FL20
+FL21 --> FL22 --> FL23 --> FL24 --> FL25 --> FL26 --> FL27
+FL28 --> FL29 --> FL30 --> FL31 --> FL32 --> FL33 --> FL34 --> FL35 --> FL36 --> FL37
+FL72 --> FL73 --> FL74 --> FL75 --> FL76 --> FL77 --> FL78 --> FL79
+FL105 --> FL106 --> FL107 --> FL108 --> FL109 --> FL110 --> FL111 --> FL112 --> FL113 --> FL114
+FL159 --> FL160 --> FL161 --> FL162 --> FL163 --> FL164 --> FL165 --> FL166
+FL232 --> FL233 --> FL234 --> FL235 --> FL236 --> FL237 --> FL238
+FL239 --> FL240 --> FL241 --> FL242 --> FL243 --> FL244 --> FL245 --> FL246
