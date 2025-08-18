@@ -38,18 +38,14 @@ import {
 // Import provider classes
 import {
 	AnthropicAIProvider,
-	AzureProvider,
-	BedrockAIProvider,
 	ClaudeCodeProvider,
 	GeminiCliProvider,
 	GoogleAIProvider,
-	GroqProvider,
 	OllamaAIProvider,
 	OpenAIProvider,
 	OpenRouterAIProvider,
 	PerplexityAIProvider,
-	VertexAIProvider,
-	XAIProvider
+	VertexAIProvider
 } from '../../src/ai-providers/index.js';
 
 // Import the provider registry
@@ -61,12 +57,8 @@ const PROVIDERS = {
 	perplexity: new PerplexityAIProvider(),
 	google: new GoogleAIProvider(),
 	openai: new OpenAIProvider(),
-	xai: new XAIProvider(),
-	groq: new GroqProvider(),
 	openrouter: new OpenRouterAIProvider(),
 	ollama: new OllamaAIProvider(),
-	bedrock: new BedrockAIProvider(),
-	azure: new AzureProvider(),
 	vertex: new VertexAIProvider(),
 	'claude-code': new ClaudeCodeProvider(),
 	'gemini-cli': new GeminiCliProvider()
