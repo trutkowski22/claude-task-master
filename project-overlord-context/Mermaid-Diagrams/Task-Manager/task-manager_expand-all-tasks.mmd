@@ -1,12 +1,9 @@
 flowchart TB
     subgraph ["expand-all-tasks-Imports"]
         I1["IMPORT: log, readJSON, isSilentMode, findProjectRoot, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I2["IMPORT: startLoadingIndicator, stopLoadingIndicator, displayAiUsageSummary, FROM: /claude-task-master/scripts/modules/ui.js"]
         I3["IMPORT: expandTask, FROM: /claude-task-master/scripts/modules/task-manager/expand-task.js"]
         I4["IMPORT: getDebugFlag, FROM: /claude-task-master/scripts/modules/config-manager.js"]
         I5["IMPORT: aggregateTelemetry, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I6["IMPORT: chalk, FROM: chalk"]
-        I7["IMPORT: boxen, FROM: boxen"]
     end
     subgraph ["expand-all-tasks-FunctionsDefined"]
         FU1["FUNCTION: expandAllTasks"]

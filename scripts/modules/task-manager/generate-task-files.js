@@ -187,11 +187,8 @@ function generateTaskFiles(tasksPath, outputDir, options = {}) {
 	} catch (error) {
 		log('error', `Error generating task files: ${error.message}`);
 		if (!options?.mcpLog) {
-			console.error((`Error generating task files: ${error.message}`));
-			if (getDebugFlag()) {
-				console.error(error);
-			}
-			process.exit(1);
+			// Error already logged via log function
+			throw new Error(`Error generating task files: ${error.message}`);
 		} else {
 			throw error;
 		}

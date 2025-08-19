@@ -322,28 +322,6 @@ async function updateTaskById(
 				'warn',
 				`Task ${taskId} is already marked as done and cannot be updated`
 			);
-
-			// Only show warning box for text output (CLI)
-			if (outputFormat === 'text') {
-				console.log(
-					
-						(
-							`Task ${taskId} is already marked as ${taskToUpdate.status} and cannot be updated.`
-						 +
-							'\n\n' +
-							(
-								'Completed tasks are locked to maintain consistency. To modify a completed task, you must first:'
-							) +
-							'\n' +
-							(
-								'1. Change its status to "pending" or "in-progress"'
-							) +
-							'\n' +
-							('2. Then run the update-task command'),
-						{ padding: 1, borderColor: 'yellow', borderStyle: 'round' }
-					)
-				);
-			}
 			return null;
 		}
 		// --- End Task Loading ---
@@ -374,63 +352,6 @@ async function updateTaskById(
 			}
 		} catch (contextError) {
 			report('warn', `Could not gather context: ${contextError.message}`);
-		}
-		// --- End Context Gathering ---
-
-		// --- Display Task Info (CLI Only - Keep existing) ---
-		if (outputFormat === 'text') {
-			// Show the task that will be updated
-			const table = new Table({
-				head: [
-					('ID'),
-					('Title'),
-					('Status')
-				],
-				colWidths: [5, 60, 10]
-			});
-
-			table.push([
-				taskToUpdate.id,
-				truncate(taskToUpdate.title, 57),
-				(taskToUpdate.status)
-			]);
-
-			console.log(
-				(`Updating Task #${taskId}`, {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round',
-					margin: { top: 1, bottom: 0 }
-				})
-			);
-
-			console.log(table.toString());
-
-			// Display a message about how completed subtasks are handled
-			console.log(
-				
-					('How Completed Subtasks Are Handled:' +
-						'\n\n' +
-						(
-							'• Subtasks marked as "done" or "completed" will be preserved\n'
-						) +
-						(
-							'• New subtasks will build upon what has already been completed\n'
-						) +
-						(
-							'• If completed work needs revision, a new subtask will be created instead of modifying done items\n'
-						) +
-						(
-							'• This approach maintains a clear record of completed work and new requirements'
-						),
-					{
-						padding: 1,
-						borderColor: 'blue',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		// --- Build Prompts using PromptManager ---
@@ -493,12 +414,7 @@ async function updateTaskById(
 
 		let loadingIndicator = null;
 		let aiServiceResponse = null;
-
-		if (!isMCP && outputFormat === 'text') {
-			loadingIndicator = startLoadingIndicator(
-				useResearch ? 'Updating task with research...\n' : 'Updating task...\n'
-			);
-		}
+		
 
 		try {
 			const serviceRole = useResearch ? 'research' : 'main';
@@ -511,9 +427,6 @@ async function updateTaskById(
 				commandName: 'update-task',
 				outputType: isMCP ? 'mcp' : 'cli'
 			});
-
-			if (loadingIndicator)
-				stopLoadingIndicator(loadingIndicator, 'AI update complete.');
 
 			if (appendMode) {
 				// Append mode: handle as plain text
@@ -551,20 +464,7 @@ async function updateTaskById(
 
 				// Display success message for CLI
 				if (outputFormat === 'text') {
-					console.log(
-						
-							(`Successfully appended to task #${taskId}` +
-								'\n\n' +
-								('Title:') +
-								' ' +
-								taskToUpdate.title +
-								'\n\n' +
-								('Newly Added Content:') +
-								'\n' +
-								(newlyAddedSnippet),
-							{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-						)
-					);
+					
 				}
 
 				// Display AI usage telemetry for CLI users
@@ -721,10 +621,8 @@ async function updateTaskById(
 		// --- General Error Handling (Keep existing) ---
 		report('error', `Error updating task: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error((`Error: ${error.message}`));
 			// ... helpful hints ...
 			if (getDebugFlag(session)) console.error(error);
-			process.exit(1);
 		} else {
 			throw error; // Re-throw for MCP
 		}

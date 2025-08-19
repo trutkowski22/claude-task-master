@@ -109,7 +109,6 @@ export async function syncTasksToReadme(projectRoot = null, options = {}) {
 		);
 
 		if (!tasksOutput) {
-			console.log(('❌ Failed to generate task output'));
 			return false;
 		}
 
@@ -166,17 +165,8 @@ export async function syncTasksToReadme(projectRoot = null, options = {}) {
 		// Write updated content to README
 		fs.writeFileSync(readmePath, updatedContent, 'utf8');
 
-		console.log(('✅ Successfully synced tasks to README.md'));
-		console.log(
-			(
-				`📋 Export details: ${withSubtasks ? 'with' : 'without'} subtasks${status ? `, status: ${status}` : ''}`
-			)
-		);
-		console.log((`📍 Location: ${readmePath}`));
-
 		return true;
 	} catch (error) {
-		console.log(('❌ Failed to sync tasks to README:'), error.message);
 		log('error', `README sync error: ${error.message}`);
 		return false;
 	}

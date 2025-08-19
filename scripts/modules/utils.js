@@ -144,7 +144,7 @@ function findProjectRoot(
 	return hasMarkerInRoot ? rootPath : null;
 }
 
-// --- Dynamic Configuration Function --- (REMOVED)
+
 
 // --- Logging and Utility Functions ---
 
@@ -231,7 +231,7 @@ function log(level, ...args) {
 		const message = args
 			.map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
 			.join(' ');
-		console.log(`${prefix} ${message}`);
+		log(`${prefix} ${message}`);
 	}
 }
 
@@ -314,7 +314,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	}
 
 	if (isDebug) {
-		console.log(`[DEBUG] readJSON called with: ${filepath}, projectRoot: ${projectRoot}, tag: ${tag}`);
+		log(`[DEBUG] readJSON called with: ${filepath}, projectRoot: ${projectRoot}, tag: ${tag}`);
 	}
 
 	if (!filepath) {
@@ -325,11 +325,11 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	try {
 		data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 		if (isDebug) {
-			console.log(`[DEBUG] Successfully read JSON from ${filepath}`);
+			log(`[DEBUG] Successfully read JSON from ${filepath}`);
 		}
 	} catch (err) {
 		if (isDebug) {
-			console.log(`[DEBUG] Failed to read JSON from ${filepath}: ${err.message}`);
+			log(`[DEBUG] Failed to read JSON from ${filepath}: ${err.message}`);
 		}
 		return null;
 	}
@@ -337,7 +337,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	// If it's not a tasks.json file, return as-is
 	if (!filepath.includes('tasks.json') || !data) {
 		if (isDebug) {
-			console.log(`[DEBUG] File is not tasks.json or data is null, returning as-is`);
+			log(`[DEBUG] File is not tasks.json or data is null, returning as-is`);
 		}
 		return data;
 	}
@@ -350,7 +350,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 		!hasTaggedStructure(data)
 	) {
 		if (isDebug) {
-			console.log(`[DEBUG] File is in legacy format, performing migration...`);
+			log(`[DEBUG] File is in legacy format, performing migration...`);
 		}
 
 		normalizeTaskIds(data.tasks);
@@ -371,7 +371,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 		try {
 			writeJSON(filepath, migratedData);
 			if (isDebug) {
-				console.log(`[DEBUG] Successfully migrated legacy format to tagged format`);
+		log(`[DEBUG] Successfully migrated legacy format to tagged format`);
 			}
 
 			// Perform complete migration (config.json, state.json)
@@ -392,7 +392,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 			markMigrationForNotice(filepath);
 		} catch (writeError) {
 			if (isDebug) {
-			console.log(`[DEBUG] Error writing migrated data: ${writeError.message}`);
+			log(`[DEBUG] Error writing migrated data: ${writeError.message}`);
 			}
 			// If write fails, continue with the original data
 		}
@@ -405,7 +405,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	if (typeof data === 'object' && !data.tasks) {
 		// This is tagged format
 		if (isDebug) {
-			console.log(`[DEBUG] File is in tagged format, resolving tag...`);
+			log(`[DEBUG] File is in tagged format, resolving tag...`);
 		}
 
 		// Ensure all tags have proper metadata before proceeding
@@ -423,7 +423,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 				} catch (error) {
 					// If ensureTagMetadata fails, continue without metadata
 					if (isDebug) {
-						console.log(
+						log(
 							`[DEBUG] Failed to ensure metadata for tag ${tagName}: ${error.message}`
 						);
 					}
@@ -477,14 +477,14 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 				}
 			} catch (tagResolveError) {
 				if (isDebug) {
-					console.log(
+					log(
 						`[DEBUG] Tag resolution failed, using master: ${tagResolveError.message}`
 					);
 				}
 			}
 
 			if (isDebug) {
-				console.log(`[DEBUG] Resolved tag: ${resolvedTag}`);
+				log(`[DEBUG] Resolved tag: ${resolvedTag}`);
 			}
 
 			// Get the data for the resolved tag
@@ -499,7 +499,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 					_rawTaggedData: originalTaggedData
 				};
 				if (isDebug) {
-					console.log(
+					log(
 						`[DEBUG] Returning data for tag '${resolvedTag}' with ${tagData.tasks.length} tasks`
 					);
 				}
@@ -511,7 +511,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 					normalizeTaskIds(masterData.tasks);
 
 					if (isDebug) {
-						console.log(
+						log(
 							`[DEBUG] Tag '${resolvedTag}' not found, falling back to master with ${masterData.tasks.length} tasks`
 						);
 					}
@@ -522,7 +522,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 					};
 				} else {
 					if (isDebug) {
-						console.log(`[DEBUG] No valid tag data found, returning empty structure`);
+						log(`[DEBUG] No valid tag data found, returning empty structure`);
 					}
 					// Return empty structure if no valid data
 					return {
@@ -534,7 +534,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 			}
 		} catch (error) {
 			if (isDebug) {
-				console.log(`[DEBUG] Error during tag resolution: ${error.message}`);
+				log(`[DEBUG] Error during tag resolution: ${error.message}`);
 			}
 			// If anything goes wrong, try to return master or empty
 			const masterData = data.master;
@@ -554,7 +554,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 
 	// If we reach here, it's some other format
 	if (isDebug) {
-		console.log(`[DEBUG] File format not recognized, returning as-is`);
+		log(`[DEBUG] File format not recognized, returning as-is`);
 	}
 	return data;
 }
@@ -619,14 +619,14 @@ function migrateConfigJson(configPath) {
 		if (modified) {
 			fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
 			if (process.env.TASKMASTER_DEBUG === 'true') {
-				console.log(
+				log(
 					'[DEBUG] Updated config.json with tagged task system settings'
 				);
 			}
 		}
 	} catch (error) {
 		if (process.env.TASKMASTER_DEBUG === 'true') {
-			console.warn(`[WARN] Error migrating config.json: ${error.message}`);
+			warn(`[WARN] Error migrating config.json: ${error.message}`);
 		}
 	}
 }
@@ -646,11 +646,11 @@ function createStateJson(statePath) {
 
 		fs.writeFileSync(statePath, JSON.stringify(initialState, null, 2), 'utf8');
 		if (process.env.TASKMASTER_DEBUG === 'true') {
-			console.log('[DEBUG] Created initial state.json for tagged task system');
+			log('[DEBUG] Created initial state.json for tagged task system');
 		}
 	} catch (error) {
 		if (process.env.TASKMASTER_DEBUG === 'true') {
-			console.warn(`[WARN] Error creating state.json: ${error.message}`);
+			warn(`[WARN] Error creating state.json: ${error.message}`);
 		}
 	}
 }
@@ -717,7 +717,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 			const resolvedTag = tag || getCurrentTag(projectRoot);
 
 			if (isDebug) {
-				console.log(
+				log(
 					`[DEBUG] writeJSON: Detected resolved tag data missing _rawTaggedData. Re-reading raw data to prevent data loss for tag '${resolvedTag}'.`
 				);
 			}
@@ -754,7 +754,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 			};
 
 			if (isDebug) {
-				console.log(
+				log(
 					`[DEBUG] writeJSON: Merging resolved data back into tag '${resolvedTag}'`
 				);
 			}
@@ -799,7 +799,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 		fs.writeFileSync(filepath, JSON.stringify(cleanData, null, 2), 'utf8');
 
 		if (isDebug) {
-			console.log(`[DEBUG] writeJSON: Successfully wrote to ${filepath}`);
+			log(`[DEBUG] writeJSON: Successfully wrote to ${filepath}`);
 		}
 	} catch (error) {
 		log('error', `Error writing JSON file ${filepath}:`, error.message);

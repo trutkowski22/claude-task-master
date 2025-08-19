@@ -2,8 +2,6 @@ flowchart TB
     subgraph parsePrd-Imports["parsePrd-Imports"]
         I1["IMPORT: fs, FROM: fs"]
         I2["IMPORT: path, FROM: path"]
-        I3["IMPORT: chalk, FROM: chalk"]
-        I4["IMPORT: boxen, FROM: boxen"]
         I5["IMPORT: z, FROM: zod"]
         I6["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
         I7["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
@@ -20,7 +18,6 @@ flowchart TB
         I18["IMPORT: getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
         I19["IMPORT: getDefaultPriority, FROM: /claude-task-master/scripts/modules/config-manager.js"]
         I20["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
-        I21["IMPORT: displayAiUsageSummary, FROM: /claude-task-master/scripts/modules/ui.js"]
         I22["IMPORT: CUSTOM_PROVIDERS, FROM: /claude-task-master/src/constants/providers.js"]
     end
     subgraph parsePrd-Dependencies["parsePrd-Dependencies"]

@@ -1,5 +1,5 @@
 flowchart TB
-    subgraph ["utils-Imports"]
+    subgraph utils-Imports ["utils-Imports"]
         I1["IMPORT: fs, FROM: fs"]
         I2["IMPORT: path, FROM: path"]
         I3["IMPORT: chalk, FROM: chalk"]
@@ -8,14 +8,14 @@ flowchart TB
         I6["IMPORT: *, FROM: /claude-task-master/scripts/modules/utils/git-utils.js"]
         I7["IMPORT: COMPLEXITY_REPORT_FILE, LEGACY_COMPLEXITY_REPORT_FILE, LEGACY_CONFIG_FILE, FROM: /claude-task-master/src/constants/paths.js"]
     end
-    subgraph ["utils-Dependencies"]
+    subgraph utils-Dependencies ["utils-Dependencies"]
         D1["DEP: Node.js file system and path modules"]
         D2["DEP: Chalk for colored output"]
         D3["DEP: Dotenv for environment variable parsing"]
         D4["DEP: Configuration management"]
         D5["DEP: Git utilities"]
     end
-    subgraph ["utils-FunctionsDefined"]
+    subgraph utils-FunctionsDefined ["utils-FunctionsDefined"]
         FU1["FUNCTION: resolveEnvVariable"]
         FU2["FUNCTION: slugifyTagForFilePath"]
         FU3["FUNCTION: getTagAwareFilePath"]
@@ -53,7 +53,7 @@ flowchart TB
         FU35["FUNCTION: flattenTasksWithSubtasks"]
         FU36["FUNCTION: ensureTagMetadata"]
     end
-    subgraph ["utils-Exports"]
+    subgraph utils-Exports ["utils-Exports"]
         E1["EXP: LOG_LEVELS"]
         E2["EXP: log"]
         E3["EXP: readJSON"]
@@ -91,7 +91,7 @@ flowchart TB
         E35["EXP: ensureTagMetadata"]
         E36["EXP: normalizeTaskIds"]
     end
-    subgraph ["utils-Parameters"]
+    subgraph utils-Parameters ["utils-Parameters"]
         P1["PARAM: {string} key - The environment variable key"]
         P2["PARAM: {object|null} [session=null] - The MCP session object"]
         P3["PARAM: {string|null} [projectRoot=null] - The project root directory"]
@@ -105,7 +105,7 @@ flowchart TB
         P11["PARAM: {Array} tasks - Array of tasks to normalize"]
         P12["PARAM: {string} filepath - Path to the JSON file"]
     end
-    subgraph ["utils-Constants"]
+    subgraph utils-Constants ["utils-Constants"]
         C1["CONST: silentMode, VALUE: Global silent mode flag (false)"]
         C2["CONST: LOG_LEVELS, VALUE: Object mapping log levels to numbers"]
         C3["CONST: parsedEnv, VALUE: Parsed environment variables from .env file"]
@@ -116,7 +116,7 @@ flowchart TB
         C8["CONST: taskExists, VALUE: Boolean indicating task existence"]
         C9["CONST: telemetryData, VALUE: Aggregated usage statistics"]
     end
-    subgraph ["utils-ExecutionFlow"]
+    subgraph utils-ExecutionFlow ["utils-ExecutionFlow"]
         FL1["Resolve environment variables from session, .env file, or process.env"]
         FL2["Manage tag-aware file paths with filesystem-safe naming"]
         FL3["Find project root using marker files like package.json or .git"]
@@ -128,14 +128,14 @@ flowchart TB
         FL9["Support string manipulation and validation utilities"]
         FL10["Export comprehensive utility function library"]
     end
-    subgraph ["utils.js"]
-        ["utils-Imports"]
-        ["utils-Dependencies"]
-        ["utils-FunctionsDefined"]
-        ["utils-Exports"]
-        ["utils-Parameters"]
-        ["utils-Constants"]
-        ["utils-ExecutionFlow"]
+    subgraph utils.js ["utils.js"]
+        utils-Imports
+        utils-Dependencies
+        utils-FunctionsDefined
+        utils-Exports
+        utils-Parameters
+        utils-Constants
+        utils-ExecutionFlow
     end
     FL1 --> FL2
     FL2 --> FL3

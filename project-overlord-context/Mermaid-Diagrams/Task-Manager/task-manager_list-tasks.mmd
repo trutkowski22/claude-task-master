@@ -1,11 +1,7 @@
 flowchart TB
     subgraph ["list-tasks-Imports"]
-        I1["IMPORT: chalk, FROM: chalk"]
-        I2["IMPORT: boxen, FROM: boxen"]
-        I3["IMPORT: Table, FROM: cli-table3"]
         I4["IMPORT: log, readJSON, truncate, readComplexityReport, addComplexityToTask, FROM: /claude-task-master/scripts/modules/utils.js"]
         I5["IMPORT: findNextTask, FROM: /claude-task-master/scripts/modules/task-manager/find-next-task.js"]
-        I6["IMPORT: displayBanner, getStatusWithColor, formatDependenciesWithStatus, getComplexityWithColor, createProgressBar, FROM: /claude-task-master/scripts/modules/ui.js"]
     end
     subgraph ["list-tasks-FunctionsDefined"]
         FU1["FUNCTION: listTasks"]

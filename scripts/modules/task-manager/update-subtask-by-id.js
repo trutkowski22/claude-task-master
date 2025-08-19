@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
 import {
 	log as consoleLog,
 	readJSON,
@@ -53,8 +52,6 @@ async function updateSubtaskById(
 			logFn(level, ...args);
 		}
 	};
-
-	let loadingIndicator = null;
 
 	try {
 		report('info', `Updating subtask ${subtaskId} with prompt: "${prompt}"`);
@@ -157,36 +154,6 @@ async function updateSubtaskById(
 		}
 		// --- End Context Gathering ---
 
-		if (outputFormat === 'text') {
-			const table = new Table({
-				head: [
-					('ID'),
-					('Title'),
-					('Status')
-				],
-				colWidths: [10, 55, 10]
-			});
-			table.push([
-				subtaskId,
-				truncate(subtask.title, 52),
-				(subtask.status)
-			]);
-			console.log(
-				(`Updating Subtask #${subtaskId}`, {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round',
-					margin: { top: 1, bottom: 0 }
-				})
-			);
-			console.log(table.toString());
-			loadingIndicator = startLoadingIndicator(
-				useResearch
-					? 'Updating subtask with research...'
-					: 'Updating subtask...'
-			);
-		}
-
 		let generatedContentString = '';
 		let newlyAddedSnippet = '';
 		let aiServiceResponse = null;
@@ -260,17 +227,8 @@ async function updateSubtaskById(
 					'AI service response did not contain expected text string.'
 				);
 			}
-
-			if (outputFormat === 'text' && loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-				loadingIndicator = null;
-			}
 		} catch (aiError) {
 			report('error', `AI service call failed: ${aiError.message}`);
-			if (outputFormat === 'text' && loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-				loadingIndicator = null;
-			}
 			throw aiError;
 		}
 
@@ -292,130 +250,29 @@ async function updateSubtaskById(
 
 		const updatedSubtask = parentTask.subtasks[subtaskIndex];
 
-		if (outputFormat === 'text' && getDebugFlag(session)) {
-			console.log(
-				'>>> DEBUG: Subtask details AFTER AI update:',
-				updatedSubtask.details
-			);
-		}
-
 		if (updatedSubtask.description) {
 			if (prompt.length < 100) {
-				if (outputFormat === 'text' && getDebugFlag(session)) {
-					console.log(
-						'>>> DEBUG: Subtask description BEFORE append:',
-						updatedSubtask.description
-					);
-				}
 				updatedSubtask.description += ` [Updated: ${new Date().toLocaleDateString()}]`;
-				if (outputFormat === 'text' && getDebugFlag(session)) {
-					console.log(
-						'>>> DEBUG: Subtask description AFTER append:',
-						updatedSubtask.description
-					);
-				}
 			}
 		}
 
-		if (outputFormat === 'text' && getDebugFlag(session)) {
-			console.log('>>> DEBUG: About to call writeJSON with updated data...');
-		}
 		writeJSON(tasksPath, data, projectRoot, tag);
-		if (outputFormat === 'text' && getDebugFlag(session)) {
-			console.log('>>> DEBUG: writeJSON call completed.');
-		}
 
 		report('success', `Successfully updated subtask ${subtaskId}`);
-		// Updated  function call to make sure if uncommented it will generate the task files for the updated subtask based on the tag
-		// await generateTaskFiles(tasksPath, path.dirname(tasksPath), {
-		// 	tag: tag,
-		// 	projectRoot: projectRoot
-		// });
-
-		if (outputFormat === 'text') {
-			if (loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-				loadingIndicator = null;
-			}
-			console.log(
-				
-					(`Successfully updated subtask #${subtaskId}` +
-						'\n\n' +
-						('Title:') +
-						' ' +
-						updatedSubtask.title +
-						'\n\n' +
-						('Newly Added Snippet:') +
-						'\n' +
-						(newlyAddedSnippet),
-					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-				)
-			);
-		}
-
-		if (outputFormat === 'text' && aiServiceResponse.telemetryData) {
-			displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-		}
 
 		return {
 			updatedSubtask: updatedSubtask,
+			newlyAddedSnippet: newlyAddedSnippet,
 			telemetryData: aiServiceResponse.telemetryData,
 			tagInfo: aiServiceResponse.tagInfo
 		};
 	} catch (error) {
-		if (outputFormat === 'text' && loadingIndicator) {
-			stopLoadingIndicator(loadingIndicator);
-			loadingIndicator = null;
-		}
 		report('error', `Error updating subtask: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error((`Error: ${error.message}`));
-			if (error.message?.includes('ANTHROPIC_API_KEY')) {
-				console.log(
-					('\nTo fix this issue, set your Anthropic API key:')
-				);
-				console.log('  export ANTHROPIC_API_KEY=your_api_key_here');
-			} else if (error.message?.includes('PERPLEXITY_API_KEY')) {
-				console.log(('\nTo fix this issue:'));
-				console.log(
-					'  1. Set your Perplexity API key: export PERPLEXITY_API_KEY=your_api_key_here'
-				);
-				console.log(
-					'  2. Or run without the research flag: task-master update-subtask --id=<id> --prompt="..."'
-				);
-			} else if (error.message?.includes('overloaded')) {
-				console.log(
-					(
-						'\nAI model overloaded, and fallback failed or was unavailable:'
-					)
-				);
-				console.log('  1. Try again in a few minutes.');
-				console.log('  2. Ensure PERPLEXITY_API_KEY is set for fallback.');
-			} else if (error.message?.includes('not found')) {
-				console.log(('\nTo fix this issue:'));
-				console.log(
-					'  1. Run task-master list --with-subtasks to see all available subtask IDs'
-				);
-				console.log(
-					'  2. Use a valid subtask ID with the --id parameter in format "parentId.subtaskId"'
-				);
-			} else if (
-				error.message?.includes('empty stream response') ||
-				error.message?.includes('AI did not return a valid text string')
-			) {
-				console.log(
-					(
-						'\nThe AI model returned an empty or invalid response. This might be due to the prompt or API issues. Try rephrasing or trying again later.'
-					)
-				);
-			}
-			if (getDebugFlag(session)) {
-				console.error(error);
-			}
+			throw error;
 		} else {
 			throw error;
 		}
-		return null;
 	}
 }
 

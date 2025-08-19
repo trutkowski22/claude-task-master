@@ -51,7 +51,7 @@ async function expandAllTasks(
 					// Basic logger for JSON output mode
 					info: (msg) => {},
 					warn: (msg) => {},
-					error: (msg) => console.error(`ERROR: ${msg}`), // Still log errors
+					error: (msg) => {}, // Errors handled by caller
 					debug: (msg) => {}
 				}
 			: {
@@ -180,14 +180,7 @@ async function expandAllTasks(
 				`${('-')} Skipped:   ${(0)}\n` +
 				`${('-')} Failed:    ${(failedCount)}`;
 
-			console.log(
-				summaryContent, {
-					padding: 1,
-					margin: { top: 1 },
-					borderColor: failedCount > 0 ? 'red' : 'green', // Red if failures, green otherwise
-					borderStyle: 'round'
-				}
-			);
+			// Summary display handled by logger
 		}
 
 		if (outputFormat === 'text' && aggregatedTelemetryData) {
@@ -207,9 +200,7 @@ async function expandAllTasks(
 		if (loadingIndicator)
 			stopLoadingIndicator(loadingIndicator, 'Error.', false);
 		logger.error(`Error during expand all operation: ${error.message}`);
-		if (!isMCPCall && getDebugFlag(session)) {
-			console.error(error); // Log full stack in debug CLI mode
-		}
+		// Debug logging handled by logger
 		// Re-throw error for the caller to handle, the direct function will format it
 		throw error; // Let direct function wrapper handle formatting
 		/* Original re-throw:

@@ -613,9 +613,7 @@ async function expandTask(
 	} catch (error) {
 		// Catches errors from file reading, parsing, AI call etc.
 		logger.error(`Error expanding task ${taskId}: ${error.message}`, 'error');
-		if (outputFormat === 'text' && getDebugFlag(session)) {
-			console.error(error); // Log full stack in debug CLI mode
-		}
+		// Debug logging handled by logger
 		throw error; // Re-throw for the caller
 	}
 }

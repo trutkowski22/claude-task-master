@@ -2,12 +2,7 @@ flowchart TB
     subgraph tagManagement-Imports["tagManagement-Imports"]
         I1["IMPORT: path, FROM: path"]
         I2["IMPORT: fs, FROM: fs"]
-        I3["IMPORT: inquirer, FROM: inquirer"]
-        I4["IMPORT: chalk, FROM: chalk"]
-        I5["IMPORT: boxen, FROM: boxen"]
-        I6["IMPORT: Table, FROM: cli-table3"]
         I7["IMPORT: log, readJSON, writeJSON, getCurrentTag, resolveTag, getTasksForTag, setTasksForTag, findProjectRoot, truncate, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I8["IMPORT: displayBanner, getStatusWithColor, FROM: /claude-task-master/scripts/modules/ui.js"]
         I9["IMPORT: findNextTask, FROM: /claude-task-master/scripts/modules/task-manager/find-next-task.js"]
     end
     subgraph tagManagement-FunctionsDefined["tagManagement-Functions Defined"]

@@ -163,23 +163,6 @@ async function createTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				
-					('✓ Tag Created Successfully' +
-						`\n\nTag Name: ${(tagName)}` +
-						`\nTasks Copied: ${(sourceTasks.length)}` +
-						(copyFromCurrent || copyFromTag
-							? `\nSource Tag: ${(copyFromTag || getCurrentTag(projectRoot))}`
-							: '') +
-						(description ? `\nDescription: ${(description)}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		return {
@@ -291,56 +274,10 @@ async function deleteTag(
 
 		// If not forced and has tasks, require confirmation (for CLI)
 		if (!yes && taskCount > 0 && outputFormat === 'text') {
-			console.log(
-				
-					('⚠ WARNING: Tag Deletion' +
-						`\n\nYou are about to delete tag "${(tagName)}"` +
-						`\nThis will permanently delete ${(taskCount)} tasks` +
-						'\n\nThis action cannot be undone!',
-					{
-						padding: 1,
-						borderColor: 'yellow',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+			
 
 			// First confirmation
-			const firstConfirm = await inquirer.prompt([
-				{
-					type: 'confirm',
-					name: 'proceed',
-					message: `Are you sure you want to delete tag "${tagName}" and its ${taskCount} tasks?`,
-					default: false
-				}
-			]);
-
-			if (!firstConfirm.proceed) {
-				logFn.info('Tag deletion cancelled by user');
-				throw new Error('Tag deletion cancelled');
-			}
-
-			// Second confirmation (double-check)
-			const secondConfirm = await inquirer.prompt([
-				{
-					type: 'input',
-					name: 'tagNameConfirm',
-					message: `To confirm deletion, please type the tag name "${tagName}":`,
-					validate: (input) => {
-						if (input === tagName) {
-							return true;
-						}
-						return `Please type exactly "${tagName}" to confirm deletion`;
-					}
-				}
-			]);
-
-			if (secondConfirm.tagNameConfirm !== tagName) {
-				logFn.info('Tag deletion cancelled - incorrect tag name confirmation');
-				throw new Error('Tag deletion cancelled');
-			}
-
+		
 			logFn.info('Double confirmation received, proceeding with deletion...');
 		}
 
@@ -379,22 +316,6 @@ async function deleteTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				
-					('✓ Tag Deleted Successfully' +
-						`\n\nTag Name: ${(tagName)}` +
-						`\nTasks Deleted: ${(taskCount)}` +
-						(isCurrentTag
-							? `\n${('⚠ Switched current tag to "master"')}`
-							: ''),
-					{
-						padding: 1,
-						borderColor: 'red',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		return {
@@ -924,21 +845,7 @@ async function renameTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				
-					('✓ Tag Renamed Successfully' +
-						`\n\nOld Name: ${(oldName)}` +
-						`\nNew Name: ${(newName)}` +
-						`\nTasks: ${(taskCount)}` +
-						(isCurrentTag ? `\n${('✓ Current tag updated')}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+		
 		}
 
 		return {
@@ -1079,21 +986,7 @@ async function copyTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				
-					('✓ Tag Copied Successfully' +
-						`\n\nSource Tag: ${(sourceName)}` +
-						`\nTarget Tag: ${(targetName)}` +
-						`\nTasks Copied: ${(sourceTasks.length)}` +
-						(description ? `\nDescription: ${(description)}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+			
 		}
 
 		return {

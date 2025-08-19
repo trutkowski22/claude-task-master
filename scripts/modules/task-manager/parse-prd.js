@@ -337,28 +337,13 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 
 		// Handle CLI output (e.g., success message)
 		if (outputFormat === 'text') {
-			console.log(
+						log(
 				
-					(
-						`Successfully generated ${processedNewTasks.length} new tasks${research ? ' with research-backed analysis' : ''}. Total tasks in ${tasksPath}: ${finalTasks.length}`
-					,
-					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-				)
-			);
-
-			console.log(
-				
-					('Next Steps:' +
+					'Next Steps:' +
 						'\n\n' +
 						`${('1.')} Run ${('task-master list')} to view all tasks\n` +
 						`${('2.')} Run ${('task-master expand --id=<id>')} to break down a task into subtasks`,
-					{
-						padding: 1,
-						borderColor: 'cyan',
-						borderStyle: 'round',
-						margin: { top: 1 }
-					}
-				)
+			
 			);
 
 			if (aiServiceResponse && aiServiceResponse.telemetryData) {
@@ -376,9 +361,6 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 	} catch (error) {
 		report(`Error parsing PRD: ${error.message}`, 'error');
 
-		// Only show error UI for text output (CLI)
-		if (outputFormat === 'text') {
-			console.error((`Error: ${error.message}`));
 
 			if (getDebugFlag(projectRoot)) {
 				// Use projectRoot for debug flag check
@@ -388,6 +370,6 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 
 		throw error; // Always re-throw for proper error handling
 	}
-}
+
 
 export default parsePRD;

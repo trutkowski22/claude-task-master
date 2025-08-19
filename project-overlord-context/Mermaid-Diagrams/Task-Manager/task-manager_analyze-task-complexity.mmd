@@ -1,11 +1,8 @@
 flowchart TB
     subgraph ["analyze-task-complexity-Imports"]
-        I1["IMPORT: chalk, FROM: chalk"]
-        I2["IMPORT: boxen, FROM: boxen"]
-        I3["IMPORT: readline, FROM: readline"]
+     
         I4["IMPORT: fs, FROM: fs"]
         I5["IMPORT: log, readJSON, writeJSON, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I6["IMPORT: startLoadingIndicator, stopLoadingIndicator, displayAiUsageSummary, FROM: /claude-task-master/scripts/modules/ui.js"]
         I7["IMPORT: generateTextService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
         I8["IMPORT: getDebugFlag, getProjectName, getMainProvider, getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
         I9["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]

@@ -1,11 +1,7 @@
 flowchart TB
     subgraph ["clear-subtasks-Imports"]
         I1["IMPORT: path, FROM: path"]
-        I2["IMPORT: chalk, FROM: chalk"]
-        I3["IMPORT: boxen, FROM: boxen"]
-        I4["IMPORT: Table, FROM: cli-table3"]
         I5["IMPORT: log, readJSON, writeJSON, truncate, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
-        I6["IMPORT: displayBanner, FROM: /claude-task-master/scripts/modules/ui.js"]
     end
     subgraph ["clear-subtasks-FunctionsDefined"]
         FU1["FUNCTION: clearSubtasks"]

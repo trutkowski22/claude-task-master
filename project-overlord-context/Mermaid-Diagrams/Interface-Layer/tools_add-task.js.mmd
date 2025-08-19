@@ -1,10 +1,9 @@
-```mermaid
 graph TB
     subgraph "Add Task Tool (add-task.js)"
         A[registerAddTaskTool] --> B[Define Tool Schema]
         B --> C[Tool: add_task]
-        
         C --> D[Parameters]
+
         D --> E[prompt: Task description]
         D --> F[title: Manual task title]
         D --> G[description: Manual description]
@@ -48,9 +47,3 @@ graph TB
     CC --> W
     DD --> T
     EE --> S
-    
-    style A fill:#e1f5fe
-    style C fill:#f3e5f5
-    style P fill:#e8f5e8
-    style W fill:#fff3e0
-```
