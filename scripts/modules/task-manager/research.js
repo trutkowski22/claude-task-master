@@ -5,10 +5,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import inquirer from 'inquirer';
-import { highlight } from 'cli-highlight';
+
 import { ContextGatherer } from '../utils/contextGatherer.js';
 import { FuzzyTaskSearch } from '../utils/fuzzyTaskSearch.js';
 import { generateTextService } from '../ai-services-unified.js';
@@ -19,11 +16,6 @@ import {
 	readJSON,
 	flattenTasksWithSubtasks
 } from '../utils.js';
-import {
-	displayAiUsageSummary,
-	startLoadingIndicator,
-	stopLoadingIndicator
-} from '../ui.js';
 
 /**
  * Perform AI-powered research with project context

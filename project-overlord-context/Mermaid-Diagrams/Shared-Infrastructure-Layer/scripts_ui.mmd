@@ -1,5 +1,5 @@
 flowchart TB
-    subgraph ["ui-Imports"]
+    subgraph ui-Imports ["ui-Imports"]
         I1["IMPORT: chalk, FROM: chalk"]
         I2["IMPORT: figlet, FROM: figlet"]
         I3["IMPORT: boxen, FROM: boxen"]
@@ -15,7 +15,7 @@ flowchart TB
         I13["IMPORT: TASKMASTER_CONFIG_FILE, TASKMASTER_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
         I14["IMPORT: getTaskMasterVersion, FROM: /claude-task-master/src/utils/getVersion.js"]
     end
-    subgraph ["ui-Dependencies"]
+    subgraph ui-Dependencies
         D1["DEP: CLI UI libraries (chalk, figlet, boxen, ora)"]
         D2["DEP: CLI table rendering"]
         D3["DEP: Color gradients"]
@@ -23,7 +23,7 @@ flowchart TB
         D5["DEP: Task management utilities"]
         D6["DEP: Configuration system"]
     end
-    subgraph ["ui-FunctionsDefined"]
+    subgraph ui-FunctionsDefined
         FU1["FUNCTION: displayTaggedTasksFYI"]
         FU2["FUNCTION: displayCurrentTagIndicator"]
         FU3["FUNCTION: displayBanner"]
@@ -51,7 +51,7 @@ flowchart TB
         FU25["FUNCTION: displayMultipleTasksSummary"]
         FU26["FUNCTION: displayContextAnalysis"]
     end
-    subgraph ["ui-Exports"]
+    subgraph ui-Exports
         E1["EXP: displayBanner"]
         E2["EXP: displayTaggedTasksFYI"]
         E3["EXP: startLoadingIndicator"]
@@ -78,7 +78,7 @@ flowchart TB
         E24["EXP: displayContextAnalysis"]
         E25["EXP: displayCurrentTagIndicator"]
     end
-    subgraph ["ui-Parameters"]
+    subgraph ui-Parameters
         P1["PARAM: {Object} data - Data object that may contain _migrationHappened flag"]
         P2["PARAM: {string} tagName - The tag name to display"]
         P3["PARAM: {Object} options - Display options"]
@@ -92,7 +92,7 @@ flowchart TB
         P11["PARAM: {string} status - Task status"]
         P12["PARAM: {boolean} forTable - Whether the status is being displayed in a table"]
     end
-    subgraph ["ui-Constants"]
+    subgraph ui-Constants
         C1["CONST: coolGradient, VALUE: Gradient from blue tones"]
         C2["CONST: warmGradient, VALUE: Gradient from orange/red tones"]
         C3["CONST: bannerText, VALUE: ASCII art from figlet"]
@@ -100,7 +100,7 @@ flowchart TB
         C5["CONST: statusColors, VALUE: Color mapping for task statuses"]
         C6["CONST: table, VALUE: CLI table instance for formatted output"]
     end
-    subgraph ["ui-ExecutionFlow"]
+    subgraph ui-ExecutionFlow
         FL1["Display branded banner with figlet ASCII art and gradients"]
         FL2["Show tag context and migration notifications"]
         FL3["Manage loading indicators with ora spinners"]
@@ -112,15 +112,16 @@ flowchart TB
         FL9["Handle API key status and model configuration display"]
         FL10["Export comprehensive UI function library"]
     end
-    subgraph ["ui.js"]
-        ["ui-Imports"]
-        ["ui-Dependencies"]
-        ["ui-FunctionsDefined"]
-        ["ui-Exports"]
-        ["ui-Parameters"]
-        ["ui-Constants"]
-        ["ui-ExecutionFlow"]
+    subgraph "ui.js"
+        ui-Imports
+        ui-Dependencies
+        ui-FunctionsDefined
+        ui-Exports
+        ui-Parameters
+        ui-Constants
+        ui-ExecutionFlow
     end
+
     FL1 --> FL2
     FL2 --> FL3
     FL3 --> FL4

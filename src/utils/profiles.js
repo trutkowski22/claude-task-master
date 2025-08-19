@@ -4,9 +4,6 @@
  */
 import fs from 'fs';
 import path from 'path';
-import inquirer from 'inquirer';
-import chalk from 'chalk';
-import boxen from 'boxen';
 import { log } from '../../scripts/modules/utils.js';
 import { getRulesProfile } from './rule-transformer.js';
 import { RULE_PROFILES } from '../constants/profiles.js';

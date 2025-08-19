@@ -5,7 +5,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import dotenv from 'dotenv';
 // Import specific config getters needed here
 import { getLogLevel, getDebugFlag } from './config-manager.js';
@@ -45,11 +44,9 @@ function resolveEnvVariable(key, session = null, projectRoot = null) {
 				const envFileContent = fs.readFileSync(envPath, 'utf-8');
 				const parsedEnv = dotenv.parse(envFileContent); // Use dotenv to parse
 				if (parsedEnv && parsedEnv[key]) {
-					// console.log(`DEBUG: Found key ${key} in ${envPath}`); // Optional debug log
 					return parsedEnv[key];
 				}
 			} catch (error) {
-				// Log error but don't crash, just proceed as if key wasn't found in file
 				log('warn', `Could not read or parse ${envPath}: ${error.message}`);
 			}
 		}
@@ -215,11 +212,11 @@ function log(level, ...args) {
 
 	// Use text prefixes instead of emojis
 	const prefixes = {
-		debug: chalk.gray('[DEBUG]'),
-		info: chalk.blue('[INFO]'),
-		warn: chalk.yellow('[WARN]'),
-		error: chalk.red('[ERROR]'),
-		success: chalk.green('[SUCCESS]')
+		debug: ('[DEBUG]'),
+		info: ('[INFO]'),
+		warn: ('[WARN]'),
+		error: ('[ERROR]'),
+		success: ('[SUCCESS]')
 	};
 
 	// Ensure level exists, default to info if not
@@ -230,7 +227,6 @@ function log(level, ...args) {
 		LOG_LEVELS[currentLevel] >= (LOG_LEVELS[configLevel] ?? LOG_LEVELS.info)
 	) {
 		const prefix = prefixes[currentLevel] || '';
-		// Use console.log for all levels, let chalk handle coloring
 		// Construct the message properly
 		const message = args
 			.map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
@@ -318,9 +314,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	}
 
 	if (isDebug) {
-		console.log(
-			`readJSON called with: ${filepath}, projectRoot: ${projectRoot}, tag: ${tag}`
-		);
+		console.log(`[DEBUG] readJSON called with: ${filepath}, projectRoot: ${projectRoot}, tag: ${tag}`);
 	}
 
 	if (!filepath) {
@@ -331,11 +325,11 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	try {
 		data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 		if (isDebug) {
-			console.log(`Successfully read JSON from ${filepath}`);
+			console.log(`[DEBUG] Successfully read JSON from ${filepath}`);
 		}
 	} catch (err) {
 		if (isDebug) {
-			console.log(`Failed to read JSON from ${filepath}: ${err.message}`);
+			console.log(`[DEBUG] Failed to read JSON from ${filepath}: ${err.message}`);
 		}
 		return null;
 	}
@@ -343,7 +337,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	// If it's not a tasks.json file, return as-is
 	if (!filepath.includes('tasks.json') || !data) {
 		if (isDebug) {
-			console.log(`File is not tasks.json or data is null, returning as-is`);
+			console.log(`[DEBUG] File is not tasks.json or data is null, returning as-is`);
 		}
 		return data;
 	}
@@ -356,7 +350,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 		!hasTaggedStructure(data)
 	) {
 		if (isDebug) {
-			console.log(`File is in legacy format, performing migration...`);
+			console.log(`[DEBUG] File is in legacy format, performing migration...`);
 		}
 
 		normalizeTaskIds(data.tasks);
@@ -377,7 +371,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 		try {
 			writeJSON(filepath, migratedData);
 			if (isDebug) {
-				console.log(`Successfully migrated legacy format to tagged format`);
+				console.log(`[DEBUG] Successfully migrated legacy format to tagged format`);
 			}
 
 			// Perform complete migration (config.json, state.json)
@@ -398,7 +392,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 			markMigrationForNotice(filepath);
 		} catch (writeError) {
 			if (isDebug) {
-				console.log(`Error writing migrated data: ${writeError.message}`);
+			console.log(`[DEBUG] Error writing migrated data: ${writeError.message}`);
 			}
 			// If write fails, continue with the original data
 		}
@@ -411,7 +405,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 	if (typeof data === 'object' && !data.tasks) {
 		// This is tagged format
 		if (isDebug) {
-			console.log(`File is in tagged format, resolving tag...`);
+			console.log(`[DEBUG] File is in tagged format, resolving tag...`);
 		}
 
 		// Ensure all tags have proper metadata before proceeding
@@ -430,7 +424,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 					// If ensureTagMetadata fails, continue without metadata
 					if (isDebug) {
 						console.log(
-							`Failed to ensure metadata for tag ${tagName}: ${error.message}`
+							`[DEBUG] Failed to ensure metadata for tag ${tagName}: ${error.message}`
 						);
 					}
 				}
@@ -484,14 +478,13 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 			} catch (tagResolveError) {
 				if (isDebug) {
 					console.log(
-						`Tag resolution failed, using master: ${tagResolveError.message}`
+						`[DEBUG] Tag resolution failed, using master: ${tagResolveError.message}`
 					);
 				}
-				// resolvedTag stays as 'master'
 			}
 
 			if (isDebug) {
-				console.log(`Resolved tag: ${resolvedTag}`);
+				console.log(`[DEBUG] Resolved tag: ${resolvedTag}`);
 			}
 
 			// Get the data for the resolved tag
@@ -507,7 +500,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 				};
 				if (isDebug) {
 					console.log(
-						`Returning data for tag '${resolvedTag}' with ${tagData.tasks.length} tasks`
+						`[DEBUG] Returning data for tag '${resolvedTag}' with ${tagData.tasks.length} tasks`
 					);
 				}
 				return result;
@@ -519,7 +512,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 
 					if (isDebug) {
 						console.log(
-							`Tag '${resolvedTag}' not found, falling back to master with ${masterData.tasks.length} tasks`
+							`[DEBUG] Tag '${resolvedTag}' not found, falling back to master with ${masterData.tasks.length} tasks`
 						);
 					}
 					return {
@@ -529,7 +522,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 					};
 				} else {
 					if (isDebug) {
-						console.log(`No valid tag data found, returning empty structure`);
+						console.log(`[DEBUG] No valid tag data found, returning empty structure`);
 					}
 					// Return empty structure if no valid data
 					return {
@@ -541,7 +534,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 			}
 		} catch (error) {
 			if (isDebug) {
-				console.log(`Error during tag resolution: ${error.message}`);
+				console.log(`[DEBUG] Error during tag resolution: ${error.message}`);
 			}
 			// If anything goes wrong, try to return master or empty
 			const masterData = data.master;
@@ -561,7 +554,7 @@ function readJSON(filepath, projectRoot = null, tag = null) {
 
 	// If we reach here, it's some other format
 	if (isDebug) {
-		console.log(`File format not recognized, returning as-is`);
+		console.log(`[DEBUG] File format not recognized, returning as-is`);
 	}
 	return data;
 }
@@ -687,14 +680,14 @@ function markMigrationForNotice(tasksJsonPath) {
 			}
 		} catch (stateError) {
 			if (process.env.TASKMASTER_DEBUG === 'true') {
-				console.warn(
+				warn(
 					`[WARN] Error updating state for migration notice: ${stateError.message}`
 				);
 			}
 		}
 	} catch (error) {
 		if (process.env.TASKMASTER_DEBUG === 'true') {
-			console.warn(
+			warn(
 				`[WARN] Error marking migration for notice: ${error.message}`
 			);
 		}
@@ -725,7 +718,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 
 			if (isDebug) {
 				console.log(
-					`writeJSON: Detected resolved tag data missing _rawTaggedData. Re-reading raw data to prevent data loss for tag '${resolvedTag}'.`
+					`[DEBUG] writeJSON: Detected resolved tag data missing _rawTaggedData. Re-reading raw data to prevent data loss for tag '${resolvedTag}'.`
 				);
 			}
 
@@ -762,7 +755,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 
 			if (isDebug) {
 				console.log(
-					`writeJSON: Merging resolved data back into tag '${resolvedTag}'`
+					`[DEBUG] writeJSON: Merging resolved data back into tag '${resolvedTag}'`
 				);
 			}
 		}
@@ -806,7 +799,7 @@ function writeJSON(filepath, data, projectRoot = null, tag = null) {
 		fs.writeFileSync(filepath, JSON.stringify(cleanData, null, 2), 'utf8');
 
 		if (isDebug) {
-			console.log(`writeJSON: Successfully wrote to ${filepath}`);
+			console.log(`[DEBUG] writeJSON: Successfully wrote to ${filepath}`);
 		}
 	} catch (error) {
 		log('error', `Error writing JSON file ${filepath}:`, error.message);

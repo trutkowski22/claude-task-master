@@ -1,20 +1,8 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod';
 import Fuse from 'fuse.js'; // Import Fuse.js for advanced fuzzy search
 
-import {
-	displayBanner,
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	succeedLoadingIndicator,
-	failLoadingIndicator,
-	displayAiUsageSummary,
-	displayContextAnalysis
-} from '../ui.js';
+
 import {
 	readJSON,
 	writeJSON,
@@ -658,17 +646,8 @@ async function addTask(
 			}
 
 			// Show success message box
-			console.log(
-				boxen(
-					chalk.white.bold(`Task ${newTaskId} Created Successfully`) +
-						'\n\n' +
-						chalk.white(`Title: ${newTask.title}`) +
-						'\n' +
-						chalk.white(`Status: ${getStatusWithColor(newTask.status)}`) +
-						'\n' +
-						chalk.white(
-							`Priority: ${chalk[getPriorityColor(newTask.priority)](newTask.priority)}`
-						) +
+			console.log(`Task ${newTaskId} Created Successfully`+ `Title: ${newTask.title}`+`Status: ${(newTask.status)}`) + `Priority: ${chalk[getPriorityColor(newTask.priority)](newTask.priority)}`
+						+
 						'\n\n' +
 						dependencyDisplay +
 						dependencyAnalysis +
@@ -687,8 +666,6 @@ async function addTask(
 							`3. Run ${chalk.yellow(`task-master expand --id=${newTaskId}`)} to break it down into subtasks`
 						),
 					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-				)
-			);
 
 			// Display AI Usage Summary if telemetryData is available
 			if (
@@ -717,7 +694,7 @@ async function addTask(
 
 		report(`Error adding task: ${error.message}`, 'error');
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error(`Error: ${error.message}`);
 		}
 		// In MCP mode, we let the direct function handler catch and format
 		throw error;

@@ -1,8 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod'; // Keep Zod for post-parse validation
 
 import {
@@ -14,13 +11,6 @@ import {
 	flattenTasksWithSubtasks,
 	findProjectRoot
 } from '../utils.js';
-
-import {
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { generateTextService } from '../ai-services-unified.js';
 import { getDebugFlag, isApiKeySet } from '../config-manager.js';
@@ -402,7 +392,7 @@ async function updateTaskById(
 			table.push([
 				taskToUpdate.id,
 				truncate(taskToUpdate.title, 57),
-				getStatusWithColor(taskToUpdate.status)
+				(taskToUpdate.status)
 			]);
 
 			console.log(

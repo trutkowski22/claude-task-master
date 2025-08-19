@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import { fileURLToPath } from 'url';
 import { createLogWrapper } from '../../../mcp-server/src/tools/utils.js';
 import { findProjectRoot } from '../utils.js';

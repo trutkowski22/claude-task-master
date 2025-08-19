@@ -1,6 +1,4 @@
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
+
 
 import {
 	log,
@@ -10,14 +8,6 @@ import {
 	addComplexityToTask
 } from '../utils.js';
 import findNextTask from './find-next-task.js';
-
-import {
-	displayBanner,
-	getStatusWithColor,
-	formatDependenciesWithStatus,
-	getComplexityWithColor,
-	createProgressBar
-} from '../ui.js';
 
 /**
  * List all tasks

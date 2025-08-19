@@ -10,12 +10,6 @@ import {
 	getTagAwareFilePath
 } from '../utils.js';
 
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
-
 import { generateTextService } from '../ai-services-unified.js';
 
 import {
@@ -609,15 +603,6 @@ async function expandTask(
 		data.tasks[taskIndex] = task; // Assign the modified task back
 		writeJSON(tasksPath, data, projectRoot, tag);
 		// await generateTaskFiles(tasksPath, path.dirname(tasksPath));
-
-		// Display AI Usage Summary for CLI
-		if (
-			outputFormat === 'text' &&
-			aiServiceResponse &&
-			aiServiceResponse.telemetryData
-		) {
-			displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-		}
 
 		// Return the updated task object AND telemetry data
 		return {

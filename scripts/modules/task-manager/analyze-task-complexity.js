@@ -1,15 +1,8 @@
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 import readline from 'readline';
 import fs from 'fs';
 
 import { log, readJSON, writeJSON, isSilentMode } from '../utils.js';
-
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { generateTextService } from '../ai-services-unified.js';
 
@@ -677,9 +670,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 					);
 				}
 
-				if (aiServiceResponse.telemetryData) {
-					displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-				}
 			}
 
 			return {

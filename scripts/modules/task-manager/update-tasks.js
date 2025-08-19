@@ -1,7 +1,4 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod'; // Keep Zod for post-parsing validation
 
 import {
@@ -12,12 +9,6 @@ import {
 	isSilentMode
 } from '../utils.js';
 
-import {
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { getDebugFlag } from '../config-manager.js';
 import { getPromptManager } from '../prompt-manager.js';
@@ -383,7 +374,7 @@ async function updateTasks(
 				table.push([
 					task.id,
 					truncate(task.title, 57),
-					getStatusWithColor(task.status)
+				(task.status)
 				]);
 			});
 

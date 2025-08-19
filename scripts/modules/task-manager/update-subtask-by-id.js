@@ -1,15 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 
-import {
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
+
 import {
 	log as consoleLog,
 	readJSON,
@@ -177,7 +169,7 @@ async function updateSubtaskById(
 			table.push([
 				subtaskId,
 				truncate(subtask.title, 52),
-				getStatusWithColor(subtask.status)
+				(subtask.status)
 			]);
 			console.log(
 				boxen(chalk.white.bold(`Updating Subtask #${subtaskId}`), {

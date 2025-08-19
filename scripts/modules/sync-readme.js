@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import { log, findProjectRoot } from './utils.js';
 import { getProjectName } from './config-manager.js';
 import listTasks from './task-manager/list-tasks.js';

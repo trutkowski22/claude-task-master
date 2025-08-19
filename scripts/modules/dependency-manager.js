@@ -4,8 +4,7 @@
  */
 
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 
 import {
 	log,
@@ -16,8 +15,6 @@ import {
 	findCycles,
 	isSilentMode
 } from './utils.js';
-
-import { displayBanner } from './ui.js';
 
 import { generateTaskFiles } from './task-manager.js';
 
@@ -181,21 +178,6 @@ async function addDependency(tasksPath, taskId, dependencyId, context = {}) {
 			`Added dependency ${formattedDependencyId} to task ${formattedTaskId}`
 		);
 
-		// Display a more visually appealing success message
-		if (!isSilentMode()) {
-			console.log(
-				boxen(
-					chalk.green(`Successfully added dependency:\n\n`) +
-						`Task ${chalk.bold(formattedTaskId)} now depends on ${chalk.bold(formattedDependencyId)}`,
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1 }
-					}
-				)
-			);
-		}
 
 		// Generate updated task files
 		// await generateTaskFiles(tasksPath, path.dirname(tasksPath));

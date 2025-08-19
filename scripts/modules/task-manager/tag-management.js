@@ -1,9 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import inquirer from 'inquirer';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
+
 
 import {
 	log,
@@ -16,7 +13,6 @@ import {
 	findProjectRoot,
 	truncate
 } from '../utils.js';
-import { displayBanner, getStatusWithColor } from '../ui.js';
 import findNextTask from './find-next-task.js';
 
 /**

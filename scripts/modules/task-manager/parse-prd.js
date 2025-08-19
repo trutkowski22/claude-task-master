@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 import { z } from 'zod';
 
 import {
@@ -24,7 +23,6 @@ import {
 	getDefaultPriority
 } from '../config-manager.js';
 import { getPromptManager } from '../prompt-manager.js';
-import { displayAiUsageSummary } from '../ui.js';
 import { CUSTOM_PROVIDERS } from '../../../src/constants/providers.js';
 
 // Define the Zod schema for a SINGLE task object

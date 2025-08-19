@@ -1,9 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
+
 
 import { log, readJSON } from '../utils.js';
-import { formatDependenciesWithStatus } from '../ui.js';
 import { validateAndFixDependencies } from '../dependency-manager.js';
 import { getDebugFlag } from '../config-manager.js';
 

@@ -1,10 +1,8 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
+
+
 
 import { log, readJSON, writeJSON, truncate, isSilentMode } from '../utils.js';
-import { displayBanner } from '../ui.js';
 
 /**
  * Clear subtasks from specified tasks

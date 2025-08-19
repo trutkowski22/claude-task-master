@@ -1,14 +1,8 @@
 import { log, readJSON, isSilentMode, findProjectRoot } from '../utils.js';
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 import expandTask from './expand-task.js';
 import { getDebugFlag } from '../config-manager.js';
 import { aggregateTelemetry } from '../utils.js';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 
 /**
  * Expand all eligible pending or in-progress tasks using the expandTask function.

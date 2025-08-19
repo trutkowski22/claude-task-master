@@ -9,9 +9,7 @@
 // --- Core Dependencies ---
 import {
 	MODEL_MAP,
-	getAzureBaseURL,
 	getBaseUrlForRole,
-	getBedrockBaseURL,
 	getDebugFlag,
 	getFallbackModelId,
 	getFallbackProvider,
