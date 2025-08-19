@@ -23,7 +23,7 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 
 	if (!isSilentMode()) {
 		console.log(
-			boxen(chalk.white.bold('Clearing Subtasks'), {
+			('Clearing Subtasks', {
 				padding: 1,
 				borderColor: 'blue',
 				borderStyle: 'round',
@@ -39,9 +39,9 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 	// Create a summary table for the cleared subtasks
 	const summaryTable = new Table({
 		head: [
-			chalk.cyan.bold('Task ID'),
-			chalk.cyan.bold('Task Title'),
-			chalk.cyan.bold('Subtasks Cleared')
+			('Task ID'),
+			('Task Title'),
+			('Subtasks Cleared')
 		],
 		colWidths: [10, 50, 20],
 		style: { head: [], border: [] }
@@ -65,7 +65,7 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 			summaryTable.push([
 				id.toString(),
 				truncate(task.title, 47),
-				chalk.yellow('No subtasks')
+				('No subtasks')
 			]);
 			return;
 		}
@@ -78,7 +78,7 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 		summaryTable.push([
 			id.toString(),
 			truncate(task.title, 47),
-			chalk.green(`${subtaskCount} subtasks cleared`)
+			(`${subtaskCount} subtasks cleared`)
 		]);
 	});
 
@@ -88,7 +88,7 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 		// Show summary table
 		if (!isSilentMode()) {
 			console.log(
-				boxen(chalk.white.bold('Subtask Clearing Summary:'), {
+				('Subtask Clearing Summary:', {
 					padding: { left: 2, right: 2, top: 0, bottom: 0 },
 					margin: { top: 1, bottom: 0 },
 					borderColor: 'blue',
@@ -101,9 +101,9 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 		// Success message
 		if (!isSilentMode()) {
 			console.log(
-				boxen(
-					chalk.green(
-						`Successfully cleared subtasks from ${chalk.bold(clearedCount)} task(s)`
+				
+					(
+						`Successfully cleared subtasks from ${(clearedCount} task(s)`
 					),
 					{
 						padding: 1,
@@ -116,11 +116,11 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 
 			// Next steps suggestion
 			console.log(
-				boxen(
-					chalk.white.bold('Next Steps:') +
+				
+					('Next Steps:' +
 						'\n\n' +
-						`${chalk.cyan('1.')} Run ${chalk.yellow('task-master expand --id=<id>')} to generate new subtasks\n` +
-						`${chalk.cyan('2.')} Run ${chalk.yellow('task-master list --with-subtasks')} to verify changes`,
+						`${('1.')} Run ${('task-master expand --id=<id>')} to generate new subtasks\n` +
+						`${('2.')} Run ${('task-master list --with-subtasks')} to verify changes`,
 					{
 						padding: 1,
 						borderColor: 'cyan',
@@ -133,7 +133,7 @@ function clearSubtasks(tasksPath, taskIds, context = {}) {
 	} else {
 		if (!isSilentMode()) {
 			console.log(
-				boxen(chalk.yellow('No subtasks were cleared'), {
+				('No subtasks were cleared', {
 					padding: 1,
 					borderColor: 'yellow',
 					borderStyle: 'round',

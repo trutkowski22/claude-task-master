@@ -84,7 +84,7 @@ async function performResearch(
 	// Show UI banner for CLI mode
 	if (outputFormat === 'text') {
 		console.log(
-			boxen(chalk.cyan.bold(`🔍 AI Research Query`), {
+			(`🔍 AI Research Query`, {
 				padding: 1,
 				borderColor: 'cyan',
 				borderStyle: 'round',
@@ -145,8 +145,8 @@ async function performResearch(
 							.map((id) => id.toString());
 
 						console.log(
-							chalk.gray('Provided tasks: ') +
-								chalk.cyan(sortedProvidedIds.join(', '))
+							('Provided tasks: ') +
+								(sortedProvidedIds.join(', '))
 						);
 
 						if (uniqueAutoDiscovered.length > 0) {
@@ -156,14 +156,14 @@ async function performResearch(
 								.map((id) => id.toString());
 
 							console.log(
-								chalk.gray('+ Auto-discovered related tasks: ') +
-									chalk.cyan(sortedAutoIds.join(', '))
+								('+ Auto-discovered related tasks: ') +
+									(sortedAutoIds.join(', '))
 							);
 						}
 					} else {
 						console.log(
-							chalk.gray('Auto-discovered relevant tasks: ') +
-								chalk.cyan(sortedTaskIds.join(', '))
+							('Auto-discovered relevant tasks: ') +
+								(sortedTaskIds.join(', '))
 						);
 					}
 				}
@@ -347,7 +347,7 @@ async function performResearch(
 		logFn.error(`Research query failed: ${error.message}`);
 
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`\n❌ Research failed: ${error.message}`));
+			console.error((`\n❌ Research failed: ${error.message}`));
 		}
 
 		throw error;
@@ -370,8 +370,8 @@ function displayDetailedTokenBreakdown(
 	// Custom context
 	if (tokenBreakdown.customContext) {
 		parts.push(
-			chalk.cyan('Custom: ') +
-				chalk.yellow(tokenBreakdown.customContext.tokens.toLocaleString())
+			('Custom: ') +
+				(tokenBreakdown.customContext.tokens.toLocaleString())
 		);
 	}
 
@@ -387,14 +387,14 @@ function displayDetailedTokenBreakdown(
 					task.title.length > 30
 						? task.title.substring(0, 30) + '...'
 						: task.title;
-				return `  ${chalk.gray(task.id)} ${chalk.white(titleDisplay)} ${chalk.yellow(task.tokens.toLocaleString())} tokens`;
+				return `  ${(task.id)} ${(titleDisplay)} ${(task.tokens.toLocaleString())} tokens`;
 			})
 			.join('\n');
 
 		parts.push(
-			chalk.cyan('Tasks: ') +
-				chalk.yellow(totalTaskTokens.toLocaleString()) +
-				chalk.gray(` (${tokenBreakdown.tasks.length} items)`) +
+			('Tasks: ') +
+				(totalTaskTokens.toLocaleString()) +
+				(` (${tokenBreakdown.tasks.length} items)`) +
 				'\n' +
 				taskDetails
 		);
@@ -412,14 +412,14 @@ function displayDetailedTokenBreakdown(
 					file.path.length > 40
 						? '...' + file.path.substring(file.path.length - 37)
 						: file.path;
-				return `  ${chalk.gray(pathDisplay)} ${chalk.yellow(file.tokens.toLocaleString())} tokens ${chalk.gray(`(${file.sizeKB}KB)`)}`;
+				return `  ${(pathDisplay)} ${(file.tokens.toLocaleString())} tokens ${(`(${file.sizeKB}KB)`)}`;
 			})
 			.join('\n');
 
 		parts.push(
-			chalk.cyan('Files: ') +
-				chalk.yellow(totalFileTokens.toLocaleString()) +
-				chalk.gray(` (${tokenBreakdown.files.length} files)`) +
+			('Files: ') +
+				(totalFileTokens.toLocaleString()) +
+				(` (${tokenBreakdown.files.length} files)`) +
 				'\n' +
 				fileDetails
 		);
@@ -428,9 +428,9 @@ function displayDetailedTokenBreakdown(
 	// Project tree
 	if (tokenBreakdown.projectTree) {
 		parts.push(
-			chalk.cyan('Project Tree: ') +
-				chalk.yellow(tokenBreakdown.projectTree.tokens.toLocaleString()) +
-				chalk.gray(
+			('Project Tree: ') +
+				(tokenBreakdown.projectTree.tokens.toLocaleString()) +
+				(
 					` (${tokenBreakdown.projectTree.fileCount} files, ${tokenBreakdown.projectTree.dirCount} dirs)`
 				)
 		);
@@ -439,14 +439,14 @@ function displayDetailedTokenBreakdown(
 	// Prompts breakdown
 	const totalPromptTokens = systemPromptTokens + userPromptTokens;
 	const promptDetails = [
-		`  ${chalk.gray('System:')} ${chalk.yellow(systemPromptTokens.toLocaleString())} tokens`,
-		`  ${chalk.gray('User:')} ${chalk.yellow(userPromptTokens.toLocaleString())} tokens`
+		`  ${('System:')} ${(systemPromptTokens.toLocaleString())} tokens`,
+		`  ${('User:')} ${(userPromptTokens.toLocaleString())} tokens`
 	].join('\n');
 
 	parts.push(
-		chalk.cyan('Prompts: ') +
-			chalk.yellow(totalPromptTokens.toLocaleString()) +
-			chalk.gray(' (generated)') +
+		('Prompts: ') +
+			(totalPromptTokens.toLocaleString()) +
+			(' (generated)') +
 			'\n' +
 			promptDetails
 	);
@@ -454,8 +454,8 @@ function displayDetailedTokenBreakdown(
 	// Display the breakdown in a clean box
 	if (parts.length > 0) {
 		const content = parts.join('\n\n');
-		const tokenBox = boxen(content, {
-			title: chalk.blue.bold('Context Analysis'),
+		const tokenBox = content, {
+			title: ('Context Analysis',
 			titleAlignment: 'left',
 			padding: { top: 1, bottom: 1, left: 2, right: 2 },
 			margin: { top: 0, bottom: 1 },
@@ -487,23 +487,23 @@ function processCodeBlocks(text) {
 			});
 
 			// Add a subtle border around code blocks
-			const codeBox = boxen(highlightedCode, {
+			const codeBox = highlightedCode, {
 				padding: { top: 0, bottom: 0, left: 1, right: 1 },
 				margin: { top: 0, bottom: 0 },
 				borderStyle: 'single',
 				borderColor: 'dim'
-			});
+			};
 
 			return '\n' + codeBox + '\n';
 		} catch (error) {
 			// If highlighting fails, return the original code block with basic formatting
 			return (
 				'\n' +
-				chalk.gray('```' + (language || '')) +
+				('```' + (language || '')) +
 				'\n' +
-				chalk.white(code.trim()) +
+				(code.trim()) +
 				'\n' +
-				chalk.gray('```') +
+				('```') +
 				'\n'
 			);
 		}
@@ -519,14 +519,14 @@ function processCodeBlocks(text) {
  */
 function displayResearchResults(result, query, detailLevel, tokenBreakdown) {
 	// Header with query info
-	const header = boxen(
-		chalk.green.bold('Research Results') +
+	const header = 
+		('Research Results' +
 			'\n\n' +
-			chalk.gray('Query: ') +
-			chalk.white(query) +
+			('Query: ') +
+			(query) +
 			'\n' +
-			chalk.gray('Detail Level: ') +
-			chalk.cyan(detailLevel),
+			('Detail Level: ') +
+			(detailLevel),
 		{
 			padding: { top: 1, bottom: 1, left: 2, right: 2 },
 			margin: { top: 1, bottom: 0 },
@@ -540,16 +540,16 @@ function displayResearchResults(result, query, detailLevel, tokenBreakdown) {
 	const processedResult = processCodeBlocks(result);
 
 	// Main research content in a clean box
-	const contentBox = boxen(processedResult, {
+	const contentBox = processedResult, {
 		padding: { top: 1, bottom: 1, left: 2, right: 2 },
 		margin: { top: 0, bottom: 1 },
 		borderStyle: 'single',
 		borderColor: 'gray'
-	});
+	};
 	console.log(contentBox);
 
 	// Success footer
-	console.log(chalk.green('✅ Research completed'));
+	console.log(('✅ Research completed'));
 }
 
 /**
@@ -655,7 +655,7 @@ async function handleFollowUpQuestions(
 					continue;
 				}
 
-				console.log('\n' + chalk.gray('─'.repeat(60)) + '\n');
+				console.log('\n' + ('─'.repeat(60)) + '\n');
 
 				// Build cumulative conversation context from all previous exchanges
 				const conversationContext =
@@ -758,14 +758,14 @@ async function handleSaveToTask(
 
 		if (!fs.existsSync(tasksPath)) {
 			console.log(
-				chalk.red('❌ Tasks file not found. Please run task-master init first.')
+				('❌ Tasks file not found. Please run task-master init first.')
 			);
 			return;
 		}
 
 		const data = readJSON(tasksPath, projectRoot, context.tag);
 		if (!data || !data.tasks) {
-			console.log(chalk.red('❌ No valid tasks found.'));
+			console.log(('❌ No valid tasks found.'));
 			return;
 		}
 
@@ -777,7 +777,7 @@ async function handleSaveToTask(
 			const parentTask = data.tasks.find((t) => t.id === parentId);
 
 			if (!parentTask) {
-				console.log(chalk.red(`❌ Parent task ${parentId} not found.`));
+				console.log((`❌ Parent task ${parentId} not found.`));
 				return;
 			}
 
@@ -785,12 +785,12 @@ async function handleSaveToTask(
 				!parentTask.subtasks ||
 				!parentTask.subtasks.find((st) => st.id === subtaskId)
 			) {
-				console.log(chalk.red(`❌ Subtask ${trimmedTaskId} not found.`));
+				console.log((`❌ Subtask ${trimmedTaskId} not found.`));
 				return;
 			}
 
 			// Save to subtask using updateSubtaskById
-			console.log(chalk.blue('💾 Saving research conversation to subtask...'));
+			console.log(('💾 Saving research conversation to subtask...'));
 
 			await updateSubtaskById(
 				tasksPath,
@@ -802,7 +802,7 @@ async function handleSaveToTask(
 			);
 
 			console.log(
-				chalk.green(
+				(
 					`✅ Research conversation saved to subtask ${trimmedTaskId}`
 				)
 			);
@@ -812,12 +812,12 @@ async function handleSaveToTask(
 			const task = data.tasks.find((t) => t.id === taskIdNum);
 
 			if (!task) {
-				console.log(chalk.red(`❌ Task ${trimmedTaskId} not found.`));
+				console.log((`❌ Task ${trimmedTaskId} not found.`));
 				return;
 			}
 
 			// Save to task using updateTaskById with append mode
-			console.log(chalk.blue('💾 Saving research conversation to task...'));
+			console.log(('💾 Saving research conversation to task...'));
 
 			await updateTaskById(
 				tasksPath,
@@ -830,13 +830,13 @@ async function handleSaveToTask(
 			);
 
 			console.log(
-				chalk.green(`✅ Research conversation saved to task ${trimmedTaskId}`)
+				(`✅ Research conversation saved to task ${trimmedTaskId}`)
 			);
 		}
 
 		return true; // Indicate successful save
 	} catch (error) {
-		console.log(chalk.red(`❌ Error saving conversation: ${error.message}`));
+		console.log((`❌ Error saving conversation: ${error.message}`));
 		logFn.error(`Error saving conversation: ${error.message}`);
 		return false; // Indicate failed save
 	}
@@ -895,14 +895,14 @@ async function handleSaveToFile(
 
 		const relativePath = path.relative(projectRoot, filePath);
 		console.log(
-			chalk.green(`✅ Research saved to: ${chalk.cyan(relativePath)}`)
+			(`✅ Research saved to: ${(relativePath)}`)
 		);
 
 		logFn.success(`Research conversation saved to ${relativePath}`);
 
 		return filePath;
 	} catch (error) {
-		console.log(chalk.red(`❌ Error saving research file: ${error.message}`));
+		console.log((`❌ Error saving research file: ${error.message}`));
 		logFn.error(`Error saving research file: ${error.message}`);
 		throw error;
 	}

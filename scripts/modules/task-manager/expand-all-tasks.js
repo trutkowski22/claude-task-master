@@ -173,20 +173,20 @@ async function expandAllTasks(
 
 		if (outputFormat === 'text') {
 			const summaryContent =
-				`${chalk.white.bold('Expansion Summary:')}\n\n` +
-				`${chalk.cyan('-')} Attempted: ${chalk.bold(tasksToExpandCount)}\n` +
-				`${chalk.green('-')} Expanded:  ${chalk.bold(expandedCount)}\n` +
+				`${('Expansion Summary:')}\n\n` +
+				`${('-')} Attempted: ${(tasksToExpandCount)}\n` +
+				`${('-')} Expanded:  ${(expandedCount)}\n` +
 				// Skipped count is always 0 now due to pre-filtering
-				`${chalk.gray('-')} Skipped:   ${chalk.bold(0)}\n` +
-				`${chalk.red('-')} Failed:    ${chalk.bold(failedCount)}`;
+				`${('-')} Skipped:   ${(0)}\n` +
+				`${('-')} Failed:    ${(failedCount)}`;
 
 			console.log(
-				boxen(summaryContent, {
+				summaryContent, {
 					padding: 1,
 					margin: { top: 1 },
 					borderColor: failedCount > 0 ? 'red' : 'green', // Red if failures, green otherwise
 					borderStyle: 'round'
-				})
+				}
 			);
 		}
 

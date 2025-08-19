@@ -118,7 +118,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 
 	if (outputFormat === 'text') {
 		console.log(
-			chalk.blue(
+			(
 				'Analyzing task complexity and generating expansion recommendations...'
 			)
 		);
@@ -174,7 +174,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 				if (outputFormat === 'text') {
 					if (filteredTasks.length === 0 && specificIds.length > 0) {
 						console.log(
-							chalk.yellow(
+							(
 								`Warning: No active tasks found with IDs: ${specificIds.join(', ')}`
 							)
 						);
@@ -184,7 +184,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 							(id) => !foundIds.includes(id)
 						);
 						console.log(
-							chalk.yellow(
+							(
 								`Warning: Some requested task IDs were not found or are not active: ${missingIds.join(', ')}`
 							)
 						);
@@ -209,7 +209,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 
 				if (outputFormat === 'text' && filteredTasks.length === 0) {
 					console.log(
-						chalk.yellow(
+						(
 							`Warning: No active tasks found in range: ${effectiveFromId}-${effectiveToId}`
 						)
 					);
@@ -272,13 +272,13 @@ async function analyzeTaskComplexity(options, context = {}) {
 
 			reportLog(filterMsg, 'info');
 			if (outputFormat === 'text') {
-				console.log(chalk.blue(filterMsg));
+				console.log((filterMsg));
 			}
 		} else if (skippedCount > 0) {
 			const skipMessage = `Skipping ${skippedCount} tasks marked as done/cancelled/deferred. Analyzing ${tasksData.tasks.length} active tasks.`;
 			reportLog(skipMessage, 'info');
 			if (outputFormat === 'text') {
-				console.log(chalk.yellow(skipMessage));
+				console.log((skipMessage));
 			}
 		}
 
@@ -323,7 +323,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 				);
 				if (outputFormat === 'text') {
 					console.log(
-						chalk.yellow(
+						(
 							'No matching tasks found for analysis. Keeping existing report.'
 						)
 					);
@@ -357,7 +357,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 			);
 			if (outputFormat === 'text') {
 				console.log(
-					chalk.green(
+					(
 						`Task complexity analysis complete. Report written to ${outputPath}`
 					)
 				);
@@ -382,12 +382,12 @@ async function analyzeTaskComplexity(options, context = {}) {
 				);
 
 				console.log(
-					boxen(
-						chalk.white.bold('Suggested Next Steps:') +
+					
+						('Suggested Next Steps:' +
 							'\n\n' +
-							`${chalk.cyan('1.')} Run ${chalk.yellow('task-master complexity-report')} to review detailed findings\n` +
-							`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down complex tasks\n` +
-							`${chalk.cyan('3.')} Run ${chalk.yellow('task-master expand --all')} to expand all pending tasks based on complexity`,
+							`${('1.')} Run ${('task-master complexity-report')} to review detailed findings\n` +
+							`${('2.')} Run ${('task-master expand --id=<id>')} to break down complex tasks\n` +
+							`${('3.')} Run ${('task-master expand --all')} to expand all pending tasks based on complexity`,
 						{
 							padding: 1,
 							borderColor: 'cyan',
@@ -458,7 +458,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 				readline.clearLine(process.stdout, 0);
 				readline.cursorTo(process.stdout, 0);
 				console.log(
-					chalk.green('AI service call complete. Parsing response...')
+					('AI service call complete. Parsing response...')
 				);
 			}
 
@@ -489,12 +489,12 @@ async function analyzeTaskComplexity(options, context = {}) {
 				}
 
 				if (outputFormat === 'text' && getDebugFlag(session)) {
-					console.log(chalk.gray('Attempting to parse cleaned JSON...'));
-					console.log(chalk.gray('Cleaned response (first 100 chars):'));
-					console.log(chalk.gray(cleanedResponse.substring(0, 100)));
-					console.log(chalk.gray('Last 100 chars:'));
+					console.log(('Attempting to parse cleaned JSON...'));
+					console.log(('Cleaned response (first 100 chars):'));
+					console.log((cleanedResponse.substring(0, 100)));
+					console.log(('Last 100 chars:'));
 					console.log(
-						chalk.gray(cleanedResponse.substring(cleanedResponse.length - 100))
+						(cleanedResponse.substring(cleanedResponse.length - 100))
 					);
 				}
 
@@ -507,7 +507,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 				);
 				if (outputFormat === 'text') {
 					console.error(
-						chalk.red(
+						(
 							`Error parsing complexity analysis JSON: ${parseError.message}`
 						)
 					);
@@ -528,7 +528,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 				);
 				if (outputFormat === 'text') {
 					console.log(
-						chalk.yellow(
+						(
 							`Missing analysis for ${missingTaskIds.length} tasks: ${missingTaskIds.join(', ')}`
 						)
 					);
@@ -606,7 +606,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 
 			if (outputFormat === 'text') {
 				console.log(
-					chalk.green(
+					(
 						`Task complexity analysis complete. Report written to ${outputPath}`
 					)
 				);
@@ -647,12 +647,12 @@ async function analyzeTaskComplexity(options, context = {}) {
 				);
 
 				console.log(
-					boxen(
-						chalk.white.bold('Suggested Next Steps:') +
+					
+						('Suggested Next Steps:' +
 							'\n\n' +
-							`${chalk.cyan('1.')} Run ${chalk.yellow('task-master complexity-report')} to review detailed findings\n` +
-							`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down complex tasks\n` +
-							`${chalk.cyan('3.')} Run ${chalk.yellow('task-master expand --all')} to expand all pending tasks based on complexity`,
+							`${('1.')} Run ${('task-master complexity-report')} to review detailed findings\n` +
+							`${('2.')} Run ${('task-master expand --id=<id>')} to break down complex tasks\n` +
+							`${('3.')} Run ${('task-master expand --all')} to expand all pending tasks based on complexity`,
 						{
 							padding: 1,
 							borderColor: 'cyan',
@@ -664,7 +664,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 
 				if (getDebugFlag(session)) {
 					console.debug(
-						chalk.gray(
+						(
 							`Final analysis object: ${JSON.stringify(report, null, 2)}`
 						)
 					);
@@ -682,16 +682,16 @@ async function analyzeTaskComplexity(options, context = {}) {
 			reportLog(`Error during AI service call: ${aiError.message}`, 'error');
 			if (outputFormat === 'text') {
 				console.error(
-					chalk.red(`Error during AI service call: ${aiError.message}`)
+					(`Error during AI service call: ${aiError.message}`)
 				);
 				if (aiError.message.includes('API key')) {
 					console.log(
-						chalk.yellow(
+						(
 							'\nPlease ensure your API keys are correctly configured in .env or ~/.taskmaster/.env'
 						)
 					);
 					console.log(
-						chalk.yellow("Run 'task-master models --setup' if needed.")
+						("Run 'task-master models --setup' if needed.")
 					);
 				}
 			}
@@ -701,7 +701,7 @@ async function analyzeTaskComplexity(options, context = {}) {
 		reportLog(`Error analyzing task complexity: ${error.message}`, 'error');
 		if (outputFormat === 'text') {
 			console.error(
-				chalk.red(`Error analyzing task complexity: ${error.message}`)
+				(`Error analyzing task complexity: ${error.message}`)
 			);
 			if (getDebugFlag(session)) {
 				console.error(error);

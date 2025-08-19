@@ -303,7 +303,7 @@ async function addTask(
 		// Only show UI box for CLI mode
 		if (outputFormat === 'text') {
 			console.log(
-				boxen(chalk.white.bold(`Creating New Task #${newTaskId}`), {
+				(`Creating New Task #${newTaskId}`, {
 					padding: 1,
 					borderColor: 'blue',
 					borderStyle: 'round',
@@ -551,9 +551,9 @@ async function addTask(
 		if (outputFormat === 'text') {
 			const table = new Table({
 				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Description')
+					('ID'),
+					('Title'),
+					('Description')
 				],
 				colWidths: [5, 30, 50] // Adjust widths as needed
 			});
@@ -564,7 +564,7 @@ async function addTask(
 				truncate(newTask.description, 47)
 			]);
 
-			console.log(chalk.green('✓ New task created successfully:'));
+			console.log(('✓ New task created successfully:'));
 			console.log(table.toString());
 
 			// Helper to get priority color
@@ -601,28 +601,28 @@ async function addTask(
 			// Prepare dependency display string
 			let dependencyDisplay = '';
 			if (newTask.dependencies.length > 0) {
-				dependencyDisplay = chalk.white('Dependencies:') + '\n';
+				dependencyDisplay = ('Dependencies:') + '\n';
 				newTask.dependencies.forEach((dep) => {
 					const isAiAdded = aiAddedDeps.includes(dep);
-					const depType = isAiAdded ? chalk.yellow(' (AI suggested)') : '';
+					const depType = isAiAdded ? (' (AI suggested)') : '';
 					dependencyDisplay +=
-						chalk.white(
+						(
 							`  - ${dep}: ${depTitles[dep] || 'Unknown task'}${depType}`
 						) + '\n';
 				});
 			} else {
-				dependencyDisplay = chalk.white('Dependencies: None') + '\n';
+				dependencyDisplay = ('Dependencies: None') + '\n';
 			}
 
 			// Add info about removed dependencies if any
 			if (aiRemovedDeps.length > 0) {
 				dependencyDisplay +=
-					chalk.gray('\nUser-specified dependencies that were not used:') +
+					('\nUser-specified dependencies that were not used:') +
 					'\n';
 				aiRemovedDeps.forEach((dep) => {
 					const depTask = allTasks.find((t) => t.id === dep);
 					const title = depTask ? truncate(depTask.title, 30) : 'Unknown task';
-					dependencyDisplay += chalk.gray(`  - ${dep}: ${title}`) + '\n';
+					dependencyDisplay += (`  - ${dep}: ${title}`) + '\n';
 				});
 			}
 
@@ -630,16 +630,16 @@ async function addTask(
 			let dependencyAnalysis = '';
 			if (aiAddedDeps.length > 0 || aiRemovedDeps.length > 0) {
 				dependencyAnalysis =
-					'\n' + chalk.white.bold('Dependency Analysis:') + '\n';
+					'\n' + ('Dependency Analysis:') + '\n';
 				if (aiAddedDeps.length > 0) {
 					dependencyAnalysis +=
-						chalk.green(
+						(
 							`AI identified ${aiAddedDeps.length} additional dependencies`
 						) + '\n';
 				}
 				if (aiRemovedDeps.length > 0) {
 					dependencyAnalysis +=
-						chalk.yellow(
+						(
 							`AI excluded ${aiRemovedDeps.length} user-provided dependencies`
 						) + '\n';
 				}
@@ -652,18 +652,18 @@ async function addTask(
 						dependencyDisplay +
 						dependencyAnalysis +
 						'\n' +
-						chalk.white.bold('Next Steps:') +
+						('Next Steps:') +
 						'\n' +
-						chalk.cyan(
-							`1. Run ${chalk.yellow(`task-master show ${newTaskId}`)} to see complete task details`
+						(
+							`1. Run ${(`task-master show ${newTaskId}`)} to see complete task details`
 						) +
 						'\n' +
-						chalk.cyan(
-							`2. Run ${chalk.yellow(`task-master set-status --id=${newTaskId} --status=in-progress`)} to start working on it`
+						(
+							`2. Run ${(`task-master set-status --id=${newTaskId} --status=in-progress`)} to start working on it`
 						) +
 						'\n' +
-						chalk.cyan(
-							`3. Run ${chalk.yellow(`task-master expand --id=${newTaskId}`)} to break it down into subtasks`
+						(
+							`3. Run ${(`task-master expand --id=${newTaskId}`)} to break it down into subtasks`
 						),
 					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 

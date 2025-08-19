@@ -43,11 +43,7 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 		// Only display UI elements if not in MCP mode
 		if (!isMcpMode) {
 			console.log(
-				boxen(chalk.white.bold(`Updating Task Status to: ${newStatus}`), {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round'
-				})
+				(`Updating Task Status to: ${newStatus}`)
 			);
 		}
 
@@ -138,11 +134,11 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 				const { id, oldStatus, newStatus: updatedStatus } = updateInfo;
 
 				console.log(
-					boxen(
-						chalk.white.bold(`Successfully updated task ${id} status:`) +
+					
+						(`Successfully updated task ${id} status:` +
 							'\n' +
-							`From: ${chalk.yellow(oldStatus)}\n` +
-							`To:   ${chalk.green(updatedStatus)}`,
+							`From: ${(oldStatus)}\n` +
+							`To:   ${(updatedStatus)}`,
 						{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 					)
 				);
@@ -163,7 +159,7 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 
 		// Only show error UI in CLI mode
 		if (!options?.mcpLog) {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error((`Error: ${error.message}`));
 
 			// Pass session to getDebugFlag
 			if (getDebugFlag(options?.session)) {

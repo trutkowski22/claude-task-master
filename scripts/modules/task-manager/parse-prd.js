@@ -150,7 +150,7 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 				);
 				report(overwriteError.message, 'error');
 				if (outputFormat === 'text') {
-					console.error(chalk.red(overwriteError.message));
+					console.error((overwriteError.message));
 				}
 				throw overwriteError;
 			} else {
@@ -338,20 +338,20 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 		// Handle CLI output (e.g., success message)
 		if (outputFormat === 'text') {
 			console.log(
-				boxen(
-					chalk.green(
+				
+					(
 						`Successfully generated ${processedNewTasks.length} new tasks${research ? ' with research-backed analysis' : ''}. Total tasks in ${tasksPath}: ${finalTasks.length}`
-					),
+					,
 					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 				)
 			);
 
 			console.log(
-				boxen(
-					chalk.white.bold('Next Steps:') +
+				
+					('Next Steps:' +
 						'\n\n' +
-						`${chalk.cyan('1.')} Run ${chalk.yellow('task-master list')} to view all tasks\n` +
-						`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down a task into subtasks`,
+						`${('1.')} Run ${('task-master list')} to view all tasks\n` +
+						`${('2.')} Run ${('task-master expand --id=<id>')} to break down a task into subtasks`,
 					{
 						padding: 1,
 						borderColor: 'cyan',
@@ -378,7 +378,7 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 
 		// Only show error UI for text output (CLI)
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error((`Error: ${error.message}`));
 
 			if (getDebugFlag(projectRoot)) {
 				// Use projectRoot for debug flag check

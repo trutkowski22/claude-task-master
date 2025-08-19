@@ -296,7 +296,7 @@ async function updateTaskById(
 			);
 			if (outputFormat === 'text')
 				console.log(
-					chalk.yellow('Perplexity AI not available. Falling back to main AI.')
+					('Perplexity AI not available. Falling back to main AI.')
 				);
 			useResearch = false;
 		}
@@ -326,20 +326,20 @@ async function updateTaskById(
 			// Only show warning box for text output (CLI)
 			if (outputFormat === 'text') {
 				console.log(
-					boxen(
-						chalk.yellow(
+					
+						(
 							`Task ${taskId} is already marked as ${taskToUpdate.status} and cannot be updated.`
-						) +
+						 +
 							'\n\n' +
-							chalk.white(
+							(
 								'Completed tasks are locked to maintain consistency. To modify a completed task, you must first:'
 							) +
 							'\n' +
-							chalk.white(
+							(
 								'1. Change its status to "pending" or "in-progress"'
 							) +
 							'\n' +
-							chalk.white('2. Then run the update-task command'),
+							('2. Then run the update-task command'),
 						{ padding: 1, borderColor: 'yellow', borderStyle: 'round' }
 					)
 				);
@@ -382,9 +382,9 @@ async function updateTaskById(
 			// Show the task that will be updated
 			const table = new Table({
 				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Status')
+					('ID'),
+					('Title'),
+					('Status')
 				],
 				colWidths: [5, 60, 10]
 			});
@@ -396,7 +396,7 @@ async function updateTaskById(
 			]);
 
 			console.log(
-				boxen(chalk.white.bold(`Updating Task #${taskId}`), {
+				(`Updating Task #${taskId}`, {
 					padding: 1,
 					borderColor: 'blue',
 					borderStyle: 'round',
@@ -408,19 +408,19 @@ async function updateTaskById(
 
 			// Display a message about how completed subtasks are handled
 			console.log(
-				boxen(
-					chalk.cyan.bold('How Completed Subtasks Are Handled:') +
+				
+					('How Completed Subtasks Are Handled:' +
 						'\n\n' +
-						chalk.white(
+						(
 							'• Subtasks marked as "done" or "completed" will be preserved\n'
 						) +
-						chalk.white(
+						(
 							'• New subtasks will build upon what has already been completed\n'
 						) +
-						chalk.white(
+						(
 							'• If completed work needs revision, a new subtask will be created instead of modifying done items\n'
 						) +
-						chalk.white(
+						(
 							'• This approach maintains a clear record of completed work and new requirements'
 						),
 					{
@@ -552,16 +552,16 @@ async function updateTaskById(
 				// Display success message for CLI
 				if (outputFormat === 'text') {
 					console.log(
-						boxen(
-							chalk.green(`Successfully appended to task #${taskId}`) +
+						
+							(`Successfully appended to task #${taskId}` +
 								'\n\n' +
-								chalk.white.bold('Title:') +
+								('Title:') +
 								' ' +
 								taskToUpdate.title +
 								'\n\n' +
-								chalk.white.bold('Newly Added Content:') +
+								('Newly Added Content:') +
 								'\n' +
-								chalk.white(newlyAddedSnippet),
+								(newlyAddedSnippet),
 							{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 						)
 					);
@@ -721,7 +721,7 @@ async function updateTaskById(
 		// --- General Error Handling (Keep existing) ---
 		report('error', `Error updating task: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error((`Error: ${error.message}`));
 			// ... helpful hints ...
 			if (getDebugFlag(session)) console.error(error);
 			process.exit(1);

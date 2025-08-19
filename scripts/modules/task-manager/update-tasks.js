@@ -363,9 +363,9 @@ async function updateTasks(
 			// Show the tasks that will be updated
 			const table = new Table({
 				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Status')
+					('ID'),
+					('Title'),
+					('Status')
 				],
 				colWidths: [5, 70, 20]
 			});
@@ -379,7 +379,7 @@ async function updateTasks(
 			});
 
 			console.log(
-				boxen(chalk.white.bold(`Updating ${tasksToUpdate.length} tasks`), {
+				(`Updating ${tasksToUpdate.length} tasks`, {
 					padding: 1,
 					borderColor: 'blue',
 					borderStyle: 'round',
@@ -391,19 +391,19 @@ async function updateTasks(
 
 			// Display a message about how completed subtasks are handled
 			console.log(
-				boxen(
-					chalk.cyan.bold('How Completed Subtasks Are Handled:') +
+				
+					('How Completed Subtasks Are Handled:' +
 						'\n\n' +
-						chalk.white(
+						(
 							'• Subtasks marked as "done" or "completed" will be preserved\n'
 						) +
-						chalk.white(
+						(
 							'• New subtasks will build upon what has already been completed\n'
 						) +
-						chalk.white(
+						(
 							'• If completed work needs revision, a new subtask will be created instead of modifying done items\n'
 						) +
-						chalk.white(
+						(
 							'• This approach maintains a clear record of completed work and new requirements'
 						),
 					{
@@ -561,7 +561,7 @@ async function updateTasks(
 		if (isMCP) logFn.error(`Error updating tasks: ${error.message}`);
 		else logFn('error', `Error updating tasks: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error((`Error: ${error.message}`));
 			if (getDebugFlag(session)) {
 				console.error(error);
 			}

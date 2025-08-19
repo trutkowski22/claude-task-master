@@ -160,9 +160,9 @@ async function updateSubtaskById(
 		if (outputFormat === 'text') {
 			const table = new Table({
 				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Status')
+					('ID'),
+					('Title'),
+					('Status')
 				],
 				colWidths: [10, 55, 10]
 			});
@@ -172,7 +172,7 @@ async function updateSubtaskById(
 				(subtask.status)
 			]);
 			console.log(
-				boxen(chalk.white.bold(`Updating Subtask #${subtaskId}`), {
+				(`Updating Subtask #${subtaskId}`, {
 					padding: 1,
 					borderColor: 'blue',
 					borderStyle: 'round',
@@ -338,16 +338,16 @@ async function updateSubtaskById(
 				loadingIndicator = null;
 			}
 			console.log(
-				boxen(
-					chalk.green(`Successfully updated subtask #${subtaskId}`) +
+				
+					(`Successfully updated subtask #${subtaskId}` +
 						'\n\n' +
-						chalk.white.bold('Title:') +
+						('Title:') +
 						' ' +
 						updatedSubtask.title +
 						'\n\n' +
-						chalk.white.bold('Newly Added Snippet:') +
+						('Newly Added Snippet:') +
 						'\n' +
-						chalk.white(newlyAddedSnippet),
+						(newlyAddedSnippet),
 					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 				)
 			);
@@ -369,14 +369,14 @@ async function updateSubtaskById(
 		}
 		report('error', `Error updating subtask: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
+			console.error((`Error: ${error.message}`));
 			if (error.message?.includes('ANTHROPIC_API_KEY')) {
 				console.log(
-					chalk.yellow('\nTo fix this issue, set your Anthropic API key:')
+					('\nTo fix this issue, set your Anthropic API key:')
 				);
 				console.log('  export ANTHROPIC_API_KEY=your_api_key_here');
 			} else if (error.message?.includes('PERPLEXITY_API_KEY')) {
-				console.log(chalk.yellow('\nTo fix this issue:'));
+				console.log(('\nTo fix this issue:'));
 				console.log(
 					'  1. Set your Perplexity API key: export PERPLEXITY_API_KEY=your_api_key_here'
 				);
@@ -385,14 +385,14 @@ async function updateSubtaskById(
 				);
 			} else if (error.message?.includes('overloaded')) {
 				console.log(
-					chalk.yellow(
+					(
 						'\nAI model overloaded, and fallback failed or was unavailable:'
 					)
 				);
 				console.log('  1. Try again in a few minutes.');
 				console.log('  2. Ensure PERPLEXITY_API_KEY is set for fallback.');
 			} else if (error.message?.includes('not found')) {
-				console.log(chalk.yellow('\nTo fix this issue:'));
+				console.log(('\nTo fix this issue:'));
 				console.log(
 					'  1. Run task-master list --with-subtasks to see all available subtask IDs'
 				);
@@ -404,7 +404,7 @@ async function updateSubtaskById(
 				error.message?.includes('AI did not return a valid text string')
 			) {
 				console.log(
-					chalk.yellow(
+					(
 						'\nThe AI model returned an empty or invalid response. This might be due to the prompt or API issues. Try rephrasing or trying again later.'
 					)
 				);
