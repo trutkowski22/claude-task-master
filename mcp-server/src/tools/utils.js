@@ -8,7 +8,28 @@ import path from 'path';
 import fs from 'fs';
 import { contextManager } from '../core/context-manager.js'; // Import the singleton
 import { fileURLToPath } from 'url';
-import { getCurrentTag } from '../../../scripts/modules/utils.js';
+// Remove CLI dependency - extract minimal needed function
+function getCurrentTag(projectRoot) {
+	if (!projectRoot) {
+		return 'master';
+	}
+
+	try {
+		// Try to read current tag from state.json
+		const statePath = path.join(projectRoot, '.taskmaster', 'state.json');
+		if (fs.existsSync(statePath)) {
+			const rawState = fs.readFileSync(statePath, 'utf8');
+			const stateData = JSON.parse(rawState);
+			if (stateData && stateData.currentTag) {
+				return stateData.currentTag;
+			}
+		}
+	} catch (error) {
+		// Ignore errors, fall back to default
+	}
+
+	return 'master';
+}
 
 // Import path utilities to ensure consistent path resolution
 import {
@@ -384,15 +405,13 @@ function executeTaskMasterCommand(
 		// Log the environment being passed (optional, for debugging)
 		// log.info(`Spawn options env: ${JSON.stringify(spawnOptions.env)}`);
 
-		// Execute the command using the global task-master CLI or local script
-		// Try the global CLI first
-		let result = spawnSync('task-master', fullArgs, spawnOptions);
+		// Execute using the installed task-master-ai package
+		let result = spawnSync('npx', ['task-master-ai', ...fullArgs], spawnOptions);
 
-		// If global CLI is not available, try fallback to the local script
+		// If npx fails, try global task-master-ai
 		if (result.error && result.error.code === 'ENOENT') {
-			log.info('Global task-master not found, falling back to local script');
-			// Pass the same spawnOptions (including env) to the fallback
-			result = spawnSync('node', ['scripts/dev.js', ...fullArgs], spawnOptions);
+			log.info('npx not available, trying global task-master-ai');
+			result = spawnSync('task-master-ai', fullArgs, spawnOptions);
 		}
 
 		if (result.error) {

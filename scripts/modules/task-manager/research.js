@@ -132,6 +132,8 @@ async function performResearch(
 							.map((id) => parseInt(id))
 							.sort((a, b) => a - b)
 							.map((id) => id.toString());
+					}
+				}
 			}
 		} catch (error) {
 			// Silently continue without auto-discovered tasks if there's an error
