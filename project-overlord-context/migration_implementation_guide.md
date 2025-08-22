@@ -3,8 +3,7 @@
 ## Overview
 This guide provides comprehensive implementation details, LLM prompts, and step-by-step instructions for migrating Claude Task Master from a file-based CLI system to a cloud-hosted multi-user database application.
 
-## Phase 0: CLI La$content = Get-Content "scripts/modules/task-manager/list-tasks.js" -Raw
-yer Elimination
+## Phase 0: CLI Layer Elimination
 
 ### Task: CLI Component Analysis
 
