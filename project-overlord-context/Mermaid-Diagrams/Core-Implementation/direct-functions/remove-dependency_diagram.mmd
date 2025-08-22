@@ -1,0 +1,37 @@
+flowchart TB
+    subgraph Imports
+        I1[removeDependency from ../../../../scripts/modules/dependency-manager.js]
+        I2[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[removeDependencyDirect - Wrapper function for removing task dependencies]
+    end
+
+    subgraph Exports
+        E1[removeDependencyDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, id, dependsOn, projectRoot, tag]
+        P2[log object for logging operations]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that tasksJsonPath, id, and dependsOn arguments are provided]
+        FL2[Format task IDs appropriately for core function - handle both integer and dotted formats]
+        FL3[Enable silent mode to prevent console logs from interfering with JSON response]
+        FL4[Call core removeDependency function with formatted IDs and context]
+        FL5[Restore normal logging mode after dependency removal operation]
+        FL6[Return success result with confirmation message and processed IDs]
+        FL7[Handle errors gracefully and ensure silent mode is properly restored]
+        FL8[Provide structured error responses with appropriate error codes]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

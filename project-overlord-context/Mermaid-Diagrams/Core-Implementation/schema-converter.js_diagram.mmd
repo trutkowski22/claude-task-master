@@ -1,0 +1,220 @@
+```mermaid
+graph TB
+    %% Schema Converter - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/schema-converter.js
+    
+    subgraph "Schema Converter Module"
+        direction TB
+        
+        subgraph "Main Functions"
+            CONVERT_SCHEMA["convertSchemaToInstructions(schema, objectName)"]
+            ENHANCE_PROMPT["enhancePromptForJSON(prompt, jsonInstructions)"]
+            GENERATE_EXAMPLE["generateExampleFromSchema(schema)"]
+        end
+        
+        subgraph "Schema to Instructions Conversion"
+            direction TB
+            
+            INPUT_SCHEMA["Input: Zod schema + objectName"]
+            TRY_CONVERT["try/catch block"]
+            
+            subgraph "Success Path"
+                CALL_GENERATE["generateExampleFromSchema(schema)"]
+                CREATE_INSTRUCTIONS["Create detailed JSON instructions"]
+                FORMAT_EXAMPLE["Format example with JSON.stringify()"]
+                ADD_REQUIREMENTS["Add strict requirements list"]
+                SUCCESS_OUTPUT["Return formatted instructions"]
+            end
+            
+            subgraph "Error Path"
+                CATCH_ERROR["Catch schema parsing error"]
+                FALLBACK_INSTRUCTIONS["Create basic JSON instructions"]
+                FALLBACK_OUTPUT["Return fallback instructions"]
+            end
+        end
+        
+        subgraph "Example Generation from Schema"
+            direction TB
+            
+            INPUT_SCHEMA_DEF["Input: Zod schema"]
+            CHECK_SCHEMA["Check schema._def exists"]
+            GET_TYPE_NAME["Get def.typeName"]
+            
+            subgraph "Type Handling Switch"
+                ZOD_OBJECT["ZodObject"]
+                ZOD_STRING["ZodString"]
+                ZOD_NUMBER["ZodNumber"]
+                ZOD_BOOLEAN["ZodBoolean"]
+                ZOD_ARRAY["ZodArray"]
+                ZOD_OPTIONAL["ZodOptional"]
+                ZOD_NULLABLE["ZodNullable"]
+                ZOD_ENUM["ZodEnum"]
+                ZOD_LITERAL["ZodLiteral"]
+                ZOD_UNION["ZodUnion"]
+                ZOD_RECORD["ZodRecord"]
+                ZOD_DEFAULT["Default case"]
+            end
+            
+            subgraph "Object Processing"
+                GET_SHAPE["def.shape()"]
+                ITERATE_ENTRIES["Object.entries(shape)"]
+                RECURSIVE_CALL["Recursive generateExampleFromSchema()"]
+                BUILD_RESULT["Build result object"]
+            end
+            
+            subgraph "Array Processing"
+                GET_ELEMENT_TYPE["def.type"]
+                GENERATE_ELEMENT["Generate element example"]
+                WRAP_ARRAY["Wrap in array [elementExample]"]
+            end
+            
+            subgraph "Union Processing"
+                GET_OPTIONS["def.options"]
+                SELECT_FIRST["Select first option"]
+                PROCESS_OPTION["Process selected option"]
+            end
+            
+            EXAMPLE_OUTPUT["Output: example object"]
+        end
+        
+        subgraph "Prompt Enhancement"
+            direction TB
+            
+            INPUT_PROMPT_ARRAY["Input: prompt array"]
+            INPUT_INSTRUCTIONS["Input: JSON instructions"]
+            COPY_PROMPT["Copy prompt array"]
+            
+            subgraph "System Message Handling"
+                FIND_SYSTEM_MSG["Find existing system message"]
+                CHECK_SYSTEM_EXISTS["systemMessageIndex >= 0"]
+                
+                subgraph "Existing System Message"
+                    GET_CURRENT_CONTENT["Get current content"]
+                    APPEND_INSTRUCTIONS["Append instructions with \\n\\n"]
+                    UPDATE_SYSTEM_MSG["Update system message"]
+                end
+                
+                subgraph "New System Message"
+                    CREATE_SYSTEM_MSG["Create new system message"]
+                    UNSHIFT_PROMPT["Add to beginning of prompt"]
+                end
+            end
+            
+            ENHANCED_OUTPUT["Output: enhanced prompt array"]
+        end
+        
+        subgraph "Instruction Templates"
+            direction TB
+            
+            subgraph "Detailed Instructions"
+                CRITICAL_HEADER["CRITICAL JSON GENERATION INSTRUCTIONS"]
+                STRUCTURE_EXAMPLE["Example structure with formatting"]
+                STRICT_REQUIREMENTS["7 strict requirements"]
+                BEGIN_INSTRUCTION["Begin with opening brace"]
+            end
+            
+            subgraph "Fallback Instructions"
+                BASIC_HEADER["Basic JSON instructions"]
+                BASIC_REQUIREMENTS["5 basic requirements"]
+                BASIC_BEGIN["Begin instruction"]
+            end
+        end
+    end
+    
+    %% Schema to Instructions Flow
+    INPUT_SCHEMA --> CONVERT_SCHEMA
+    CONVERT_SCHEMA --> TRY_CONVERT
+    TRY_CONVERT --> CALL_GENERATE
+    TRY_CONVERT --> CATCH_ERROR
+    
+    CALL_GENERATE --> GENERATE_EXAMPLE
+    GENERATE_EXAMPLE --> CREATE_INSTRUCTIONS
+    CREATE_INSTRUCTIONS --> FORMAT_EXAMPLE
+    FORMAT_EXAMPLE --> ADD_REQUIREMENTS
+    ADD_REQUIREMENTS --> SUCCESS_OUTPUT
+    
+    CATCH_ERROR --> FALLBACK_INSTRUCTIONS
+    FALLBACK_INSTRUCTIONS --> FALLBACK_OUTPUT
+    
+    %% Example Generation Flow
+    INPUT_SCHEMA_DEF --> GENERATE_EXAMPLE
+    GENERATE_EXAMPLE --> CHECK_SCHEMA
+    CHECK_SCHEMA --> GET_TYPE_NAME
+    GET_TYPE_NAME --> ZOD_OBJECT
+    GET_TYPE_NAME --> ZOD_STRING
+    GET_TYPE_NAME --> ZOD_NUMBER
+    GET_TYPE_NAME --> ZOD_BOOLEAN
+    GET_TYPE_NAME --> ZOD_ARRAY
+    GET_TYPE_NAME --> ZOD_OPTIONAL
+    GET_TYPE_NAME --> ZOD_NULLABLE
+    GET_TYPE_NAME --> ZOD_ENUM
+    GET_TYPE_NAME --> ZOD_LITERAL
+    GET_TYPE_NAME --> ZOD_UNION
+    GET_TYPE_NAME --> ZOD_RECORD
+    GET_TYPE_NAME --> ZOD_DEFAULT
+    
+    %% Object Processing
+    ZOD_OBJECT --> GET_SHAPE
+    GET_SHAPE --> ITERATE_ENTRIES
+    ITERATE_ENTRIES --> RECURSIVE_CALL
+    RECURSIVE_CALL --> GENERATE_EXAMPLE
+    RECURSIVE_CALL --> BUILD_RESULT
+    BUILD_RESULT --> EXAMPLE_OUTPUT
+    
+    %% Array Processing
+    ZOD_ARRAY --> GET_ELEMENT_TYPE
+    GET_ELEMENT_TYPE --> GENERATE_ELEMENT
+    GENERATE_ELEMENT --> GENERATE_EXAMPLE
+    GENERATE_ELEMENT --> WRAP_ARRAY
+    WRAP_ARRAY --> EXAMPLE_OUTPUT
+    
+    %% Union Processing
+    ZOD_UNION --> GET_OPTIONS
+    GET_OPTIONS --> SELECT_FIRST
+    SELECT_FIRST --> PROCESS_OPTION
+    PROCESS_OPTION --> GENERATE_EXAMPLE
+    
+    %% Simple Types
+    ZOD_STRING --> EXAMPLE_OUTPUT
+    ZOD_NUMBER --> EXAMPLE_OUTPUT
+    ZOD_BOOLEAN --> EXAMPLE_OUTPUT
+    ZOD_ENUM --> EXAMPLE_OUTPUT
+    ZOD_LITERAL --> EXAMPLE_OUTPUT
+    ZOD_OPTIONAL --> GENERATE_EXAMPLE
+    ZOD_NULLABLE --> GENERATE_EXAMPLE
+    ZOD_RECORD --> EXAMPLE_OUTPUT
+    ZOD_DEFAULT --> EXAMPLE_OUTPUT
+    
+    %% Prompt Enhancement Flow
+    INPUT_PROMPT_ARRAY --> ENHANCE_PROMPT
+    INPUT_INSTRUCTIONS --> ENHANCE_PROMPT
+    ENHANCE_PROMPT --> COPY_PROMPT
+    COPY_PROMPT --> FIND_SYSTEM_MSG
+    FIND_SYSTEM_MSG --> CHECK_SYSTEM_EXISTS
+    
+    CHECK_SYSTEM_EXISTS --> GET_CURRENT_CONTENT
+    GET_CURRENT_CONTENT --> APPEND_INSTRUCTIONS
+    APPEND_INSTRUCTIONS --> UPDATE_SYSTEM_MSG
+    UPDATE_SYSTEM_MSG --> ENHANCED_OUTPUT
+    
+    CHECK_SYSTEM_EXISTS --> CREATE_SYSTEM_MSG
+    CREATE_SYSTEM_MSG --> UNSHIFT_PROMPT
+    UNSHIFT_PROMPT --> ENHANCED_OUTPUT
+    
+    %% Template Usage
+    SUCCESS_OUTPUT --> CRITICAL_HEADER
+    SUCCESS_OUTPUT --> STRUCTURE_EXAMPLE
+    SUCCESS_OUTPUT --> STRICT_REQUIREMENTS
+    SUCCESS_OUTPUT --> BEGIN_INSTRUCTION
+    
+    FALLBACK_OUTPUT --> BASIC_HEADER
+    FALLBACK_OUTPUT --> BASIC_REQUIREMENTS
+    FALLBACK_OUTPUT --> BASIC_BEGIN
+    
+    style CONVERT_SCHEMA fill:#e1f5fe
+    style GENERATE_EXAMPLE fill:#e8f5e8
+    style ENHANCE_PROMPT fill:#fff3e0
+    style TRY_CONVERT fill:#f3e5f5
+    style RECURSIVE_CALL fill:#fce4ec
+    style FALLBACK_INSTRUCTIONS fill:#ffebee
+```

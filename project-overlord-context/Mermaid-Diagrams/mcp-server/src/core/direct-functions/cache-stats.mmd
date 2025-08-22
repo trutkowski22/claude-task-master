@@ -1,0 +1,46 @@
+flowchart TD
+    subgraph "cache-stats.js"
+        A["📊 Cache Stats Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Cache Statistics Retrieval"]
+        D --> E["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["contextManager from '../context-manager.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["getCacheStatsDirect(args, log) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["args - Object (command arguments)"]
+            P2["log - Object (logger)"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Log statistics retrieval"]
+            EX2["Call contextManager.getStats()"]
+            EX3["Return success response with stats"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Catch any cache access errors"]
+            ERR2["Return error response with code"]
+        end
+        
+        subgraph "Exports"
+            EXP1["getCacheStatsDirect function"]
+        end
+        
+        B --> I1
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        D --> EX1
+        D --> EX2
+        E --> EX3
+        EX2 --> ERR1
+        ERR1 --> ERR2
+        E --> EXP1
+    end

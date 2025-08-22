@@ -1,0 +1,119 @@
+flowchart TD
+    subgraph "clear-subtasks.js"
+        A["🧹 Clear Subtasks Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["File Operations"]
+        E --> F["Task ID Processing"]
+        F --> G["Core Function Call"]
+        G --> H["Summary Generation"]
+        H --> I["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["clearSubtasks from '../../../../scripts/modules/task-manager.js'"]
+            I2["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I3["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I4["readJSON from '../../../../scripts/modules/utils.js'"]
+            I5["fs from 'fs'"]
+            I6["path from 'path'"]
+        end
+        
+        subgraph "Functions"
+            F1["clearSubtasksDirect(args, log) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["tasksJsonPath - string"]
+            P2["id - string (comma-separated, optional)"]
+            P3["all - boolean (optional)"]
+            P4["tag - string (optional)"]
+            P5["projectRoot - string (optional)"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check tasksJsonPath exists"]
+            V2["Validate either id OR all parameter"]
+            V3["Check tasks.json file exists"]
+            V4["Validate tasks data structure"]
+        end
+        
+        subgraph "File Operations"
+            FILE1["Read tasks.json with readJSON"]
+            FILE2["Handle tag resolution"]
+            FILE3["Check tasks array exists"]
+            FILE4["Re-read for summary generation"]
+        end
+        
+        subgraph "Task ID Processing"
+            TID1["Process 'all' mode - get all task IDs"]
+            TID2["Process specific IDs from parameter"]
+            TID3["Join task IDs as comma-separated string"]
+            TID4["Convert to array for summary"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Enable silent mode"]
+            EX2["Call clearSubtasks core function"]
+            EX3["Disable silent mode"]
+            EX4["Generate task summary"]
+            EX5["Return success response"]
+        end
+        
+        subgraph "Summary Generation"
+            SUM1["Count cleared tasks"]
+            SUM2["Map task IDs to task titles"]
+            SUM3["Create response summary"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["File not found errors"]
+            ERR3["Validation errors"]
+            ERR4["Core function errors"]
+            ERR5["Always restore logging"]
+        end
+        
+        subgraph "Exports"
+            EXP1["clearSubtasksDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        B --> I5
+        B --> I6
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        F1 --> P3
+        F1 --> P4
+        F1 --> P5
+        D --> V1
+        D --> V2
+        E --> V3
+        E --> V4
+        E --> FILE1
+        E --> FILE2
+        E --> FILE3
+        F --> TID1
+        F --> TID2
+        F --> TID3
+        G --> EX1
+        G --> EX2
+        G --> EX3
+        H --> FILE4
+        H --> TID4
+        H --> SUM1
+        H --> SUM2
+        H --> SUM3
+        I --> EX4
+        I --> EX5
+        V1 --> ERR1
+        V2 --> ERR3
+        V3 --> ERR2
+        V4 --> ERR3
+        EX2 --> ERR4
+        ERR4 --> ERR5
+        I --> EXP1
+    end

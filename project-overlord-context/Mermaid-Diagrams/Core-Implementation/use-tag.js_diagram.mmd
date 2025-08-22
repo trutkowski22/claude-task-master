@@ -1,0 +1,70 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: useTag, FROM: /scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Tag management system for switching between tag contexts"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Logger wrapper utilities for core function compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: useTagDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: useTagDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing tag switching information"]
+        P2["PARAM: {string} args.name - name of tag to switch to"]
+        P3["PARAM: {string} args.tasksJsonPath - path to tasks.json file"]
+        P4["PARAM: {string} args.projectRoot - project root path"]
+        P5["PARAM: {Object} log - logger object for operation tracking"]
+        P6["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: name, VALUE: tag name from args"]
+        C3["CONST: projectRoot, VALUE: project root path from args"]
+        C4["CONST: session, VALUE: extracted from context"]
+        C5["CONST: mcpLog, VALUE: wrapped logger for core functions"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Create logger wrapper for core function compatibility"]
+        FL3["Validate required parameter tasksJsonPath"]
+        FL4["Validate tag name parameter is string and provided"]
+        FL5["Call core useTag function with tag name and context"]
+        FL6["Disable silent mode and return success with tag switch details"]
+        FL7["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["use-tag.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL1 --> FL7
+    FL3 --> FL7
+    FL4 --> FL7
+    FL5 --> FL7
+```

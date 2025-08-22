@@ -1,0 +1,168 @@
+```mermaid
+flowchart TB
+    %% SHARED INFRASTRUCTURE SECTIONS
+    subgraph SharedImports["Shared-Infrastructure-Imports"]
+        SI1["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        SI2["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        SI3["IMPORT: createLogWrapper, FROM: /mcp-server/src/tools/utils.js"]
+        SI4["IMPORT: FastMCP, FROM: fastmcp"]
+        SI5["IMPORT: LRUCache, FROM: lru-cache"]
+    end
+    
+    subgraph SharedDependencies["Shared-Infrastructure-Dependencies"]
+        SD1["DEP: Task Manager modules for business logic execution"]
+        SD2["DEP: Silent mode management for MCP compatibility"]
+        SD3["DEP: Standardized error handling and response formats"]
+        SD4["DEP: Session and context management for MCP protocol"]
+    end
+    
+    subgraph SharedParameters["Shared-Infrastructure-Parameters"]
+        SP1["PARAM: {Object} args - command arguments with task operation data"]
+        SP2["PARAM: {Object} log - logger object for operation recording"]
+        SP3["PARAM: {Object} context - session and MCP context information"]
+    end
+    
+    subgraph SharedConstants["Shared-Infrastructure-Constants"]
+        SC1["CONST: session, VALUE: MCP session object from context destructuring"]
+        SC2["CONST: mcpLog, VALUE: MCP-compatible logger wrapper"]
+        SC3["CONST: tasksJsonPath, VALUE: validated path to tasks.json file"]
+        SC4["CONST: result, VALUE: return value from business logic functions"]
+    end
+    
+    %% INDIVIDUAL FILE SECTIONS
+    subgraph taskMasterCore["task-master-core.js"]
+        subgraph coreImports["core-Imports"]
+            CI1["IMPORT: 35 direct function implementations from individual modules"]
+            CI2["IMPORT: findTasksPath, FROM: /mcp-server/src/core/utils/path-utils.js"]
+        end
+        
+        subgraph coreFunctions["core-Functions Defined"]
+            CF1["FUNCTION: (none - pure re-export module)"]
+        end
+        
+        subgraph coreExports["core-Exports"]
+            CE1["EXP: directFunctions Map with all implementations"]
+            CE2["EXP: findTasksPath utility function"]
+            CE3["EXP: 35 individual direct function exports"]
+        end
+        
+        subgraph coreFlow["core-Execution Flow"]
+            CL1["Import all direct function implementations"]
+            CL2["Create Map for function registry and introspection"]
+            CL3["Populate Map with name-to-implementation mappings"]
+            CL4["Re-export utilities and provide centralized access"]
+        end
+        
+        coreImports
+        coreFunctions
+        coreExports
+        coreFlow
+    end
+    
+    subgraph addTaskDirect["add-task.js"]
+        subgraph addTaskImports["addTask-Imports"]
+            ATDI1["IMPORT: addTask, FROM: /scripts/modules/task-manager.js"]
+        end
+        
+        subgraph addTaskFunctions["addTask-Functions Defined"]
+            ATDF1["FUNCTION: addTaskDirect"]
+        end
+        
+        subgraph addTaskExports["addTask-Exports"]
+            ATDE1["EXP: addTaskDirect"]
+        end
+        
+        subgraph addTaskConstants["addTask-Constants"]
+            ATDC1["CONST: tasksPath, VALUE: validated tasks.json file path"]
+            ATDC2["CONST: isManualCreation, VALUE: boolean for manual vs AI creation"]
+            ATDC3["CONST: taskDependencies, VALUE: parsed array of dependency IDs"]
+        end
+        
+        subgraph addTaskFlow["addTask-Execution Flow"]
+            ATDL1["Enable silent mode for MCP compatibility"]
+            ATDL2["Validate parameters and determine creation type"]
+            ATDL3["Call business logic with session context"]
+            ATDL4["Handle results and restore normal logging"]
+            ATDL5["Return standardized success or error response"]
+        end
+        
+        addTaskImports
+        addTaskFunctions
+        addTaskExports
+        addTaskConstants
+        addTaskFlow
+    end
+    
+    subgraph contextManager["context-manager.js"]
+        subgraph contextImports["context-Imports"]
+            CMI1["IMPORT: FastMCP, FROM: fastmcp"]
+            CMI2["IMPORT: LRUCache, FROM: lru-cache"]
+        end
+        
+        subgraph contextFunctions["context-Functions Defined"]
+            CMF1["FUNCTION: constructor"]
+            CMF2["FUNCTION: getContext"]
+            CMF3["FUNCTION: updateContext"]
+            CMF4["FUNCTION: invalidateContext"]
+            CMF5["FUNCTION: getCachedData"]
+            CMF6["FUNCTION: setCachedData"]
+            CMF7["FUNCTION: getStats"]
+        end
+        
+        subgraph contextExports["context-Exports"]
+            CME1["EXP: ContextManager"]
+            CME2["EXP: contextManager"]
+        end
+        
+        subgraph contextConstants["context-Constants"]
+            CMC1["CONST: cache, VALUE: LRUCache instance with TTL"]
+            CMC2["CONST: stats, VALUE: hit/miss tracking object"]
+            CMC3["CONST: config, VALUE: cache configuration with defaults"]
+        end
+        
+        subgraph contextFlow["context-Execution Flow"]
+            CML1["Initialize LRU cache with size and TTL limits"]
+            CML2["Implement context storage and retrieval"]
+            CML3["Provide cache statistics and performance tracking"]
+            CML4["Handle cache invalidation and cleanup"]
+        end
+        
+        contextImports
+        contextFunctions
+        contextExports
+        contextConstants
+        contextFlow
+    end
+    
+    %% RELATIONSHIP CONNECTIONS
+    SharedImports --> addTaskImports
+    SharedImports --> contextImports
+    
+    SharedDependencies --> taskMasterCore
+    SharedDependencies --> addTaskDirect
+    SharedDependencies --> contextManager
+    
+    SharedParameters --> addTaskDirect
+    SharedParameters --> contextManager
+    
+    SharedConstants --> addTaskDirect
+    SharedConstants --> contextManager
+    
+    %% EXECUTION FLOW CONNECTIONS
+    CL1 --> CL2
+    CL2 --> CL3
+    CL3 --> CL4
+    
+    ATDL1 --> ATDL2
+    ATDL2 --> ATDL3
+    ATDL3 --> ATDL4
+    ATDL4 --> ATDL5
+    
+    CML1 --> CML2
+    CML2 --> CML3
+    CML3 --> CML4
+    
+    %% LAYER RELATIONSHIPS
+    taskMasterCore --> addTaskDirect
+    contextManager --> addTaskDirect
+```

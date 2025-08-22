@@ -1,0 +1,42 @@
+flowchart TB
+    subgraph "Imports"
+        I1["fixDependenciesCommand - from G:\claude-task-master\claude-task-master\scripts\modules\dependency-manager.js"]
+        I2["enableSilentMode, disableSilentMode - from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        I3["fs - Node.js built-in filesystem module"]
+    end
+
+    subgraph "Functions Defined"
+        FU1["fixDependenciesDirect(args, log) - Wrapper function that automatically fixes invalid dependencies in tasks.json with file validation"]
+    end
+
+    subgraph "Exports"
+        E1["fixDependenciesDirect - Direct function wrapper for dependency fixing operations"]
+    end
+
+    subgraph "Parameters"
+        P1["args.tasksJsonPath - Explicit path to the tasks.json file (required string)"]
+        P2["args.projectRoot - Project root directory (required string)"]
+        P3["args.tag - Tag for the project context (required string)"]
+        P4["log - Logger object for recording operations and errors"]
+    end
+
+    subgraph "Execution Flow"
+        FL1["Extract tasksJsonPath, projectRoot, and tag from args"]
+        FL2["Validate required tasksJsonPath parameter"]
+        FL3["Verify that the tasks file exists at the specified path"]
+        FL4["Enable silent mode to prevent console interference"]
+        FL5["Prepare options object with projectRoot and tag"]
+        FL6["Call core fixDependenciesCommand with validated path and options"]
+        FL7["Restore normal logging mode after completion"]
+        FL8["Return success response with operation details"]
+        FL9["Handle errors and ensure logging is restored in finally block"]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

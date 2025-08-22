@@ -1,0 +1,173 @@
+```mermaid
+graph TB
+    %% TaskMaster MCP Server - Core Implementation Layer
+    %% File: mcp-server/src/index.js
+    
+    subgraph "TaskMaster MCP Server Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            FAST_MCP["FastMCP"]
+            PATH["path (Node.js)"]
+            DOTENV["dotenv"]
+            FILE_URL["fileURLToPath"]
+            FS["fs (Node.js)"]
+            LOGGER["logger from './logger.js'"]
+            TOOLS_REGISTER["registerTaskMasterTools from './tools/index.js'"]
+            PROVIDER_REGISTRY["ProviderRegistry from '../../src/provider-registry/index.js'"]
+            MCP_PROVIDER["MCPProvider from './providers/mcp-provider.js'"]
+        end
+        
+        subgraph "TaskMasterMCPServer Class"
+            direction TB
+            
+            subgraph "Constructor"
+                CONSTRUCTOR["constructor()"]
+                READ_PACKAGE_JSON["Read package.json for version"]
+                SET_OPTIONS["Set server options"]
+                CREATE_FAST_MCP["Create FastMCP instance"]
+                BIND_METHODS["Bind methods"]
+                SETUP_LOGGER["Setup logging"]
+                
+                subgraph "Instance Properties"
+                    OPTIONS["options: {name, version}"]
+                    SERVER["server: FastMCP instance"]
+                    INITIALIZED["initialized: boolean"]
+                    LOGGER_PROP["logger: logger instance"]
+                end
+            end
+            
+            subgraph "Initialization"
+                INIT_METHOD["async init()"]
+                CHECK_INITIALIZED["Check if already initialized"]
+                REGISTER_TOOLS["registerTaskMasterTools(server, asyncManager)"]
+                SET_INITIALIZED["Set initialized flag"]
+                RETURN_SELF["Return this"]
+            end
+            
+            subgraph "Server Startup"
+                START_METHOD["async start()"]
+                INIT_IF_NEEDED["Initialize if not already done"]
+                SETUP_CONNECT_HANDLER["Setup 'connect' event handler"]
+                START_FAST_MCP["Start FastMCP server"]
+                
+                subgraph "FastMCP Configuration"
+                    TRANSPORT_TYPE["transportType: 'stdio'"]
+                    TIMEOUT["timeout: 120000ms (2 minutes)"]
+                end
+            end
+            
+            subgraph "Connection Handling"
+                CONNECT_EVENT["'connect' event"]
+                SEND_LOG_MESSAGE["Send logging message"]
+                REGISTER_REMOTE_PROVIDER["registerRemoteProvider(session)"]
+                
+                subgraph "Session Validation"
+                    CHECK_SESSION["Check if session exists"]
+                    CHECK_CAPABILITIES["Check clientCapabilities.sampling"]
+                    LOG_MISSING_CAPS["Log missing capabilities"]
+                    PROCEED_REGISTRATION["Proceed with registration"]
+                end
+            end
+            
+            subgraph "Provider Registration"
+                REGISTER_PROVIDER_METHOD["registerRemoteProvider(session)"]
+                CREATE_MCP_PROVIDER["Create MCPProvider instance"]
+                SET_SESSION["mcpProvider.setSession(session)"]
+                GET_REGISTRY_INSTANCE["ProviderRegistry.getInstance()"]
+                REGISTER_WITH_REGISTRY["providerRegistry.registerProvider('mcp', mcpProvider)"]
+                LOG_SUCCESS["Log successful connection"]
+                LOG_WARNING["Log warning if no sessions"]
+            end
+            
+            subgraph "Server Shutdown"
+                STOP_METHOD["async stop()"]
+                CHECK_SERVER_EXISTS["Check if server exists"]
+                STOP_FAST_MCP["await server.stop()"]
+            end
+        end
+        
+        subgraph "Environment & Constants"
+            DOTENV_CONFIG["dotenv.config()"]
+            FILENAME_CONST["__filename constant"]
+            DIRNAME_CONST["__dirname constant"]
+        end
+        
+        subgraph "Module Export"
+            DEFAULT_EXPORT["export default TaskMasterMCPServer"]
+        end
+    end
+    
+    %% Dependencies Flow
+    FAST_MCP --> CREATE_FAST_MCP
+    FS --> READ_PACKAGE_JSON
+    LOGGER --> SETUP_LOGGER
+    TOOLS_REGISTER --> REGISTER_TOOLS
+    PROVIDER_REGISTRY --> GET_REGISTRY_INSTANCE
+    MCP_PROVIDER --> CREATE_MCP_PROVIDER
+    
+    %% Environment Setup
+    DOTENV --> DOTENV_CONFIG
+    FILE_URL --> FILENAME_CONST
+    FILENAME_CONST --> DIRNAME_CONST
+    
+    %% Constructor Flow
+    CONSTRUCTOR --> READ_PACKAGE_JSON
+    READ_PACKAGE_JSON --> SET_OPTIONS
+    SET_OPTIONS --> OPTIONS
+    SET_OPTIONS --> CREATE_FAST_MCP
+    CREATE_FAST_MCP --> SERVER
+    CONSTRUCTOR --> BIND_METHODS
+    CONSTRUCTOR --> SETUP_LOGGER
+    SETUP_LOGGER --> LOGGER_PROP
+    CONSTRUCTOR --> INITIALIZED
+    
+    %% Initialization Flow
+    INIT_METHOD --> CHECK_INITIALIZED
+    CHECK_INITIALIZED --> REGISTER_TOOLS
+    REGISTER_TOOLS --> SET_INITIALIZED
+    SET_INITIALIZED --> RETURN_SELF
+    
+    %% Startup Flow
+    START_METHOD --> INIT_IF_NEEDED
+    INIT_IF_NEEDED --> INIT_METHOD
+    START_METHOD --> SETUP_CONNECT_HANDLER
+    SETUP_CONNECT_HANDLER --> CONNECT_EVENT
+    START_METHOD --> START_FAST_MCP
+    START_FAST_MCP --> TRANSPORT_TYPE
+    START_FAST_MCP --> TIMEOUT
+    
+    %% Connection Event Flow
+    CONNECT_EVENT --> SEND_LOG_MESSAGE
+    CONNECT_EVENT --> REGISTER_REMOTE_PROVIDER
+    
+    %% Provider Registration Flow
+    REGISTER_PROVIDER_METHOD --> CHECK_SESSION
+    CHECK_SESSION --> CHECK_CAPABILITIES
+    CHECK_CAPABILITIES --> LOG_MISSING_CAPS
+    CHECK_CAPABILITIES --> PROCEED_REGISTRATION
+    
+    PROCEED_REGISTRATION --> CREATE_MCP_PROVIDER
+    CREATE_MCP_PROVIDER --> SET_SESSION
+    SET_SESSION --> GET_REGISTRY_INSTANCE
+    GET_REGISTRY_INSTANCE --> REGISTER_WITH_REGISTRY
+    REGISTER_WITH_REGISTRY --> LOG_SUCCESS
+    
+    CHECK_SESSION --> LOG_WARNING
+    
+    %% Shutdown Flow
+    STOP_METHOD --> CHECK_SERVER_EXISTS
+    CHECK_SERVER_EXISTS --> STOP_FAST_MCP
+    
+    %% Export
+    CONSTRUCTOR --> DEFAULT_EXPORT
+    
+    style CONSTRUCTOR fill:#e1f5fe
+    style START_METHOD fill:#e8f5e8
+    style REGISTER_PROVIDER_METHOD fill:#fff3e0
+    style CONNECT_EVENT fill:#f3e5f5
+    style INIT_METHOD fill:#fce4ec
+    style STOP_METHOD fill:#e0f2f1
+    style CHECK_CAPABILITIES fill:#fff9c4
+    style REGISTER_WITH_REGISTRY fill:#f1f8e9
+```

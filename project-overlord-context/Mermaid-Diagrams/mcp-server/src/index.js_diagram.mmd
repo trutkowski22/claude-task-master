@@ -1,0 +1,77 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: FastMCP, FROM: fastmcp"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: dotenv, FROM: dotenv"]
+        I4["IMPORT: fileURLToPath, FROM: url"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: logger, FROM: /mcp-server/src/logger.js"]
+        I7["IMPORT: registerTaskMasterTools, FROM: /mcp-server/src/tools/index.js"]
+        I8["IMPORT: ProviderRegistry, FROM: /src/provider-registry/index.js"]
+        I9["IMPORT: MCPProvider, FROM: /mcp-server/src/providers/mcp-provider.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: FastMCP framework for MCP protocol implementation"]
+        D2["DEP: Node.js file system for package.json reading"]
+        D3["DEP: Environment configuration via dotenv"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: init"]
+        FU3["FUNCTION: start"]
+        FU4["FUNCTION: registerRemoteProvider"]
+        FU5["FUNCTION: stop"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: TaskMasterMCPServer"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} session - MCP session object for provider registration"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: current module file path from import.meta.url"]
+        C2["CONST: __dirname, VALUE: directory path of current module"]
+        C3["CONST: packagePath, VALUE: path to package.json file"]
+        C4["CONST: packageJson, VALUE: parsed package.json content"]
+        C5["CONST: mcpProvider, VALUE: new MCPProvider instance"]
+        C6["CONST: providerRegistry, VALUE: ProviderRegistry singleton instance"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: *, USAGE: loaded via dotenv for server configuration"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Load environment variables and initialize server options"]
+        FL2["Create FastMCP server instance with package version"]
+        FL3["Initialize server with Task Master tools registration"]
+        FL4["Set up session connect event handler with provider registration"]
+        FL5["Start FastMCP server with stdio transport and timeout"]
+        FL6["Register MCP provider with capabilities validation"]
+        FL7["Handle graceful server shutdown when requested"]
+    end
+    
+    subgraph FileName["index.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

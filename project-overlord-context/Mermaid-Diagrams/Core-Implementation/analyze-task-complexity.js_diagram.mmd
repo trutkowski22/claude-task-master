@@ -1,0 +1,42 @@
+```mermaid
+graph TB
+    subgraph "analyze-task-complexity.js"
+        subgraph "Imports"
+            analyzeTaskComplexity["analyzeTaskComplexity (default)<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/analyze-task-complexity.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            isSilentMode["isSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            fs["fs from node:fs"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            analyzeTaskComplexityDirect["analyzeTaskComplexityDirect(args, log, context)<br/>Analyze task complexity and generate recommendations"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (explicit path to tasks.json)<br/>- outputPath: string (absolute path to save report)<br/>- threshold?: string|number (complexity score 1-10)<br/>- research?: boolean (use Perplexity AI)<br/>- ids?: string (comma-separated task IDs)<br/>- from?: number (starting task ID)<br/>- to?: number (ending task ID)<br/>- projectRoot?: string (project root path)<br/>- tag?: string (tag for task)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Context object containing session data"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath, outputPath)"]
+            prepareOptions["Prepare core function options"]
+            checkSilentMode["Check current silent mode state"]
+            enableSilentIfNeeded["Enable silent mode if needed"]
+            createLogWrap["Create logger wrapper"]
+            callCoreFunction["Call core analyzeTaskComplexity function"]
+            verifyReportFile["Verify report file was created"]
+            validateCoreResult["Validate core function result"]
+            processComplexityData["Process complexity analysis data"]
+            categorizeByComplexity["Categorize tasks by complexity level"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with summary"]
+        end
+
+        subgraph "Exports"
+            ExportAnalyzeTaskComplexityDirect["analyzeTaskComplexityDirect"]
+        end
+    end
+```

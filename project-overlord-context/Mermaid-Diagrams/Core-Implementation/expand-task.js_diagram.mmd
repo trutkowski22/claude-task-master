@@ -1,0 +1,52 @@
+```mermaid
+graph TB
+    subgraph "expand-task.js"
+        subgraph "Imports"
+            expandTask["expandTask (default)<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/expand-task.js"]
+            readJSON["readJSON<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            writeJSON["writeJSON<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            isSilentMode["isSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            path["path from node:path"]
+            fs["fs from node:fs"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            expandTaskDirect["expandTaskDirect(args, log, context)<br/>Direct function wrapper for expanding a task into subtasks"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (explicit path to tasks.json)<br/>- id: string (task ID to expand)<br/>- num?: number|string (number of subtasks)<br/>- research?: boolean (enable research role)<br/>- prompt?: string (additional context)<br/>- force?: boolean (force expansion)<br/>- projectRoot?: string (project root)<br/>- tag?: string (tag for task)<br/>- complexityReportPath?: string (complexity report path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Context object containing session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath, id)"]
+            parseTaskId["Parse and validate task ID"]
+            processParameters["Process other parameters:<br/>- Parse num to integer<br/>- Convert research to boolean<br/>- Extract prompt and force flag"]
+            readTasksData["Read tasks data using readJSON"]
+            validateTasksData["Validate tasks data exists"]
+            findTask["Find specific task by ID"]
+            checkTaskStatus["Check if task is completed"]
+            checkExistingSubtasks["Check for existing subtasks and force flag"]
+            clearExistingSubtasks["Clear existing subtasks if force flag set"]
+            prepareTask["Prepare task for expansion"]
+            saveTasksFile["Save tasks.json with context"]
+            createLogWrap["Create logger wrapper"]
+            checkSilentMode["Check current silent mode state"]
+            enableSilentIfNeeded["Enable silent mode if needed"]
+            callCoreFunction["Call core expandTask function"]
+            readUpdatedData["Read updated tasks data"]
+            calculateSubtasksAdded["Calculate number of subtasks added"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with task and telemetry data"]
+        end
+
+        subgraph "Exports"
+            ExportExpandTaskDirect["expandTaskDirect"]
+        end
+    end
+```

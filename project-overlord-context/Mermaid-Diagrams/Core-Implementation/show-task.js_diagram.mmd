@@ -1,0 +1,84 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: findTaskById, FROM: /scripts/modules/utils.js"]
+        I2["IMPORT: readComplexityReport, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: readJSON, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: findTasksPath, FROM: /core/utils/path-utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task retrieval utilities for finding and reading task data"]
+        D2["DEP: JSON file reading utilities for tasks and complexity data"]
+        D3["DEP: Path resolution utilities for tasks.json location"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: showTaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: showTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing task display options"]
+        P2["PARAM: {string} args.id - task ID(s) to show (comma-separated)"]
+        P3["PARAM: {string} args.file - optional path to tasks file"]
+        P4["PARAM: {string} args.reportPath - explicit path to complexity report"]
+        P5["PARAM: {string} args.status - optional status to filter subtasks"]
+        P6["PARAM: {string} args.projectRoot - absolute path to project root"]
+        P7["PARAM: {string} args.tag - tag for task context"]
+        P8["PARAM: {Object} log - logger object for operation tracking"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: id, VALUE: task ID(s) from args"]
+        C2["CONST: file, VALUE: optional file path from args"]
+        C3["CONST: reportPath, VALUE: complexity report path from args"]
+        C4["CONST: status, VALUE: status filter from args"]
+        C5["CONST: projectRoot, VALUE: project root path from args"]
+        C6["CONST: tag, VALUE: tag context from args"]
+        C7["CONST: tasksJsonPath, VALUE: resolved tasks.json file path"]
+        C8["CONST: tasksData, VALUE: tasks data from JSON file"]
+        C9["CONST: complexityReport, VALUE: complexity analysis data"]
+        C10["CONST: taskIds, VALUE: parsed array of task IDs"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Resolve tasks.json path using project root and file parameter"]
+        FL2["Read tasks data from resolved JSON path with tag context"]
+        FL3["Read complexity report for enhanced task information"]
+        FL4["Parse comma-separated task IDs into array"]
+        FL5["Branch handling for single vs multiple task IDs"]
+        FL6["For single task: Find task by ID with status filtering"]
+        FL7["For multiple tasks: Iterate through IDs and collect results"]
+        FL8["Format response with task data and metadata"]
+        FL9["Return success with task details or collection"]
+        FL10["Handle errors and return appropriate error response"]
+    end
+    
+    subgraph FileName["show-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL5 --> FL7
+    FL6 --> FL8
+    FL7 --> FL8
+    FL8 --> FL9
+    FL1 --> FL10
+    FL2 --> FL10
+    FL6 --> FL10
+    FL7 --> FL10
+```

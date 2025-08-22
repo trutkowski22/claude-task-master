@@ -1,0 +1,40 @@
+```mermaid
+graph TB
+    subgraph "create-tag-from-branch.js"
+        subgraph "Imports"
+            createTagFromBranch["createTagFromBranch<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            getCurrentBranch["getCurrentBranch<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils/git-utils.js"]
+            isGitRepository["isGitRepository<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils/git-utils.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            createTagFromBranchDirect["createTagFromBranchDirect(args, log, context)<br/>Direct function wrapper for creating tags from git branches"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (path to tasks.json)<br/>- branchName?: string (git branch name)<br/>- copyFromCurrent?: boolean (copy from current tag)<br/>- copyFromTag?: string (copy from specific tag)<br/>- description?: string (custom description)<br/>- autoSwitch?: boolean (auto switch to new tag)<br/>- projectRoot?: string (project root path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Additional context with session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath, projectRoot)"]
+            checkGitRepo["Check if in git repository"]
+            determineBranch["Determine target branch:<br/>- Use provided branchName<br/>- Or get current branch"]
+            validateBranch["Validate branch exists"]
+            enableSilent["Enable silent mode"]
+            createLogWrap["Create logger wrapper"]
+            prepareOptions["Prepare creation options"]
+            callCoreFunction["Call core createTagFromBranch function"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with tag details"]
+        end
+
+        subgraph "Exports"
+            ExportCreateTagFromBranchDirect["createTagFromBranchDirect"]
+        end
+    end
+```

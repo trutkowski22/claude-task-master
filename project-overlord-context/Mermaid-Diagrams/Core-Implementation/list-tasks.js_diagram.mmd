@@ -1,0 +1,36 @@
+```mermaid
+graph TB
+    subgraph "list-tasks.js"
+        subgraph "Imports"
+            listTasks["listTasks<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+        end
+
+        subgraph "Functions"
+            listTasksDirect["listTasksDirect(args, log, context)<br/>Direct function wrapper for listTasks with error handling and caching"]
+            coreListTasksAction["coreListTasksAction() (internal)<br/>Action function executed on cache miss"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (path to tasks.json)<br/>- reportPath: string (path to report file)<br/>- status: string (status of task)<br/>- withSubtasks: boolean (include subtasks)<br/>- projectRoot: string (project root path)<br/>- tag: string (tag for task)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Context object containing session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            prepareCacheKey["Prepare cache key and filters"]
+            defineAction["Define core action function"]
+            enableSilent["Enable silent mode"]
+            callCoreFunction["Call core listTasks function"]
+            validateResponse["Validate core function response"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with tasks data"]
+        end
+
+        subgraph "Exports"
+            ExportListTasksDirect["listTasksDirect"]
+        end
+    end
+```

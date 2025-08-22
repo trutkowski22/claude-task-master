@@ -1,0 +1,109 @@
+flowchart TD
+    subgraph "add-task.js"
+        A["📝 Add Task Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["Mode Decision"]
+        E --> F["Core Function Call"]
+        F --> G["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["addTask from '../../../../scripts/modules/task-manager.js'"]
+            I2["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I3["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I4["createLogWrapper from '../../tools/utils.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["addTaskDirect(args, log, context) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["tasksJsonPath - string"]
+            P2["prompt - string (for AI creation)"]
+            P3["title - string (for manual creation)"]
+            P4["description - string (for manual creation)"]
+            P5["details - string (optional)"]
+            P6["testStrategy - string (optional)"]
+            P7["dependencies - string (comma-separated)"]
+            P8["priority - string (default: 'medium')"]
+            P9["research - boolean (default: false)"]
+            P10["projectRoot - string"]
+            P11["tag - string (optional)"]
+        end
+        
+        subgraph "Creation Modes"
+            MODE1["Manual task creation (title + description)"]
+            MODE2["AI-driven task creation (prompt)"]
+        end
+        
+        subgraph "Data Processing"
+            PROC1["Parse dependencies string to array"]
+            PROC2["Set default priority"]
+            PROC3["Create manual task data object"]
+            PROC4["Prepare context for core function"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check tasksJsonPath exists"]
+            V2["Validate creation mode parameters"]
+            V3["Check either prompt OR title+description"]
+            V4["Process dependencies array"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Enable silent mode"]
+            EX2["Create logger wrapper"]
+            EX3["Call addTask core function"]
+            EX4["Disable silent mode"]
+            EX5["Return success response with task ID"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["Parameter validation errors"]
+            ERR3["Core function errors"]
+            ERR4["Always restore logging"]
+        end
+        
+        subgraph "Exports"
+            EXP1["addTaskDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        F1 --> P3
+        F1 --> P4
+        F1 --> P5
+        F1 --> P6
+        F1 --> P7
+        F1 --> P8
+        F1 --> P9
+        F1 --> P10
+        F1 --> P11
+        D --> V1
+        D --> V2
+        D --> V3
+        E --> MODE1
+        E --> MODE2
+        MODE1 --> PROC3
+        MODE2 --> PROC4
+        F --> PROC1
+        F --> PROC2
+        F --> EX1
+        F --> EX2
+        F --> EX3
+        F --> EX4
+        G --> EX5
+        V1 --> ERR1
+        V2 --> ERR2
+        V3 --> ERR2
+        EX3 --> ERR3
+        ERR3 --> ERR4
+        G --> EXP1
+    end

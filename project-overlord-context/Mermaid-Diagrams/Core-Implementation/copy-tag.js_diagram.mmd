@@ -1,0 +1,37 @@
+```mermaid
+graph TB
+    subgraph "copy-tag.js"
+        subgraph "Imports"
+            copyTag["copyTag<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            copyTagDirect["copyTagDirect(args, log, context)<br/>Direct function wrapper for copying a tag with error handling"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- sourceName: string (source tag to copy from)<br/>- targetName: string (new tag to create)<br/>- description?: string (optional description)<br/>- tasksJsonPath?: string (path to tasks.json)<br/>- projectRoot?: string (project root path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Additional context with session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            validateSourceName["Validate sourceName parameter"]
+            validateTargetName["Validate targetName parameter"]
+            enableSilent["Enable silent mode"]
+            createLogWrap["Create logger wrapper"]
+            prepareOptions["Prepare copy options"]
+            callCoreFunction["Call core copyTag function"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with copy details"]
+        end
+
+        subgraph "Exports"
+            ExportCopyTagDirect["copyTagDirect"]
+        end
+    end
+```

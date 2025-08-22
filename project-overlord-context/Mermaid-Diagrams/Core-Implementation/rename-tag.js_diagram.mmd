@@ -1,0 +1,75 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: renameTag, FROM: /scripts/modules/task-manager/tag-management.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Tag management system for renaming operations"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Logger wrapper utilities for core function compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: renameTagDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: renameTagDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing tag rename information"]
+        P2["PARAM: {string} args.oldName - current name of tag to rename"]
+        P3["PARAM: {string} args.newName - new name for the tag"]
+        P4["PARAM: {string} args.tasksJsonPath - path to tasks.json file"]
+        P5["PARAM: {string} args.projectRoot - project root path"]
+        P6["PARAM: {Object} log - logger object for operation tracking"]
+        P7["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path from arguments"]
+        C2["CONST: oldName, VALUE: current tag name from arguments"]
+        C3["CONST: newName, VALUE: new tag name from arguments"]
+        C4["CONST: projectRoot, VALUE: project root path from arguments"]
+        C5["CONST: session, VALUE: extracted from context"]
+        C6["CONST: mcpLog, VALUE: wrapped logger for core functions"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Create logger wrapper for core function compatibility"]
+        FL3["Validate required parameter tasksJsonPath"]
+        FL4["Validate oldName parameter is string and provided"]
+        FL5["Validate newName parameter is string and provided"]
+        FL6["Call core renameTag function with context and options"]
+        FL7["Disable silent mode and return success with rename details"]
+        FL8["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["rename-tag.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL1 --> FL8
+    FL3 --> FL8
+    FL4 --> FL8
+    FL5 --> FL8
+    FL6 --> FL8
+```

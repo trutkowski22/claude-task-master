@@ -1,0 +1,89 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: getModelConfiguration, FROM: /scripts/modules/task-manager/models.js"]
+        I2["IMPORT: getAvailableModelsList, FROM: /scripts/modules/task-manager/models.js"]
+        I3["IMPORT: setModel, FROM: /scripts/modules/task-manager/models.js"]
+        I4["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I6["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+        I7["IMPORT: CUSTOM_PROVIDERS_ARRAY, FROM: /src/constants/providers.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Model configuration management system"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Custom provider validation system"]
+        D4["DEP: Logger wrapper utilities"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: getProviderHint"]
+        FU2["FUNCTION: handleModelSetting"]
+        FU3["FUNCTION: modelsDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: modelsDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing model configuration"]
+        P2["PARAM: {string} args.projectRoot - project root path"]
+        P3["PARAM: {boolean} args.listAvailableModels - flag to list available models"]
+        P4["PARAM: {string} args.setMain - main model ID to set"]
+        P5["PARAM: {string} args.setResearch - research model ID to set"]
+        P6["PARAM: {string} args.setFallback - fallback model ID to set"]
+        P7["PARAM: {boolean} args.openrouter - OpenRouter provider flag"]
+        P8["PARAM: {boolean} args.ollama - Ollama provider flag"]
+        P9["PARAM: {boolean} args.bedrock - AWS Bedrock provider flag"]
+        P10["PARAM: {boolean} args.azure - Azure OpenAI provider flag"]
+        P11["PARAM: {boolean} args.vertex - Google Vertex AI provider flag"]
+        P12["PARAM: {Object} log - logger object for operation tracking"]
+        P13["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: MODEL_ROLES, VALUE: ['main', 'research', 'fallback']"]
+        C2["CONST: session, VALUE: extracted from context"]
+        C3["CONST: projectRoot, VALUE: extracted from args"]
+        C4["CONST: mcpLog, VALUE: wrapped logger for core functions"]
+        C5["CONST: customProviderFlags, VALUE: filtered provider flags from args"]
+        C6["CONST: providerHint, VALUE: detected custom provider hint"]
+        C7["CONST: modelContext, VALUE: context object for model operations"]
+        C8["CONST: modelSetResult, VALUE: result from model setting operation"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Extract session and projectRoot from context and args"]
+        FL2["Create logger wrapper for core function compatibility"]
+        FL3["Validate custom provider flags - ensure only one is set"]
+        FL4["Enable silent mode for MCP JSON response compatibility"]
+        FL5["Check if listAvailableModels flag is set"]
+        FL6["Handle model setting for main/research/fallback roles"]
+        FL7["Default action: get current model configuration"]
+        FL8["Disable silent mode and return success response"]
+        FL9["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["models.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL5 --> FL8
+    FL6 --> FL8
+    FL4 --> FL9
+```

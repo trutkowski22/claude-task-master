@@ -1,0 +1,91 @@
+```mermaid
+graph TB
+    %% MCP SDK Index - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/index.js
+    
+    subgraph "MCP SDK Factory Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            MCP_LANGUAGE_MODEL["MCPLanguageModel from './language-model.js'"]
+        end
+        
+        subgraph "Factory Function"
+            CREATE_MCP["createMCP(options)"]
+            
+            subgraph "Input Validation"
+                CHECK_SESSION["Check options.session exists"]
+                THROW_ERROR["Throw error if no session"]
+            end
+            
+            subgraph "Provider Factory Creation"
+                PROVIDER_FUNCTION["provider(modelId, settings)"]
+                
+                subgraph "Provider Function Logic"
+                    CHECK_NEW_TARGET["Check new.target"]
+                    PREVENT_NEW["Prevent 'new' keyword usage"]
+                    CREATE_MODEL["Create MCPLanguageModel instance"]
+                end
+                
+                subgraph "Model Configuration"
+                    DEFAULT_MODEL["Default: 'claude-3-5-sonnet-20241022'"]
+                    MERGE_SETTINGS["Merge settings: temperature, maxTokens, ...defaults, ...settings"]
+                    SESSION_PASS["Pass session to model"]
+                end
+            end
+            
+            subgraph "AI SDK Compatibility Methods"
+                LANGUAGE_MODEL_METHOD["provider.languageModel(modelId, settings)"]
+                CHAT_METHOD["provider.chat(modelId, settings)"]
+                ALIAS_TO_PROVIDER["Both methods alias to provider()"]
+            end
+            
+            subgraph "Return Provider"
+                PROVIDER_OUTPUT["Return provider function"]
+            end
+        end
+        
+        subgraph "Model Instance Creation Flow"
+            MODEL_OPTIONS["Model Options: {session, modelId, settings}"]
+            MODEL_INSTANCE["MCPLanguageModel instance"]
+        end
+    end
+    
+    %% Dependencies
+    MCP_LANGUAGE_MODEL --> CREATE_MODEL
+    
+    %% Factory Function Flow
+    CREATE_MCP --> CHECK_SESSION
+    CHECK_SESSION --> THROW_ERROR
+    CHECK_SESSION --> PROVIDER_FUNCTION
+    
+    %% Provider Function Flow
+    PROVIDER_FUNCTION --> CHECK_NEW_TARGET
+    CHECK_NEW_TARGET --> PREVENT_NEW
+    CHECK_NEW_TARGET --> CREATE_MODEL
+    
+    %% Model Creation Flow
+    CREATE_MODEL --> DEFAULT_MODEL
+    CREATE_MODEL --> MERGE_SETTINGS
+    CREATE_MODEL --> SESSION_PASS
+    CREATE_MODEL --> MODEL_OPTIONS
+    MODEL_OPTIONS --> MODEL_INSTANCE
+    
+    %% AI SDK Compatibility
+    PROVIDER_FUNCTION --> LANGUAGE_MODEL_METHOD
+    PROVIDER_FUNCTION --> CHAT_METHOD
+    LANGUAGE_MODEL_METHOD --> ALIAS_TO_PROVIDER
+    CHAT_METHOD --> ALIAS_TO_PROVIDER
+    
+    %% Output
+    PROVIDER_FUNCTION --> PROVIDER_OUTPUT
+    LANGUAGE_MODEL_METHOD --> PROVIDER_OUTPUT
+    CHAT_METHOD --> PROVIDER_OUTPUT
+    
+    style CREATE_MCP fill:#e1f5fe
+    style PROVIDER_FUNCTION fill:#e8f5e8
+    style CHECK_SESSION fill:#fff3e0
+    style CREATE_MODEL fill:#f3e5f5
+    style LANGUAGE_MODEL_METHOD fill:#fce4ec
+    style CHAT_METHOD fill:#fce4ec
+```

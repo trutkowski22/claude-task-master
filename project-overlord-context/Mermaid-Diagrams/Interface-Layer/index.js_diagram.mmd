@@ -1,0 +1,185 @@
+```mermaid
+graph TB
+    %% Tools Index - Interface Layer
+    %% File: mcp-server/src/tools/index.js
+    
+    subgraph "Tools Registration Module"
+        direction TB
+        
+        subgraph "Tool Imports"
+            direction TB
+            
+            subgraph "Group 1: Initialization & Setup"
+                INIT_PROJECT["registerInitializeProjectTool"]
+                MODELS["registerModelsTool"]
+                RULES["registerRulesTool"]
+                PARSE_PRD["registerParsePRDTool"]
+            end
+            
+            subgraph "Group 2: Task Analysis & Expansion"
+                ANALYZE_COMPLEXITY["registerAnalyzeProjectComplexityTool"]
+                EXPAND_TASK["registerExpandTaskTool"]
+                EXPAND_ALL["registerExpandAllTool"]
+                SCOPE_UP["registerScopeUpTool"]
+                SCOPE_DOWN["registerScopeDownTool"]
+            end
+            
+            subgraph "Group 3: Task Listing & Viewing"
+                LIST_TASKS["registerListTasksTool"]
+                SHOW_TASK["registerShowTaskTool"]
+                NEXT_TASK["registerNextTaskTool"]
+                COMPLEXITY_REPORT["registerComplexityReportTool"]
+            end
+            
+            subgraph "Group 4: Task Status & Management"
+                SET_STATUS["registerSetTaskStatusTool"]
+                GENERATE["registerGenerateTool"]
+            end
+            
+            subgraph "Group 5: Task Creation & Modification"
+                ADD_TASK["registerAddTaskTool"]
+                ADD_SUBTASK["registerAddSubtaskTool"]
+                UPDATE["registerUpdateTool"]
+                UPDATE_TASK["registerUpdateTaskTool"]
+                UPDATE_SUBTASK["registerUpdateSubtaskTool"]
+                REMOVE_TASK["registerRemoveTaskTool"]
+                REMOVE_SUBTASK["registerRemoveSubtaskTool"]
+                CLEAR_SUBTASKS["registerClearSubtasksTool"]
+                MOVE_TASK["registerMoveTaskTool"]
+            end
+            
+            subgraph "Group 6: Dependency Management"
+                ADD_DEPENDENCY["registerAddDependencyTool"]
+                REMOVE_DEPENDENCY["registerRemoveDependencyTool"]
+                VALIDATE_DEPS["registerValidateDependenciesTool"]
+                FIX_DEPS["registerFixDependenciesTool"]
+                RESPONSE_LANG["registerResponseLanguageTool"]
+            end
+            
+            subgraph "Group 7: Tag Management"
+                LIST_TAGS["registerListTagsTool"]
+                ADD_TAG["registerAddTagTool"]
+                DELETE_TAG["registerDeleteTagTool"]
+                USE_TAG["registerUseTagTool"]
+                RENAME_TAG["registerRenameTagTool"]
+                COPY_TAG["registerCopyTagTool"]
+            end
+            
+            subgraph "Group 8: Research Features"
+                RESEARCH["registerResearchTool"]
+            end
+        end
+        
+        subgraph "Dependencies"
+            LOGGER["logger from '../logger.js'"]
+        end
+        
+        subgraph "Main Registration Function"
+            REGISTER_ALL["registerTaskMasterTools(server)"]
+            TRY_CATCH["try/catch error handling"]
+            ERROR_LOG["Logger error for registration failures"]
+            THROW_ERROR["Re-throw error after logging"]
+        end
+        
+        subgraph "Registration Groups"
+            direction TB
+            
+            GROUP_1_REG["Group 1: Initialization & Setup"]
+            GROUP_2_REG["Group 2: Task Analysis & Expansion"]
+            GROUP_3_REG["Group 3: Task Listing & Viewing"]
+            GROUP_4_REG["Group 4: Task Status & Management"]
+            GROUP_5_REG["Group 5: Task Creation & Modification"]
+            GROUP_6_REG["Group 6: Dependency Management"]
+            GROUP_7_REG["Group 7: Tag Management"]
+            GROUP_8_REG["Group 8: Research Features"]
+        end
+        
+        subgraph "Export Structure"
+            EXPORT_FUNCTION["Export registerTaskMasterTools"]
+            DEFAULT_EXPORT["Default export object"]
+        end
+    end
+    
+    %% Main Registration Flow
+    REGISTER_ALL --> TRY_CATCH
+    TRY_CATCH --> GROUP_1_REG
+    TRY_CATCH --> GROUP_2_REG
+    TRY_CATCH --> GROUP_3_REG
+    TRY_CATCH --> GROUP_4_REG
+    TRY_CATCH --> GROUP_5_REG
+    TRY_CATCH --> GROUP_6_REG
+    TRY_CATCH --> GROUP_7_REG
+    TRY_CATCH --> GROUP_8_REG
+    
+    %% Group 1 Registration
+    GROUP_1_REG --> INIT_PROJECT
+    GROUP_1_REG --> MODELS
+    GROUP_1_REG --> RULES
+    GROUP_1_REG --> PARSE_PRD
+    
+    %% Group 2 Registration
+    GROUP_2_REG --> ANALYZE_COMPLEXITY
+    GROUP_2_REG --> EXPAND_TASK
+    GROUP_2_REG --> EXPAND_ALL
+    GROUP_2_REG --> SCOPE_UP
+    GROUP_2_REG --> SCOPE_DOWN
+    
+    %% Group 3 Registration
+    GROUP_3_REG --> LIST_TASKS
+    GROUP_3_REG --> SHOW_TASK
+    GROUP_3_REG --> NEXT_TASK
+    GROUP_3_REG --> COMPLEXITY_REPORT
+    
+    %% Group 4 Registration
+    GROUP_4_REG --> SET_STATUS
+    GROUP_4_REG --> GENERATE
+    
+    %% Group 5 Registration
+    GROUP_5_REG --> ADD_TASK
+    GROUP_5_REG --> ADD_SUBTASK
+    GROUP_5_REG --> UPDATE
+    GROUP_5_REG --> UPDATE_TASK
+    GROUP_5_REG --> UPDATE_SUBTASK
+    GROUP_5_REG --> REMOVE_TASK
+    GROUP_5_REG --> REMOVE_SUBTASK
+    GROUP_5_REG --> CLEAR_SUBTASKS
+    GROUP_5_REG --> MOVE_TASK
+    
+    %% Group 6 Registration
+    GROUP_6_REG --> ADD_DEPENDENCY
+    GROUP_6_REG --> REMOVE_DEPENDENCY
+    GROUP_6_REG --> VALIDATE_DEPS
+    GROUP_6_REG --> FIX_DEPS
+    GROUP_6_REG --> RESPONSE_LANG
+    
+    %% Group 7 Registration
+    GROUP_7_REG --> LIST_TAGS
+    GROUP_7_REG --> ADD_TAG
+    GROUP_7_REG --> DELETE_TAG
+    GROUP_7_REG --> USE_TAG
+    GROUP_7_REG --> RENAME_TAG
+    GROUP_7_REG --> COPY_TAG
+    
+    %% Group 8 Registration
+    GROUP_8_REG --> RESEARCH
+    
+    %% Error Handling
+    TRY_CATCH --> ERROR_LOG
+    ERROR_LOG --> LOGGER
+    ERROR_LOG --> THROW_ERROR
+    
+    %% Exports
+    REGISTER_ALL --> EXPORT_FUNCTION
+    EXPORT_FUNCTION --> DEFAULT_EXPORT
+    
+    style REGISTER_ALL fill:#e1f5fe
+    style GROUP_1_REG fill:#e8f5e8
+    style GROUP_2_REG fill:#fff3e0
+    style GROUP_3_REG fill:#f3e5f5
+    style GROUP_4_REG fill:#fce4ec
+    style GROUP_5_REG fill:#e0f2f1
+    style GROUP_6_REG fill:#fff9c4
+    style GROUP_7_REG fill:#f1f8e9
+    style GROUP_8_REG fill:#fce4ec
+    style ERROR_LOG fill:#ffebee
+```

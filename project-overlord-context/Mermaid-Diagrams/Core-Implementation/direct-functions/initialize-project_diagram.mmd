@@ -1,0 +1,51 @@
+flowchart TB
+    subgraph Imports
+        I1[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+        I2[os module for home directory operations]
+        I3[RULE_PROFILES from ../../../../src/constants/profiles.js]
+        I4[convertAllRulesToProfileRules from ../../../../src/utils/rule-transformer.js]
+        I5[fs module for file system operations]
+        I6[path module for path operations]
+    end
+
+    subgraph "Functions Defined"
+        FU1[initializeProject - Creates .taskmaster directory structure and initial files]
+        FU2[initializeProjectDirect - MCP wrapper for project initialization with validation]
+    end
+
+    subgraph Exports
+        E1[initializeProjectDirect function]
+    end
+
+    subgraph Parameters
+        P1[options object with addAliases, initGit, storeTasksInGit, skipInstall, yes, rules]
+        P2[args object with initialization options and projectRoot]
+        P3[log object for logging operations]
+        P4[context object containing session data]
+    end
+
+    subgraph Constants
+        C1[Default configuration object with global and AI settings]
+        C2[Default state object with currentTag and metadata]
+        C3[Initial tasks structure with master tag]
+        C4[Directory structure: taskmasterDir, tasksDir, docsDir, templatesDir]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Extract options from arguments and set defaults]
+        FL2[Validate target directory to prevent initialization in invalid locations]
+        FL3[Create .taskmaster directory structure if it doesn't exist]
+        FL4[Generate initial config.json with default AI and global settings]
+        FL5[Create state.json with current tag and metadata tracking]
+        FL6[Initialize tasks.json with master tag and empty task list]
+        FL7[Set up rule profiles using convertAllRulesToProfileRules if specified]
+        FL8[Return success status with created directories and files information]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

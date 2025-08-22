@@ -1,0 +1,150 @@
+```mermaid
+graph TB
+    %% JSON Extractor - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/json-extractor.js
+    
+    subgraph "JSON Extractor Module"
+        direction TB
+        
+        subgraph "Main Function"
+            EXTRACT_JSON["extractJson(text)"]
+            INPUT_TEXT["Input: text string"]
+            OUTPUT_JSON["Output: extracted JSON string"]
+        end
+        
+        subgraph "Text Preprocessing"
+            TRIM_TEXT["text.trim()"]
+            REMOVE_MARKDOWN["Remove markdown code blocks"]
+            REMOVE_JS_PATTERNS["Remove JS/TS variable declarations"]
+            REMOVE_EXPLANATORY["Remove explanatory text"]
+            
+            subgraph "Markdown Removal"
+                REMOVE_JSON_BLOCKS["Remove ```json blocks"]
+                REMOVE_CODE_BLOCKS["Remove ``` blocks"]
+                REMOVE_BLOCK_END["Remove trailing ```"]
+            end
+            
+            subgraph "JavaScript Pattern Removal"
+                REMOVE_CONST["Remove 'const varName = '"]
+                REMOVE_LET["Remove 'let varName = '"]
+                REMOVE_VAR["Remove 'var varName = '"]
+                REMOVE_SEMICOLON["Remove trailing semicolons"]
+            end
+            
+            subgraph "Text Cleanup"
+                REMOVE_TEXT_BEFORE["Remove text before { or ["]
+                REMOVE_TEXT_AFTER["Remove text after JSON"]
+            end
+        end
+        
+        subgraph "JSON Boundary Detection"
+            BRACE_TRACKING["Track braces/brackets"]
+            STRING_DETECTION["Detect string context"]
+            ESCAPE_HANDLING["Handle escape sequences"]
+            
+            subgraph "Parser State"
+                BRACE_COUNT["braceCount: number"]
+                IN_STRING["inString: boolean"]
+                ESCAPE_NEXT["escapeNext: boolean"]
+                JSON_END_INDEX["jsonEndIndex: number"]
+            end
+            
+            subgraph "Character Processing"
+                PROCESS_ESCAPE["Process escape characters \\"]
+                PROCESS_QUOTES["Process quotes \""]
+                PROCESS_OPEN_BRACES["Process { and ["]
+                PROCESS_CLOSE_BRACES["Process } and ]"]
+                FIND_JSON_END["Find JSON end position"]
+            end
+        end
+        
+        subgraph "Fallback Extraction"
+            REGEX_EXTRACTION["Regex-based extraction"]
+            OBJECT_MATCH["Match object: /{[\s\S]*}/"]
+            ARRAY_MATCH["Match array: /\[[\s\S]*\]/"]
+            SELECT_MATCH["Select best match"]
+        end
+        
+        subgraph "JSON Validation & Conversion"
+            PARSE_ATTEMPT_1["First JSON.parse() attempt"]
+            CONVERSION_LOGIC["Convert to valid JSON"]
+            PARSE_ATTEMPT_2["Second JSON.parse() attempt"]
+            FALLBACK_RETURN["Return original text"]
+            
+            subgraph "Conversion Steps"
+                QUOTE_KEYS["Quote unquoted object keys"]
+                REPLACE_QUOTES["Replace single quotes with double quotes"]
+                REMOVE_TRAILING_COMMAS["Remove trailing commas"]
+            end
+        end
+        
+        subgraph "Error Handling"
+            TRY_CATCH_1["try/catch for initial parse"]
+            TRY_CATCH_2["try/catch for converted parse"]
+            ERROR_FALLBACK["Return original on all failures"]
+        end
+    end
+    
+    %% Main Flow
+    INPUT_TEXT --> EXTRACT_JSON
+    EXTRACT_JSON --> TRIM_TEXT
+    
+    %% Preprocessing Flow
+    TRIM_TEXT --> REMOVE_MARKDOWN
+    REMOVE_MARKDOWN --> REMOVE_JSON_BLOCKS
+    REMOVE_JSON_BLOCKS --> REMOVE_CODE_BLOCKS
+    REMOVE_CODE_BLOCKS --> REMOVE_BLOCK_END
+    
+    REMOVE_MARKDOWN --> REMOVE_JS_PATTERNS
+    REMOVE_JS_PATTERNS --> REMOVE_CONST
+    REMOVE_CONST --> REMOVE_LET
+    REMOVE_LET --> REMOVE_VAR
+    REMOVE_VAR --> REMOVE_SEMICOLON
+    
+    REMOVE_JS_PATTERNS --> REMOVE_EXPLANATORY
+    REMOVE_EXPLANATORY --> REMOVE_TEXT_BEFORE
+    REMOVE_TEXT_BEFORE --> REMOVE_TEXT_AFTER
+    
+    %% Boundary Detection Flow
+    REMOVE_EXPLANATORY --> BRACE_TRACKING
+    BRACE_TRACKING --> BRACE_COUNT
+    BRACE_TRACKING --> IN_STRING
+    BRACE_TRACKING --> ESCAPE_NEXT
+    BRACE_TRACKING --> JSON_END_INDEX
+    
+    BRACE_TRACKING --> PROCESS_ESCAPE
+    PROCESS_ESCAPE --> PROCESS_QUOTES
+    PROCESS_QUOTES --> PROCESS_OPEN_BRACES
+    PROCESS_OPEN_BRACES --> PROCESS_CLOSE_BRACES
+    PROCESS_CLOSE_BRACES --> FIND_JSON_END
+    
+    %% Fallback Extraction
+    FIND_JSON_END --> REGEX_EXTRACTION
+    REGEX_EXTRACTION --> OBJECT_MATCH
+    REGEX_EXTRACTION --> ARRAY_MATCH
+    OBJECT_MATCH --> SELECT_MATCH
+    ARRAY_MATCH --> SELECT_MATCH
+    
+    %% Validation Flow
+    SELECT_MATCH --> PARSE_ATTEMPT_1
+    PARSE_ATTEMPT_1 --> TRY_CATCH_1
+    TRY_CATCH_1 --> OUTPUT_JSON
+    TRY_CATCH_1 --> CONVERSION_LOGIC
+    
+    CONVERSION_LOGIC --> QUOTE_KEYS
+    QUOTE_KEYS --> REPLACE_QUOTES
+    REPLACE_QUOTES --> REMOVE_TRAILING_COMMAS
+    REMOVE_TRAILING_COMMAS --> PARSE_ATTEMPT_2
+    
+    PARSE_ATTEMPT_2 --> TRY_CATCH_2
+    TRY_CATCH_2 --> OUTPUT_JSON
+    TRY_CATCH_2 --> ERROR_FALLBACK
+    ERROR_FALLBACK --> OUTPUT_JSON
+    
+    style EXTRACT_JSON fill:#e1f5fe
+    style BRACE_TRACKING fill:#e8f5e8
+    style PARSE_ATTEMPT_1 fill:#fff3e0
+    style PARSE_ATTEMPT_2 fill:#fff3e0
+    style CONVERSION_LOGIC fill:#f3e5f5
+    style ERROR_FALLBACK fill:#ffebee
+```

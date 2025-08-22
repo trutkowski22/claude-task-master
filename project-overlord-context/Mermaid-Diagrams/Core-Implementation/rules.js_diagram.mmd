@@ -1,0 +1,93 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I2["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: convertAllRulesToProfileRules, FROM: /src/utils/rule-transformer.js"]
+        I4["IMPORT: removeProfileRules, FROM: /src/utils/rule-transformer.js"]
+        I5["IMPORT: getRulesProfile, FROM: /src/utils/rule-transformer.js"]
+        I6["IMPORT: isValidProfile, FROM: /src/utils/rule-transformer.js"]
+        I7["IMPORT: RULE_PROFILES, FROM: /src/constants/profiles.js"]
+        I8["IMPORT: RULES_ACTIONS, FROM: /src/constants/rules-actions.js"]
+        I9["IMPORT: wouldRemovalLeaveNoProfiles, FROM: /src/utils/profiles.js"]
+        I10["IMPORT: getInstalledProfiles, FROM: /src/utils/profiles.js"]
+        I11["IMPORT: path, FROM: node.js path module"]
+        I12["IMPORT: fs, FROM: node.js fs module"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Rule profile management system for add/remove operations"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: File system operations for rule file management"]
+        D4["DEP: Profile validation and transformation utilities"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: rulesDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: rulesDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing rule management options"]
+        P2["PARAM: {string} args.action - action to perform (add or remove)"]
+        P3["PARAM: {string[]} args.profiles - list of profiles to add or remove"]
+        P4["PARAM: {string} args.projectRoot - absolute path to project root"]
+        P5["PARAM: {boolean} args.yes - run non-interactively flag"]
+        P6["PARAM: {boolean} args.force - force removal even if critical flag"]
+        P7["PARAM: {Object} log - logger object for operation tracking"]
+        P8["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: action, VALUE: extracted from args"]
+        C2["CONST: profiles, VALUE: extracted from args"]
+        C3["CONST: projectRoot, VALUE: extracted from args"]
+        C4["CONST: yes, VALUE: extracted from args"]
+        C5["CONST: force, VALUE: extracted from args"]
+        C6["CONST: removalResults, VALUE: array for removal operation results"]
+        C7["CONST: addResults, VALUE: array for addition operation results"]
+        C8["CONST: installedProfiles, VALUE: currently installed profiles"]
+        C9["CONST: profileConfig, VALUE: configuration for each profile"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Validate required parameters - action, profiles, projectRoot"]
+        FL3["Branch execution based on action type (add or remove)"]
+        FL4["For remove: Check safety constraints to prevent removing all profiles"]
+        FL5["For remove: Validate each profile and execute removal"]
+        FL6["For add: Validate each profile and execute conversion/addition"]
+        FL7["Check file system results for created directories and configs"]
+        FL8["Compile results and generate summary message"]
+        FL9["Disable silent mode and return success with results"]
+        FL10["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["rules.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL3 --> FL6
+    FL4 --> FL5
+    FL5 --> FL8
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL1 --> FL10
+    FL2 --> FL10
+    FL4 --> FL10
+    FL5 --> FL10
+    FL6 --> FL10
+```

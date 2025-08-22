@@ -1,0 +1,81 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: removeTask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: taskExists, FROM: /scripts/modules/task-manager.js"]
+        I3["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: readJSON, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task management system for task removal and validation"]
+        D2["DEP: JSON file reading utilities for task data"]
+        D3["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: removeTaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: removeTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing task removal information"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string} args.id - task ID(s) to remove (comma-separated for multiple)"]
+        P4["PARAM: {string} args.projectRoot - project root path"]
+        P5["PARAM: {string} args.tag - tag for task context"]
+        P6["PARAM: {Object} log - logger object for operation tracking"]
+        P7["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path from arguments"]
+        C2["CONST: id, VALUE: task ID(s) from arguments"]
+        C3["CONST: projectRoot, VALUE: project root path from arguments"]
+        C4["CONST: tag, VALUE: tag context from arguments"]
+        C5["CONST: session, VALUE: extracted from context"]
+        C6["CONST: taskIdArray, VALUE: parsed array of task IDs"]
+        C7["CONST: data, VALUE: tasks data from JSON file"]
+        C8["CONST: invalidTasks, VALUE: array of non-existent task IDs"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameter tasksJsonPath"]
+        FL2["Validate task ID parameter is provided"]
+        FL3["Parse comma-separated task IDs into array"]
+        FL4["Read tasks data and validate file structure"]
+        FL5["Check all task IDs exist before proceeding"]
+        FL6["Enable silent mode for MCP JSON response compatibility"]
+        FL7["Call core removeTask function with context and tag"]
+        FL8["Validate core function result and count removed tasks"]
+        FL9["Disable silent mode and return success with statistics"]
+        FL10["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["remove-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL1 --> FL10
+    FL4 --> FL10
+    FL5 --> FL10
+    FL7 --> FL10
+```

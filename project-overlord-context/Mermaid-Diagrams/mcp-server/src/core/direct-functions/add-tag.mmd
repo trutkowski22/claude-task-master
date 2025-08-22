@@ -1,0 +1,103 @@
+flowchart TD
+    subgraph "add-tag.js"
+        A["🏷️ Add Tag Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["Mode Decision"]
+        E --> F["Core Function Call"]
+        F --> G["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["createTag from '../../../../scripts/modules/task-manager/tag-management.js'"]
+            I2["createTagFromBranch from '../../../../scripts/modules/task-manager/tag-management.js'"]
+            I3["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I4["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I5["createLogWrapper from '../../tools/utils.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["addTagDirect(args, log, context) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["tasksJsonPath - string"]
+            P2["name - string"]
+            P3["copyFromCurrent - boolean (default: false)"]
+            P4["copyFromTag - string (optional)"]
+            P5["fromBranch - boolean (default: false)"]
+            P6["description - string (optional)"]
+            P7["projectRoot - string"]
+        end
+        
+        subgraph "Execution Modes"
+            MODE1["Create tag from git branch"]
+            MODE2["Create regular tag"]
+        end
+        
+        subgraph "Git Operations"
+            GIT1["Import git-utils dynamically"]
+            GIT2["Check if git repository"]
+            GIT3["Get current branch name"]
+            GIT4["Call createTagFromBranch"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check tasksJsonPath exists"]
+            V2["Validate mode selection"]
+            V3["Git repository validation (if fromBranch)"]
+            V4["Name validation (if regular)"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Enable silent mode"]
+            EX2["Create logger wrapper"]
+            EX3["Call core tag creation function"]
+            EX4["Disable silent mode"]
+            EX5["Return success response"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["Git repository errors"]
+            ERR3["Core function errors"]
+            ERR4["Always restore logging"]
+        end
+        
+        subgraph "Exports"
+            EXP1["addTagDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        B --> I5
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        F1 --> P3
+        F1 --> P4
+        F1 --> P5
+        F1 --> P6
+        F1 --> P7
+        D --> V1
+        D --> V2
+        E --> MODE1
+        E --> MODE2
+        MODE1 --> GIT1
+        MODE1 --> GIT2
+        MODE1 --> GIT3
+        MODE1 --> GIT4
+        MODE1 --> V3
+        MODE2 --> V4
+        F --> EX1
+        F --> EX2
+        F --> EX3
+        F --> EX4
+        G --> EX5
+        V1 --> ERR1
+        GIT2 --> ERR2
+        EX3 --> ERR3
+        ERR3 --> ERR4
+        G --> EXP1
+    end

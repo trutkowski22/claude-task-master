@@ -1,0 +1,76 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: removeSubtask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task management system for subtask removal and conversion"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: removeSubtaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: removeSubtaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing subtask removal information"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string} args.id - subtask ID in format 'parentId.subtaskId'"]
+        P4["PARAM: {boolean} args.convert - convert subtask to standalone task flag"]
+        P5["PARAM: {boolean} args.skipGenerate - skip regenerating task files flag"]
+        P6["PARAM: {string} args.projectRoot - project root path"]
+        P7["PARAM: {string} args.tag - tag for task context"]
+        P8["PARAM: {Object} log - logger object for operation tracking"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path from arguments"]
+        C2["CONST: id, VALUE: subtask ID from arguments"]
+        C3["CONST: convert, VALUE: conversion flag from arguments"]
+        C4["CONST: skipGenerate, VALUE: file generation skip flag from arguments"]
+        C5["CONST: projectRoot, VALUE: project root path from arguments"]
+        C6["CONST: tag, VALUE: tag context from arguments"]
+        C7["CONST: tasksPath, VALUE: validated tasks.json file path"]
+        C8["CONST: convertToTask, VALUE: boolean conversion flag"]
+        C9["CONST: generateFiles, VALUE: inverted skip generation flag"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Validate required parameter tasksJsonPath"]
+        FL3["Validate subtask ID is provided and properly formatted"]
+        FL4["Parse conversion and file generation flags"]
+        FL5["Call core removeSubtask function with all parameters"]
+        FL6["Check if subtask was converted to task or removed"]
+        FL7["Disable silent mode and return appropriate success response"]
+        FL8["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["remove-subtask.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL1 --> FL8
+    FL2 --> FL8
+    FL3 --> FL8
+    FL5 --> FL8
+```

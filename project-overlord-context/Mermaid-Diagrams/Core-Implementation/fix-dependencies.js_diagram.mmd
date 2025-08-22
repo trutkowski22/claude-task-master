@@ -1,0 +1,34 @@
+```mermaid
+graph TB
+    subgraph "fix-dependencies.js"
+        subgraph "Imports"
+            fixDependenciesCommand["fixDependenciesCommand<br/>from G:/claude-task-master/claude-task-master/scripts/modules/dependency-manager.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            fs["fs from node:fs"]
+        end
+
+        subgraph "Functions"
+            fixDependenciesDirect["fixDependenciesDirect(args, log)<br/>Fix invalid dependencies in tasks.json automatically"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (explicit path to tasks.json)<br/>- projectRoot: string (project root directory)<br/>- tag: string (tag for project)"]
+            log["log: Object<br/>Logger object"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            checkFileExists["Check if tasks.json file exists"]
+            enableSilent["Enable silent mode"]
+            prepareOptions["Prepare options with projectRoot and tag"]
+            callCoreFunction["Call core fixDependenciesCommand function"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with fix summary"]
+        end
+
+        subgraph "Exports"
+            ExportFixDependenciesDirect["fixDependenciesDirect"]
+        end
+    end
+```

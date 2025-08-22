@@ -1,0 +1,159 @@
+```mermaid
+flowchart TB
+    %% SHARED INFRASTRUCTURE SECTIONS
+    subgraph SharedImports["Shared-Infrastructure-Imports"]
+        SI1["IMPORT: z, FROM: zod"]
+        SI2["IMPORT: createErrorResponse, FROM: /mcp-server/src/tools/utils.js"]
+        SI3["IMPORT: handleApiResult, FROM: /mcp-server/src/tools/utils.js"]
+        SI4["IMPORT: withNormalizedProjectRoot, FROM: /mcp-server/src/tools/utils.js"]
+        SI5["IMPORT: findTasksPath, FROM: /mcp-server/src/core/utils/path-utils.js"]
+        SI6["IMPORT: resolveTag, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph SharedDependencies["Shared-Infrastructure-Dependencies"]
+        SD1["DEP: FastMCP server framework for MCP protocol implementation"]
+        SD2["DEP: Zod validation library for parameter schemas"]
+        SD3["DEP: Task Master core direct functions for business logic"]
+    end
+    
+    subgraph SharedParameters["Shared-Infrastructure-Parameters"]
+        SP1["PARAM: {Object} server - FastMCP server instance for tool registration"]
+        SP2["PARAM: {Object} args - validated command arguments from MCP client"]
+        SP3["PARAM: {Object} log - logging object for operation tracking"]
+        SP4["PARAM: {Object} session - MCP session for context and capabilities"]
+    end
+    
+    subgraph SharedConstants["Shared-Infrastructure-Constants"]
+        SC1["CONST: resolvedTag, VALUE: resolved tag context from utils"]
+        SC2["CONST: tasksJsonPath, VALUE: validated path to tasks.json file"]
+        SC3["CONST: result, VALUE: response from direct function execution"]
+    end
+    
+    %% INDIVIDUAL FILE SECTIONS
+    subgraph addTaskTool["add-task.js"]
+        subgraph addTaskImports["add-task-Imports"]
+            ATI1["IMPORT: addTaskDirect, FROM: /mcp-server/src/core/task-master-core.js"]
+        end
+        
+        subgraph addTaskFunctions["add-task-Functions Defined"]
+            ATF1["FUNCTION: registerAddTaskTool"]
+        end
+        
+        subgraph addTaskExports["add-task-Exports"]
+            ATE1["EXP: registerAddTaskTool"]
+        end
+        
+        subgraph addTaskFlow["add-task-Execution Flow"]
+            ATL1["Register add_task tool with schema validation"]
+            ATL2["Extract and validate task creation parameters"]
+            ATL3["Call addTaskDirect with normalized parameters"]
+            ATL4["Return standardized API response"]
+        end
+        
+        addTaskImports
+        addTaskFunctions
+        addTaskExports
+        addTaskFlow
+    end
+    
+    subgraph indexTool["index.js"]
+        subgraph indexImports["index-Imports"]
+            II1["IMPORT: 37 tool registration functions from individual tool files"]
+        end
+        
+        subgraph indexFunctions["index-Functions Defined"]
+            IF1["FUNCTION: registerTaskMasterTools"]
+        end
+        
+        subgraph indexExports["index-Exports"]
+            IE1["EXP: registerTaskMasterTools"]
+        end
+        
+        subgraph indexFlow["index-Execution Flow"]
+            IL1["Group 1: Register initialization and setup tools"]
+            IL2["Group 2: Register task analysis and expansion tools"]
+            IL3["Group 3: Register task listing and viewing tools"]
+            IL4["Group 4: Register task status and management tools"]
+            IL5["Group 5: Register task creation and modification tools"]
+            IL6["Group 6: Register dependency management tools"]
+            IL7["Group 7: Register tag management tools"]
+            IL8["Group 8: Register research and advanced features"]
+        end
+        
+        indexImports
+        indexFunctions
+        indexExports
+        indexFlow
+    end
+    
+    subgraph utilsTool["utils.js"]
+        subgraph utilsImports["utils-Imports"]
+            UI1["IMPORT: path, FROM: path"]
+            UI2["IMPORT: findProjectRoot, FROM: /src/utils/path-utils.js"]
+        end
+        
+        subgraph utilsFunctions["utils-Functions Defined"]
+            UF1["FUNCTION: createErrorResponse"]
+            UF2["FUNCTION: handleApiResult"]
+            UF3["FUNCTION: withNormalizedProjectRoot"]
+            UF4["FUNCTION: createLogWrapper"]
+        end
+        
+        subgraph utilsExports["utils-Exports"]
+            UE1["EXP: createErrorResponse"]
+            UE2["EXP: handleApiResult"]
+            UE3["EXP: withNormalizedProjectRoot"]
+            UE4["EXP: createLogWrapper"]
+        end
+        
+        subgraph utilsFlow["utils-Execution Flow"]
+            UL1["Provide standardized error response formatting"]
+            UL2["Handle API result processing with logging"]
+            UL3["Normalize project root paths for MCP tools"]
+            UL4["Create MCP-compatible logger wrappers"]
+        end
+        
+        utilsImports
+        utilsFunctions
+        utilsExports
+        utilsFlow
+    end
+    
+    %% RELATIONSHIP CONNECTIONS
+    SharedImports --> addTaskImports
+    SharedImports --> indexImports
+    SharedImports --> utilsImports
+    
+    SharedDependencies --> addTaskTool
+    SharedDependencies --> indexTool
+    SharedDependencies --> utilsTool
+    
+    SharedParameters --> addTaskTool
+    SharedParameters --> indexTool
+    SharedParameters --> utilsTool
+    
+    SharedConstants --> addTaskTool
+    SharedConstants --> indexTool
+    SharedConstants --> utilsTool
+    
+    %% EXECUTION FLOW CONNECTIONS
+    ATL1 --> ATL2
+    ATL2 --> ATL3
+    ATL3 --> ATL4
+    
+    IL1 --> IL2
+    IL2 --> IL3
+    IL3 --> IL4
+    IL4 --> IL5
+    IL5 --> IL6
+    IL6 --> IL7
+    IL7 --> IL8
+    
+    UL1 --> UL2
+    UL2 --> UL3
+    UL3 --> UL4
+    
+    %% LAYER RELATIONSHIPS
+    utilsTool --> addTaskTool
+    indexTool --> addTaskTool
+```

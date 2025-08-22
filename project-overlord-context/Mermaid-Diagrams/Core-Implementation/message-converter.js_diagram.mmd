@@ -1,0 +1,193 @@
+```mermaid
+graph TB
+    %% Message Converter - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/message-converter.js
+    
+    subgraph "Message Converter Module"
+        direction TB
+        
+        subgraph "Main Functions"
+            CONVERT_TO_MCP["convertToMCPFormat(prompt)"]
+            CONVERT_FROM_MCP["convertFromMCPFormat(response)"]
+            EXTRACT_TEXT_CONTENT["extractTextContent(content)"]
+        end
+        
+        subgraph "AI SDK to MCP Conversion"
+            direction TB
+            
+            INPUT_PROMPT["Input: AI SDK prompt array"]
+            INIT_ARRAYS["Initialize messages[], systemPrompt"]
+            
+            subgraph "Message Processing Loop"
+                ITERATE_MESSAGES["for (message of prompt)"]
+                CHECK_ROLE["Check message.role"]
+                
+                subgraph "Role Handling"
+                    SYSTEM_ROLE["role === 'system'"]
+                    USER_ASSISTANT_ROLE["role === 'user' || 'assistant'"]
+                    OTHER_ROLES["Other roles (ignored)"]
+                end
+                
+                subgraph "System Message Processing"
+                    EXTRACT_SYSTEM["extractTextContent(message.content)"]
+                    SET_SYSTEM_PROMPT["systemPrompt = extracted text"]
+                end
+                
+                subgraph "User/Assistant Message Processing"
+                    CREATE_MCP_MESSAGE["Create MCP message object"]
+                    SET_ROLE["Set role: message.role"]
+                    SET_CONTENT["Set content: {type: 'text', text: extracted}"]
+                    PUSH_TO_MESSAGES["Push to messages array"]
+                end
+            end
+            
+            MCP_OUTPUT["Output: {messages, systemPrompt}"]
+        end
+        
+        subgraph "MCP to AI SDK Conversion"
+            direction TB
+            
+            INPUT_RESPONSE["Input: MCP response"]
+            INIT_RESULT["Initialize result variables"]
+            
+            subgraph "Response Format Detection"
+                CHECK_STRING["typeof response === 'string'"]
+                CHECK_CONTENT["response.content exists"]
+                CHECK_TEXT["response.text exists"]
+                FALLBACK_JSON["JSON.stringify fallback"]
+            end
+            
+            subgraph "Data Extraction"
+                EXTRACT_TEXT["Extract text content"]
+                EXTRACT_USAGE["Extract usage data"]
+                EXTRACT_FINISH_REASON["Extract finishReason"]
+                CREATE_WARNINGS["Create warnings array"]
+            end
+            
+            AI_SDK_OUTPUT["Output: {text, usage, finishReason, warnings}"]
+        end
+        
+        subgraph "Text Content Extraction"
+            direction TB
+            
+            INPUT_CONTENT["Input: content (string|Array|object)"]
+            
+            subgraph "Content Type Detection"
+                CHECK_STRING_TYPE["Check if string"]
+                CHECK_ARRAY_TYPE["Check if array"]
+                CHECK_OBJECT_TYPE["Check if object"]
+            end
+            
+            subgraph "String Processing"
+                RETURN_STRING["Return content directly"]
+            end
+            
+            subgraph "Array Processing"
+                MAP_ARRAY["content.map()"]
+                
+                subgraph "Array Element Processing"
+                    CHECK_PART_STRING["Check if part is string"]
+                    CHECK_PART_TEXT_TYPE["Check part.type === 'text'"]
+                    CHECK_PART_TEXT_PROP["Check part.text exists"]
+                    SKIP_NON_TEXT["Skip non-text content"]
+                end
+                
+                FILTER_EMPTY["Filter empty strings"]
+                JOIN_PARTS["Join with space"]
+            end
+            
+            subgraph "Object Processing"
+                CHECK_OBJ_TEXT_TYPE["Check content.type === 'text'"]
+                CHECK_OBJ_TEXT_PROP["Check content.text exists"]
+                EXTRACT_OBJ_TEXT["Extract text property"]
+            end
+            
+            subgraph "Fallback Processing"
+                STRING_FALLBACK["String(content || '')"]
+            end
+            
+            TEXT_OUTPUT["Output: extracted text string"]
+        end
+    end
+    
+    %% AI SDK to MCP Flow
+    INPUT_PROMPT --> CONVERT_TO_MCP
+    CONVERT_TO_MCP --> INIT_ARRAYS
+    INIT_ARRAYS --> ITERATE_MESSAGES
+    ITERATE_MESSAGES --> CHECK_ROLE
+    
+    CHECK_ROLE --> SYSTEM_ROLE
+    CHECK_ROLE --> USER_ASSISTANT_ROLE
+    CHECK_ROLE --> OTHER_ROLES
+    
+    SYSTEM_ROLE --> EXTRACT_SYSTEM
+    EXTRACT_SYSTEM --> EXTRACT_TEXT_CONTENT
+    EXTRACT_TEXT_CONTENT --> SET_SYSTEM_PROMPT
+    
+    USER_ASSISTANT_ROLE --> CREATE_MCP_MESSAGE
+    CREATE_MCP_MESSAGE --> SET_ROLE
+    SET_ROLE --> SET_CONTENT
+    SET_CONTENT --> EXTRACT_TEXT_CONTENT
+    SET_CONTENT --> PUSH_TO_MESSAGES
+    
+    PUSH_TO_MESSAGES --> MCP_OUTPUT
+    SET_SYSTEM_PROMPT --> MCP_OUTPUT
+    
+    %% MCP to AI SDK Flow
+    INPUT_RESPONSE --> CONVERT_FROM_MCP
+    CONVERT_FROM_MCP --> INIT_RESULT
+    INIT_RESULT --> CHECK_STRING
+    INIT_RESULT --> CHECK_CONTENT
+    INIT_RESULT --> CHECK_TEXT
+    INIT_RESULT --> FALLBACK_JSON
+    
+    CHECK_STRING --> EXTRACT_TEXT
+    CHECK_CONTENT --> EXTRACT_TEXT
+    CHECK_TEXT --> EXTRACT_TEXT
+    FALLBACK_JSON --> EXTRACT_TEXT
+    
+    CHECK_CONTENT --> EXTRACT_USAGE
+    CHECK_CONTENT --> EXTRACT_FINISH_REASON
+    CHECK_TEXT --> EXTRACT_USAGE
+    CHECK_TEXT --> EXTRACT_FINISH_REASON
+    FALLBACK_JSON --> CREATE_WARNINGS
+    
+    EXTRACT_TEXT --> AI_SDK_OUTPUT
+    EXTRACT_USAGE --> AI_SDK_OUTPUT
+    EXTRACT_FINISH_REASON --> AI_SDK_OUTPUT
+    CREATE_WARNINGS --> AI_SDK_OUTPUT
+    
+    %% Text Content Extraction Flow
+    INPUT_CONTENT --> EXTRACT_TEXT_CONTENT
+    EXTRACT_TEXT_CONTENT --> CHECK_STRING_TYPE
+    EXTRACT_TEXT_CONTENT --> CHECK_ARRAY_TYPE
+    EXTRACT_TEXT_CONTENT --> CHECK_OBJECT_TYPE
+    
+    CHECK_STRING_TYPE --> RETURN_STRING
+    RETURN_STRING --> TEXT_OUTPUT
+    
+    CHECK_ARRAY_TYPE --> MAP_ARRAY
+    MAP_ARRAY --> CHECK_PART_STRING
+    MAP_ARRAY --> CHECK_PART_TEXT_TYPE
+    MAP_ARRAY --> CHECK_PART_TEXT_PROP
+    MAP_ARRAY --> SKIP_NON_TEXT
+    MAP_ARRAY --> FILTER_EMPTY
+    FILTER_EMPTY --> JOIN_PARTS
+    JOIN_PARTS --> TEXT_OUTPUT
+    
+    CHECK_OBJECT_TYPE --> CHECK_OBJ_TEXT_TYPE
+    CHECK_OBJECT_TYPE --> CHECK_OBJ_TEXT_PROP
+    CHECK_OBJ_TEXT_TYPE --> EXTRACT_OBJ_TEXT
+    CHECK_OBJ_TEXT_PROP --> EXTRACT_OBJ_TEXT
+    EXTRACT_OBJ_TEXT --> TEXT_OUTPUT
+    
+    CHECK_OBJECT_TYPE --> STRING_FALLBACK
+    STRING_FALLBACK --> TEXT_OUTPUT
+    
+    style CONVERT_TO_MCP fill:#e1f5fe
+    style CONVERT_FROM_MCP fill:#e8f5e8
+    style EXTRACT_TEXT_CONTENT fill:#fff3e0
+    style MCP_OUTPUT fill:#f3e5f5
+    style AI_SDK_OUTPUT fill:#f3e5f5
+    style TEXT_OUTPUT fill:#fce4ec
+```

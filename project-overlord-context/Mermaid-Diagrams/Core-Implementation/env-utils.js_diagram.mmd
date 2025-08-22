@@ -1,0 +1,48 @@
+```mermaid
+flowchart TB
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js process.env for environment variable management"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: withSessionEnv"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: withSessionEnv"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} sessionEnv - environment object from session"]
+        P2["PARAM: {Function} actionFn - async function to execute with temporary environment"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: originalEnv, VALUE: object storing original environment values"]
+        C2["CONST: keysToRestore, VALUE: array of environment keys to restore"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Check if sessionEnv is valid object with keys"]
+        FL2["Store original environment variable values"]
+        FL3["Set temporary environment variables from sessionEnv"]
+        FL4["Execute the provided action function"]
+        FL5["Restore original environment variables in finally block"]
+        FL6["Delete keys that didn't exist originally"]
+    end
+    
+    subgraph FileName["env-utils.js"]
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+```

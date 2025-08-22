@@ -1,0 +1,40 @@
+flowchart TB
+    subgraph Imports
+        I1[findNextTask from ../../../../scripts/modules/task-manager.js]
+        I2[readJSON, readComplexityReport from ../../../../scripts/modules/utils.js]
+        I3[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[nextTaskDirect - Wrapper function for finding the next task to work on]
+        FU2[coreNextTaskAction - Internal action function for executing next task logic]
+    end
+
+    subgraph Exports
+        E1[nextTaskDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, reportPath, projectRoot, tag]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that tasksJsonPath argument is provided for explicit path usage]
+        FL2[Enable silent mode to prevent console logs from interfering with JSON output]
+        FL3[Read tasks data from provided JSON path using readJSON utility]
+        FL4[Read complexity report if reportPath is provided for enhanced task selection]
+        FL5[Use findNextTask to determine the next eligible task based on dependencies]
+        FL6[Determine if the next task is a subtask or main task for appropriate guidance]
+        FL7[Provide contextual advice for working on tasks vs subtasks]
+        FL8[Return next task information with guidance for status updates and research options]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

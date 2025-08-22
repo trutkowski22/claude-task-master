@@ -1,0 +1,135 @@
+flowchart TD
+    subgraph "analyze-task-complexity.js"
+        A["🔍 Analyze Task Complexity Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["Options Preparation"]
+        E --> F["Core Function Call"]
+        F --> G["Report Processing"]
+        G --> H["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["analyzeTaskComplexity from '../../../../scripts/modules/task-manager/analyze-task-complexity.js'"]
+            I2["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I3["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I4["isSilentMode from '../../../../scripts/modules/utils.js'"]
+            I5["fs from 'fs'"]
+            I6["createLogWrapper from '../../tools/utils.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["analyzeTaskComplexityDirect(args, log, context) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["tasksJsonPath - string"]
+            P2["outputPath - string"]
+            P3["threshold - string|number (1-10)"]
+            P4["research - boolean"]
+            P5["ids - string (comma-separated)"]
+            P6["from - number"]
+            P7["to - number"]
+            P8["projectRoot - string"]
+            P9["tag - string (optional)"]
+        end
+        
+        subgraph "Core Options"
+            OPT1["file: tasksJsonPath"]
+            OPT2["output: outputPath"]
+            OPT3["threshold: threshold"]
+            OPT4["research: boolean"]
+            OPT5["projectRoot: projectRoot"]
+            OPT6["id: ids"]
+            OPT7["from: from"]
+            OPT8["to: to"]
+            OPT9["tag: tag"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check tasksJsonPath exists"]
+            V2["Check outputPath exists"]
+            V3["Validate range parameters"]
+            V4["Log analysis scope"]
+        end
+        
+        subgraph "Silent Mode Management"
+            SM1["Check current silent mode state"]
+            SM2["Enable silent mode if needed"]
+            SM3["Restore original state in finally"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Create logger wrapper"]
+            EX2["Call analyzeTaskComplexity core"]
+            EX3["Verify report file creation"]
+            EX4["Process complexity statistics"]
+            EX5["Return comprehensive response"]
+        end
+        
+        subgraph "Report Analysis"
+            RA1["Parse complexityAnalysis array"]
+            RA2["Count high complexity tasks (>=8)"]
+            RA3["Count medium complexity tasks (5-7)"]
+            RA4["Count low complexity tasks (<5)"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["Core function errors"]
+            ERR3["Report processing errors"]
+            ERR4["Always restore silent mode"]
+        end
+        
+        subgraph "Exports"
+            EXP1["analyzeTaskComplexityDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        B --> I5
+        B --> I6
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        F1 --> P3
+        F1 --> P4
+        F1 --> P5
+        F1 --> P6
+        F1 --> P7
+        F1 --> P8
+        F1 --> P9
+        D --> V1
+        D --> V2
+        D --> V3
+        D --> V4
+        E --> OPT1
+        E --> OPT2
+        E --> OPT3
+        E --> OPT4
+        E --> OPT5
+        E --> OPT6
+        E --> OPT7
+        E --> OPT8
+        E --> OPT9
+        F --> SM1
+        F --> SM2
+        F --> EX1
+        F --> EX2
+        G --> EX3
+        G --> RA1
+        G --> RA2
+        G --> RA3
+        G --> RA4
+        H --> EX4
+        H --> EX5
+        V1 --> ERR1
+        V2 --> ERR1
+        EX2 --> ERR2
+        RA1 --> ERR3
+        ERR2 --> ERR4
+        ERR3 --> ERR4
+        SM3 --> ERR4
+        H --> EXP1
+    end

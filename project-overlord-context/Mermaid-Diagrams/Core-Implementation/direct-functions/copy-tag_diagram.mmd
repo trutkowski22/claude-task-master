@@ -1,0 +1,64 @@
+flowchart TB
+    subgraph Imports["📦 Imports"]
+        import1["copyTag from G:\claude-task-master\claude-task-master\scripts\modules\task-manager\tag-management.js"]
+        import2["enableSilentMode, disableSilentMode from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        import3["createLogWrapper from G:\claude-task-master\claude-task-master\mcp-server\src\core\tools\utils.js"]
+    end
+
+    subgraph Dependencies["🔗 Dependencies"]
+        dep1["copyTag - Core function to copy a tag with all tasks and metadata"]
+        dep2["enableSilentMode/disableSilentMode - Control console output"]
+        dep3["createLogWrapper - Create MCP-compatible logger wrapper"]
+    end
+
+    subgraph Functions_Defined["⚡ Functions Defined"]
+        func1["copyTagDirect() - Copy a tag with error handling"]
+    end
+
+    subgraph Exports["📤 Exports"]
+        exp1["copyTagDirect - Direct function to copy a tag"]
+    end
+
+    subgraph Parameters["📝 Parameters"]
+        param1["args.sourceName (string) - Name of the source tag to copy from"]
+        param2["args.targetName (string) - Name of the new tag to create"]
+        param3["args.description (string, optional) - Optional description for the new tag"]
+        param4["args.tasksJsonPath (string, optional) - Path to the tasks.json file"]
+        param5["args.projectRoot (string, optional) - Project root path"]
+        param6["log (Object) - Logger object"]
+        param7["context (Object) - Additional context (session)"]
+    end
+
+    subgraph Constants["📋 Constants"]
+        const1["options - Configuration object with description"]
+        const2["mcpLog - MCP-compatible logger wrapper"]
+    end
+
+    subgraph Execution_Flow["🔄 Execution Flow"]
+        step1["1. Enable silent mode to prevent console interference"]
+        step2["2. Create MCP logger wrapper"]
+        step3["3. Validate tasksJsonPath is provided"]
+        step4["4. Validate sourceName parameter"]
+        step5["5. Validate targetName parameter"]
+        step6["6. Log tag copy operation"]
+        step7["7. Prepare options object with description"]
+        step8["8. Call core copyTag function with JSON output format"]
+        step9["9. Disable silent mode"]
+        step10["10. Return success response with copy results"]
+        step11["11. Handle errors and restore logging"]
+    end
+
+    %% Flow connections
+    step1 --> step2
+    step2 --> step3
+    step3 --> step4
+    step4 --> step5
+    step5 --> step6
+    step6 --> step7
+    step7 --> step8
+    step8 --> step9
+    step9 --> step10
+    step3 --> step11
+    step4 --> step11
+    step5 --> step11
+    step8 --> step11

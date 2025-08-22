@@ -1,0 +1,126 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: spawnSync, FROM: child_process"]
+        I2["IMPORT: path, FROM: path"]
+        I3["IMPORT: fs, FROM: fs"]
+        I4["IMPORT: contextManager, FROM: /mcp-server/src/core/context-manager.js"]
+        I5["IMPORT: fileURLToPath, FROM: url"]
+        I6["IMPORT: lastFoundProjectRoot, FROM: /mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: PROJECT_MARKERS, FROM: /mcp-server/src/core/utils/path-utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js child_process for command execution"]
+        D2["DEP: File system for configuration and project detection"]
+        D3["DEP: Context manager for caching operations"]
+        D4["DEP: MCP session management for project root resolution"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: getCurrentTag"]
+        FU2["FUNCTION: getVersionInfo"]
+        FU3["FUNCTION: getTagInfo"]
+        FU4["FUNCTION: getProjectRoot"]
+        FU5["FUNCTION: getProjectRootFromSession"]
+        FU6["FUNCTION: handleApiResult"]
+        FU7["FUNCTION: executeTaskMasterCommand"]
+        FU8["FUNCTION: getCachedOrExecute"]
+        FU9["FUNCTION: processMCPResponseData"]
+        FU10["FUNCTION: createContentResponse"]
+        FU11["FUNCTION: createErrorResponse"]
+        FU12["FUNCTION: createLogWrapper"]
+        FU13["FUNCTION: normalizeProjectRoot"]
+        FU14["FUNCTION: getRawProjectRootFromSession"]
+        FU15["FUNCTION: withNormalizedProjectRoot"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: getProjectRoot"]
+        E2["EXP: getProjectRootFromSession"]
+        E3["EXP: getTagInfo"]
+        E4["EXP: handleApiResult"]
+        E5["EXP: executeTaskMasterCommand"]
+        E6["EXP: getCachedOrExecute"]
+        E7["EXP: processMCPResponseData"]
+        E8["EXP: createContentResponse"]
+        E9["EXP: createErrorResponse"]
+        E10["EXP: createLogWrapper"]
+        E11["EXP: normalizeProjectRoot"]
+        E12["EXP: getRawProjectRootFromSession"]
+        E13["EXP: withNormalizedProjectRoot"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} projectRoot - project root directory path"]
+        P2["PARAM: {Object} log - logger object for operation tracking"]
+        P3["PARAM: {Object} session - MCP session object with roots information"]
+        P4["PARAM: {Object} result - API result object with success/error status"]
+        P5["PARAM: {string} command - task-master CLI command to execute"]
+        P6["PARAM: {Array} args - command line arguments array"]
+        P7["PARAM: {string} cacheKey - unique key for caching operations"]
+        P8["PARAM: {Function} actionFn - function to execute on cache miss"]
+        P9["PARAM: {Function} executeFn - original execute function to wrap"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: __filename, VALUE: current module file path"]
+        C2["CONST: cachedVersionInfo, VALUE: cached package.json version information"]
+        C3["CONST: packageJsonPath, VALUE: path to package.json file"]
+        C4["CONST: packageJson, VALUE: parsed package.json content"]
+        C5["CONST: currentTag, VALUE: current tag from state.json"]
+        C6["CONST: availableTags, VALUE: array of available tags from tasks.json"]
+        C7["CONST: absolutePath, VALUE: resolved absolute project path"]
+        C8["CONST: rawRootPath, VALUE: raw URI from session roots"]
+        C9["CONST: decodedPath, VALUE: decoded URI without file:// protocol"]
+        C10["CONST: finalPath, VALUE: normalized and resolved path"]
+        C11["CONST: versionInfo, VALUE: cached or retrieved version information"]
+        C12["CONST: tagInfo, VALUE: current and available tag information"]
+        C13["CONST: processedData, VALUE: processed response data"]
+        C14["CONST: responsePayload, VALUE: complete response with metadata"]
+        C15["CONST: cwd, VALUE: current working directory"]
+        C16["CONST: spawnOptions, VALUE: configuration for child process execution"]
+        C17["CONST: result, VALUE: result from child process execution"]
+        C18["CONST: cachedResult, VALUE: result retrieved from cache"]
+        C19["CONST: normalizedRoot, VALUE: normalized project root path"]
+        C20["CONST: updatedArgs, VALUE: arguments with injected normalized root"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: TASK_MASTER_PROJECT_ROOT, USAGE: override project root detection"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Cache version information from package.json for performance"]
+        FL2["Implement project root resolution with precedence hierarchy"]
+        FL3["Handle MCP session URI decoding and path normalization"]
+        FL4["Provide standardized API result processing and formatting"]
+        FL5["Execute CLI commands with proper environment and error handling"]
+        FL6["Implement caching layer for expensive operations"]
+        FL7["Process response data for MCP compatibility"]
+        FL8["Create standardized content and error responses"]
+        FL9["Wrap execute functions with normalized project root injection"]
+        FL10["Handle cross-platform path normalization and URI protocols"]
+    end
+    
+    subgraph FileName["utils.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+```

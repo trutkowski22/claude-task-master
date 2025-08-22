@@ -1,0 +1,126 @@
+```mermaid
+graph TB
+    %% MCP SDK Errors - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/errors.js
+    
+    subgraph "MCP SDK Error Handling Module"
+        direction TB
+        
+        subgraph "Error Classes Hierarchy"
+            direction TB
+            
+            JS_ERROR["Error (JavaScript Base)"]
+            MCP_ERROR["MCPError"]
+            MCP_SESSION_ERROR["MCPSessionError"]
+            MCP_SAMPLING_ERROR["MCPSamplingError"]
+            
+            JS_ERROR --> MCP_ERROR
+            MCP_ERROR --> MCP_SESSION_ERROR
+            MCP_ERROR --> MCP_SAMPLING_ERROR
+        end
+        
+        subgraph "MCPError Properties"
+            MCP_NAME["name: 'MCPError'"]
+            MCP_CODE["code: options.code"]
+            MCP_CAUSE["cause: options.cause"]
+            MCP_RESPONSE["mcpResponse: options.mcpResponse"]
+        end
+        
+        subgraph "MCPSessionError Properties"
+            SESSION_NAME["name: 'MCPSessionError'"]
+            SESSION_INHERIT["Inherits all MCPError properties"]
+        end
+        
+        subgraph "MCPSamplingError Properties"
+            SAMPLING_NAME["name: 'MCPSamplingError'"]
+            SAMPLING_INHERIT["Inherits all MCPError properties"]
+        end
+        
+        subgraph "Error Mapping Function"
+            MAP_MCP_ERROR["mapMCPError(error)"]
+            
+            subgraph "Error Pattern Detection"
+                CHECK_INSTANCE["Check if instanceof MCPError"]
+                PATTERN_SESSION["Check for 'session'/'connection'"]
+                PATTERN_SAMPLING["Check for 'sampling'/'timeout'"]
+                PATTERN_CAPABILITY["Check for 'capabilities'/'not supported'"]
+                DEFAULT_MAPPING["Default to MCPError"]
+            end
+            
+            subgraph "Error Code Assignment"
+                SESSION_CODE["SESSION_ERROR"]
+                SAMPLING_CODE["SAMPLING_ERROR"]
+                CAPABILITY_CODE["CAPABILITY_ERROR"]
+                UNKNOWN_CODE["UNKNOWN_ERROR"]
+            end
+        end
+        
+        subgraph "Retry Logic Function"
+            IS_RETRYABLE["isRetryableError(error)"]
+            
+            subgraph "Retry Conditions"
+                CHECK_SAMPLING["MCPSamplingError with SAMPLING_ERROR"]
+                CHECK_SESSION_NO["MCPSessionError → not retryable"]
+                CHECK_MESSAGE["Message contains: timeout/network/temporary"]
+                RETURN_BOOLEAN["Return boolean result"]
+            end
+        end
+        
+        subgraph "Error Mapping Flow"
+            ORIGINAL_ERROR["Original Error Input"]
+            ERROR_ANALYSIS["Analyze error message"]
+            ERROR_CREATION["Create appropriate MCP error"]
+            ERROR_OUTPUT["Return mapped error"]
+        end
+    end
+    
+    %% Error Class Relationships
+    MCP_ERROR --> MCP_NAME
+    MCP_ERROR --> MCP_CODE
+    MCP_ERROR --> MCP_CAUSE
+    MCP_ERROR --> MCP_RESPONSE
+    
+    MCP_SESSION_ERROR --> SESSION_NAME
+    MCP_SESSION_ERROR --> SESSION_INHERIT
+    
+    MCP_SAMPLING_ERROR --> SAMPLING_NAME
+    MCP_SAMPLING_ERROR --> SAMPLING_INHERIT
+    
+    %% Error Mapping Flow
+    MAP_MCP_ERROR --> CHECK_INSTANCE
+    CHECK_INSTANCE --> PATTERN_SESSION
+    CHECK_INSTANCE --> PATTERN_SAMPLING
+    CHECK_INSTANCE --> PATTERN_CAPABILITY
+    CHECK_INSTANCE --> DEFAULT_MAPPING
+    
+    PATTERN_SESSION --> SESSION_CODE
+    PATTERN_SAMPLING --> SAMPLING_CODE
+    PATTERN_CAPABILITY --> CAPABILITY_CODE
+    DEFAULT_MAPPING --> UNKNOWN_CODE
+    
+    SESSION_CODE --> MCP_SESSION_ERROR
+    SAMPLING_CODE --> MCP_SAMPLING_ERROR
+    CAPABILITY_CODE --> MCP_SESSION_ERROR
+    UNKNOWN_CODE --> MCP_ERROR
+    
+    %% Retry Logic Flow
+    IS_RETRYABLE --> CHECK_SAMPLING
+    IS_RETRYABLE --> CHECK_SESSION_NO
+    IS_RETRYABLE --> CHECK_MESSAGE
+    
+    CHECK_SAMPLING --> RETURN_BOOLEAN
+    CHECK_SESSION_NO --> RETURN_BOOLEAN
+    CHECK_MESSAGE --> RETURN_BOOLEAN
+    
+    %% Main Flow
+    ORIGINAL_ERROR --> MAP_MCP_ERROR
+    MAP_MCP_ERROR --> ERROR_ANALYSIS
+    ERROR_ANALYSIS --> ERROR_CREATION
+    ERROR_CREATION --> ERROR_OUTPUT
+    
+    style MCP_ERROR fill:#e1f5fe
+    style MCP_SESSION_ERROR fill:#e8f5e8
+    style MCP_SAMPLING_ERROR fill:#fff3e0
+    style MAP_MCP_ERROR fill:#f3e5f5
+    style IS_RETRYABLE fill:#fce4ec
+```

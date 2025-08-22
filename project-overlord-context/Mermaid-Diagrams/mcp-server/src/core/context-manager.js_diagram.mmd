@@ -1,0 +1,77 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: FastMCP, FROM: fastmcp"]
+        I2["IMPORT: LRUCache, FROM: lru-cache"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: LRU Cache library for efficient memory management"]
+        D2["DEP: FastMCP framework for MCP protocol support"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getContext"]
+        FU3["FUNCTION: updateContext"]
+        FU4["FUNCTION: invalidateContext"]
+        FU5["FUNCTION: getCachedData"]
+        FU6["FUNCTION: setCachedData"]
+        FU7["FUNCTION: invalidateCacheKey"]
+        FU8["FUNCTION: getStats"]
+        FU9["FUNCTION: _getCacheKey"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: ContextManager"]
+        E2["EXP: contextManager"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} config - configuration options for cache and context"]
+        P2["PARAM: {string} contextId - unique identifier for context objects"]
+        P3["PARAM: {Object} metadata - additional metadata for context enrichment"]
+        P4["PARAM: {Object} updates - updates to apply to existing context"]
+        P5["PARAM: {string} key - cache key for data storage and retrieval"]
+        P6["PARAM: {any} data - data to store in cache system"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: config, VALUE: merged configuration with defaults for cache behavior"]
+        C2["CONST: cache, VALUE: LRUCache instance with size and TTL limits"]
+        C3["CONST: stats, VALUE: object tracking hits, misses, and invalidations"]
+        C4["CONST: cacheKey, VALUE: generated key from context ID and metadata"]
+        C5["CONST: cached, VALUE: retrieved data from cache lookup"]
+        C6["CONST: context, VALUE: new or existing context object with metadata"]
+        C7["CONST: contextManager, VALUE: singleton ContextManager instance"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Initialize ContextManager with configuration defaults"]
+        FL2["Create LRU cache with size limits and TTL settings"]
+        FL3["Initialize statistics tracking for cache performance"]
+        FL4["Generate cache key from context ID and metadata"]
+        FL5["Check cache for existing context and update stats"]
+        FL6["Create new context if not cached and store result"]
+        FL7["Update existing context metadata and refresh cache"]
+        FL8["Provide cache statistics and invalidation methods"]
+    end
+    
+    subgraph FileName["context-manager.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+```

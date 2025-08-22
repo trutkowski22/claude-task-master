@@ -1,0 +1,89 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: findTasksPath, FROM: /src/utils/path-utils.js"]
+        I3["IMPORT: findPRDPath, FROM: /src/utils/path-utils.js"]
+        I4["IMPORT: findComplexityReportPath, FROM: /src/utils/path-utils.js"]
+        I5["IMPORT: findProjectRoot, FROM: /src/utils/path-utils.js"]
+        I6["IMPORT: normalizeProjectRoot, FROM: /src/utils/path-utils.js"]
+        I7["IMPORT: PROJECT_MARKERS, FROM: /src/constants/paths.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Core path utilities for file resolution"]
+        D2["DEP: Node.js path module for cross-platform path operations"]
+        D3["DEP: Silent logging for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: findPrdPath"]
+        FU2["FUNCTION: resolveTasksPath"]
+        FU3["FUNCTION: resolvePrdPath"]
+        FU4["FUNCTION: resolveComplexityReportPath"]
+        FU5["FUNCTION: resolveProjectPath"]
+        FU6["FUNCTION: findProjectRoot"]
+        FU7["FUNCTION: findTasksPath"]
+        FU8["FUNCTION: findComplexityReportPath"]
+        FU9["FUNCTION: findPRDPath"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: findPrdPath"]
+        E2["EXP: resolveTasksPath"]
+        E3["EXP: resolvePrdPath"]
+        E4["EXP: resolveComplexityReportPath"]
+        E5["EXP: resolveProjectPath"]
+        E6["EXP: findProjectRoot"]
+        E7["EXP: findTasksPath"]
+        E8["EXP: findComplexityReportPath"]
+        E9["EXP: findPRDPath"]
+        E10["EXP: PROJECT_MARKERS"]
+        E11["EXP: findTasksJsonPath"]
+        E12["EXP: findComplexityReportJsonPath"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} explicitPath - explicit path to file if provided"]
+        P2["PARAM: {Object} args - arguments object containing projectRoot and context"]
+        P3["PARAM: {Object} log - logger object to prevent console output"]
+        P4["PARAM: {string} relativePath - relative path to resolve"]
+        P5["PARAM: {string} startDir - directory to start searching from"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: silentLogger, VALUE: logger object with no-op methods"]
+        C2["CONST: lastFoundProjectRoot, VALUE: performance cache for project root"]
+        C3["CONST: explicitPath, VALUE: extracted explicit path from arguments"]
+        C4["CONST: rawProjectRoot, VALUE: raw project root from arguments"]
+        C5["CONST: projectRoot, VALUE: normalized project root path"]
+        C6["CONST: tag, VALUE: tag context for path resolution"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Create silent logger for MCP compatibility"]
+        FL2["Check for explicit absolute paths and use directly"]
+        FL3["Normalize project root to prevent path issues"]
+        FL4["Resolve relative paths against normalized project root"]
+        FL5["Delegate to core path utilities with context"]
+        FL6["Provide backward compatibility aliases"]
+        FL7["Handle session-specific path resolution for MCP"]
+    end
+    
+    subgraph FileName["path-utils.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

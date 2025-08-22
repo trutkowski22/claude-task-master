@@ -1,0 +1,161 @@
+```mermaid
+graph TB
+    %% Task Master Core - Core Implementation Layer
+    %% File: mcp-server/src/core/task-master-core.js
+    
+    subgraph "Task Master Core Module"
+        direction TB
+        
+        subgraph "Direct Function Imports"
+            direction TB
+            
+            subgraph "Task Management Functions"
+                LIST_TASKS["listTasksDirect"]
+                SHOW_TASK["showTaskDirect"]
+                NEXT_TASK["nextTaskDirect"]
+                ADD_TASK["addTaskDirect"]
+                REMOVE_TASK["removeTaskDirect"]
+                MOVE_TASK["moveTaskDirect"]
+                SET_STATUS["setTaskStatusDirect"]
+            end
+            
+            subgraph "Subtask Management Functions"
+                ADD_SUBTASK["addSubtaskDirect"]
+                REMOVE_SUBTASK["removeSubtaskDirect"]
+                UPDATE_SUBTASK["updateSubtaskByIdDirect"]
+                CLEAR_SUBTASKS["clearSubtasksDirect"]
+            end
+            
+            subgraph "Task Expansion Functions"
+                EXPAND_TASK["expandTaskDirect"]
+                EXPAND_ALL["expandAllTasksDirect"]
+                SCOPE_UP["scopeUpDirect"]
+                SCOPE_DOWN["scopeDownDirect"]
+            end
+            
+            subgraph "Task Update Functions"
+                UPDATE_TASKS["updateTasksDirect"]
+                UPDATE_TASK_ID["updateTaskByIdDirect"]
+            end
+            
+            subgraph "Dependency Management Functions"
+                ADD_DEPENDENCY["addDependencyDirect"]
+                REMOVE_DEPENDENCY["removeDependencyDirect"]
+                VALIDATE_DEPS["validateDependenciesDirect"]
+                FIX_DEPS["fixDependenciesDirect"]
+            end
+            
+            subgraph "Analysis & Reporting Functions"
+                ANALYZE_COMPLEXITY["analyzeTaskComplexityDirect"]
+                COMPLEXITY_REPORT["complexityReportDirect"]
+                RESEARCH["researchDirect"]
+            end
+            
+            subgraph "Tag Management Functions"
+                ADD_TAG["addTagDirect"]
+                DELETE_TAG["deleteTagDirect"]
+                LIST_TAGS["listTagsDirect"]
+                USE_TAG["useTagDirect"]
+                RENAME_TAG["renameTagDirect"]
+                COPY_TAG["copyTagDirect"]
+            end
+            
+            subgraph "Project & Configuration Functions"
+                INIT_PROJECT["initializeProjectDirect"]
+                MODELS["modelsDirect"]
+                PARSE_PRD["parsePRDDirect"]
+                GENERATE_FILES["generateTaskFilesDirect"]
+            end
+            
+            subgraph "System Functions"
+                CACHE_STATS["getCacheStatsDirect"]
+            end
+        end
+        
+        subgraph "Utility Re-exports"
+            PATH_UTILS["findTasksPath from path-utils.js"]
+        end
+        
+        subgraph "Function Registry"
+            DIRECT_FUNCTIONS_MAP["directFunctions: Map<string, function>"]
+            MAP_ENTRIES["23 function entries in Map"]
+        end
+        
+        subgraph "Module Exports"
+            direction TB
+            
+            subgraph "Individual Exports"
+                EXPORT_FUNCTIONS["All 23 direct functions exported individually"]
+            end
+            
+            subgraph "Map Export"
+                EXPORT_MAP["directFunctions Map exported"]
+            end
+            
+            subgraph "Utility Exports"
+                EXPORT_UTILS["findTasksPath exported"]
+            end
+        end
+    end
+    
+    %% Function Registration Flow
+    LIST_TASKS --> DIRECT_FUNCTIONS_MAP
+    SHOW_TASK --> DIRECT_FUNCTIONS_MAP
+    NEXT_TASK --> DIRECT_FUNCTIONS_MAP
+    ADD_TASK --> DIRECT_FUNCTIONS_MAP
+    REMOVE_TASK --> DIRECT_FUNCTIONS_MAP
+    MOVE_TASK --> DIRECT_FUNCTIONS_MAP
+    SET_STATUS --> DIRECT_FUNCTIONS_MAP
+    
+    ADD_SUBTASK --> DIRECT_FUNCTIONS_MAP
+    REMOVE_SUBTASK --> DIRECT_FUNCTIONS_MAP
+    UPDATE_SUBTASK --> DIRECT_FUNCTIONS_MAP
+    CLEAR_SUBTASKS --> DIRECT_FUNCTIONS_MAP
+    
+    EXPAND_TASK --> DIRECT_FUNCTIONS_MAP
+    EXPAND_ALL --> DIRECT_FUNCTIONS_MAP
+    SCOPE_UP --> DIRECT_FUNCTIONS_MAP
+    SCOPE_DOWN --> DIRECT_FUNCTIONS_MAP
+    
+    UPDATE_TASKS --> DIRECT_FUNCTIONS_MAP
+    UPDATE_TASK_ID --> DIRECT_FUNCTIONS_MAP
+    
+    ADD_DEPENDENCY --> DIRECT_FUNCTIONS_MAP
+    REMOVE_DEPENDENCY --> DIRECT_FUNCTIONS_MAP
+    VALIDATE_DEPS --> DIRECT_FUNCTIONS_MAP
+    FIX_DEPS --> DIRECT_FUNCTIONS_MAP
+    
+    ANALYZE_COMPLEXITY --> DIRECT_FUNCTIONS_MAP
+    COMPLEXITY_REPORT --> DIRECT_FUNCTIONS_MAP
+    RESEARCH --> DIRECT_FUNCTIONS_MAP
+    
+    ADD_TAG --> DIRECT_FUNCTIONS_MAP
+    DELETE_TAG --> DIRECT_FUNCTIONS_MAP
+    LIST_TAGS --> DIRECT_FUNCTIONS_MAP
+    USE_TAG --> DIRECT_FUNCTIONS_MAP
+    RENAME_TAG --> DIRECT_FUNCTIONS_MAP
+    COPY_TAG --> DIRECT_FUNCTIONS_MAP
+    
+    INIT_PROJECT --> DIRECT_FUNCTIONS_MAP
+    MODELS --> DIRECT_FUNCTIONS_MAP
+    PARSE_PRD --> DIRECT_FUNCTIONS_MAP
+    GENERATE_FILES --> DIRECT_FUNCTIONS_MAP
+    
+    CACHE_STATS --> DIRECT_FUNCTIONS_MAP
+    
+    %% Export Flow
+    DIRECT_FUNCTIONS_MAP --> EXPORT_MAP
+    DIRECT_FUNCTIONS_MAP --> MAP_ENTRIES
+    
+    PATH_UTILS --> EXPORT_UTILS
+    
+    %% All functions flow to individual exports
+    LIST_TASKS --> EXPORT_FUNCTIONS
+    ADD_TASK --> EXPORT_FUNCTIONS
+    EXPAND_TASK --> EXPORT_FUNCTIONS
+    
+    style DIRECT_FUNCTIONS_MAP fill:#e1f5fe
+    style EXPORT_MAP fill:#e8f5e8
+    style PATH_UTILS fill:#fff3e0
+    style MAP_ENTRIES fill:#f3e5f5
+```

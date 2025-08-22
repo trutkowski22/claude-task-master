@@ -1,0 +1,76 @@
+flowchart TB
+    subgraph Imports["📦 Imports"]
+        import1["createTagFromBranch from G:\claude-task-master\claude-task-master\scripts\modules\task-manager\tag-management.js"]
+        import2["getCurrentBranch, isGitRepository from G:\claude-task-master\claude-task-master\scripts\modules\utils\git-utils.js"]
+        import3["enableSilentMode, disableSilentMode from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        import4["createLogWrapper from G:\claude-task-master\claude-task-master\mcp-server\src\core\tools\utils.js"]
+    end
+
+    subgraph Dependencies["🔗 Dependencies"]
+        dep1["createTagFromBranch - Core function to create tag from git branch"]
+        dep2["getCurrentBranch - Get current git branch name"]
+        dep3["isGitRepository - Check if directory is a git repository"]
+        dep4["enableSilentMode/disableSilentMode - Control console output"]
+        dep5["createLogWrapper - Create MCP-compatible logger wrapper"]
+    end
+
+    subgraph Functions_Defined["⚡ Functions Defined"]
+        func1["createTagFromBranchDirect() - Create tags from git branches with error handling"]
+    end
+
+    subgraph Exports["📤 Exports"]
+        exp1["createTagFromBranchDirect - Direct function to create tag from branch"]
+    end
+
+    subgraph Parameters["📝 Parameters"]
+        param1["args.tasksJsonPath (string) - Path to the tasks.json file"]
+        param2["args.branchName (string, optional) - Git branch name"]
+        param3["args.copyFromCurrent (boolean, optional) - Copy tasks from current tag"]
+        param4["args.copyFromTag (string, optional) - Copy tasks from specific tag"]
+        param5["args.description (string, optional) - Custom description for the tag"]
+        param6["args.autoSwitch (boolean, optional) - Automatically switch to the new tag"]
+        param7["args.projectRoot (string, optional) - Project root path"]
+        param8["log (Object) - Logger object"]
+        param9["context (Object) - Additional context (session)"]
+    end
+
+    subgraph Constants["📋 Constants"]
+        const1["targetBranch - Determined branch name (provided or current)"]
+        const2["options - Configuration object with copy settings and description"]
+        const3["mcpLog - MCP-compatible logger wrapper"]
+    end
+
+    subgraph Execution_Flow["🔄 Execution Flow"]
+        step1["1. Enable silent mode to prevent console interference"]
+        step2["2. Create MCP logger wrapper"]
+        step3["3. Validate tasksJsonPath is provided"]
+        step4["4. Validate projectRoot is provided"]
+        step5["5. Check if directory is a git repository"]
+        step6["6. Determine target branch (provided or current)"]
+        step7["7. Validate branch name was obtained"]
+        step8["8. Log tag creation from branch"]
+        step9["9. Prepare options object with copy settings"]
+        step10["10. Call core createTagFromBranch function"]
+        step11["11. Disable silent mode"]
+        step12["12. Return success response with creation results"]
+        step13["13. Handle errors and restore logging"]
+    end
+
+    %% Flow connections
+    step1 --> step2
+    step2 --> step3
+    step3 --> step4
+    step4 --> step5
+    step5 --> step6
+    step6 --> step7
+    step7 --> step8
+    step8 --> step9
+    step9 --> step10
+    step10 --> step11
+    step11 --> step12
+    step3 --> step13
+    step4 --> step13
+    step5 --> step13
+    step6 --> step13
+    step7 --> step13
+    step10 --> step13

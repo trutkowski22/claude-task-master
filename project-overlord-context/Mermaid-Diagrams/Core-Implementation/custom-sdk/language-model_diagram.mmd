@@ -1,0 +1,86 @@
+flowchart TB
+    subgraph Imports ["📥 Imports"]
+        IMP1["convertToMCPFormat, convertFromMCPFormat from G:\claude-task-master\claude-task-master\mcp-server\src\custom-sdk\message-converter.js"]
+        IMP2["MCPError, mapMCPError from G:\claude-task-master\claude-task-master\mcp-server\src\custom-sdk\errors.js"]
+        IMP3["extractJson from G:\claude-task-master\claude-task-master\mcp-server\src\custom-sdk\json-extractor.js"]
+        IMP4["convertSchemaToInstructions, enhancePromptForJSON from G:\claude-task-master\claude-task-master\mcp-server\src\custom-sdk\schema-converter.js"]
+    end
+    
+    subgraph Classes ["🔧 Classes Defined"]
+        CL1["MCPLanguageModel"]
+    end
+    
+    subgraph Functions ["⚙️ Functions Defined"]
+        FN1["constructor(options)"]
+        FN2["validateSession()"]
+        FN3["doGenerate(options)"]
+        FN4["doGenerateObject(options)"]
+        FN5["doStream(options)"]
+        FN6["simulateStreaming(result)"]
+    end
+    
+    subgraph Exports ["📤 Exports"]
+        EX1["class MCPLanguageModel"]
+    end
+    
+    subgraph Parameters ["📋 Parameters"]
+        PA1["constructor: options{session, modelId, settings}"]
+        PA2["doGenerate: options{prompt, abortSignal}"]
+        PA3["doGenerateObject: options{prompt, schema, mode, abortSignal, objectName}"]
+        PA4["doStream: options{...generation options}"]
+        PA5["simulateStreaming: result{text, finishReason, usage}"]
+    end
+    
+    subgraph Constants ["📊 Constants"]
+        CO1["specificationVersion: 'v1'"]
+        CO2["defaultObjectGenerationMode: 'json'"]
+        CO3["supportsImageUrls: false"]
+        CO4["supportsStructuredOutputs: true"]
+        CO5["provider: 'mcp-ai-sdk'"]
+        CO6["timeout: 240000ms (4 minutes)"]
+        CO7["chunkSize: Math.max(1, Math.floor(text.length / 10))"]
+        CO8["streamDelay: 50ms"]
+    end
+    
+    subgraph ExecutionFlow ["🔄 Execution Flow"]
+        FL1["Initialize language model with MCP session and settings"]
+        FL2["Validate session has required sampling capabilities"]
+        FL3["For text generation: convert AI SDK prompt to MCP format"]
+        FL4["Call MCP session.requestSampling with converted messages"]
+        FL5["Convert MCP response back to AI SDK format with usage stats"]
+        FL6["For object generation: convert schema to JSON instructions"]
+        FL7["Enhance prompt with JSON generation requirements"]
+        FL8["Extract and parse JSON from MCP response text"]
+        FL9["Validate parsed object against provided schema"]
+        FL10["For streaming: simulate by chunking complete response"]
+        FL11["Yield text chunks with delays to mimic streaming"]
+        FL12["Handle errors by mapping to appropriate MCP error types"]
+    end
+    
+    %% Flow connections
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    
+    %% Cross-references
+    CL1 -.-> FN1
+    FN1 -.-> PA1
+    FN2 -.-> CO1
+    FN3 -.-> PA2
+    FN4 -.-> PA3
+    FN5 -.-> PA4
+    FN6 -.-> PA5
+    IMP1 -.-> FL3
+    IMP1 -.-> FL5
+    IMP2 -.-> FL12
+    IMP3 -.-> FL8
+    IMP4 -.-> FL6
+    CO6 -.-> FL4

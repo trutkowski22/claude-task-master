@@ -1,0 +1,58 @@
+flowchart TB
+    subgraph Imports["📦 Imports"]
+        import1["readComplexityReport, enableSilentMode, disableSilentMode from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+    end
+
+    subgraph Dependencies["🔗 Dependencies"]
+        dep1["readComplexityReport - Read and parse complexity report file"]
+        dep2["enableSilentMode/disableSilentMode - Control console output"]
+    end
+
+    subgraph Functions_Defined["⚡ Functions Defined"]
+        func1["complexityReportDirect() - Display complexity analysis report with error handling and caching"]
+    end
+
+    subgraph Exports["📤 Exports"]
+        exp1["complexityReportDirect - Direct function to display complexity report"]
+    end
+
+    subgraph Parameters["📝 Parameters"]
+        param1["args.reportPath (string) - Explicit path to the complexity report file"]
+        param2["log (Object) - Logger object"]
+    end
+
+    subgraph Constants["📋 Constants"]
+        const1["cacheKey - Generated cache key based on report path"]
+        const2["coreActionFn - Async function to read the complexity report"]
+    end
+
+    subgraph Execution_Flow["🔄 Execution Flow"]
+        step1["1. Log complexity report request with arguments"]
+        step2["2. Validate reportPath is provided"]
+        step3["3. Generate cache key from report path"]
+        step4["4. Define core action function for reading report"]
+        step5["5. Enable silent mode to prevent console interference"]
+        step6["6. Read complexity report using readComplexityReport"]
+        step7["7. Disable silent mode"]
+        step8["8. Validate report exists"]
+        step9["9. Return success response with report data"]
+        step10["10. Handle errors and restore logging"]
+        step11["11. Execute core action function"]
+        step12["12. Return final result"]
+    end
+
+    %% Flow connections
+    step1 --> step2
+    step2 --> step3
+    step3 --> step4
+    step4 --> step11
+    step11 --> step5
+    step5 --> step6
+    step6 --> step7
+    step7 --> step8
+    step8 --> step9
+    step6 --> step10
+    step8 --> step10
+    step9 --> step12
+    step10 --> step12
+    step2 --> step10

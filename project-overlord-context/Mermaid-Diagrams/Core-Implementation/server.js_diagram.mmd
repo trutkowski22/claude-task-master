@@ -1,0 +1,90 @@
+```mermaid
+graph TB
+    %% MCP Server Entry Point - Core Implementation Layer
+    %% File: mcp-server/server.js
+    
+    subgraph "MCP Server Entry Point"
+        direction TB
+        
+        subgraph "Dependencies"
+            TASKMASTER_SERVER["TaskMasterMCPServer from './src/index.js'"]
+            DOTENV["dotenv"]
+            LOGGER["logger from './src/logger.js'"]
+        end
+        
+        subgraph "Environment Setup"
+            DOTENV_CONFIG["dotenv.config()"]
+            ENV_LOAD["Load environment variables"]
+        end
+        
+        subgraph "Server Initialization"
+            CREATE_SERVER["const server = new TaskMasterMCPServer()"]
+            SERVER_INSTANCE["TaskMasterMCPServer instance"]
+        end
+        
+        subgraph "Process Signal Handlers"
+            SIGINT_HANDLER["process.on('SIGINT', async () => {...})"]
+            SIGTERM_HANDLER["process.on('SIGTERM', async () => {...})"]
+            
+            subgraph "Graceful Shutdown"
+                AWAIT_STOP["await server.stop()"]
+                PROCESS_EXIT["process.exit(0)"]
+            end
+        end
+        
+        subgraph "Main Startup Function"
+            START_SERVER_FUNC["async function startServer()"]
+            
+            subgraph "Server Startup Flow"
+                TRY_START["try { await server.start() }"]
+                CATCH_ERROR["catch (error)"]
+                LOG_ERROR["logger.error('Failed to start MCP server')"]
+                EXIT_FAILURE["process.exit(1)"]
+            end
+        end
+        
+        subgraph "Execution"
+            CALL_START_SERVER["startServer()"]
+            MAIN_EXECUTION["Main execution point"]
+        end
+    end
+    
+    %% Dependencies Flow
+    TASKMASTER_SERVER --> CREATE_SERVER
+    DOTENV --> DOTENV_CONFIG
+    LOGGER --> LOG_ERROR
+    
+    %% Environment Setup
+    DOTENV_CONFIG --> ENV_LOAD
+    
+    %% Server Creation
+    CREATE_SERVER --> SERVER_INSTANCE
+    
+    %% Signal Handlers Setup
+    SERVER_INSTANCE --> SIGINT_HANDLER
+    SERVER_INSTANCE --> SIGTERM_HANDLER
+    
+    SIGINT_HANDLER --> AWAIT_STOP
+    SIGTERM_HANDLER --> AWAIT_STOP
+    AWAIT_STOP --> PROCESS_EXIT
+    
+    %% Startup Function Flow
+    START_SERVER_FUNC --> CREATE_SERVER
+    START_SERVER_FUNC --> TRY_START
+    TRY_START --> CATCH_ERROR
+    
+    CATCH_ERROR --> LOG_ERROR
+    LOG_ERROR --> EXIT_FAILURE
+    
+    %% Main Execution
+    MAIN_EXECUTION --> CALL_START_SERVER
+    CALL_START_SERVER --> START_SERVER_FUNC
+    
+    style START_SERVER_FUNC fill:#e1f5fe
+    style CREATE_SERVER fill:#e8f5e8
+    style SIGINT_HANDLER fill:#fff3e0
+    style SIGTERM_HANDLER fill:#fff3e0
+    style AWAIT_STOP fill:#f3e5f5
+    style TRY_START fill:#fce4ec
+    style LOG_ERROR fill:#ffebee
+```

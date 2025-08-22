@@ -1,0 +1,98 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: node.js path module"]
+        I2["IMPORT: fs, FROM: node.js fs module"]
+        I3["IMPORT: parsePRD, FROM: /scripts/modules/task-manager.js"]
+        I4["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I6["IMPORT: isSilentMode, FROM: /scripts/modules/utils.js"]
+        I7["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+        I8["IMPORT: getDefaultNumTasks, FROM: /scripts/modules/config-manager.js"]
+        I9["IMPORT: resolvePrdPath, FROM: /core/utils/path-utils.js"]
+        I10["IMPORT: resolveProjectPath, FROM: /core/utils/path-utils.js"]
+        I11["IMPORT: TASKMASTER_TASKS_FILE, FROM: /src/constants/paths.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: PRD parsing system for task generation"]
+        D2["DEP: File system operations for input/output validation"]
+        D3["DEP: Path resolution utilities for project structure"]
+        D4["DEP: Silent mode management for MCP compatibility"]
+        D5["DEP: Configuration management for default values"]
+        D6["DEP: Logger wrapper utilities"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: parsePRDDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: parsePRDDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing PRD parsing options"]
+        P2["PARAM: {string} args.input - path to input PRD file"]
+        P3["PARAM: {string} args.output - path to output directory"]
+        P4["PARAM: {string} args.numTasks - number of tasks to generate"]
+        P5["PARAM: {boolean} args.force - force parsing flag"]
+        P6["PARAM: {boolean} args.append - append to output file flag"]
+        P7["PARAM: {boolean} args.research - use research mode flag"]
+        P8["PARAM: {string} args.projectRoot - project root path"]
+        P9["PARAM: {string} args.tag - tag context for task organization"]
+        P10["PARAM: {Object} log - logger object for operation tracking"]
+        P11["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: projectRoot, VALUE: extracted from args"]
+        C3["CONST: logWrapper, VALUE: wrapped logger for core functions"]
+        C4["CONST: inputPath, VALUE: resolved PRD input file path"]
+        C5["CONST: outputPath, VALUE: resolved output directory path"]
+        C6["CONST: outputDir, VALUE: parent directory of output path"]
+        C7["CONST: numTasks, VALUE: parsed number of tasks to generate"]
+        C8["CONST: wasSilent, VALUE: previous silent mode state"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameter projectRoot"]
+        FL2["Resolve input PRD file path using path utilities"]
+        FL3["Resolve output path with fallback to default location"]
+        FL4["Validate input file exists at resolved path"]
+        FL5["Create output directory if it doesn't exist"]
+        FL6["Parse and validate numTasks parameter with fallback"]
+        FL7["Log configuration flags and resolved paths"]
+        FL8["Enable silent mode preserving previous state"]
+        FL9["Call core parsePRD function with all parameters"]
+        FL10["Validate core function result structure"]
+        FL11["Restore silent mode state and return success"]
+        FL12["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["parse-prd.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL2 --> FL12
+    FL4 --> FL12
+    FL5 --> FL12
+    FL9 --> FL12
+```

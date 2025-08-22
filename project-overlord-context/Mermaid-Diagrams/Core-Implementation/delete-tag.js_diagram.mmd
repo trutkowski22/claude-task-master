@@ -1,0 +1,36 @@
+```mermaid
+graph TB
+    subgraph "delete-tag.js"
+        subgraph "Imports"
+            deleteTag["deleteTag<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            deleteTagDirect["deleteTagDirect(args, log, context)<br/>Direct function wrapper for deleting a tag with error handling"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- name: string (name of tag to delete)<br/>- yes?: boolean (skip confirmation prompts)<br/>- tasksJsonPath?: string (path to tasks.json)<br/>- projectRoot?: string (project root path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Additional context with session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            validateTagName["Validate tag name parameter"]
+            enableSilent["Enable silent mode"]
+            createLogWrap["Create logger wrapper"]
+            prepareOptions["Prepare deletion options (skip confirmation)"]
+            callCoreFunction["Call core deleteTag function"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with deletion details"]
+        end
+
+        subgraph "Exports"
+            ExportDeleteTagDirect["deleteTagDirect"]
+        end
+    end
+```

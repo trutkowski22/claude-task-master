@@ -1,0 +1,149 @@
+```mermaid
+graph TB
+    %% MCP Logger - Core Implementation Layer
+    %% File: mcp-server/src/logger.js
+    
+    subgraph "MCP Logger Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            UTILS["isSilentMode from '../../scripts/modules/utils.js'"]
+            CONFIG_MANAGER["getLogLevel from '../../scripts/modules/config-manager.js'"]
+        end
+        
+        subgraph "Log Level Configuration"
+            LOG_LEVELS_CONST["LOG_LEVELS constant"]
+            
+            subgraph "Log Level Values"
+                DEBUG_LEVEL["debug: 0"]
+                INFO_LEVEL["info: 1"]
+                WARN_LEVEL["warn: 2"]
+                ERROR_LEVEL["error: 3"]
+                SUCCESS_LEVEL["success: 4"]
+            end
+            
+            GET_CURRENT_LEVEL["getLogLevel() from config"]
+            SET_LOG_LEVEL["LOG_LEVEL = LOG_LEVELS[level] ?? LOG_LEVELS.info"]
+        end
+        
+        subgraph "Core Log Function"
+            LOG_FUNCTION["log(level, ...args)"]
+            
+            subgraph "Filtering Logic"
+                CHECK_SILENT["Check isSilentMode()"]
+                SKIP_IF_SILENT["Return early if silent"]
+                CHECK_LEVEL["Check if level >= LOG_LEVEL"]
+                PROCEED_LOG["Proceed with logging"]
+            end
+            
+            subgraph "Message Formatting"
+                PREFIXES["Text prefixes mapping"]
+                DEBUG_PREFIX["'[DEBUG]'"]
+                INFO_PREFIX["'[INFO]'"]
+                WARN_PREFIX["'[WARN]'"]
+                ERROR_PREFIX["'[ERROR]'"]
+                SUCCESS_PREFIX["'[SUCCESS]'"]
+                GET_PREFIX["Get prefix for level"]
+                CONSOLE_LOG["console.log(prefix, ...args)"]
+            end
+        end
+        
+        subgraph "Logger Factory"
+            CREATE_LOGGER["createLogger()"]
+            CREATE_LOG_METHOD["createLogMethod(level)"]
+            
+            subgraph "Logger Methods"
+                DEBUG_METHOD["debug(...args)"]
+                INFO_METHOD["info(...args)"]
+                WARN_METHOD["warn(...args)"]
+                ERROR_METHOD["error(...args)"]
+                SUCCESS_METHOD["success(...args)"]
+                RAW_LOG_METHOD["log (raw function)"]
+            end
+            
+            RETURN_LOGGER_OBJ["Return logger object"]
+        end
+        
+        subgraph "Default Logger Instance"
+            DEFAULT_LOGGER["const logger = createLogger()"]
+            EXPORT_DEFAULT["export default logger"]
+        end
+        
+        subgraph "Module Exports"
+            EXPORT_LOG["export { log }"]
+            EXPORT_LOG_LEVELS["export { LOG_LEVELS }"]
+            EXPORT_CREATE_LOGGER["export { createLogger }"]
+        end
+    end
+    
+    %% Dependencies Flow
+    UTILS --> CHECK_SILENT
+    CONFIG_MANAGER --> GET_CURRENT_LEVEL
+    
+    %% Log Level Configuration Flow
+    LOG_LEVELS_CONST --> DEBUG_LEVEL
+    LOG_LEVELS_CONST --> INFO_LEVEL
+    LOG_LEVELS_CONST --> WARN_LEVEL
+    LOG_LEVELS_CONST --> ERROR_LEVEL
+    LOG_LEVELS_CONST --> SUCCESS_LEVEL
+    
+    GET_CURRENT_LEVEL --> SET_LOG_LEVEL
+    LOG_LEVELS_CONST --> SET_LOG_LEVEL
+    
+    %% Core Log Function Flow
+    LOG_FUNCTION --> CHECK_SILENT
+    CHECK_SILENT --> SKIP_IF_SILENT
+    CHECK_SILENT --> CHECK_LEVEL
+    CHECK_LEVEL --> PROCEED_LOG
+    
+    PROCEED_LOG --> PREFIXES
+    PREFIXES --> DEBUG_PREFIX
+    PREFIXES --> INFO_PREFIX
+    PREFIXES --> WARN_PREFIX
+    PREFIXES --> ERROR_PREFIX
+    PREFIXES --> SUCCESS_PREFIX
+    
+    PREFIXES --> GET_PREFIX
+    GET_PREFIX --> CONSOLE_LOG
+    
+    %% Logger Factory Flow
+    CREATE_LOGGER --> CREATE_LOG_METHOD
+    CREATE_LOG_METHOD --> DEBUG_METHOD
+    CREATE_LOG_METHOD --> INFO_METHOD
+    CREATE_LOG_METHOD --> WARN_METHOD
+    CREATE_LOG_METHOD --> ERROR_METHOD
+    CREATE_LOG_METHOD --> SUCCESS_METHOD
+    
+    LOG_FUNCTION --> RAW_LOG_METHOD
+    
+    DEBUG_METHOD --> RETURN_LOGGER_OBJ
+    INFO_METHOD --> RETURN_LOGGER_OBJ
+    WARN_METHOD --> RETURN_LOGGER_OBJ
+    ERROR_METHOD --> RETURN_LOGGER_OBJ
+    SUCCESS_METHOD --> RETURN_LOGGER_OBJ
+    RAW_LOG_METHOD --> RETURN_LOGGER_OBJ
+    
+    %% Default Instance
+    CREATE_LOGGER --> DEFAULT_LOGGER
+    DEFAULT_LOGGER --> EXPORT_DEFAULT
+    
+    %% Method Delegation
+    DEBUG_METHOD --> LOG_FUNCTION
+    INFO_METHOD --> LOG_FUNCTION
+    WARN_METHOD --> LOG_FUNCTION
+    ERROR_METHOD --> LOG_FUNCTION
+    SUCCESS_METHOD --> LOG_FUNCTION
+    
+    %% Exports
+    LOG_FUNCTION --> EXPORT_LOG
+    LOG_LEVELS_CONST --> EXPORT_LOG_LEVELS
+    CREATE_LOGGER --> EXPORT_CREATE_LOGGER
+    
+    style LOG_FUNCTION fill:#e1f5fe
+    style CREATE_LOGGER fill:#e8f5e8
+    style CHECK_SILENT fill:#fff3e0
+    style CHECK_LEVEL fill:#f3e5f5
+    style CREATE_LOG_METHOD fill:#fce4ec
+    style CONSOLE_LOG fill:#e0f2f1
+    style DEFAULT_LOGGER fill:#fff9c4
+```

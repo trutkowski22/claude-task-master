@@ -1,0 +1,100 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: fs, FROM: fs"]
+        I3["IMPORT: TASKMASTER_DIR, FROM: /src/constants/paths.js"]
+        I4["IMPORT: TASKMASTER_TASKS_FILE, FROM: /src/constants/paths.js"]
+        I5["IMPORT: LEGACY_TASKS_FILE, FROM: /src/constants/paths.js"]
+        I6["IMPORT: TASKMASTER_DOCS_DIR, FROM: /src/constants/paths.js"]
+        I7["IMPORT: TASKMASTER_REPORTS_DIR, FROM: /src/constants/paths.js"]
+        I8["IMPORT: TASKMASTER_CONFIG_FILE, FROM: /src/constants/paths.js"]
+        I9["IMPORT: LEGACY_CONFIG_FILE, FROM: /src/constants/paths.js"]
+        I10["IMPORT: COMPLEXITY_REPORT_FILE, FROM: /src/constants/paths.js"]
+        I11["IMPORT: findProjectRoot, FROM: /src/utils/path-utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js file system for path validation and file operations"]
+        D2["DEP: Node.js path module for cross-platform path resolution"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getProjectRoot"]
+        FU3["FUNCTION: getTaskMasterDir"]
+        FU4["FUNCTION: getTasksPath"]
+        FU5["FUNCTION: getPrdPath"]
+        FU6["FUNCTION: getComplexityReportPath"]
+        FU7["FUNCTION: getConfigPath"]
+        FU8["FUNCTION: getStatePath"]
+        FU9["FUNCTION: getAllPaths"]
+        FU10["FUNCTION: getCurrentTag"]
+        FU11["FUNCTION: initTaskMaster"]
+        FU12["FUNCTION: resolvePath"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: TaskMaster"]
+        E2["EXP: initTaskMaster"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} paths - pre-resolved object of all application paths"]
+        P2["PARAM: {string} tag - current tag context for path resolution"]
+        P3["PARAM: {object} overrides - path overrides for custom configurations"]
+        P4["PARAM: {string} pathType - type description for error messaging"]
+        P5["PARAM: {string} override - path override value or boolean flag"]
+        P6["PARAM: {Array} defaultPaths - array of default paths to search"]
+        P7["PARAM: {string} basePath - base directory for relative path resolution"]
+        P8["PARAM: {boolean} createParentDirs - whether to create parent directories"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: paths, VALUE: object containing all resolved application paths"]
+        C2["CONST: resolvedPath, VALUE: absolute path after resolution and validation"]
+        C3["CONST: resolvedOverride, VALUE: absolute path from override parameter"]
+        C4["CONST: hasTaskmasterDir, VALUE: boolean indicating .taskmaster directory exists"]
+        C5["CONST: hasLegacyConfig, VALUE: boolean indicating legacy config file exists"]
+        C6["CONST: parentDir, VALUE: parent directory path for file creation"]
+        C7["CONST: fullPath, VALUE: complete absolute path for file existence checking"]
+        C8["CONST: rawState, VALUE: raw JSON content from state.json file"]
+        C9["CONST: stateData, VALUE: parsed state data object"]
+        C10["CONST: rawConfig, VALUE: raw JSON content from config.json file"]
+        C11["CONST: configData, VALUE: parsed configuration data object"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: *, USAGE: project root discovery through environment or working directory"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Initialize TaskMaster class with private paths and tag storage"]
+        FL2["Provide getter methods for all critical application paths"]
+        FL3["Implement tag-aware path resolution with state and config fallbacks"]
+        FL4["Create factory function for path resolution with override support"]
+        FL5["Validate project root and ensure it contains TaskMaster structure"]
+        FL6["Resolve all application paths with fallback hierarchy"]
+        FL7["Handle path overrides with validation and directory creation"]
+        FL8["Return frozen TaskMaster instance with resolved paths"]
+    end
+    
+    subgraph FileName["task-master.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+```

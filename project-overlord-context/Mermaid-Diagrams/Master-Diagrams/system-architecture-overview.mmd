@@ -1,0 +1,229 @@
+```mermaid
+flowchart TB
+    %% EXTERNAL SYSTEMS
+    subgraph ExternalSystems["External Systems"]
+        Claude["Claude AI Models"]
+        OpenAI["OpenAI GPT Models"]
+        Anthropic["Anthropic API"]
+        Perplexity["Perplexity Research"]
+        FileSystem["File System"]
+        GitRepo["Git Repository"]
+        MCPClient["MCP Client Applications"]
+    end
+    
+    %% MCP INTERFACE LAYER
+    subgraph MCPInterfaceLayer["MCP Interface Layer"]
+        subgraph MCPServer["FastMCP Server"]
+            ServerEntry["server.js - Main Entry Point"]
+            MCPIndex["index.js - TaskMasterMCPServer Class"]
+            MCPLogger["logger.js - Logging System"]
+        end
+        
+        subgraph MCPTools["MCP Tools (35 tools)"]
+            ToolsIndex["index.js - Tool Registration Hub"]
+            ToolsUtils["utils.js - MCP Utilities"]
+            AddTaskTool["add-task.js - Task Creation Tool"]
+            ListTasksTool["get-tasks.js - Task Listing Tool"]
+            UpdateTaskTool["update-task.js - Task Update Tool"]
+            TagTools["Tag Management Tools (7 tools)"]
+            DependencyTools["Dependency Tools (4 tools)"]
+            ComplexityTools["Analysis Tools (3 tools)"]
+            OtherTools["Other Task Tools (18 tools)"]
+        end
+        
+        subgraph MCPProviders["MCP Providers"]
+            MCPProvider["mcp-provider.js - MCP Integration"]
+        end
+    end
+    
+    %% CORE IMPLEMENTATION LAYER
+    subgraph CoreImplementationLayer["Core Implementation Layer"]
+        subgraph CoreManagement["Core Management"]
+            TaskMasterCore["task-master-core.js - Function Registry"]
+            ContextManager["context-manager.js - Cache & Context"]
+        end
+        
+        subgraph DirectFunctions["Direct Functions (39 functions)"]
+            AddTaskDirect["add-task.js - Task Creation Logic"]
+            ListTasksDirect["list-tasks.js - Task Listing Logic"]
+            UpdateTaskDirect["update-task-by-id.js - Task Update Logic"]
+            TagDirectFunctions["Tag Management (9 functions)"]
+            DependencyDirectFunctions["Dependency Management (4 functions)"]
+            ComplexityDirectFunctions["Analysis Functions (3 functions)"]
+            OtherDirectFunctions["Other Core Functions (20 functions)"]
+        end
+        
+        subgraph CoreUtilities["Core Utilities"]
+            EnvUtils["env-utils.js - Environment Management"]
+            PathUtils["path-utils.js - Path Resolution"]
+        end
+        
+        subgraph CustomSDK["Custom SDK"]
+            SDKIndex["index.js - SDK Main Interface"]
+            JSONExtractor["json-extractor.js - JSON Processing"]
+            LanguageModel["language-model.js - Model Interface"]
+            MessageConverter["message-converter.js - Message Handling"]
+            SchemaConverter["schema-converter.js - Schema Processing"]
+            ErrorHandling["errors.js - Error Management"]
+        end
+    end
+    
+    %% TASK MANAGER LAYER
+    subgraph TaskManagerLayer["Task Manager Layer"]
+        subgraph TaskManagerCore["Task Manager Core"]
+            TaskManagerIndex["task-manager.js - Main Coordinator"]
+            AIServicesUnified["ai-services-unified.js - AI Integration"]
+            ConfigManager["config-manager.js - Configuration"]
+            PromptManager["prompt-manager.js - Prompt Templates"]
+        end
+        
+        subgraph TaskOperations["Task Operations (24 modules)"]
+            AddTaskManager["add-task.js - Task Creation Business Logic"]
+            ListTasksManager["list-tasks.js - Task Listing Business Logic"]
+            UpdateTaskManager["update-task-by-id.js - Task Update Business Logic"]
+            TagManagerOperations["Tag Management (5 modules)"]
+            DependencyManagerOperations["Dependency Operations (3 modules)"]
+            ComplexityManagerOperations["Analysis Operations (2 modules)"]
+            OtherTaskOperations["Other Operations (11 modules)"]
+        end
+        
+        subgraph TaskUtilities["Task Utilities"]
+            ContextGatherer["contextGatherer.js - Context Analysis"]
+            FuzzyTaskSearch["fuzzyTaskSearch.js - Task Search"]
+            GitUtils["git-utils.js - Git Integration"]
+        end
+        
+        subgraph ModuleSupport["Module Support"]
+            ModulesIndex["index.js - Module Coordinator"]
+            DependencyManager["dependency-manager.js - Dependency Resolution"]
+            SyncReadme["sync-readme.js - Documentation Sync"]
+            UpdateConfigTokens["update-config-tokens.js - Token Management"]
+            ModuleUtils["utils.js - Utility Functions"]
+        end
+    end
+    
+    %% SHARED INFRASTRUCTURE LAYER
+    subgraph SharedInfrastructureLayer["Shared Infrastructure Layer"]
+        subgraph PathManagement["Path Management"]
+            TaskMasterMain["task-master.js - Central Path Manager"]
+        end
+        
+        subgraph AIProviders["AI Providers (12 providers)"]
+            BaseProvider["base-provider.js - Provider Interface"]
+            AnthropicProvider["anthropic.js - Anthropic Integration"]
+            OpenAIProvider["openai.js - OpenAI Integration"]
+            ClaudeCodeProvider["claude-code.js - Claude Code Integration"]
+            GoogleProvider["google.js - Google AI Integration"]
+            PerplexityProvider["perplexity.js - Research Integration"]
+            OtherProviders["Other Providers (6 providers)"]
+            
+            subgraph ClaudeCodeSDK["Claude Code SDK"]
+                ClaudeSDKIndex["index.js - SDK Interface"]
+                ClaudeErrors["errors.js - Error Handling"]
+                ClaudeJSONExtractor["json-extractor.js - JSON Processing"]
+                ClaudeLanguageModel["language-model.js - Model Interface"]
+                ClaudeMessageConverter["message-converter.js - Message Handling"]
+                ClaudeTypes["types.js - Type Definitions"]
+            end
+        end
+        
+        subgraph Constants["Constants (7 modules)"]
+            Commands["commands.js - Command Definitions"]
+            Paths["paths.js - Path Constants"]
+            Profiles["profiles.js - Profile Constants"]
+            Providers["providers.js - Provider Constants"]
+            RulesActions["rules-actions.js - Rule Constants"]
+            TaskPriority["task-priority.js - Priority Constants"]
+            TaskStatus["task-status.js - Status Constants"]
+        end
+        
+        subgraph ProfileSystem["Profile System (8 profiles)"]
+            BaseProfile["base-profile.js - Profile Interface"]
+            ClaudeProfile["claude.js - Claude Profile"]
+            ClineProfile["cline.js - Cline Profile"]
+            CursorProfile["cursor.js - Cursor Profile"]
+            VsCodeProfile["vscode.js - VSCode Profile"]
+            GeminiProfile["gemini.js - Gemini Profile"]
+            RooProfile["roo.js - Roo Profile"]
+            CodexProfile["codex.js - Codex Profile"]
+        end
+        
+        subgraph UtilitySystem["Utility System (7 utilities)"]
+            CreateMCPConfig["create-mcp-config.js - MCP Configuration"]
+            GetVersion["getVersion.js - Version Management"]
+            LoggerUtils["logger-utils.js - Logging Utilities"]
+            ManageGitignore["manage-gitignore.js - Git Management"]
+            PathUtilsShared["path-utils.js - Path Utilities"]
+            ProfilesUtil["profiles.js - Profile Utilities"]
+            RuleTransformer["rule-transformer.js - Rule Processing"]
+        end
+        
+        subgraph ProviderRegistry["Provider Registry"]
+            RegistryIndex["index.js - Provider Registration"]
+        end
+    end
+    
+    %% DATA LAYER
+    subgraph DataLayer["Data Layer"]
+        TasksJSON["tasks.json - Task Storage"]
+        ConfigJSON["config.json - Configuration"]
+        StateJSON["state.json - Application State"]
+        ComplexityReport["task-complexity-report.json - Analysis Data"]
+        PRDFiles["PRD Files - Requirements"]
+        PromptTemplates["Prompt Templates - AI Instructions"]
+        GitIgnore[".gitignore - Git Configuration"]
+    end
+    
+    %% INTERFACE RELATIONSHIPS
+    MCPClient --> MCPServer
+    MCPServer --> MCPTools
+    MCPTools --> MCPProviders
+    
+    %% LAYER RELATIONSHIPS
+    MCPTools --> DirectFunctions
+    DirectFunctions --> TaskOperations
+    TaskOperations --> AIProviders
+    TaskOperations --> DataLayer
+    
+    %% SHARED INFRASTRUCTURE USAGE
+    PathManagement --> CoreImplementationLayer
+    PathManagement --> TaskManagerLayer
+    PathManagement --> MCPInterfaceLayer
+    
+    Constants --> CoreImplementationLayer
+    Constants --> TaskManagerLayer
+    Constants --> MCPInterfaceLayer
+    
+    ProfileSystem --> TaskManagerLayer
+    ProfileSystem --> CoreImplementationLayer
+    
+    UtilitySystem --> CoreImplementationLayer
+    UtilitySystem --> TaskManagerLayer
+    UtilitySystem --> MCPInterfaceLayer
+    
+    %% AI PROVIDER INTEGRATION
+    AIProviders --> Claude
+    AIProviders --> OpenAI
+    AIProviders --> Anthropic
+    AIProviders --> Perplexity
+    
+    %% EXTERNAL SYSTEM INTEGRATION
+    TaskManagerLayer --> FileSystem
+    TaskManagerLayer --> GitRepo
+    CoreImplementationLayer --> FileSystem
+    DataLayer --> FileSystem
+    
+    %% DATA FLOW
+    MCPInterfaceLayer --> CoreImplementationLayer
+    CoreImplementationLayer --> TaskManagerLayer
+    TaskManagerLayer --> SharedInfrastructureLayer
+    SharedInfrastructureLayer --> DataLayer
+    
+    %% CONTEXT AND CACHING
+    ContextManager --> TaskManagerLayer
+    ContextManager --> AIProviders
+    
+    %% PROVIDER REGISTRY CONNECTIONS
+    ProviderRegistry --> AIProviders
+    ProviderRegistry --> MCPProviders
+```

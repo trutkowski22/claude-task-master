@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Imports
+        I1[listTasks from ../../../../scripts/modules/task-manager.js]
+        I2[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[listTasksDirect - Wrapper function for listing tasks with filtering and caching]
+        FU2[coreListTasksAction - Internal action function for executing core listTasks]
+    end
+
+    subgraph Exports
+        E1[listTasksDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, reportPath, status, withSubtasks, projectRoot, tag]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that tasksJsonPath argument is provided for explicit path usage]
+        FL2[Extract status filter and subtasks inclusion preference from arguments]
+        FL3[Enable silent mode to prevent console logs from interfering with JSON output]
+        FL4[Execute core listTasks function with provided path and filters]
+        FL5[Validate that core function returned valid task data structure]
+        FL6[Process and return structured task list with metadata]
+        FL7[Restore normal logging mode and handle any errors gracefully]
+        FL8[Return task list result with success status and data or error information]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

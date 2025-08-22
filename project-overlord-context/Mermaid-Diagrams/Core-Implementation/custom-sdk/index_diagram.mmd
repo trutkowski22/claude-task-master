@@ -1,0 +1,48 @@
+flowchart TB
+    subgraph Imports ["📥 Imports"]
+        IMP1["MCPLanguageModel from G:\claude-task-master\claude-task-master\mcp-server\src\custom-sdk\language-model.js"]
+    end
+    
+    subgraph Functions ["⚙️ Functions Defined"]
+        FN1["createMCP(options)"]
+        FN2["provider(modelId, settings) - inner factory function"]
+    end
+    
+    subgraph Exports ["📤 Exports"]
+        EX1["function createMCP"]
+    end
+    
+    subgraph Parameters ["📋 Parameters"]
+        PA1["createMCP: options{session, defaultSettings}"]
+        PA2["provider: modelId, settings{temperature, maxTokens, ...}"]
+    end
+    
+    subgraph Constants ["📊 Constants"]
+        CO1["Default modelId: 'claude-3-5-sonnet-20241022'"]
+        CO2["Provider methods: languageModel, chat"]
+    end
+    
+    subgraph ExecutionFlow ["🔄 Execution Flow"]
+        FL1["Validate that session object is provided in options"]
+        FL2["Create provider factory function that AI SDK can use"]
+        FL3["Provider function validates it's not called with 'new' keyword"]
+        FL4["Create new MCPLanguageModel instance with session and settings"]
+        FL5["Merge default settings with provided settings"]
+        FL6["Add languageModel and chat methods for AI SDK compatibility"]
+        FL7["Return provider function that can create model instances"]
+    end
+    
+    %% Flow connections
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    
+    %% Cross-references
+    IMP1 -.-> FL4
+    FN1 -.-> PA1
+    FN2 -.-> PA2
+    CO1 -.-> FL4
+    CO2 -.-> FL6

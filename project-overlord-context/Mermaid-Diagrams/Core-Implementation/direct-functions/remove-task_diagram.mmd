@@ -1,0 +1,38 @@
+flowchart TB
+    subgraph Imports
+        I1[removeTask, taskExists from ../../../../scripts/modules/task-manager.js]
+        I2[enableSilentMode, disableSilentMode, readJSON from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[removeTaskDirect - Wrapper function for removing tasks with support for multiple IDs]
+    end
+
+    subgraph Exports
+        E1[removeTaskDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, id, projectRoot, tag]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that tasksJsonPath and task ID arguments are provided]
+        FL2[Split comma-separated task IDs into array for batch processing]
+        FL3[Read tasks data and validate all specified task IDs exist before proceeding]
+        FL4[Return error immediately if any task IDs are invalid to prevent partial operations]
+        FL5[Enable silent mode to prevent console logs from interfering with JSON response]
+        FL6[Call core removeTask function with all validated IDs and context]
+        FL7[Process results and return statistics about successful and failed removals]
+        FL8[Restore normal logging mode and handle errors with proper cleanup]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

@@ -1,0 +1,45 @@
+flowchart TD
+    subgraph "server.js"
+        A["🚀 Entry Point"] --> B["Import Dependencies"]
+        B --> C["Environment Setup"]
+        C --> D["Server Initialization"]
+        D --> E["Signal Handlers"]
+        E --> F["Server Start"]
+        
+        subgraph "Imports"
+            I1["TaskMasterMCPServer from './src/index.js'"]
+            I2["dotenv from 'dotenv'"]
+            I3["logger from './src/logger.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["startServer() - async"]
+        end
+        
+        subgraph "Environment Variables"
+            ENV1["dotenv.config()"]
+        end
+        
+        subgraph "Constants/Variables"
+            V1["server = new TaskMasterMCPServer()"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Process SIGINT handler"]
+            EX2["Process SIGTERM handler"]
+            EX3["Server start with error handling"]
+            EX4["Graceful shutdown on signals"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        C --> ENV1
+        D --> V1
+        D --> F1
+        E --> EX1
+        E --> EX2
+        F --> EX3
+        EX1 --> EX4
+        EX2 --> EX4
+    end

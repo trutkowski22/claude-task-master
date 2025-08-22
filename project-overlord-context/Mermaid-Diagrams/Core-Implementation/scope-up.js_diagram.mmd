@@ -1,0 +1,81 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: scopeUpTask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task complexity management system for scoping up operations"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Logger wrapper utilities for core function compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: scopeUpDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: scopeUpDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing scope up options"]
+        P2["PARAM: {string} args.id - comma-separated list of task IDs to scope up"]
+        P3["PARAM: {string} args.strength - strength level (light/regular/heavy)"]
+        P4["PARAM: {string} args.prompt - custom prompt for scoping adjustments"]
+        P5["PARAM: {string} args.tasksJsonPath - path to tasks.json file"]
+        P6["PARAM: {boolean} args.research - use research capabilities flag"]
+        P7["PARAM: {string} args.projectRoot - project root path"]
+        P8["PARAM: {string} args.tag - tag for task context"]
+        P9["PARAM: {Object} log - logger object for operation tracking"]
+        P10["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: id, VALUE: task IDs from args"]
+        C3["CONST: strength, VALUE: strength level with default 'regular'"]
+        C4["CONST: customPrompt, VALUE: custom prompt from args"]
+        C5["CONST: research, VALUE: research flag with default false"]
+        C6["CONST: projectRoot, VALUE: project root path from args"]
+        C7["CONST: tag, VALUE: tag context from args"]
+        C8["CONST: session, VALUE: extracted from context"]
+        C9["CONST: mcpLog, VALUE: wrapped logger for core functions"]
+        C10["CONST: taskIds, VALUE: parsed array of task IDs as integers"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Create logger wrapper for core function compatibility"]
+        FL3["Validate required parameter tasksJsonPath"]
+        FL4["Validate required parameter id (task IDs)"]
+        FL5["Parse comma-separated task IDs to integers"]
+        FL6["Call core scopeUpTask function with all parameters"]
+        FL7["Disable silent mode and return success with updated tasks"]
+        FL8["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["scope-up.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL1 --> FL8
+    FL3 --> FL8
+    FL4 --> FL8
+    FL6 --> FL8
+```

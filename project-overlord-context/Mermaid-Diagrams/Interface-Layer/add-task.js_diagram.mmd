@@ -1,0 +1,58 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: z, FROM: zod"]
+        I2["IMPORT: createErrorResponse, FROM: /mcp-server/src/tools/utils.js"]
+        I3["IMPORT: handleApiResult, FROM: /mcp-server/src/tools/utils.js"]
+        I4["IMPORT: withNormalizedProjectRoot, FROM: /mcp-server/src/tools/utils.js"]
+        I5["IMPORT: addTaskDirect, FROM: /mcp-server/src/core/task-master-core.js"]
+        I6["IMPORT: findTasksPath, FROM: /mcp-server/src/core/utils/path-utils.js"]
+        I7["IMPORT: resolveTag, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: FastMCP server framework for MCP protocol implementation"]
+        D2["DEP: Zod validation library for parameter schemas"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: registerAddTaskTool"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: registerAddTaskTool"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} server - FastMCP server instance for tool registration"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: resolvedTag, VALUE: result of resolveTag function call"]
+        C2["CONST: tasksJsonPath, VALUE: path to tasks.json file from findTasksPath"]
+        C3["CONST: result, VALUE: result from addTaskDirect function call"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Register add_task tool with FastMCP server using schema validation"]
+        FL2["Extract and validate task creation parameters from user input"]
+        FL3["Resolve tag context and find tasks.json file path"]
+        FL4["Call addTaskDirect function with normalized parameters"]
+        FL5["Handle API result and return success or error response"]
+    end
+    
+    subgraph FileName["add-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+```

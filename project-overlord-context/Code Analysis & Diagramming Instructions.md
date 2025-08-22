@@ -16,48 +16,48 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┣ src
  ┃  ┃  ┃  ┣ core
  ┃  ┃  ┃  ┃  ┣ direct-functions
- ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js 
- ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js 
- ┃  ┃  ┃  ┃  ┃  ┣ add-task.js 
- ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js 
- ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js 
- ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
- ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js 
- ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js 
- ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js 
- ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js 
- ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js
- ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
- ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js
- ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js
- ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js
- ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js 
- ┃  ┃  ┃  ┃  ┃  ┣ models.js
- ┃  ┃  ┃  ┃  ┃  ┣ move-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ next-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js
- ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js
- ┃  ┃  ┃  ┃  ┃  ┣ research.js
- ┃  ┃  ┃  ┃  ┃  ┣ response-language.js
- ┃  ┃  ┃  ┃  ┃  ┣ rules.js
- ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js
- ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js
- ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js
- ┃  ┃  ┃  ┃  ┃  ┣ show-task.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js
- ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js
- ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js
- ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
+ ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ add-task.js - DONE- DONE 
+ ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js - DONE- DONE 
+ ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js - DONE- DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js - DONE- DONE 
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ models.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ research.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ rules.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ show-task.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
  ┃  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js 
- ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js
- ┃  ┃  ┃  ┃  ┣ context-manager.js 
- ┃  ┃  ┃  ┃  ┗ task-master-core.js 
+ ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js - DONE
+ ┃  ┃  ┃  ┃  ┣ context-manager.js - DONE
+ ┃  ┃  ┃  ┃  ┗ task-master-core.js - DONE
  ┃  ┃  ┃  ┣ custom-sdk
  ┃  ┃  ┃  ┃  ┣ errors.js
  ┃  ┃  ┃  ┃  ┣ index.js

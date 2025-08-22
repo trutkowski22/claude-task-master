@@ -1,0 +1,73 @@
+flowchart TD
+    subgraph "context-manager.js"
+        A["🧠 Context Manager"] --> B["Import Dependencies"]
+        B --> C["Class Definition"]
+        C --> D["Cache Operations"]
+        D --> E["Statistics Tracking"]
+        E --> F["Singleton Export"]
+        
+        subgraph "Imports"
+            I1["FastMCP from 'fastmcp'"]
+            I2["LRUCache from 'lru-cache'"]
+        end
+        
+        subgraph "Class: ContextManager"
+            CL1["constructor(config)"]
+            CL2["getContext(contextId, metadata)"]
+            CL3["updateContext(contextId, updates)"]
+            CL4["invalidateContext(contextId, metadata)"]
+            CL5["getCachedData(key)"]
+            CL6["setCachedData(key, data)"]
+            CL7["invalidateCacheKey(key)"]
+            CL8["getStats()"]
+            CL9["_getCacheKey(contextId, metadata)"]
+        end
+        
+        subgraph "Constants/Configuration"
+            CFG1["maxCacheSize: 1000"]
+            CFG2["ttl: 300000 (5 minutes)"]
+            CFG3["maxContextSize: 4000"]
+        end
+        
+        subgraph "Cache System"
+            CACHE1["LRUCache instance"]
+            CACHE2["Cache statistics (hits, misses, invalidations)"]
+            CACHE3["updateAgeOnGet: true"]
+        end
+        
+        subgraph "Exports"
+            EXP1["ContextManager class"]
+            EXP2["contextManager singleton instance"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Initialize LRU cache with config"]
+            EX2["Track cache hits/misses"]
+            EX3["Context CRUD operations"]
+            EX4["Statistics collection"]
+        end
+        
+        B --> I1
+        B --> I2
+        C --> CL1
+        C --> CL2
+        C --> CL3
+        C --> CL4
+        C --> CL5
+        C --> CL6
+        C --> CL7
+        C --> CL8
+        C --> CL9
+        CL1 --> CFG1
+        CL1 --> CFG2
+        CL1 --> CFG3
+        CL1 --> CACHE1
+        D --> CACHE2
+        D --> CACHE3
+        E --> EX2
+        E --> EX4
+        F --> EXP1
+        F --> EXP2
+        D --> EX1
+        D --> EX3
+    end

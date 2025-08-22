@@ -1,0 +1,37 @@
+flowchart TB
+    subgraph Imports
+        I1[removeSubtask from ../../../../scripts/modules/task-manager.js]
+        I2[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[removeSubtaskDirect - Wrapper function for removing subtasks from parent tasks]
+    end
+
+    subgraph Exports
+        E1[removeSubtaskDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, id, convert, skipGenerate, projectRoot, tag]
+        P2[log object for logging operations]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Enable silent mode early to prevent console interference during operations]
+        FL2[Validate that tasksJsonPath and subtask ID arguments are provided]
+        FL3[Validate subtask ID format to ensure it contains dot notation (parentId.subtaskId)]
+        FL4[Process convert and skipGenerate flags to determine operation mode]
+        FL5[Call core removeSubtask function with conversion and file generation options]
+        FL6[Handle different result types based on conversion flag setting]
+        FL7[Return appropriate success message for deletion or conversion scenarios]
+        FL8[Restore normal logging mode and handle errors with proper cleanup]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
