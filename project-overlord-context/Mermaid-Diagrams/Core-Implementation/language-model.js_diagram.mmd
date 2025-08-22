@@ -1,0 +1,170 @@
+```mermaid
+graph TB
+    %% MCP Language Model - Core Implementation Layer
+    %% File: mcp-server/src/custom-sdk/language-model.js
+    
+    subgraph "MCP Language Model Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            MESSAGE_CONVERTER["message-converter.js"]
+            ERRORS["errors.js"]
+            JSON_EXTRACTOR["json-extractor.js"]
+            SCHEMA_CONVERTER["schema-converter.js"]
+        end
+        
+        subgraph "MCPLanguageModel Class"
+            direction TB
+            
+            subgraph "Class Properties"
+                SPEC_VERSION["specificationVersion: 'v1'"]
+                DEFAULT_MODE["defaultObjectGenerationMode: 'json'"]
+                SUPPORTS_IMAGES["supportsImageUrls: false"]
+                SUPPORTS_STRUCTURED["supportsStructuredOutputs: true"]
+            end
+            
+            subgraph "Instance Properties"
+                SESSION["session: MCP session object"]
+                MODEL_ID["modelId: string"]
+                SETTINGS["settings: object"]
+                PROVIDER["provider: 'mcp-ai-sdk'"]
+                MAX_TOKENS["maxTokens: number"]
+                TEMPERATURE["temperature: number"]
+            end
+            
+            subgraph "Constructor & Validation"
+                CONSTRUCTOR["constructor(options)"]
+                VALIDATE_SESSION["validateSession()"]
+                CHECK_CAPABILITIES["Check clientCapabilities.sampling"]
+            end
+        end
+        
+        subgraph "Core Generation Methods"
+            direction TB
+            
+            subgraph "Text Generation"
+                DO_GENERATE["doGenerate(options)"]
+                CONVERT_TO_MCP["convertToMCPFormat(prompt)"]
+                REQUEST_SAMPLING["session.requestSampling()"]
+                CONVERT_FROM_MCP["convertFromMCPFormat(response)"]
+                RETURN_RESULT["Return AI SDK format result"]
+            end
+            
+            subgraph "Object Generation"
+                DO_GENERATE_OBJECT["doGenerateObject(options)"]
+                SCHEMA_VALIDATION["Validate schema requirement"]
+                SCHEMA_TO_INSTRUCTIONS["convertSchemaToInstructions()"]
+                ENHANCE_PROMPT["enhancePromptForJSON()"]
+                EXTRACT_JSON_RESP["extractJson(result.text)"]
+                PARSE_JSON["JSON.parse(jsonText)"]
+                VALIDATE_AGAINST_SCHEMA["schema.parse(parsedObject)"]
+            end
+            
+            subgraph "Streaming"
+                DO_STREAM["doStream(options)"]
+                SIMULATE_STREAMING["simulateStreaming(result)"]
+                CHUNK_RESPONSE["Chunk complete response"]
+                YIELD_CHUNKS["Yield text-delta chunks"]
+                YIELD_FINISH["Yield finish chunk"]
+            end
+        end
+        
+        subgraph "Request/Response Flow"
+            direction TB
+            
+            subgraph "Request Configuration"
+                MCP_REQUEST["MCP Request: {messages, systemPrompt, temperature, maxTokens, includeContext}"]
+                REQUEST_OPTIONS["Request Options: {timeout: 240000}"]
+            end
+            
+            subgraph "Response Processing"
+                MCP_RESPONSE["Raw MCP Response"]
+                AI_SDK_RESULT["AI SDK Format Result"]
+                USAGE_CALC["Usage calculation: {promptTokens, completionTokens, totalTokens}"]
+            end
+        end
+        
+        subgraph "Error Handling"
+            TRY_CATCH_GENERATE["try/catch in doGenerate"]
+            TRY_CATCH_OBJECT["try/catch in doGenerateObject"]
+            TRY_CATCH_STREAM["try/catch in doStream"]
+            MAP_MCP_ERROR["mapMCPError(error)"]
+            JSON_PARSE_ERROR["JSON parse error handling"]
+            SCHEMA_VALIDATION_ERROR["Schema validation error handling"]
+        end
+        
+        subgraph "Streaming Simulation"
+            CHUNK_CALCULATION["Calculate chunk size"]
+            CHUNK_ITERATION["Iterate through text chunks"]
+            DELAY_SIMULATION["setTimeout delay for streaming effect"]
+            DELTA_CHUNKS["text-delta chunks"]
+            FINISH_CHUNK["finish chunk with usage"]
+        end
+    end
+    
+    %% Dependencies Flow
+    MESSAGE_CONVERTER --> CONVERT_TO_MCP
+    MESSAGE_CONVERTER --> CONVERT_FROM_MCP
+    ERRORS --> MAP_MCP_ERROR
+    JSON_EXTRACTOR --> EXTRACT_JSON_RESP
+    SCHEMA_CONVERTER --> SCHEMA_TO_INSTRUCTIONS
+    SCHEMA_CONVERTER --> ENHANCE_PROMPT
+    
+    %% Constructor Flow
+    CONSTRUCTOR --> SESSION
+    CONSTRUCTOR --> MODEL_ID
+    CONSTRUCTOR --> SETTINGS
+    CONSTRUCTOR --> VALIDATE_SESSION
+    VALIDATE_SESSION --> CHECK_CAPABILITIES
+    
+    %% Text Generation Flow
+    DO_GENERATE --> CONVERT_TO_MCP
+    CONVERT_TO_MCP --> REQUEST_SAMPLING
+    REQUEST_SAMPLING --> MCP_REQUEST
+    REQUEST_SAMPLING --> REQUEST_OPTIONS
+    REQUEST_SAMPLING --> MCP_RESPONSE
+    MCP_RESPONSE --> CONVERT_FROM_MCP
+    CONVERT_FROM_MCP --> AI_SDK_RESULT
+    AI_SDK_RESULT --> USAGE_CALC
+    USAGE_CALC --> RETURN_RESULT
+    
+    %% Object Generation Flow
+    DO_GENERATE_OBJECT --> SCHEMA_VALIDATION
+    SCHEMA_VALIDATION --> SCHEMA_TO_INSTRUCTIONS
+    SCHEMA_TO_INSTRUCTIONS --> ENHANCE_PROMPT
+    ENHANCE_PROMPT --> CONVERT_TO_MCP
+    CONVERT_FROM_MCP --> EXTRACT_JSON_RESP
+    EXTRACT_JSON_RESP --> PARSE_JSON
+    PARSE_JSON --> VALIDATE_AGAINST_SCHEMA
+    
+    %% Streaming Flow
+    DO_STREAM --> DO_GENERATE
+    DO_GENERATE --> SIMULATE_STREAMING
+    SIMULATE_STREAMING --> CHUNK_CALCULATION
+    CHUNK_CALCULATION --> CHUNK_ITERATION
+    CHUNK_ITERATION --> DELAY_SIMULATION
+    DELAY_SIMULATION --> DELTA_CHUNKS
+    DELTA_CHUNKS --> YIELD_CHUNKS
+    CHUNK_ITERATION --> FINISH_CHUNK
+    FINISH_CHUNK --> YIELD_FINISH
+    
+    %% Error Handling Flow
+    DO_GENERATE --> TRY_CATCH_GENERATE
+    DO_GENERATE_OBJECT --> TRY_CATCH_OBJECT
+    DO_STREAM --> TRY_CATCH_STREAM
+    TRY_CATCH_GENERATE --> MAP_MCP_ERROR
+    TRY_CATCH_OBJECT --> MAP_MCP_ERROR
+    TRY_CATCH_STREAM --> MAP_MCP_ERROR
+    
+    PARSE_JSON --> JSON_PARSE_ERROR
+    VALIDATE_AGAINST_SCHEMA --> SCHEMA_VALIDATION_ERROR
+    JSON_PARSE_ERROR --> MAP_MCP_ERROR
+    SCHEMA_VALIDATION_ERROR --> MAP_MCP_ERROR
+    
+    style DO_GENERATE fill:#e1f5fe
+    style DO_GENERATE_OBJECT fill:#e8f5e8
+    style DO_STREAM fill:#fff3e0
+    style REQUEST_SAMPLING fill:#f3e5f5
+    style MAP_MCP_ERROR fill:#ffebee
+    style SIMULATE_STREAMING fill:#fce4ec
+```

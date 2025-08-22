@@ -1,0 +1,65 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: isSilentMode, FROM: /scripts/modules/utils.js"]
+        I2["IMPORT: getLogLevel, FROM: /scripts/modules/config-manager.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js console for output logging"]
+        D2["DEP: Configuration system for log level management"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: log"]
+        FU2["FUNCTION: createLogger"]
+        FU3["FUNCTION: createLogMethod"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: createLogger"]
+        E2["EXP: logger"]
+        E3["EXP: log"]
+        E4["EXP: LOG_LEVELS"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} level - log level for message classification"]
+        P2["PARAM: {...any} args - variable arguments to be logged"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: LOG_LEVELS, VALUE: object mapping log levels to numeric priorities"]
+        C2["CONST: LOG_LEVEL, VALUE: current log level from config with info fallback"]
+        C3["CONST: prefixes, VALUE: text prefixes for different log levels"]
+        C4["CONST: prefix, VALUE: selected prefix for current log level"]
+        C5["CONST: logger, VALUE: default logger instance from createLogger"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Define log level hierarchy with numeric priorities"]
+        FL2["Get current log level from configuration manager"]
+        FL3["Check if silent mode is enabled before logging"]
+        FL4["Compare message level against current log threshold"]
+        FL5["Apply appropriate text prefix to log message"]
+        FL6["Output message to console if level requirements met"]
+        FL7["Create logger object with methods for each level"]
+    end
+    
+    subgraph FileName["logger.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

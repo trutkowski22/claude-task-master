@@ -1,9 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import inquirer from 'inquirer';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
+
 
 import {
 	log,
@@ -16,7 +13,6 @@ import {
 	findProjectRoot,
 	truncate
 } from '../utils.js';
-import { displayBanner, getStatusWithColor } from '../ui.js';
 import findNextTask from './find-next-task.js';
 
 /**
@@ -167,23 +163,6 @@ async function createTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.green.bold('✓ Tag Created Successfully') +
-						`\n\nTag Name: ${chalk.cyan(tagName)}` +
-						`\nTasks Copied: ${chalk.yellow(sourceTasks.length)}` +
-						(copyFromCurrent || copyFromTag
-							? `\nSource Tag: ${chalk.cyan(copyFromTag || getCurrentTag(projectRoot))}`
-							: '') +
-						(description ? `\nDescription: ${chalk.gray(description)}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		return {
@@ -295,56 +274,10 @@ async function deleteTag(
 
 		// If not forced and has tasks, require confirmation (for CLI)
 		if (!yes && taskCount > 0 && outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.yellow.bold('⚠ WARNING: Tag Deletion') +
-						`\n\nYou are about to delete tag "${chalk.cyan(tagName)}"` +
-						`\nThis will permanently delete ${chalk.red.bold(taskCount)} tasks` +
-						'\n\nThis action cannot be undone!',
-					{
-						padding: 1,
-						borderColor: 'yellow',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+			
 
 			// First confirmation
-			const firstConfirm = await inquirer.prompt([
-				{
-					type: 'confirm',
-					name: 'proceed',
-					message: `Are you sure you want to delete tag "${tagName}" and its ${taskCount} tasks?`,
-					default: false
-				}
-			]);
-
-			if (!firstConfirm.proceed) {
-				logFn.info('Tag deletion cancelled by user');
-				throw new Error('Tag deletion cancelled');
-			}
-
-			// Second confirmation (double-check)
-			const secondConfirm = await inquirer.prompt([
-				{
-					type: 'input',
-					name: 'tagNameConfirm',
-					message: `To confirm deletion, please type the tag name "${tagName}":`,
-					validate: (input) => {
-						if (input === tagName) {
-							return true;
-						}
-						return `Please type exactly "${tagName}" to confirm deletion`;
-					}
-				}
-			]);
-
-			if (secondConfirm.tagNameConfirm !== tagName) {
-				logFn.info('Tag deletion cancelled - incorrect tag name confirmation');
-				throw new Error('Tag deletion cancelled');
-			}
-
+		
 			logFn.info('Double confirmation received, proceeding with deletion...');
 		}
 
@@ -383,22 +316,6 @@ async function deleteTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.red.bold('✓ Tag Deleted Successfully') +
-						`\n\nTag Name: ${chalk.cyan(tagName)}` +
-						`\nTasks Deleted: ${chalk.yellow(taskCount)}` +
-						(isCurrentTag
-							? `\n${chalk.yellow('⚠ Switched current tag to "master"')}`
-							: ''),
-					{
-						padding: 1,
-						borderColor: 'red',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		return {
@@ -598,7 +515,7 @@ async function tags(
 		if (outputFormat === 'text') {
 			if (tagList.length === 0) {
 				console.log(
-					boxen(chalk.yellow('No tags found'), {
+					('No tags found', {
 						padding: 1,
 						borderColor: 'yellow',
 						borderStyle: 'round',
@@ -609,14 +526,14 @@ async function tags(
 			}
 
 			// Create table headers based on options
-			const headers = [chalk.cyan.bold('Tag Name')];
+			const headers = [('Tag Name')];
 			if (showTaskCounts) {
-				headers.push(chalk.cyan.bold('Tasks'));
-				headers.push(chalk.cyan.bold('Completed'));
+				headers.push(('Tasks'));
+				headers.push(('Completed'));
 			}
 			if (showMetadata) {
-				headers.push(chalk.cyan.bold('Created'));
-				headers.push(chalk.cyan.bold('Description'));
+				headers.push(('Created'));
+				headers.push(('Description'));
 			}
 
 			const table = new Table({
@@ -630,13 +547,13 @@ async function tags(
 
 				// Tag name with current indicator
 				const tagDisplay = tag.isCurrent
-					? `${chalk.green('●')} ${chalk.green.bold(tag.name)} ${chalk.gray('(current)')}`
+					? `${('●')} ${(tag.name)} ${('(current)')}`
 					: `  ${tag.name}`;
 				row.push(tagDisplay);
 
 				if (showTaskCounts) {
-					row.push(chalk.white(tag.tasks.length.toString()));
-					row.push(chalk.green(tag.completedTasks.toString()));
+					row.push((tag.tasks.length.toString()));
+					row.push((tag.completedTasks.toString()));
 				}
 
 				if (showMetadata) {
@@ -644,17 +561,17 @@ async function tags(
 						tag.created !== 'Unknown'
 							? new Date(tag.created).toLocaleDateString()
 							: 'Unknown';
-					row.push(chalk.gray(createdDate));
-					row.push(chalk.gray(truncate(tag.description, 50)));
+					row.push((createdDate));
+					row.push((truncate(tag.description, 50)));
 				}
 
 				table.push(row);
 			});
 
 			// console.log(
-			// 	boxen(
-			// 		chalk.white.bold('Available Tags') +
-			// 			`\n\nCurrent Tag: ${chalk.green.bold(currentTag)}`,
+			// 	
+			// 		('Available Tags' +
+			// 			`\n\nCurrent Tag: ${(currentTag)}`,
 			// 		{
 			// 			padding: { top: 0, bottom: 1, left: 1, right: 1 },
 			// 			borderColor: 'blue',
@@ -760,17 +677,17 @@ async function useTag(
 		if (outputFormat === 'text') {
 			let nextTaskInfo = '';
 			if (nextTask) {
-				nextTaskInfo = `\nNext Task: ${chalk.cyan(`#${nextTask.id}`)} - ${chalk.white(nextTask.title)}`;
+				nextTaskInfo = `\nNext Task: ${(`#${nextTask.id}`)} - ${(nextTask.title)}`;
 			} else {
-				nextTaskInfo = `\nNext Task: ${chalk.gray('No eligible tasks available')}`;
+				nextTaskInfo = `\nNext Task: ${('No eligible tasks available')}`;
 			}
 
 			console.log(
-				boxen(
-					chalk.green.bold('✓ Tag Switched Successfully') +
-						`\n\nPrevious Tag: ${chalk.cyan(previousTag)}` +
-						`\nCurrent Tag: ${chalk.green.bold(tagName)}` +
-						`\nAvailable Tasks: ${chalk.yellow(taskCount)}` +
+				
+					('✓ Tag Switched Successfully' +
+						`\n\nPrevious Tag: ${(previousTag)}` +
+						`\nCurrent Tag: ${(tagName)}` +
+						`\nAvailable Tasks: ${(taskCount)}` +
 						nextTaskInfo,
 					{
 						padding: 1,
@@ -928,21 +845,7 @@ async function renameTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.green.bold('✓ Tag Renamed Successfully') +
-						`\n\nOld Name: ${chalk.cyan(oldName)}` +
-						`\nNew Name: ${chalk.green.bold(newName)}` +
-						`\nTasks: ${chalk.yellow(taskCount)}` +
-						(isCurrentTag ? `\n${chalk.green('✓ Current tag updated')}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+		
 		}
 
 		return {
@@ -1083,21 +986,7 @@ async function copyTag(
 
 		// For text output, display success message
 		if (outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.green.bold('✓ Tag Copied Successfully') +
-						`\n\nSource Tag: ${chalk.cyan(sourceName)}` +
-						`\nTarget Tag: ${chalk.green.bold(targetName)}` +
-						`\nTasks Copied: ${chalk.yellow(sourceTasks.length)}` +
-						(description ? `\nDescription: ${chalk.gray(description)}` : ''),
-					{
-						padding: 1,
-						borderColor: 'green',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
+			
 		}
 
 		return {

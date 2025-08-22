@@ -1,0 +1,71 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: moveTask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: findTasksPath, FROM: /core/utils/path-utils.js"]
+        I3["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task management system for moving tasks and subtasks"]
+        D2["DEP: Path resolution utilities for tasks.json location"]
+        D3["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: moveTaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: moveTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing move information"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string} args.sourceId - ID of task/subtask to move"]
+        P4["PARAM: {string} args.destinationId - ID of destination position"]
+        P5["PARAM: {string} args.file - alternative path to tasks.json file"]
+        P6["PARAM: {string} args.projectRoot - project root directory"]
+        P7["PARAM: {string} args.tag - tag for task context"]
+        P8["PARAM: {boolean} args.generateFiles - regenerate task files after moving"]
+        P9["PARAM: {Object} log - logger object for operation tracking"]
+        P10["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: projectRoot, VALUE: extracted from args"]
+        C3["CONST: tag, VALUE: extracted from args"]
+        C4["CONST: tasksPath, VALUE: resolved tasks.json file path"]
+        C5["CONST: generateFiles, VALUE: file generation flag with default true"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameters - sourceId and destinationId"]
+        FL2["Find tasks.json path using provided path or path utilities"]
+        FL3["Validate project root if tasksJsonPath not provided"]
+        FL4["Enable silent mode for MCP JSON response compatibility"]
+        FL5["Call core moveTask function with parameters and context"]
+        FL6["Disable silent mode and return success response"]
+        FL7["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["move-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL5 --> FL7
+```

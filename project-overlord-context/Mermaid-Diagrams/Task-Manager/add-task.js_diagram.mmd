@@ -1,0 +1,110 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I2["IMPORT: z, FROM: zod"]
+        I3["IMPORT: Fuse, FROM: fuse.js"]
+        I4["IMPORT: readJSON, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: writeJSON, FROM: /scripts/modules/utils.js"]
+        I6["IMPORT: log, FROM: /scripts/modules/utils.js"]
+        I7["IMPORT: truncate, FROM: /scripts/modules/utils.js"]
+        I8["IMPORT: ensureTagMetadata, FROM: /scripts/modules/utils.js"]
+        I9["IMPORT: performCompleteTagMigration, FROM: /scripts/modules/utils.js"]
+        I10["IMPORT: markMigrationForNotice, FROM: /scripts/modules/utils.js"]
+        I11["IMPORT: generateObjectService, FROM: /scripts/modules/ai-services-unified.js"]
+        I12["IMPORT: getDefaultPriority, FROM: /scripts/modules/config-manager.js"]
+        I13["IMPORT: getPromptManager, FROM: /scripts/modules/prompt-manager.js"]
+        I14["IMPORT: ContextGatherer, FROM: /scripts/modules/utils/contextGatherer.js"]
+        I15["IMPORT: generateTaskFiles, FROM: /scripts/modules/task-manager/generate-task-files.js"]
+        I16["IMPORT: TASK_PRIORITY_OPTIONS, FROM: /src/constants/task-priority.js"]
+        I17["IMPORT: DEFAULT_TASK_PRIORITY, FROM: /src/constants/task-priority.js"]
+        I18["IMPORT: isValidTaskPriority, FROM: /src/constants/task-priority.js"]
+        I19["IMPORT: normalizeTaskPriority, FROM: /src/constants/task-priority.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Zod validation library for schema validation"]
+        D2["DEP: Fuse.js fuzzy search engine for task searching"]
+        D3["DEP: Node.js path module for file system operations"]
+        D4["DEP: AI service providers for task generation"]
+        D5["DEP: File system for reading and writing task data"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: getAllTasks"]
+        FU2["FUNCTION: addTask"]
+        FU3["FUNCTION: buildDependencyGraph"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addTask"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {string} tasksPath - path to tasks.json file"]
+        P2["PARAM: {string} prompt - description of task to create using AI"]
+        P3["PARAM: {Array} dependencies - array of task IDs this task depends on"]
+        P4["PARAM: {string} priority - task priority level"]
+        P5["PARAM: {Object} context - context object with session and project info"]
+        P6["PARAM: {string} outputFormat - output format for responses"]
+        P7["PARAM: {Object} manualTaskData - pre-defined task data for manual creation"]
+        P8["PARAM: {boolean} useResearch - whether to use research AI model"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: AiTaskDataSchema, VALUE: Zod schema for validating AI-generated task data"]
+        C2["CONST: session, VALUE: MCP session object from context"]
+        C3["CONST: mcpLog, VALUE: MCP logger object from context"]
+        C4["CONST: projectRoot, VALUE: project root directory path"]
+        C5["CONST: isMCP, VALUE: boolean indicating if running in MCP mode"]
+        C6["CONST: logFn, VALUE: unified logging function for CLI and MCP"]
+        C7["CONST: effectivePriority, VALUE: validated and normalized task priority"]
+        C8["CONST: report, VALUE: progress reporting function"]
+        C9["CONST: rawData, VALUE: raw task data read from tasks.json"]
+        C10["CONST: allTasks, VALUE: flattened array of all tasks across tags"]
+        C11["CONST: targetTag, VALUE: tag context for the new task"]
+        C12["CONST: newTaskId, VALUE: generated ID for the new task"]
+        C13["CONST: taskData, VALUE: task content from AI or manual input"]
+        C14["CONST: newTask, VALUE: complete task object ready for storage"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: PROJECT_ROOT, USAGE: fallback project root when not provided"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate priority and normalize to standard values"]
+        FL2["Read existing tasks.json and handle legacy format migration"]
+        FL3["Validate target tag exists and ensure proper structure"]
+        FL4["Calculate next available task ID within target tag"]
+        FL5["Validate all specified dependencies exist across all tags"]
+        FL6["Generate task data using AI service or use manual data"]
+        FL7["Gather project context and build dependency graph"]
+        FL8["Create complete task object with all metadata"]
+        FL9["Add task to target tag and update tag metadata"]
+        FL10["Write updated task data back to tasks.json file"]
+        FL11["Return task ID and telemetry data for confirmation"]
+    end
+    
+    subgraph FileName["add-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+```

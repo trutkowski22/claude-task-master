@@ -1,0 +1,72 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: addDependency, FROM: /scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Dependency management system for task relationships"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: addDependencyDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addDependencyDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing dependency information"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string|number} args.id - task ID to add dependency to"]
+        P4["PARAM: {string|number} args.dependsOn - task ID that becomes dependency"]
+        P5["PARAM: {string} args.tag - tag for task context"]
+        P6["PARAM: {string} args.projectRoot - project root path"]
+        P7["PARAM: {Object} log - logger object for operation tracking"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path from arguments"]
+        C2["CONST: id, VALUE: task ID from arguments"]
+        C3["CONST: dependsOn, VALUE: dependency task ID from arguments"]
+        C4["CONST: tag, VALUE: tag context from arguments"]
+        C5["CONST: projectRoot, VALUE: project root path from arguments"]
+        C6["CONST: tasksPath, VALUE: validated tasks.json file path"]
+        C7["CONST: taskId, VALUE: formatted task ID for core function"]
+        C8["CONST: dependencyId, VALUE: formatted dependency ID for core function"]
+        C9["CONST: context, VALUE: context object with project root and tag"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameters including tasksJsonPath"]
+        FL2["Validate task ID and dependency ID are provided"]
+        FL3["Format IDs for core function compatibility"]
+        FL4["Enable silent mode for MCP JSON response compatibility"]
+        FL5["Create context object with project root and tag"]
+        FL6["Call core addDependency function with formatted parameters"]
+        FL7["Disable silent mode and return success response"]
+        FL8["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["add-dependency.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL6 --> FL8
+```

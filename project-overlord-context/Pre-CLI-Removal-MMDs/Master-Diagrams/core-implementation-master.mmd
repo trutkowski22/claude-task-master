@@ -1,0 +1,1284 @@
+---
+config:
+    maxEdges: 5000
+---
+
+flowchart TB
+
+%% =================================================================================
+%% CORE IMPLEMENTATION LAYER - MASTER DIAGRAM
+%% ALL 50 files from the Core-Implementation layer
+%% =================================================================================
+
+%% PROJECT OVERLORD IMPORTS - Shared across Core Implementation files
+subgraph ProjectOverlordImports["project-overlord-imports"]
+    I1["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I2["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I3["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    I4["IMPORT: findTasksPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I5["IMPORT: findComplexityReportPath, FROM: /claude-task-master/mcp-server/src/core/utils/path-utils.js"]
+    I6["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I7["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I8["IMPORT: readComplexityReport, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I9["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+    I10["IMPORT: expandAllTasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I11["IMPORT: expandTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I12["IMPORT: updateSubtaskById, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I13["IMPORT: addDependency, FROM: /claude-task-master/scripts/modules/dependency-manager.js"]
+    I14["IMPORT: addSubtask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I15["IMPORT: addTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I16["IMPORT: listTasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+    I17["IMPORT: TaskMasterMCPServer, FROM: /claude-task-master/mcp-server/src/index.js"]
+    I18["IMPORT: dotenv, FROM: dotenv"]
+    I19["IMPORT: logger, FROM: /claude-task-master/mcp-server/src/logger.js"]
+    I20["IMPORT: MCPLanguageModel, FROM: /claude-task-master/mcp-server/src/custom-sdk/language-model.js"]
+end
+
+%% PROJECT OVERLORD DEPENDENCIES - Common across Core Implementation
+subgraph ProjectOverlordDependencies["project-overlord-dependencies"]
+    D1["DEP: FastMCP"]
+    D2["DEP: File system"]
+    D3["DEP: Path resolution utilities"]
+    D4["DEP: Node.js process management"]
+    D5["DEP: Environment variable loading"]
+    D6["DEP: Signal handling"]
+    D7["DEP: Git"]
+    D8["DEP: LRU Cache"]
+    D9["DEP: OpenAI API"]
+    D10["DEP: Anthropic API"]
+    D11["DEP: AI SDK"]
+    D12["DEP: Task Manager"]
+    D13["DEP: Dependency Manager"]
+end
+
+%% PROJECT OVERLORD FUNCTIONS - All exported functions from Core Implementation
+subgraph ProjectOverlordFunctions["project-overlord-functions"]
+    FU1["FUNCTION: addDependencyDirect"]
+    FU2["FUNCTION: addSubtaskDirect"]
+    FU3["FUNCTION: addTaskDirect"]
+    FU4["FUNCTION: analyzeTaskComplexityDirect"]
+    FU5["FUNCTION: cacheStatsDirect"]
+    FU6["FUNCTION: clearSubtasksDirect"]
+    FU7["FUNCTION: complexityReportDirect"]
+    FU8["FUNCTION: copyTagDirect"]
+    FU9["FUNCTION: createTagFromBranchDirect"]
+    FU10["FUNCTION: deleteTagDirect"]
+    FU11["FUNCTION: expandAllTasksDirect"]
+    FU12["FUNCTION: expandTaskDirect"]
+    FU13["FUNCTION: fixDependenciesDirect"]
+    FU14["FUNCTION: generateTaskFilesDirect"]
+    FU15["FUNCTION: initializeProjectDirect"]
+    FU16["FUNCTION: listTagsDirect"]
+    FU17["FUNCTION: listTasksDirect"]
+    FU18["FUNCTION: modelsDirect"]
+    FU19["FUNCTION: moveTaskDirect"]
+    FU20["FUNCTION: nextTaskDirect"]
+    FU21["FUNCTION: parsePrdDirect"]
+    FU22["FUNCTION: removeDependencyDirect"]
+    FU23["FUNCTION: removeSubtaskDirect"]
+    FU24["FUNCTION: removeTaskDirect"]
+    FU25["FUNCTION: renameTagDirect"]
+    FU26["FUNCTION: researchDirect"]
+    FU27["FUNCTION: responseLanguageDirect"]
+    FU28["FUNCTION: rulesDirect"]
+    FU29["FUNCTION: scopeDownDirect"]
+    FU30["FUNCTION: scopeUpDirect"]
+    FU31["FUNCTION: setTaskStatusDirect"]
+    FU32["FUNCTION: showTaskDirect"]
+    FU33["FUNCTION: updateSubtaskByIdDirect"]
+    FU34["FUNCTION: updateTaskByIdDirect"]
+    FU35["FUNCTION: updateTasksDirect"]
+    FU36["FUNCTION: useTagDirect"]
+    FU37["FUNCTION: validateDependenciesDirect"]
+    FU38["FUNCTION: findTasksPath"]
+    FU39["FUNCTION: findComplexityReportPath"]
+    FU40["FUNCTION: findProjectRoot"]
+    FU41["FUNCTION: startServer"]
+    FU42["FUNCTION: createMCP"]
+    FU43["FUNCTION: ContextManager"]
+    FU44["FUNCTION: MCPError"]
+    FU45["FUNCTION: MCPSessionError"]
+    FU46["FUNCTION: MCPSamplingError"]
+    FU47["FUNCTION: mapMCPError"]
+    FU48["FUNCTION: isRetryableError"]
+    FU49["FUNCTION: extractJSON"]
+    FU50["FUNCTION: MCPLanguageModel"]
+    FU51["FUNCTION: convertMessages"]
+    FU52["FUNCTION: convertSchema"]
+    FU53["FUNCTION: MCPProvider"]
+    FU54["FUNCTION: getEnvVar"]
+    FU55["FUNCTION: resolveTasksPath"]
+end
+
+%% PROJECT OVERLORD EXPORTS - All module exports
+subgraph ProjectOverlordExports["project-overlord-exports"]
+    E1["EXP: addDependencyDirect"]
+    E2["EXP: addSubtaskDirect"]
+    E3["EXP: addTaskDirect"]
+    E4["EXP: analyzeTaskComplexityDirect"]
+    E5["EXP: cacheStatsDirect"]
+    E6["EXP: clearSubtasksDirect"]
+    E7["EXP: complexityReportDirect"]
+    E8["EXP: copyTagDirect"]
+    E9["EXP: createTagFromBranchDirect"]
+    E10["EXP: deleteTagDirect"]
+    E11["EXP: expandAllTasksDirect"]
+    E12["EXP: expandTaskDirect"]
+    E13["EXP: fixDependenciesDirect"]
+    E14["EXP: generateTaskFilesDirect"]
+    E15["EXP: initializeProjectDirect"]
+    E16["EXP: listTagsDirect"]
+    E17["EXP: listTasksDirect"]
+    E18["EXP: modelsDirect"]
+    E19["EXP: moveTaskDirect"]
+    E20["EXP: nextTaskDirect"]
+    E21["EXP: parsePrdDirect"]
+    E22["EXP: removeDependencyDirect"]
+    E23["EXP: removeSubtaskDirect"]
+    E24["EXP: removeTaskDirect"]
+    E25["EXP: renameTagDirect"]
+    E26["EXP: researchDirect"]
+    E27["EXP: responseLanguageDirect"]
+    E28["EXP: rulesDirect"]
+    E29["EXP: scopeDownDirect"]
+    E30["EXP: scopeUpDirect"]
+    E31["EXP: setTaskStatusDirect"]
+    E32["EXP: showTaskDirect"]
+    E33["EXP: updateSubtaskByIdDirect"]
+    E34["EXP: updateTaskByIdDirect"]
+    E35["EXP: updateTasksDirect"]
+    E36["EXP: useTagDirect"]
+    E37["EXP: validateDependenciesDirect"]
+    E38["EXP: findTasksPath"]
+    E39["EXP: findComplexityReportPath"]
+    E40["EXP: findProjectRoot"]
+    E41["EXP: createMCP"]
+    E42["EXP: contextManager"]
+    E43["EXP: MCPError"]
+    E44["EXP: MCPSessionError"]
+    E45["EXP: MCPSamplingError"]
+    E46["EXP: mapMCPError"]
+    E47["EXP: isRetryableError"]
+    E48["EXP: extractJSON"]
+    E49["EXP: MCPLanguageModel"]
+    E50["EXP: convertMessages"]
+    E51["EXP: convertSchema"]
+    E52["EXP: MCPProvider"]
+end
+
+%% PROJECT OVERLORD PARAMETERS - Common parameter patterns
+subgraph ProjectOverlordParams["project-overlord-params"]
+    P1["PARAM: {Object} args - Function arguments"]
+    P2["PARAM: {string} args.projectRoot - Project root path"]
+    P3["PARAM: {string} args.tag - Tag for the task"]
+    P4["PARAM: {Object} log - Logger object from FastMCP"]
+    P5["PARAM: {Object} context - Context object containing session"]
+    P6["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+    P7["PARAM: {string} args.id - Task ID parameter"]
+    P8["PARAM: {string} args.title - Task title parameter"]
+    P9["PARAM: {string} args.description - Task description parameter"]
+    P10["PARAM: {string} args.status - Task status parameter"]
+    P11["PARAM: {boolean} args.research - Enable research parameter"]
+    P12["PARAM: {string} args.dependencies - Dependencies parameter"]
+    P13["PARAM: {string} args.priority - Task priority parameter"]
+    P14["PARAM: {number|string} args.num - Number parameter"]
+    P15["PARAM: {boolean} args.skipGenerate - Skip generation parameter"]
+    P16["PARAM: {string|number} args.dependsOn - Dependency ID parameter"]
+    P17["PARAM: {string} args.subtaskId - Subtask ID parameter"]
+    P18["PARAM: {Object} args.updates - Update object parameter"]
+    P19["PARAM: {string} projectRoot - Project root directory"]
+    P20["PARAM: {string} tag - Tag for the task"]
+end
+
+%% PROJECT OVERLORD CONSTANTS - Shared constant patterns
+subgraph ProjectOverlordConstants["project-overlord-constants"]
+    C1["CONST: session, VALUE: extracted from context"]
+    C2["CONST: mcpLog, VALUE: createLogWrapper result"]
+    C3["CONST: tasksJsonPath, VALUE: findTasksPath result"]
+    C4["CONST: tasksData, VALUE: readJSON result"]
+    C5["CONST: complexityReport, VALUE: readComplexityReport result"]
+    C6["CONST: tasksPath, VALUE: resolved tasks path"]
+    C7["CONST: projectRoot, VALUE: resolved project root"]
+    C8["CONST: tag, VALUE: resolved tag"]
+    C9["CONST: context, VALUE: context object"]
+    C10["CONST: result, VALUE: function execution result"]
+    C11["CONST: server, VALUE: server instance"]
+    C12["CONST: cache, VALUE: LRU cache instance"]
+    C13["CONST: stats, VALUE: statistics object"]
+    C14["CONST: numSubtasks, VALUE: parsed integer from num parameter"]
+    C15["CONST: useResearch, VALUE: boolean conversion of research parameter"]
+    C16["CONST: id, VALUE: extracted from args"]
+    C17["CONST: subtaskId, VALUE: extracted from args"]
+    C18["CONST: updates, VALUE: extracted from args"]
+    C19["CONST: taskIds, VALUE: comma-separated ID split and trimmed"]
+    C20["CONST: task, VALUE: findTaskById result for single task"]
+end
+
+%% =================================================================================
+%% DIRECT FUNCTIONS - All 27 direct function files
+%% =================================================================================
+
+%% ADD DEPENDENCY
+subgraph addDependency-Parameters["addDependency-Parameters"]
+    P21["PARAM: {string|number} args.dependsOn - Task ID that will become a dependency"]
+end
+
+subgraph addDependency-Constants["addDependency-Constants"]
+    C21["CONST: dependsOn, VALUE: args destructuring"]
+    C22["CONST: dependencyId, VALUE: parsed dependsOn or direct value"]
+end
+
+subgraph addDependency-ExecutionFlow["addDependency-Execution Flow"]
+    FL1["Destructure arguments from args object"]
+    FL2["Log operation start with provided arguments"]
+    FL3["Validate tasksJsonPath is provided"]
+    FL4["Validate required id parameter exists"]
+    FL5["Validate required dependsOn parameter exists"]
+    FL6["Set tasksPath to provided tasksJsonPath"]
+    FL7["Parse and format task ID and dependency ID"]
+    FL8["Log dependency addition operation details"]
+    FL9["Enable silent mode to prevent console interference"]
+    FL10["Create context object with projectRoot and tag"]
+    FL11["Call addDependency core function with parsed parameters"]
+    FL12["Disable silent mode to restore normal logging"]
+    FL13["Return success response with operation details"]
+    FL14["Handle errors by restoring logging and returning error response"]
+end
+
+subgraph addDependency["direct-functions_add-dependency.js"]
+    addDependency-Parameters
+    addDependency-Constants
+    addDependency-ExecutionFlow
+end
+
+%% ADD SUBTASK
+subgraph addSubtask-Parameters["addSubtask-Parameters"]
+    P22["PARAM: {string} [args.taskId] - Existing task ID to convert to subtask (optional)"]
+    P23["PARAM: {string} [args.details] - Implementation details for new subtask"]
+end
+
+subgraph addSubtask-Constants["addSubtask-Constants"]
+    C23["CONST: taskId, VALUE: args destructuring"]
+    C24["CONST: details, VALUE: args destructuring"]
+    C25["CONST: existingTaskId, VALUE: parsed taskId or null"]
+    C26["CONST: parentId, VALUE: parsed id"]
+    C27["CONST: generateFiles, VALUE: not skipGenerate"]
+    C28["CONST: newSubtaskData, VALUE: object with task properties"]
+end
+
+subgraph addSubtask-ExecutionFlow["addSubtask-Execution Flow"]
+    FL15["Validate either taskId or title is provided"]
+    FL16["Parse dependencies string into array if provided"]
+    FL17["Convert existing taskId to number if provided"]
+    FL18["Convert parent ID to number"]
+    FL19["Determine generateFiles flag from skipGenerate"]
+    FL20["Branch: Convert existing task to subtask if existingTaskId provided"]
+    FL21["Branch: Create new subtask with provided data otherwise"]
+end
+
+subgraph addSubtask["direct-functions_add-subtask.js"]
+    addSubtask-Parameters
+    addSubtask-Constants
+    addSubtask-ExecutionFlow
+end
+
+%% ADD TASK
+subgraph addTask-Parameters["addTask-Parameters"]
+    P24["PARAM: {string} [args.prompt] - Description of the task to add"]
+    P25["PARAM: {string} [args.testStrategy] - Test strategy for manual task creation"]
+end
+
+subgraph addTask-Constants["addTask-Constants"]
+    C29["CONST: prompt, VALUE: args destructuring"]
+    C30["CONST: isManualCreation, VALUE: args.title and args.description check"]
+    C31["CONST: taskDependencies, VALUE: processed dependencies array"]
+    C32["CONST: taskPriority, VALUE: priority or default 'medium'"]
+    C33["CONST: manualTaskData, VALUE: manual task object or null"]
+end
+
+subgraph addTask-ExecutionFlow["addTask-Execution Flow"]
+    FL22["Determine if this is manual or AI-driven task creation"]
+    FL23["Validate required parameters based on creation type"]
+    FL24["Process dependencies into array format"]
+    FL25["Set task priority with default fallback"]
+    FL26["Branch: Manual task creation with provided data"]
+    FL27["Branch: AI-driven task creation with prompt"]
+    FL28["Extract results including taskId, telemetry, and tag info"]
+end
+
+subgraph addTask["direct-functions_add-task.js"]
+    addTask-Parameters
+    addTask-Constants
+    addTask-ExecutionFlow
+end
+
+%% ANALYZE TASK COMPLEXITY
+subgraph analyzeTaskComplexity-Parameters["analyzeTaskComplexity-Parameters"]
+    P26["PARAM: {string} args.reportPath - Path to save the complexity report"]
+end
+
+subgraph analyzeTaskComplexity-ExecutionFlow["analyzeTaskComplexity-Execution Flow"]
+    FL29["Validate reportPath is provided"]
+    FL30["Log complexity analysis start"]
+    FL31["Call analyzeTaskComplexity core function"]
+    FL32["Process complexity analysis results"]
+    FL33["Save complexity report to specified path"]
+    FL34["Return success response with analysis data"]
+end
+
+subgraph analyzeTaskComplexity["direct-functions_analyze-task-complexity.js"]
+    analyzeTaskComplexity-Parameters
+    analyzeTaskComplexity-ExecutionFlow
+end
+
+%% CACHE STATS
+subgraph cacheStats-ExecutionFlow["cacheStats-Execution Flow"]
+    FL35["Read cache statistics from system"]
+    FL36["Format cache data for display"]
+    FL37["Calculate cache hit rates and efficiency metrics"]
+    FL38["Return formatted cache statistics response"]
+end
+
+subgraph cacheStats["direct-functions_cache-stats.js"]
+    cacheStats-ExecutionFlow
+end
+
+%% CLEAR SUBTASKS
+subgraph clearSubtasks-ExecutionFlow["clearSubtasks-Execution Flow"]
+    FL39["Validate parent task ID is provided"]
+    FL40["Log clear subtasks operation start"]
+    FL41["Call clearSubtasks core function with task ID"]
+    FL42["Process subtask clearing results"]
+    FL43["Return success response with operation details"]
+end
+
+subgraph clearSubtasks["direct-functions_clear-subtasks.js"]
+    clearSubtasks-ExecutionFlow
+end
+
+%% COMPLEXITY REPORT
+subgraph complexityReport-ExecutionFlow["complexityReport-Execution Flow"]
+    FL44["Generate complexity report from task data"]
+    FL45["Format report for display and export"]
+    FL46["Calculate complexity metrics and statistics"]
+    FL47["Return formatted complexity report"]
+end
+
+subgraph complexityReport["direct-functions_complexity-report.js"]
+    complexityReport-ExecutionFlow
+end
+
+%% COPY TAG
+subgraph copyTag-Parameters["copyTag-Parameters"]
+    P27["PARAM: {string} args.sourceTag - Source tag to copy from"]
+    P28["PARAM: {string} args.targetTag - Target tag to copy to"]
+end
+
+subgraph copyTag-ExecutionFlow["copyTag-Execution Flow"]
+    FL48["Validate source and target tags are provided"]
+    FL49["Log copy tag operation start"]
+    FL50["Call copyTag core function with tag parameters"]
+    FL51["Process tag copying results"]
+    FL52["Return success response with operation details"]
+end
+
+subgraph copyTag["direct-functions_copy-tag.js"]
+    copyTag-Parameters
+    copyTag-ExecutionFlow
+end
+
+%% CREATE TAG FROM BRANCH
+subgraph createTagFromBranch-Parameters["createTagFromBranch-Parameters"]
+    P29["PARAM: {string} args.branchName - Git branch name to create tag from"]
+end
+
+subgraph createTagFromBranch-ExecutionFlow["createTagFromBranch-Execution Flow"]
+    FL53["Validate branch name is provided"]
+    FL54["Log create tag from branch operation start"]
+    FL55["Call createTagFromBranch core function with branch name"]
+    FL56["Process tag creation results"]
+    FL57["Return success response with new tag details"]
+end
+
+subgraph createTagFromBranch["direct-functions_create-tag-from-branch.js"]
+    createTagFromBranch-Parameters
+    createTagFromBranch-ExecutionFlow
+end
+
+%% DELETE TAG
+subgraph deleteTag-Parameters["deleteTag-Parameters"]
+    P30["PARAM: {string} args.tagName - Tag name to delete"]
+end
+
+subgraph deleteTag-ExecutionFlow["deleteTag-Execution Flow"]
+    FL58["Validate tag name is provided"]
+    FL59["Log delete tag operation start"]
+    FL60["Call deleteTag core function with tag name"]
+    FL61["Process tag deletion results"]
+    FL62["Return success response with deletion details"]
+end
+
+subgraph deleteTag["direct-functions_delete-tag.js"]
+    deleteTag-Parameters
+    deleteTag-ExecutionFlow
+end
+
+%% EXPAND ALL TASKS
+subgraph expandAllTasks-Parameters["expandAllTasks-Parameters"]
+    P31["PARAM: {number|string} args.num - Number of subtasks to generate"]
+end
+
+subgraph expandAllTasks-ExecutionFlow["expandAllTasks-Execution Flow"]
+    FL63["Parse and convert parameters to correct data types"]
+    FL64["Call core expandAllTasks with parsed parameters and context"]
+    FL65["Process successful result and format response with telemetry data"]
+end
+
+subgraph expandAllTasks["direct-functions_expand-all-tasks.js"]
+    expandAllTasks-Parameters
+    expandAllTasks-ExecutionFlow
+end
+
+%% EXPAND TASK
+subgraph expandTask-ExecutionFlow["expandTask-Execution Flow"]
+    FL66["Validate required task ID and parameters are provided"]
+    FL67["Call core expandTask with parsed parameters and context"]
+    FL68["Process successful result and format response with telemetry data"]
+end
+
+subgraph expandTask["direct-functions_expand-task.js"]
+    expandTask-ExecutionFlow
+end
+
+%% FIX DEPENDENCIES
+subgraph fixDependencies-ExecutionFlow["fixDependencies-Execution Flow"]
+    FL69["Log fix dependencies operation start"]
+    FL70["Call fixDependencies core function"]
+    FL71["Process dependency fixing results"]
+    FL72["Return success response with fixed dependencies"]
+end
+
+subgraph fixDependencies["direct-functions_fix-dependencies.js"]
+    fixDependencies-ExecutionFlow
+end
+
+%% GENERATE TASK FILES
+subgraph generateTaskFiles-ExecutionFlow["generateTaskFiles-Execution Flow"]
+    FL73["Log generate task files operation start"]
+    FL74["Call generateTaskFiles core function"]
+    FL75["Process file generation results"]
+    FL76["Return success response with generated files list"]
+end
+
+subgraph generateTaskFiles["direct-functions_generate-task-files.js"]
+    generateTaskFiles-ExecutionFlow
+end
+
+%% INITIALIZE PROJECT
+subgraph initializeProject-ExecutionFlow["initializeProject-Execution Flow"]
+    FL77["Log initialize project operation start"]
+    FL78["Call initializeProject core function"]
+    FL79["Process project initialization results"]
+    FL80["Return success response with initialization details"]
+end
+
+subgraph initializeProject["direct-functions_initialize-project.js"]
+    initializeProject-ExecutionFlow
+end
+
+%% LIST TAGS
+subgraph listTags-ExecutionFlow["listTags-Execution Flow"]
+    FL81["Log list tags operation start"]
+    FL82["Call listTags core function"]
+    FL83["Process tags listing results"]
+    FL84["Return success response with tags list"]
+end
+
+subgraph listTags["direct-functions_list-tags.js"]
+    listTags-ExecutionFlow
+end
+
+%% LIST TASKS
+subgraph listTasks-Parameters["listTasks-Parameters"]
+    P32["PARAM: {string} args.reportPath - Path to the report file"]
+    P33["PARAM: {boolean} args.withSubtasks - Whether to include subtasks"]
+end
+
+subgraph listTasks-ExecutionFlow["listTasks-Execution Flow"]
+    FL85["Set status and subtasks filters with defaults"]
+    FL86["Define coreListTasksAction async function"]
+    FL87["Call listTasks core function with all parameters"]
+    FL88["Validate core function response contains tasks"]
+    FL89["Log number of retrieved tasks"]
+    FL90["Execute coreListTasksAction and capture result"]
+    FL91["Log completion of operation"]
+    FL92["Return final result from core action"]
+end
+
+subgraph listTasks["direct-functions_list-tasks.js"]
+    listTasks-Parameters
+    listTasks-ExecutionFlow
+end
+
+%% MODELS
+subgraph models-ExecutionFlow["models-Execution Flow"]
+    FL93["Log get available models operation start"]
+    FL94["Call getAvailableModels core function"]
+    FL95["Process available models results"]
+    FL96["Return success response with models list"]
+end
+
+subgraph models["direct-functions_models.js"]
+    models-ExecutionFlow
+end
+
+%% MOVE TASK
+subgraph moveTask-Parameters["moveTask-Parameters"]
+    P34["PARAM: {string} args.targetParentId - Target parent task ID"]
+end
+
+subgraph moveTask-ExecutionFlow["moveTask-Execution Flow"]
+    FL97["Validate target parent ID is provided"]
+    FL98["Log move task operation start"]
+    FL99["Call moveTask core function with task and target parameters"]
+    FL100["Process task moving results"]
+    FL101["Return success response with move details"]
+end
+
+subgraph moveTask["direct-functions_move-task.js"]
+    moveTask-Parameters
+    moveTask-ExecutionFlow
+end
+
+%% NEXT TASK
+subgraph nextTask-ExecutionFlow["nextTask-Execution Flow"]
+    FL102["Log find next task operation start"]
+    FL103["Call findNextTask core function"]
+    FL104["Process next task finding results"]
+    FL105["Return success response with next task details"]
+end
+
+subgraph nextTask["direct-functions_next-task.js"]
+    nextTask-ExecutionFlow
+end
+
+%% PARSE PRD
+subgraph parsePrd-Parameters["parsePrd-Parameters"]
+    P35["PARAM: {string} args.prdPath - Path to the PRD file"]
+end
+
+subgraph parsePrd-ExecutionFlow["parsePrd-Execution Flow"]
+    FL106["Validate PRD path is provided"]
+    FL107["Log parse PRD operation start"]
+    FL108["Call parsePrd core function with PRD path"]
+    FL109["Process PRD parsing results"]
+    FL110["Return success response with parsed PRD data"]
+end
+
+subgraph parsePrd["direct-functions_parse-prd.js"]
+    parsePrd-Parameters
+    parsePrd-ExecutionFlow
+end
+
+%% PATH UTILS
+subgraph pathUtils-ExecutionFlow["pathUtils-Execution Flow"]
+    FL111["Resolve project root directory from given path"]
+    FL112["Construct tasks.json file path using project structure"]
+    FL113["Construct complexity report file path using project structure"]
+    FL114["Validate file paths exist and are accessible"]
+    FL115["Return resolved absolute file paths"]
+end
+
+subgraph pathUtils["direct-functions_path-utils.js"]
+    pathUtils-ExecutionFlow
+end
+
+%% REMOVE DEPENDENCY
+subgraph removeDependency-Parameters["removeDependency-Parameters"]
+    P36["PARAM: {string|number} args.dependsOn - Dependency ID to remove"]
+end
+
+subgraph removeDependency-ExecutionFlow["removeDependency-Execution Flow"]
+    FL116["Validate dependency ID is provided"]
+    FL117["Log remove dependency operation start"]
+    FL118["Call removeDependency core function with dependency parameters"]
+    FL119["Process dependency removal results"]
+    FL120["Return success response with removal details"]
+end
+
+subgraph removeDependency["direct-functions_remove-dependency.js"]
+    removeDependency-Parameters
+    removeDependency-ExecutionFlow
+end
+
+%% REMOVE SUBTASK
+subgraph removeSubtask-Parameters["removeSubtask-Parameters"]
+    P37["PARAM: {string} args.subtaskId - Subtask ID to remove"]
+end
+
+subgraph removeSubtask-ExecutionFlow["removeSubtask-Execution Flow"]
+    FL121["Validate subtask ID is provided"]
+    FL122["Log remove subtask operation start"]
+    FL123["Call removeSubtask core function with subtask ID"]
+    FL124["Process subtask removal results"]
+    FL125["Return success response with removal details"]
+end
+
+subgraph removeSubtask["direct-functions_remove-subtask.js"]
+    removeSubtask-Parameters
+    removeSubtask-ExecutionFlow
+end
+
+%% REMOVE TASK
+subgraph removeTask-ExecutionFlow["removeTask-Execution Flow"]
+    FL126["Log remove task operation start"]
+    FL127["Call removeTask core function with task ID"]
+    FL128["Process task removal results"]
+    FL129["Return success response with removal details"]
+end
+
+subgraph removeTask["direct-functions_remove-task.js"]
+    removeTask-ExecutionFlow
+end
+
+%% RENAME TAG
+subgraph renameTag-Parameters["renameTag-Parameters"]
+    P38["PARAM: {string} args.oldName - Current tag name"]
+    P39["PARAM: {string} args.newName - New tag name"]
+end
+
+subgraph renameTag-ExecutionFlow["renameTag-Execution Flow"]
+    FL130["Validate old and new tag names are provided"]
+    FL131["Log rename tag operation start"]
+    FL132["Call renameTag core function with tag names"]
+    FL133["Process tag renaming results"]
+    FL134["Return success response with rename details"]
+end
+
+subgraph renameTag["direct-functions_rename-tag.js"]
+    renameTag-Parameters
+    renameTag-ExecutionFlow
+end
+
+%% RESEARCH
+subgraph research-Parameters["research-Parameters"]
+    P40["PARAM: {string} args.query - Research query"]
+end
+
+subgraph research-ExecutionFlow["research-Execution Flow"]
+    FL135["Validate research query is provided"]
+    FL136["Log research operation start"]
+    FL137["Call research core function with query"]
+    FL138["Process research results"]
+    FL139["Return success response with research data"]
+end
+
+subgraph research["direct-functions_research.js"]
+    research-Parameters
+    research-ExecutionFlow
+end
+
+%% RESPONSE LANGUAGE
+subgraph responseLanguage-Parameters["responseLanguage-Parameters"]
+    P41["PARAM: {string} args.language - Response language code"]
+end
+
+subgraph responseLanguage-ExecutionFlow["responseLanguage-Execution Flow"]
+    FL140["Validate language code is provided"]
+    FL141["Log set response language operation start"]
+    FL142["Call setResponseLanguage core function with language"]
+    FL143["Process language setting results"]
+    FL144["Return success response with language setting details"]
+end
+
+subgraph responseLanguage["direct-functions_response-language.js"]
+    responseLanguage-Parameters
+    responseLanguage-ExecutionFlow
+end
+
+%% RULES
+subgraph rules-ExecutionFlow["rules-Execution Flow"]
+    FL145["Log get rules operation start"]
+    FL146["Call getRules core function"]
+    FL147["Process rules retrieval results"]
+    FL148["Return success response with rules data"]
+end
+
+subgraph rules["direct-functions_rules.js"]
+    rules-ExecutionFlow
+end
+
+%% SCOPE DOWN
+subgraph scopeDown-ExecutionFlow["scopeDown-Execution Flow"]
+    FL149["Log scope down operation start"]
+    FL150["Call scopeDown core function with task ID"]
+    FL151["Process scope reduction results"]
+    FL152["Return success response with scope details"]
+end
+
+subgraph scopeDown["direct-functions_scope-down.js"]
+    scopeDown-ExecutionFlow
+end
+
+%% SCOPE UP
+subgraph scopeUp-ExecutionFlow["scopeUp-Execution Flow"]
+    FL153["Log scope up operation start"]
+    FL154["Call scopeUp core function with task ID"]
+    FL155["Process scope expansion results"]
+    FL156["Return success response with scope details"]
+end
+
+subgraph scopeUp["direct-functions_scope-up.js"]
+    scopeUp-ExecutionFlow
+end
+
+%% SET TASK STATUS
+subgraph setTaskStatus-ExecutionFlow["setTaskStatus-Execution Flow"]
+    FL157["Validate task status is provided"]
+    FL158["Log set task status operation start"]
+    FL159["Call setTaskStatus core function with task ID and status"]
+    FL160["Process status setting results"]
+    FL161["Return success response with status details"]
+end
+
+subgraph setTaskStatus["direct-functions_set-task-status.js"]
+    setTaskStatus-ExecutionFlow
+end
+
+%% SHOW TASK
+subgraph showTask-Parameters["showTask-Parameters"]
+    P42["PARAM: {string} args.file - Optional path to the tasks file"]
+    P43["PARAM: {string} args.reportPath - Explicit path to the complexity report file"]
+end
+
+subgraph showTask-ExecutionFlow["showTask-Execution Flow"]
+    FL162["Resolve tasks file path using findTasksPath utility"]
+    FL163["Read tasks data from resolved JSON file path"]
+    FL164["Validate tasks data structure contains tasks array"]
+    FL165["Read complexity report from provided report path"]
+    FL166["Parse comma-separated task IDs and filter empty values"]
+    FL167["Validate at least one valid task ID was provided"]
+    FL168["Handle single task ID case with findTaskById"]
+    FL169["Handle multiple task IDs case with forEach loop"]
+    FL170["Return appropriate result based on single or multiple tasks"]
+end
+
+subgraph showTask["direct-functions_show-task.js"]
+    showTask-Parameters
+    showTask-ExecutionFlow
+end
+
+%% UPDATE SUBTASK BY ID
+subgraph updateSubtaskById-ExecutionFlow["updateSubtaskById-Execution Flow"]
+    FL171["Validate required subtask ID and updates are provided"]
+    FL172["Call core updateSubtaskById with parsed parameters and context"]
+    FL173["Process successful result and format response with telemetry data"]
+end
+
+subgraph updateSubtaskById["direct-functions_update-subtask-by-id.js"]
+    updateSubtaskById-ExecutionFlow
+end
+
+%% UPDATE TASK BY ID
+subgraph updateTaskById-Parameters["updateTaskById-Parameters"]
+    P44["PARAM: {string} args.taskId - Task ID to update"]
+    P45["PARAM: {Object} args.updates - Update object with new values"]
+end
+
+subgraph updateTaskById-ExecutionFlow["updateTaskById-Execution Flow"]
+    FL174["Validate required task ID and updates are provided"]
+    FL175["Call updateTaskById core function with parsed parameters"]
+    FL176["Process task update results"]
+    FL177["Return success response with update details"]
+end
+
+subgraph updateTaskById["direct-functions_update-task-by-id.js"]
+    updateTaskById-Parameters
+    updateTaskById-ExecutionFlow
+end
+
+%% UPDATE TASKS
+subgraph updateTasks-ExecutionFlow["updateTasks-Execution Flow"]
+    FL178["Log update tasks operation start"]
+    FL179["Call updateTasks core function"]
+    FL180["Process tasks update results"]
+    FL181["Return success response with update details"]
+end
+
+subgraph updateTasks["direct-functions_update-tasks.js"]
+    updateTasks-ExecutionFlow
+end
+
+%% USE TAG
+subgraph useTag-Parameters["useTag-Parameters"]
+    P46["PARAM: {string} args.tagName - Tag name to use"]
+end
+
+subgraph useTag-ExecutionFlow["useTag-Execution Flow"]
+    FL182["Validate tag name is provided"]
+    FL183["Log use tag operation start"]
+    FL184["Call useTag core function with tag name"]
+    FL185["Process tag usage results"]
+    FL186["Return success response with tag usage details"]
+end
+
+subgraph useTag["direct-functions_use-tag.js"]
+    useTag-Parameters
+    useTag-ExecutionFlow
+end
+
+%% VALIDATE DEPENDENCIES
+subgraph validateDependencies-ExecutionFlow["validateDependencies-Execution Flow"]
+    FL187["Log validate dependencies operation start"]
+    FL188["Call validateDependencies core function"]
+    FL189["Process dependency validation results"]
+    FL190["Return success response with validation details"]
+end
+
+subgraph validateDependencies["direct-functions_validate-dependencies.js"]
+    validateDependencies-ExecutionFlow
+end
+
+%% =================================================================================
+%% CORE FILES - Core system components
+%% =================================================================================
+
+%% CONTEXT MANAGER
+subgraph contextManager-Functions["contextManager-Functions"]
+    FU56["FUNCTION: ContextManager (constructor)"]
+    FU57["FUNCTION: getContext"]
+    FU58["FUNCTION: updateContext"]
+    FU59["FUNCTION: invalidateContext"]
+    FU60["FUNCTION: getCachedData"]
+    FU61["FUNCTION: setCachedData"]
+    FU62["FUNCTION: invalidateCacheKey"]
+    FU63["FUNCTION: getStats"]
+    FU64["FUNCTION: _getCacheKey"]
+end
+
+subgraph contextManager-Constants["contextManager-Constants"]
+    C34["CONST: maxCacheSize, VALUE: 1000"]
+    C35["CONST: ttl, VALUE: 5 minutes"]
+    C36["CONST: maxContextSize, VALUE: 4000"]
+    C37["CONST: cache, VALUE: LRUCache instance"]
+    C38["CONST: stats, VALUE: statistics object"]
+end
+
+subgraph contextManager-ExecutionFlow["contextManager-Execution Flow"]
+    FL191["Initialize LRU cache with configuration"]
+    FL192["Set up statistics tracking"]
+    FL193["Handle cache hits and misses"]
+    FL194["Manage context lifecycle"]
+    FL195["Provide cache statistics"]
+end
+
+subgraph contextManager["core_context-manager.js"]
+    contextManager-Functions
+    contextManager-Constants
+    contextManager-ExecutionFlow
+end
+
+%% TASK MASTER CORE
+subgraph taskMasterCore-Functions["taskMasterCore-Functions"]
+    FU65["FUNCTION: getAllDirectFunctions"]
+    FU66["FUNCTION: initializeTaskMaster"]
+    FU67["FUNCTION: getTaskMasterConfig"]
+end
+
+subgraph taskMasterCore-Constants["taskMasterCore-Constants"]
+    C39["CONST: directFunctions, VALUE: imported function collection"]
+    C40["CONST: config, VALUE: task master configuration"]
+end
+
+subgraph taskMasterCore-ExecutionFlow["taskMasterCore-Execution Flow"]
+    FL196["Initialize task master system"]
+    FL197["Load configuration settings"]
+    FL198["Register direct functions"]
+    FL199["Set up system connections"]
+end
+
+subgraph taskMasterCore["core_task-master-core.js"]
+    taskMasterCore-Functions
+    taskMasterCore-Constants
+    taskMasterCore-ExecutionFlow
+end
+
+%% =================================================================================
+%% CUSTOM SDK - AI integration components
+%% =================================================================================
+
+%% CUSTOM SDK ERRORS
+subgraph customSdkErrors-Functions["customSdkErrors-Functions"]
+    FU68["FUNCTION: MCPError (constructor)"]
+    FU69["FUNCTION: MCPSessionError (constructor)"]
+    FU70["FUNCTION: MCPSamplingError (constructor)"]
+    FU71["FUNCTION: mapMCPError"]
+    FU72["FUNCTION: isRetryableError"]
+end
+
+subgraph customSdkErrors-Constants["customSdkErrors-Constants"]
+    C41["CONST: errorCodes, VALUE: error code definitions"]
+    C42["CONST: errorMappings, VALUE: error mapping configurations"]
+end
+
+subgraph customSdkErrors-ExecutionFlow["customSdkErrors-Execution Flow"]
+    FL200["Define custom error classes"]
+    FL201["Map error types to specific error classes"]
+    FL202["Determine error retryability"]
+    FL203["Provide error handling utilities"]
+end
+
+subgraph customSdkErrors["custom-sdk_errors.js"]
+    customSdkErrors-Functions
+    customSdkErrors-Constants
+    customSdkErrors-ExecutionFlow
+end
+
+%% CUSTOM SDK INDEX
+subgraph customSdkIndex-Functions["customSdkIndex-Functions"]
+    FU73["FUNCTION: createMCP"]
+    FU74["FUNCTION: provider"]
+end
+
+subgraph customSdkIndex-Constants["customSdkIndex-Constants"]
+    C43["CONST: defaultSettings, VALUE: default SDK settings"]
+    C44["CONST: modelId, VALUE: default model identifier"]
+end
+
+subgraph customSdkIndex-ExecutionFlow["customSdkIndex-Execution Flow"]
+    FL204["Validate session requirements"]
+    FL205["Create MCP provider instance"]
+    FL206["Configure AI SDK compatibility"]
+    FL207["Return provider with language model capabilities"]
+end
+
+subgraph customSdkIndex["custom-sdk_index.js"]
+    customSdkIndex-Functions
+    customSdkIndex-Constants
+    customSdkIndex-ExecutionFlow
+end
+
+%% CUSTOM SDK JSON EXTRACTOR
+subgraph customSdkJsonExtractor-Functions["customSdkJsonExtractor-Functions"]
+    FU75["FUNCTION: extractJSON"]
+    FU76["FUNCTION: parseJSONSafely"]
+end
+
+subgraph customSdkJsonExtractor-Constants["customSdkJsonExtractor-Constants"]
+    C45["CONST: jsonPattern, VALUE: JSON extraction regex"]
+    C46["CONST: extractedData, VALUE: parsed JSON result"]
+end
+
+subgraph customSdkJsonExtractor-ExecutionFlow["customSdkJsonExtractor-Execution Flow"]
+    FL208["Extract JSON from text content"]
+    FL209["Parse JSON safely with error handling"]
+    FL210["Return structured data or error information"]
+end
+
+subgraph customSdkJsonExtractor["custom-sdk_json-extractor.js"]
+    customSdkJsonExtractor-Functions
+    customSdkJsonExtractor-Constants
+    customSdkJsonExtractor-ExecutionFlow
+end
+
+%% CUSTOM SDK LANGUAGE MODEL
+subgraph customSdkLanguageModel-Functions["customSdkLanguageModel-Functions"]
+    FU77["FUNCTION: MCPLanguageModel (constructor)"]
+    FU78["FUNCTION: generateObject"]
+    FU79["FUNCTION: generateText"]
+    FU80["FUNCTION: streamText"]
+end
+
+subgraph customSdkLanguageModel-Constants["customSdkLanguageModel-Constants"]
+    C47["CONST: session, VALUE: MCP session instance"]
+    C48["CONST: modelId, VALUE: model identifier"]
+    C49["CONST: settings, VALUE: model configuration"]
+end
+
+subgraph customSdkLanguageModel-ExecutionFlow["customSdkLanguageModel-Execution Flow"]
+    FL211["Initialize language model with session"]
+    FL212["Configure model settings and parameters"]
+    FL213["Handle text generation requests"]
+    FL214["Process streaming responses"]
+    FL215["Manage object generation"]
+end
+
+subgraph customSdkLanguageModel["custom-sdk_language-model.js"]
+    customSdkLanguageModel-Functions
+    customSdkLanguageModel-Constants
+    customSdkLanguageModel-ExecutionFlow
+end
+
+%% CUSTOM SDK MESSAGE CONVERTER
+subgraph customSdkMessageConverter-Functions["customSdkMessageConverter-Functions"]
+    FU81["FUNCTION: convertMessages"]
+    FU82["FUNCTION: convertMessage"]
+    FU83["FUNCTION: convertContent"]
+end
+
+subgraph customSdkMessageConverter-Constants["customSdkMessageConverter-Constants"]
+    C50["CONST: messageTypes, VALUE: supported message types"]
+    C51["CONST: contentTypes, VALUE: supported content types"]
+end
+
+subgraph customSdkMessageConverter-ExecutionFlow["customSdkMessageConverter-Execution Flow"]
+    FL216["Convert message formats between systems"]
+    FL217["Handle different content types"]
+    FL218["Maintain message integrity"]
+    FL219["Support various message structures"]
+end
+
+subgraph customSdkMessageConverter["custom-sdk_message-converter.js"]
+    customSdkMessageConverter-Functions
+    customSdkMessageConverter-Constants
+    customSdkMessageConverter-ExecutionFlow
+end
+
+%% CUSTOM SDK SCHEMA CONVERTER
+subgraph customSdkSchemaConverter-Functions["customSdkSchemaConverter-Functions"]
+    FU84["FUNCTION: convertSchema"]
+    FU85["FUNCTION: convertProperties"]
+    FU86["FUNCTION: validateSchema"]
+end
+
+subgraph customSdkSchemaConverter-Constants["customSdkSchemaConverter-Constants"]
+    C52["CONST: schemaTypes, VALUE: supported schema types"]
+    C53["CONST: propertyMappings, VALUE: property conversion mappings"]
+end
+
+subgraph customSdkSchemaConverter-ExecutionFlow["customSdkSchemaConverter-Execution Flow"]
+    FL220["Convert schema formats"]
+    FL221["Map property definitions"]
+    FL222["Validate schema structures"]
+    FL223["Ensure schema compatibility"]
+end
+
+subgraph customSdkSchemaConverter["custom-sdk_schema-converter.js"]
+    customSdkSchemaConverter-Functions
+    customSdkSchemaConverter-Constants
+    customSdkSchemaConverter-ExecutionFlow
+end
+
+%% =================================================================================
+%% UTILS - Utility functions
+%% =================================================================================
+
+%% ENV UTILS
+subgraph envUtils-Functions["envUtils-Functions"]
+    FU87["FUNCTION: getEnvVar"]
+    FU88["FUNCTION: setEnvVar"]
+    FU89["FUNCTION: validateEnv"]
+end
+
+subgraph envUtils-Constants["envUtils-Constants"]
+    C54["CONST: requiredEnvVars, VALUE: required environment variables"]
+    C55["CONST: defaultValues, VALUE: default environment values"]
+end
+
+subgraph envUtils-ExecutionFlow["envUtils-Execution Flow"]
+    FL224["Get environment variables"]
+    FL225["Set environment variables"]
+    FL226["Validate environment configuration"]
+    FL227["Provide default values for missing variables"]
+end
+
+subgraph envUtils["utils_env-utils.js"]
+    envUtils-Functions
+    envUtils-Constants
+    envUtils-ExecutionFlow
+end
+
+%% UTILS PATH UTILS
+subgraph utilsPathUtils-Functions["utilsPathUtils-Functions"]
+    FU90["FUNCTION: resolveTasksPath"]
+    FU91["FUNCTION: resolvePrdPath"]
+    FU92["FUNCTION: resolveComplexityReportPath"]
+    FU93["FUNCTION: resolveProjectPath"]
+end
+
+subgraph utilsPathUtils-Constants["utilsPathUtils-Constants"]
+    C56["CONST: silentLogger, VALUE: logger configuration"]
+    C57["CONST: lastFoundProjectRoot, VALUE: cached project root"]
+    C58["CONST: PROJECT_MARKERS, VALUE: project identification markers"]
+end
+
+subgraph utilsPathUtils-ExecutionFlow["utilsPathUtils-Execution Flow"]
+    FL228["Resolve absolute and relative paths"]
+    FL229["Find project root using markers"]
+    FL230["Cache path resolution results"]
+    FL231["Provide fallback path resolution"]
+end
+
+subgraph utilsPathUtils["utils_path-utils.js"]
+    utilsPathUtils-Functions
+    utilsPathUtils-Constants
+    utilsPathUtils-ExecutionFlow
+end
+
+%% =================================================================================
+%% MCP SERVER & PROVIDERS
+%% =================================================================================
+
+%% MCP SERVER
+subgraph mcpServer-Constants["mcpServer-Constants"]
+    C59["CONST: server, VALUE: new TaskMasterMCPServer instance"]
+end
+
+subgraph mcpServer-ExecutionFlow["mcpServer-Execution Flow"]
+    FL232["Load environment variables using dotenv.config"]
+    FL233["Create new TaskMasterMCPServer instance"]
+    FL234["Set up SIGINT signal handler for graceful shutdown"]
+    FL235["Set up SIGTERM signal handler for graceful shutdown"]
+    FL236["Start the MCP server and handle startup errors"]
+    FL237["Log error message and exit with code 1 if startup fails"]
+    FL238["Execute startServer function to begin server operation"]
+end
+
+subgraph mcpServer["mcp-server_server.js"]
+    mcpServer-Constants
+    mcpServer-ExecutionFlow
+end
+
+%% MCP PROVIDER
+subgraph mcpProvider-Functions["mcpProvider-Functions"]
+    FU94["FUNCTION: MCPProvider (constructor)"]
+    FU95["FUNCTION: initialize"]
+    FU96["FUNCTION: sendRequest"]
+    FU97["FUNCTION: handleResponse"]
+end
+
+subgraph mcpProvider-Constants["mcpProvider-Constants"]
+    C60["CONST: providerConfig, VALUE: provider configuration"]
+    C61["CONST: connectionSettings, VALUE: connection parameters"]
+end
+
+subgraph mcpProvider-ExecutionFlow["mcpProvider-Execution Flow"]
+    FL239["Initialize MCP provider"]
+    FL240["Configure connection settings"]
+    FL241["Handle request/response cycle"]
+    FL242["Manage provider lifecycle"]
+end
+
+subgraph mcpProvider["providers_mcp-provider.js"]
+    mcpProvider-Functions
+    mcpProvider-Constants
+    mcpProvider-ExecutionFlow
+end
+
+%% =================================================================================
+%% RELATIONSHIP ARROWS - ProjectOverlord to individual files
+%% =================================================================================
+
+I1 & I2 & I3 --> addDependency & addSubtask & addTask & expandAllTasks & expandTask & updateSubtaskById
+I4 & I5 --> addDependency & addTask & listTasks & showTask & pathUtils & utilsPathUtils
+I6 & I7 & I8 & I9 --> showTask & listTasks
+I10 --> expandAllTasks
+I11 --> expandTask
+I12 --> updateSubtaskById
+I13 --> addDependency & removeDependency & fixDependencies & validateDependencies
+I14 --> addSubtask & clearSubtasks & removeSubtask
+I15 --> addTask
+I16 --> listTasks
+I17 --> mcpServer
+I18 --> mcpServer
+I19 --> mcpServer
+I20 --> customSdkIndex & customSdkLanguageModel
+
+D1 & D2 & D3 --> addDependency & addSubtask & addTask & listTasks & showTask & updateSubtaskById
+D4 & D5 & D6 --> mcpServer
+D7 --> copyTag & createTagFromBranch & deleteTag
+D8 --> contextManager
+D9 & D10 & D11 --> customSdkLanguageModel
+D12 & D13 --> addDependency & addSubtask & addTask & removeTask & moveTask
+
+P1 & P2 & P3 & P4 & P5 --> addDependency & addSubtask & addTask & listTasks & showTask
+P6 & P7 & P8 & P9 & P10 --> addDependency & addSubtask & addTask & listTasks & showTask
+P11 & P12 & P13 & P14 & P15 --> addSubtask & addTask & expandAllTasks & expandTask
+P16 & P17 & P18 & P19 & P20 --> addDependency & removeDependency & updateSubtaskById & pathUtils
+
+C1 & C2 & C3 & C4 & C5 --> addDependency & addSubtask & addTask & listTasks & showTask
+C6 & C7 & C8 & C9 & C10 --> addDependency & addSubtask & addTask & pathUtils
+C11 & C12 & C13 --> mcpServer & contextManager
+C14 & C15 & C16 & C17 & C18 --> expandAllTasks & expandTask & updateSubtaskById
+C19 & C20 --> showTask
+
+FU1 & FU2 & FU3 --> addDependency & addSubtask & addTask
+FU11 & FU12 --> expandAllTasks & expandTask
+FU17 & FU32 & FU33 --> listTasks & showTask & updateSubtaskById
+FU38 & FU39 & FU40 --> pathUtils
+FU41 --> mcpServer
+FU42 --> customSdkIndex
+FU43 --> contextManager
+FU44 & FU45 & FU46 & FU47 & FU48 --> customSdkErrors
+FU49 --> customSdkJsonExtractor
+FU50 --> customSdkLanguageModel
+FU51 --> customSdkMessageConverter
+FU52 --> customSdkSchemaConverter
+FU53 --> mcpProvider
+FU54 --> envUtils
+FU55 --> utilsPathUtils
+
+E1 & E2 & E3 --> addDependency & addSubtask & addTask
+E11 & E12 --> expandAllTasks & expandTask
+E17 & E32 & E33 --> listTasks & showTask & updateSubtaskById
+E38 & E39 & E40 --> pathUtils
+E41 --> customSdkIndex
+E42 --> contextManager
+E43 & E44 & E45 & E46 & E47 --> customSdkErrors
+E48 --> customSdkJsonExtractor
+E49 --> customSdkLanguageModel
+E50 --> customSdkMessageConverter
+E51 --> customSdkSchemaConverter
+E52 --> mcpProvider
+
+%% EXECUTION FLOW CONNECTIONS - Main sequential flows
+FL1 --> FL2 --> FL3 --> FL4 --> FL5 --> FL6 --> FL7 --> FL8 --> FL9 --> FL10 --> FL11 --> FL12 --> FL13 --> FL14
+FL15 --> FL16 --> FL17 --> FL18 --> FL19 --> FL20 --> FL21
+FL22 --> FL23 --> FL24 --> FL25 --> FL26 --> FL27 --> FL28
+FL29 --> FL30 --> FL31 --> FL32 --> FL33 --> FL34
+FL35 --> FL36 --> FL37 --> FL38
+FL39 --> FL40 --> FL41 --> FL42 --> FL43
+FL44 --> FL45 --> FL46 --> FL47
+FL48 --> FL49 --> FL50 --> FL51 --> FL52
+FL53 --> FL54 --> FL55 --> FL56 --> FL57
+FL58 --> FL59 --> FL60 --> FL61 --> FL62
+FL63 --> FL64 --> FL65
+FL66 --> FL67 --> FL68
+FL69 --> FL70 --> FL71 --> FL72
+FL73 --> FL74 --> FL75 --> FL76
+FL77 --> FL78 --> FL79 --> FL80
+FL81 --> FL82 --> FL83 --> FL84
+FL85 --> FL86 --> FL87 --> FL88 --> FL89 --> FL90 --> FL91 --> FL92
+FL93 --> FL94 --> FL95 --> FL96
+FL97 --> FL98 --> FL99 --> FL100 --> FL101
+FL102 --> FL103 --> FL104 --> FL105
+FL106 --> FL107 --> FL108 --> FL109 --> FL110
+FL111 --> FL112 --> FL113 --> FL114 --> FL115
+FL116 --> FL117 --> FL118 --> FL119 --> FL120
+FL121 --> FL122 --> FL123 --> FL124 --> FL125
+FL126 --> FL127 --> FL128 --> FL129
+FL130 --> FL131 --> FL132 --> FL133 --> FL134
+FL135 --> FL136 --> FL137 --> FL138 --> FL139
+FL140 --> FL141 --> FL142 --> FL143 --> FL144
+FL145 --> FL146 --> FL147 --> FL148
+FL149 --> FL150 --> FL151 --> FL152
+FL153 --> FL154 --> FL155 --> FL156
+FL157 --> FL158 --> FL159 --> FL160 --> FL161
+FL162 --> FL163 --> FL164 --> FL165 --> FL166 --> FL167 --> FL168 --> FL169 --> FL170
+FL171 --> FL172 --> FL173
+FL174 --> FL175 --> FL176 --> FL177
+FL178 --> FL179 --> FL180 --> FL181
+FL182 --> FL183 --> FL184 --> FL185 --> FL186
+FL187 --> FL188 --> FL189 --> FL190
+FL191 --> FL192 --> FL193 --> FL194 --> FL195
+FL196 --> FL197 --> FL198 --> FL199
+FL200 --> FL201 --> FL202 --> FL203
+FL204 --> FL205 --> FL206 --> FL207
+FL208 --> FL209 --> FL210
+FL211 --> FL212 --> FL213 --> FL214 --> FL215
+FL216 --> FL217 --> FL218 --> FL219
+FL220 --> FL221 --> FL222 --> FL223
+FL224 --> FL225 --> FL226 --> FL227
+FL228 --> FL229 --> FL230 --> FL231
+FL232 --> FL233 --> FL234 --> FL235 --> FL236 --> FL237 --> FL238
+FL239 --> FL240 --> FL241 --> FL242

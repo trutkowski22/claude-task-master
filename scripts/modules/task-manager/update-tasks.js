@@ -1,7 +1,4 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod'; // Keep Zod for post-parsing validation
 
 import {
@@ -12,12 +9,6 @@ import {
 	isSilentMode
 } from '../utils.js';
 
-import {
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { getDebugFlag } from '../config-manager.js';
 import { getPromptManager } from '../prompt-manager.js';
@@ -330,7 +321,6 @@ async function updateTasks(
 				logFn.info(`No tasks to update (ID >= ${fromId} and not 'done').`);
 			else
 				logFn('info', `No tasks to update (ID >= ${fromId} and not 'done').`);
-			if (outputFormat === 'text') console.log(/* yellow message */);
 			return; // Nothing to do
 		}
 		// --- End Task Loading/Filtering ---
@@ -367,65 +357,6 @@ async function updateTasks(
 		}
 		// --- End Context Gathering ---
 
-		// --- Display Tasks to Update (CLI Only - Unchanged) ---
-		if (outputFormat === 'text') {
-			// Show the tasks that will be updated
-			const table = new Table({
-				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Status')
-				],
-				colWidths: [5, 70, 20]
-			});
-
-			tasksToUpdate.forEach((task) => {
-				table.push([
-					task.id,
-					truncate(task.title, 57),
-					getStatusWithColor(task.status)
-				]);
-			});
-
-			console.log(
-				boxen(chalk.white.bold(`Updating ${tasksToUpdate.length} tasks`), {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round',
-					margin: { top: 1, bottom: 0 }
-				})
-			);
-
-			console.log(table.toString());
-
-			// Display a message about how completed subtasks are handled
-			console.log(
-				boxen(
-					chalk.cyan.bold('How Completed Subtasks Are Handled:') +
-						'\n\n' +
-						chalk.white(
-							'• Subtasks marked as "done" or "completed" will be preserved\n'
-						) +
-						chalk.white(
-							'• New subtasks will build upon what has already been completed\n'
-						) +
-						chalk.white(
-							'• If completed work needs revision, a new subtask will be created instead of modifying done items\n'
-						) +
-						chalk.white(
-							'• This approach maintains a clear record of completed work and new requirements'
-						),
-					{
-						padding: 1,
-						borderColor: 'blue',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
-		}
-		// --- End Display Tasks ---
-
 		// --- Build Prompts (Using PromptManager) ---
 		// Load prompts using PromptManager
 		const promptManager = getPromptManager();
@@ -444,10 +375,6 @@ async function updateTasks(
 		let loadingIndicator = null;
 		let aiServiceResponse = null;
 
-		if (!isMCP && outputFormat === 'text') {
-			loadingIndicator = startLoadingIndicator('Updating tasks with AI...\n');
-		}
-
 		try {
 			// Determine role based on research flag
 			const serviceRole = useResearch ? 'research' : 'main';
@@ -462,9 +389,6 @@ async function updateTasks(
 				commandName: 'update-tasks',
 				outputType: isMCP ? 'mcp' : 'cli'
 			});
-
-			if (loadingIndicator)
-				stopLoadingIndicator(loadingIndicator, 'AI update complete.');
 
 			// Use the mainResult (text) for parsing
 			const parsedUpdatedTasks = parseUpdatedTasksFromText(
@@ -570,11 +494,9 @@ async function updateTasks(
 		if (isMCP) logFn.error(`Error updating tasks: ${error.message}`);
 		else logFn('error', `Error updating tasks: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
 			if (getDebugFlag(session)) {
 				console.error(error);
 			}
-			process.exit(1);
 		} else {
 			throw error; // Re-throw for MCP/programmatic callers
 		}

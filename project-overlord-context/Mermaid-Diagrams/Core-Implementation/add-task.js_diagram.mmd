@@ -1,0 +1,63 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: addTask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: addTaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments with task creation data"]
+        P2["PARAM: {Object} log - logger object for recording operations"]
+        P3["PARAM: {Object} context - additional context including session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path to tasks.json from arguments"]
+        C2["CONST: session, VALUE: session object from context destructuring"]
+        C3["CONST: mcpLog, VALUE: wrapper around log object for MCP compatibility"]
+        C4["CONST: tasksPath, VALUE: validated tasks.json file path"]
+        C5["CONST: isManualCreation, VALUE: boolean indicating manual vs AI task creation"]
+        C6["CONST: taskDependencies, VALUE: parsed array of task dependency IDs"]
+        C7["CONST: taskPriority, VALUE: task priority level with medium default"]
+        C8["CONST: manualTaskData, VALUE: structured data for manual task creation"]
+        C9["CONST: result, VALUE: return value from addTask function call"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode to prevent console interference"]
+        FL2["Validate required parameters and paths exist"]
+        FL3["Determine if manual creation or AI-driven task creation"]
+        FL4["Parse dependencies and set priority with defaults"]
+        FL5["Call addTask function with appropriate parameters"]
+        FL6["Extract task ID and telemetry data from result"]
+        FL7["Disable silent mode and return success response"]
+        FL8["Handle errors by disabling silent mode and returning error"]
+    end
+    
+    subgraph FileName["add-task.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL5 --> FL8
+```

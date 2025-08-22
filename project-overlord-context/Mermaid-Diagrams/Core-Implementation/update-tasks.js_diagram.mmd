@@ -1,0 +1,75 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: node.js path module"]
+        I2["IMPORT: updateTasks, FROM: /scripts/modules/task-manager.js"]
+        I3["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+        I4["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task management system for bulk task updates"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Logger wrapper utilities for core function compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: updateTasksDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: updateTasksDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing bulk update information"]
+        P2["PARAM: {string} args.from - starting task ID for bulk updates"]
+        P3["PARAM: {string} args.prompt - update prompt to apply to tasks"]
+        P4["PARAM: {boolean} args.research - use research mode flag"]
+        P5["PARAM: {string} args.tasksJsonPath - path to tasks.json file"]
+        P6["PARAM: {string} args.projectRoot - project root path"]
+        P7["PARAM: {string} args.tag - tag for task context"]
+        P8["PARAM: {Object} log - logger object for operation tracking"]
+        P9["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: from, VALUE: starting task ID from args"]
+        C3["CONST: prompt, VALUE: update prompt from args"]
+        C4["CONST: research, VALUE: research flag from args"]
+        C5["CONST: tasksJsonPath, VALUE: tasks file path from args"]
+        C6["CONST: projectRoot, VALUE: project root path from args"]
+        C7["CONST: tag, VALUE: tag context from args"]
+        C8["CONST: logWrapper, VALUE: wrapped logger for core functions"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Create logger wrapper for core function compatibility"]
+        FL2["Validate required parameters - projectRoot, from, prompt"]
+        FL3["Enable silent mode for MCP JSON response compatibility"]
+        FL4["Call core updateTasks function with all parameters"]
+        FL5["Validate core function result structure and updated tasks count"]
+        FL6["Disable silent mode and return success with update statistics"]
+        FL7["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["update-tasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL2 --> FL7
+    FL4 --> FL7
+```

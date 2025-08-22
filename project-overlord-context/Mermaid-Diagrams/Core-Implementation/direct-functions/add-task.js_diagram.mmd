@@ -1,0 +1,71 @@
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: addTask, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: addTaskDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: addTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Command arguments"]
+        P2["PARAM: {string} args.prompt - Description of the task to add (required if not using manual fields)"]
+        P3["PARAM: {string} args.title - Task title (for manual task creation)"]
+        P4["PARAM: {string} args.description - Task description (for manual task creation)"]
+        P5["PARAM: {string} args.details - Implementation details (for manual task creation)"]
+        P6["PARAM: {string} args.testStrategy - Test strategy (for manual task creation)"]
+        P7["PARAM: {string} args.dependencies - Comma-separated list of task IDs this task depends on"]
+        P8["PARAM: {string} args.priority - Task priority (high, medium, low), default: medium"]
+        P9["PARAM: {string} args.tasksJsonPath - Path to the tasks.json file"]
+        P10["PARAM: {boolean} args.research - Whether to use research capabilities for task creation, default: false"]
+        P11["PARAM: {string} args.projectRoot - Project root path"]
+        P12["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P13["PARAM: {Object} log - Logger object"]
+        P14["PARAM: {Object} context - Additional context including session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: provided tasksJsonPath argument"]
+        C2["CONST: mcpLog, VALUE: MCP-compatible logger wrapper"]
+        C3["CONST: isManualCreation, VALUE: boolean indicating if title and description provided"]
+        C4["CONST: taskDependencies, VALUE: parsed dependencies array from string or direct array"]
+        C5["CONST: taskPriority, VALUE: priority value with 'medium' default"]
+        C6["CONST: manualTaskData, VALUE: object containing manual task creation details"]
+        C7["CONST: result, VALUE: return value from addTask function call"]
+        C8["CONST: newTaskId, VALUE: ID of newly created task"]
+        C9["CONST: telemetryData, VALUE: tracking data from task creation"]
+        C10["CONST: tagInfo, VALUE: tag information for created task"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode to prevent console output interference"]
+        FL2["Validate required argument tasksJsonPath is provided"]
+        FL3["Determine if manual task creation (title + description) or AI-driven (prompt)"]
+        FL4["Parse dependencies from string to array of integers if provided"]
+        FL5["Branch execution: manual task creation or AI-driven task creation"]
+        FL6["Call core addTask function with appropriate parameters and context"]
+        FL7["Disable silent mode and return success response with task data"]
+    end
+    
+    subgraph addTaskDirectFunc["add-task.js"]
+        Imports
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7

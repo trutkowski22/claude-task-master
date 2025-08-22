@@ -1,15 +1,7 @@
-import chalk from 'chalk';
-import boxen from 'boxen';
 import readline from 'readline';
 import fs from 'fs';
 
 import { log, readJSON, writeJSON, isSilentMode } from '../utils.js';
-
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { generateTextService } from '../ai-services-unified.js';
 
@@ -123,14 +115,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 		reportLog
 	);
 
-	if (outputFormat === 'text') {
-		console.log(
-			chalk.blue(
-				'Analyzing task complexity and generating expansion recommendations...'
-			)
-		);
-	}
-
 	try {
 		reportLog(`Reading tasks from ${tasksPath}...`, 'info');
 		let tasksData;
@@ -177,26 +161,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 				filteredTasks = filteredTasks.filter((task) =>
 					specificIds.includes(task.id)
 				);
-
-				if (outputFormat === 'text') {
-					if (filteredTasks.length === 0 && specificIds.length > 0) {
-						console.log(
-							chalk.yellow(
-								`Warning: No active tasks found with IDs: ${specificIds.join(', ')}`
-							)
-						);
-					} else if (filteredTasks.length < specificIds.length) {
-						const foundIds = filteredTasks.map((t) => t.id);
-						const missingIds = specificIds.filter(
-							(id) => !foundIds.includes(id)
-						);
-						console.log(
-							chalk.yellow(
-								`Warning: Some requested task IDs were not found or are not active: ${missingIds.join(', ')}`
-							)
-						);
-					}
-				}
 			}
 			// Apply range filtering if specified
 			else if (fromId !== null || toId !== null) {
@@ -213,14 +177,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 				filteredTasks = filteredTasks.filter(
 					(task) => task.id >= effectiveFromId && task.id <= effectiveToId
 				);
-
-				if (outputFormat === 'text' && filteredTasks.length === 0) {
-					console.log(
-						chalk.yellow(
-							`Warning: No active tasks found in range: ${effectiveFromId}-${effectiveToId}`
-						)
-					);
-				}
 			}
 
 			tasksData = {
@@ -278,15 +234,9 @@ async function analyzeTaskComplexity(options, context = {}) {
 				: `Analyzing ${tasksData.tasks.length} tasks in range: ${fromId || 1} to ${toId || 'end'}`;
 
 			reportLog(filterMsg, 'info');
-			if (outputFormat === 'text') {
-				console.log(chalk.blue(filterMsg));
-			}
 		} else if (skippedCount > 0) {
 			const skipMessage = `Skipping ${skippedCount} tasks marked as done/cancelled/deferred. Analyzing ${tasksData.tasks.length} active tasks.`;
 			reportLog(skipMessage, 'info');
-			if (outputFormat === 'text') {
-				console.log(chalk.yellow(skipMessage));
-			}
 		}
 
 		// Check for existing report before doing analysis
@@ -328,13 +278,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 					'No matching tasks found for analysis. Keeping existing report.',
 					'info'
 				);
-				if (outputFormat === 'text') {
-					console.log(
-						chalk.yellow(
-							'No matching tasks found for analysis. Keeping existing report.'
-						)
-					);
-				}
 				return {
 					report: existingReport,
 					telemetryData: null
@@ -362,48 +305,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 				`Task complexity analysis complete. Report written to ${outputPath}`,
 				'success'
 			);
-			if (outputFormat === 'text') {
-				console.log(
-					chalk.green(
-						`Task complexity analysis complete. Report written to ${outputPath}`
-					)
-				);
-				const highComplexity = 0;
-				const mediumComplexity = 0;
-				const lowComplexity = 0;
-				const totalAnalyzed = 0;
-
-				console.log('\nComplexity Analysis Summary:');
-				console.log('----------------------------');
-				console.log(`Tasks in input file: ${originalTaskCount}`);
-				console.log(`Tasks successfully analyzed: ${totalAnalyzed}`);
-				console.log(`High complexity tasks: ${highComplexity}`);
-				console.log(`Medium complexity tasks: ${mediumComplexity}`);
-				console.log(`Low complexity tasks: ${lowComplexity}`);
-				console.log(
-					`Sum verification: ${highComplexity + mediumComplexity + lowComplexity} (should equal ${totalAnalyzed})`
-				);
-				console.log(`Research-backed analysis: ${useResearch ? 'Yes' : 'No'}`);
-				console.log(
-					`\nSee ${outputPath} for the full report and expansion commands.`
-				);
-
-				console.log(
-					boxen(
-						chalk.white.bold('Suggested Next Steps:') +
-							'\n\n' +
-							`${chalk.cyan('1.')} Run ${chalk.yellow('task-master complexity-report')} to review detailed findings\n` +
-							`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down complex tasks\n` +
-							`${chalk.cyan('3.')} Run ${chalk.yellow('task-master expand --all')} to expand all pending tasks based on complexity`,
-						{
-							padding: 1,
-							borderColor: 'cyan',
-							borderStyle: 'round',
-							margin: { top: 1 }
-						}
-					)
-				);
-			}
 			return {
 				report: emptyReport,
 				telemetryData: null
@@ -434,13 +335,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 			'default'
 		);
 
-		let loadingIndicator = null;
-		if (outputFormat === 'text') {
-			loadingIndicator = startLoadingIndicator(
-				`${useResearch ? 'Researching' : 'Analyzing'} the complexity of your tasks with AI...\n`
-			);
-		}
-
 		let aiServiceResponse = null;
 		let complexityAnalysis = null;
 
@@ -456,18 +350,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 				commandName: 'analyze-complexity',
 				outputType: mcpLog ? 'mcp' : 'cli'
 			});
-
-			if (loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-				loadingIndicator = null;
-			}
-			if (outputFormat === 'text') {
-				readline.clearLine(process.stdout, 0);
-				readline.cursorTo(process.stdout, 0);
-				console.log(
-					chalk.green('AI service call complete. Parsing response...')
-				);
-			}
 
 			reportLog('Parsing complexity analysis from text response...', 'info');
 			try {
@@ -495,30 +377,12 @@ async function analyzeTaskComplexity(options, context = {}) {
 					}
 				}
 
-				if (outputFormat === 'text' && getDebugFlag(session)) {
-					console.log(chalk.gray('Attempting to parse cleaned JSON...'));
-					console.log(chalk.gray('Cleaned response (first 100 chars):'));
-					console.log(chalk.gray(cleanedResponse.substring(0, 100)));
-					console.log(chalk.gray('Last 100 chars:'));
-					console.log(
-						chalk.gray(cleanedResponse.substring(cleanedResponse.length - 100))
-					);
-				}
-
 				complexityAnalysis = JSON.parse(cleanedResponse);
 			} catch (parseError) {
-				if (loadingIndicator) stopLoadingIndicator(loadingIndicator);
 				reportLog(
 					`Error parsing complexity analysis JSON: ${parseError.message}`,
 					'error'
 				);
-				if (outputFormat === 'text') {
-					console.error(
-						chalk.red(
-							`Error parsing complexity analysis JSON: ${parseError.message}`
-						)
-					);
-				}
 				throw parseError;
 			}
 
@@ -533,13 +397,6 @@ async function analyzeTaskComplexity(options, context = {}) {
 					`Missing analysis for ${missingTaskIds.length} tasks: ${missingTaskIds.join(', ')}`,
 					'warn'
 				);
-				if (outputFormat === 'text') {
-					console.log(
-						chalk.yellow(
-							`Missing analysis for ${missingTaskIds.length} tasks: ${missingTaskIds.join(', ')}`
-						)
-					);
-				}
 				for (const missingId of missingTaskIds) {
 					const missingTask = tasksData.tasks.find((t) => t.id === missingId);
 					if (missingTask) {
@@ -611,112 +468,19 @@ async function analyzeTaskComplexity(options, context = {}) {
 				'success'
 			);
 
-			if (outputFormat === 'text') {
-				console.log(
-					chalk.green(
-						`Task complexity analysis complete. Report written to ${outputPath}`
-					)
-				);
-				// Calculate statistics specifically for this analysis run
-				const highComplexity = complexityAnalysis.filter(
-					(t) => t.complexityScore >= 8
-				).length;
-				const mediumComplexity = complexityAnalysis.filter(
-					(t) => t.complexityScore >= 5 && t.complexityScore < 8
-				).length;
-				const lowComplexity = complexityAnalysis.filter(
-					(t) => t.complexityScore < 5
-				).length;
-				const totalAnalyzed = complexityAnalysis.length;
-
-				console.log('\nCurrent Analysis Summary:');
-				console.log('----------------------------');
-				console.log(`Tasks analyzed in this run: ${totalAnalyzed}`);
-				console.log(`High complexity tasks: ${highComplexity}`);
-				console.log(`Medium complexity tasks: ${mediumComplexity}`);
-				console.log(`Low complexity tasks: ${lowComplexity}`);
-
-				if (existingReport) {
-					console.log('\nUpdated Report Summary:');
-					console.log('----------------------------');
-					console.log(
-						`Total analyses in report: ${finalComplexityAnalysis.length}`
-					);
-					console.log(
-						`Analyses from previous runs: ${finalComplexityAnalysis.length - totalAnalyzed}`
-					);
-					console.log(`New/updated analyses: ${totalAnalyzed}`);
-				}
-
-				console.log(`Research-backed analysis: ${useResearch ? 'Yes' : 'No'}`);
-				console.log(
-					`\nSee ${outputPath} for the full report and expansion commands.`
-				);
-
-				console.log(
-					boxen(
-						chalk.white.bold('Suggested Next Steps:') +
-							'\n\n' +
-							`${chalk.cyan('1.')} Run ${chalk.yellow('task-master complexity-report')} to review detailed findings\n` +
-							`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down complex tasks\n` +
-							`${chalk.cyan('3.')} Run ${chalk.yellow('task-master expand --all')} to expand all pending tasks based on complexity`,
-						{
-							padding: 1,
-							borderColor: 'cyan',
-							borderStyle: 'round',
-							margin: { top: 1 }
-						}
-					)
-				);
-
-				if (getDebugFlag(session)) {
-					console.debug(
-						chalk.gray(
-							`Final analysis object: ${JSON.stringify(report, null, 2)}`
-						)
-					);
-				}
-
-				if (aiServiceResponse.telemetryData) {
-					displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-				}
-			}
-
 			return {
 				report: report,
 				telemetryData: aiServiceResponse?.telemetryData,
 				tagInfo: aiServiceResponse?.tagInfo
 			};
 		} catch (aiError) {
-			if (loadingIndicator) stopLoadingIndicator(loadingIndicator);
 			reportLog(`Error during AI service call: ${aiError.message}`, 'error');
-			if (outputFormat === 'text') {
-				console.error(
-					chalk.red(`Error during AI service call: ${aiError.message}`)
-				);
-				if (aiError.message.includes('API key')) {
-					console.log(
-						chalk.yellow(
-							'\nPlease ensure your API keys are correctly configured in .env or ~/.taskmaster/.env'
-						)
-					);
-					console.log(
-						chalk.yellow("Run 'task-master models --setup' if needed.")
-					);
-				}
-			}
 			throw aiError;
 		}
 	} catch (error) {
 		reportLog(`Error analyzing task complexity: ${error.message}`, 'error');
 		if (outputFormat === 'text') {
-			console.error(
-				chalk.red(`Error analyzing task complexity: ${error.message}`)
-			);
-			if (getDebugFlag(session)) {
-				console.error(error);
-			}
-			process.exit(1);
+			throw error;
 		} else {
 			throw error;
 		}

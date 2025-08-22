@@ -1,0 +1,44 @@
+```mermaid
+graph TB
+    subgraph "add-tag.js"
+        subgraph "Imports"
+            createTag["createTag<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            createTagFromBranch["createTagFromBranch<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            addTagDirect["addTagDirect(args, log, context)<br/>Direct function wrapper for creating a new tag with error handling"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- name: string (name of new tag)<br/>- copyFromCurrent?: boolean (copy from current tag)<br/>- copyFromTag?: string (specific tag to copy from)<br/>- fromBranch?: boolean (create from git branch)<br/>- description?: string (optional description)<br/>- tasksJsonPath?: string (path to tasks.json)<br/>- projectRoot?: string (project root path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Additional context with session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            checkFromBranch["Check if fromBranch option is enabled"]
+            validateGitRepo["Validate git repository (if fromBranch)"]
+            getCurrentBranch["Get current git branch (if fromBranch)"]
+            validateTagName["Validate tag name (if regular creation)"]
+            enableSilent["Enable silent mode"]
+            createLogWrap["Create logger wrapper"]
+            prepareOptions["Prepare creation options"]
+            callCoreFunction["Call core tag creation function"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result"]
+        end
+
+        subgraph "Dynamic Imports"
+            gitUtils["Git utilities (dynamically imported)"]
+        end
+
+        subgraph "Exports"
+            ExportAddTagDirect["addTagDirect"]
+        end
+    end
+```

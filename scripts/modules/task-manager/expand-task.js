@@ -10,12 +10,6 @@ import {
 	getTagAwareFilePath
 } from '../utils.js';
 
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
-
 import { generateTextService } from '../ai-services-unified.js';
 
 import {
@@ -610,15 +604,6 @@ async function expandTask(
 		writeJSON(tasksPath, data, projectRoot, tag);
 		// await generateTaskFiles(tasksPath, path.dirname(tasksPath));
 
-		// Display AI Usage Summary for CLI
-		if (
-			outputFormat === 'text' &&
-			aiServiceResponse &&
-			aiServiceResponse.telemetryData
-		) {
-			displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-		}
-
 		// Return the updated task object AND telemetry data
 		return {
 			task,
@@ -628,9 +613,7 @@ async function expandTask(
 	} catch (error) {
 		// Catches errors from file reading, parsing, AI call etc.
 		logger.error(`Error expanding task ${taskId}: ${error.message}`, 'error');
-		if (outputFormat === 'text' && getDebugFlag(session)) {
-			console.error(error); // Log full stack in debug CLI mode
-		}
+		// Debug logging handled by logger
 		throw error; // Re-throw for the caller
 	}
 }

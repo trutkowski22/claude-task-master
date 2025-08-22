@@ -11,27 +11,28 @@
 **Key DIRECTORY/FILE NAMES:claude-task-master\project-overlord-context\Mermaid-Diagrams
 MCP_INTERFACE_DIRECTORY: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\MCP-Interface\
 
-MCP_INTERFACE_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\MCP-Interface\MCP-Interface-Master.mmd
+MCP_INTERFACE_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Master-Diagrams\MCP-Interface-Master.mmd
 
 CORE_IMPLEMENTATION_DIRECTORY: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Core-Implementation\
 
-CORE_IMPLEMENTATION_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Core-Implementation\Core-Implementation-Master.mmd
+CORE_IMPLEMENTATION_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Master-Diagrams\Core-Implementation-Master.mmd
 
 TASK_MANAGER_DIRECTORY:.\claude-task-master\project-overlord-context\Mermaid-Diagrams\Task-Manager\
 
-TASK_MANAGER_MASTER:.\claude-task-master\project-overlord-context\Mermaid-Diagrams\Task-Manager\Task-Manager-Master.mmd
+TASK_MANAGER_MASTER:.\claude-task-master\project-overlord-context\Mermaid-Diagrams\Master-Diagrams\Task-Manager-Master.mmd
 
 SHARED_INFRASTRUCTURE_DIRECTORY: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Shared-Infrastructure\
 
-SHARED_INFRASTRUCTURE_MASTER:.\claude-task-master\project-overlord-context\Mermaid-Diagrams\Shared-Infrastructure-Layer\Shared-Infrastructure-Master.mmd
+SHARED_INFRASTRUCTURE_MASTER:.\claude-task-master\project-overlord-context\Mermaid-Diagrams\Master-Diagrams\Shared-Infrastructure-Master.mmd
 
-SYSTEM_ARCHITECTURE_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\System-Architecture-Master.mmd
+SYSTEM_ARCHITECTURE_MASTER: .\claude-task-master\project-overlord-context\Mermaid-Diagrams\Master-Diagrams\System-Architecture-Master.mmd
 
 1. `mcp-interface-master.mmd` - All MCP wrapper tools
 2. `core-implementation-master.mmd` - All direct function implementations  
 3. `task-manager-master.mmd` - All core business logic
 4. `shared-infrastructure-master.mmd` - Common utilities and constants
 5. `system-architecture-overview.mmd` - How layers connect
+
 ## What We've Accomplished
 
 ### 1. Comprehensive Instructions Document ✅
@@ -153,213 +154,213 @@ CLAUDE-TASK-MASTER
  ┃  ┃  ┣ src
  ┃  ┃  ┃  ┣ core
  ┃  ┃  ┃  ┃  ┣ direct-functions
- ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ models.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ research.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ rules.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ show-task.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
- ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
+ ┃  ┃  ┃  ┃  ┃  ┣ add-dependency.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ add-subtask.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ add-task.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ cache-stats.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ complexity-report.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ copy-tag.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ create-tag-from-branch.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ delete-tag.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js
+ ┃  ┃  ┃  ┃  ┃  ┣ expand-task.js
+ ┃  ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
+ ┃  ┃  ┃  ┃  ┃  ┣ generate-task-files.js
+ ┃  ┃  ┃  ┃  ┃  ┣ initialize-project.js
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tags.js
+ ┃  ┃  ┃  ┃  ┃  ┣ list-tasks.js 
+ ┃  ┃  ┃  ┃  ┃  ┣ models.js
+ ┃  ┃  ┃  ┃  ┃  ┣ move-task.js
+ ┃  ┃  ┃  ┃  ┃  ┣ next-task.js
+ ┃  ┃  ┃  ┃  ┃  ┣ parse-prd.js
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-dependency.js
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-subtask.js
+ ┃  ┃  ┃  ┃  ┃  ┣ remove-task.js
+ ┃  ┃  ┃  ┃  ┃  ┣ rename-tag.js
+ ┃  ┃  ┃  ┃  ┃  ┣ research.js
+ ┃  ┃  ┃  ┃  ┃  ┣ response-language.js
+ ┃  ┃  ┃  ┃  ┃  ┣ rules.js
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-down.js
+ ┃  ┃  ┃  ┃  ┃  ┣ scope-up.js
+ ┃  ┃  ┃  ┃  ┃  ┣ set-task-status.js
+ ┃  ┃  ┃  ┃  ┃  ┣ show-task.js
+ ┃  ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js
+ ┃  ┃  ┃  ┃  ┃  ┣ update-task-by-id.js
+ ┃  ┃  ┃  ┃  ┃  ┣ update-tasks.js
+ ┃  ┃  ┃  ┃  ┃  ┣ use-tag.js
+ ┃  ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
  ┃  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js  - DONE
- ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js - DONE
- ┃  ┃  ┃  ┃  ┣ context-manager.js  - DONE
- ┃  ┃  ┃  ┃  ┗ task-master-core.js  - DONE
+ ┃  ┃  ┃  ┃  ┃  ┃  ┣ env-utils.js 
+ ┃  ┃  ┃  ┃  ┃  ┗ path-utils.js
+ ┃  ┃  ┃  ┃  ┣ context-manager.js 
+ ┃  ┃  ┃  ┃  ┗ task-master-core.js 
  ┃  ┃  ┃  ┣ custom-sdk
- ┃  ┃  ┃  ┃  ┣ errors.js - DONE
- ┃  ┃  ┃  ┃  ┣ index.js - DONE
- ┃  ┃  ┃  ┃  ┣ json-extractor.js - DONE
- ┃  ┃  ┃  ┃  ┣ language-model.js - DONE
- ┃  ┃  ┃  ┃  ┣ message-converter.js - DONE
- ┃  ┃  ┃  ┃  ┗ schema-converter.js - DONE
+ ┃  ┃  ┃  ┃  ┣ errors.js
+ ┃  ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┃  ┣ json-extractor.js
+ ┃  ┃  ┃  ┃  ┣ language-model.js
+ ┃  ┃  ┃  ┃  ┣ message-converter.js
+ ┃  ┃  ┃  ┃  ┗ schema-converter.js
  ┃  ┃  ┃  ┣ providers
- ┃  ┃  ┃  ┃  ┗ mcp-provider.js - DONE
+ ┃  ┃  ┃  ┃  ┗ mcp-provider.js
  ┃  ┃  ┃  ┣ tools
- ┃  ┃  ┃  ┃  ┣ add-dependency.js  - DONE
- ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
- ┃  ┃  ┃  ┃  ┣ add-tag.js  - DONE
- ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
- ┃  ┃  ┃  ┃  ┣ analyze.js  - DONE
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
- ┃  ┃  ┃  ┃  ┣ complexity-report.js  - DONE
- ┃  ┃  ┃  ┃  ┣ copy-tag.js  - DONE
- ┃  ┃  ┃  ┃  ┣ delete-tag.js  - DONE
- ┃  ┃  ┃  ┃  ┣ expand-all.js  - DONE
- ┃  ┃  ┃  ┃  ┣ expand-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ fix-dependencies.js - DONE
- ┃  ┃  ┃  ┃  ┣ generate.js - DONE
- ┃  ┃  ┃  ┃  ┣ get-operation-status.js - DONE
- ┃  ┃  ┃  ┃  ┣ get-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ get-tasks.js  - DONE
- ┃  ┃  ┃  ┃  ┣ index.js  - DONE
- ┃  ┃  ┃  ┃  ┣ initialize-project.js - DONE
- ┃  ┃  ┃  ┃  ┣ list-tags.js - DONE
- ┃  ┃  ┃  ┃  ┣ models.js - DONE
- ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ next-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
- ┃  ┃  ┃  ┃  ┣ remove-dependency.js - DONE
- ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
- ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ rename-tag.js - DONE
- ┃  ┃  ┃  ┃  ┣ research.js - DONE
- ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
- ┃  ┃  ┃  ┃  ┣ rules.js - DONE
- ┃  ┃  ┃  ┃  ┣ scope-down.js - DONE
- ┃  ┃  ┃  ┃  ┣ scope-up.js - DONE
- ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
- ┃  ┃  ┃  ┃  ┣ update-subtask.js - DONE
- ┃  ┃  ┃  ┃  ┣ update-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ update.js - DONE
- ┃  ┃  ┃  ┃  ┣ use-tag.js - DONE
- ┃  ┃  ┃  ┃  ┣ utils.js  - DONE
- ┃  ┃  ┃  ┃  ┗ validate-dependencies.js - DONE
- ┃  ┃  ┃  ┣ index.js - DONE
- ┃  ┃  ┃  ┗ logger.js - DONE
- ┃  ┃  ┗ server.js - DONE 
+ ┃  ┃  ┃  ┃  ┣ add-dependency.js 
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js 
+ ┃  ┃  ┃  ┃  ┣ add-tag.js 
+ ┃  ┃  ┃  ┃  ┣ add-task.js 
+ ┃  ┃  ┃  ┃  ┣ analyze.js 
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
+ ┃  ┃  ┃  ┃  ┣ complexity-report.js 
+ ┃  ┃  ┃  ┃  ┣ copy-tag.js 
+ ┃  ┃  ┃  ┃  ┣ delete-tag.js 
+ ┃  ┃  ┃  ┃  ┣ expand-all.js 
+ ┃  ┃  ┃  ┃  ┣ expand-task.js
+ ┃  ┃  ┃  ┃  ┣ fix-dependencies.js
+ ┃  ┃  ┃  ┃  ┣ generate.js
+ ┃  ┃  ┃  ┃  ┣ get-operation-status.js
+ ┃  ┃  ┃  ┃  ┣ get-task.js
+ ┃  ┃  ┃  ┃  ┣ get-tasks.js 
+ ┃  ┃  ┃  ┃  ┣ index.js 
+ ┃  ┃  ┃  ┃  ┣ initialize-project.js
+ ┃  ┃  ┃  ┃  ┣ list-tags.js
+ ┃  ┃  ┃  ┃  ┣ models.js
+ ┃  ┃  ┃  ┃  ┣ move-task.js
+ ┃  ┃  ┃  ┃  ┣ next-task.js
+ ┃  ┃  ┃  ┃  ┣ parse-prd.js
+ ┃  ┃  ┃  ┃  ┣ remove-dependency.js
+ ┃  ┃  ┃  ┃  ┣ remove-subtask.js
+ ┃  ┃  ┃  ┃  ┣ remove-task.js
+ ┃  ┃  ┃  ┃  ┣ rename-tag.js
+ ┃  ┃  ┃  ┃  ┣ research.js
+ ┃  ┃  ┃  ┃  ┣ response-language.js
+ ┃  ┃  ┃  ┃  ┣ rules.js
+ ┃  ┃  ┃  ┃  ┣ scope-down.js
+ ┃  ┃  ┃  ┃  ┣ scope-up.js
+ ┃  ┃  ┃  ┃  ┣ set-task-status.js
+ ┃  ┃  ┃  ┃  ┣ update-subtask.js
+ ┃  ┃  ┃  ┃  ┣ update-task.js
+ ┃  ┃  ┃  ┃  ┣ update.js
+ ┃  ┃  ┃  ┃  ┣ use-tag.js
+ ┃  ┃  ┃  ┃  ┣ utils.js 
+ ┃  ┃  ┃  ┃  ┗ validate-dependencies.js
+ ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┗ logger.js
+ ┃  ┃  ┗ server.js 
  ┃  ┣ scripts
  ┃  ┃  ┣ modules
  ┃  ┃  ┃  ┣ task-manager
- ┃  ┃  ┃  ┃  ┣ add-subtask.js  - DONE
- ┃  ┃  ┃  ┃  ┣ add-task.js  - DONE
- ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js  - DONE
- ┃  ┃  ┃  ┃  ┣ clear-subtasks.js  - DONE
- ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js  - DONE
- ┃  ┃  ┃  ┃  ┣ expand-task.js  - DONE
- ┃  ┃  ┃  ┃  ┣ find-next-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ generate-task-files.js - DONE
- ┃  ┃  ┃  ┃  ┣ is-task-dependent.js - DONE
- ┃  ┃  ┃  ┃  ┣ list-tasks.js  - DONE
- ┃  ┃  ┃  ┃  ┣ migrate.js - DONE
- ┃  ┃  ┃  ┃  ┣ models.js - DONE
- ┃  ┃  ┃  ┃  ┣ move-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ parse-prd.js - DONE
- ┃  ┃  ┃  ┃  ┣ remove-subtask.js - DONE
- ┃  ┃  ┃  ┃  ┣ remove-task.js - DONE
- ┃  ┃  ┃  ┃  ┣ research.js - DONE
- ┃  ┃  ┃  ┃  ┣ response-language.js - DONE
- ┃  ┃  ┃  ┃  ┣ scope-adjustment.js - DONE
- ┃  ┃  ┃  ┃  ┣ set-task-status.js - DONE
- ┃  ┃  ┃  ┃  ┣ tag-management.js - DONE
- ┃  ┃  ┃  ┃  ┣ task-exists.js - DONE
- ┃  ┃  ┃  ┃  ┣ update-single-task-status.js - DONE
- ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js - DONE
- ┃  ┃  ┃  ┃  ┣ update-task-by-id.js - DONE
- ┃  ┃  ┃  ┃  ┗ update-tasks.js - DONE
+ ┃  ┃  ┃  ┃  ┣ add-subtask.js 
+ ┃  ┃  ┃  ┃  ┣ add-task.js 
+ ┃  ┃  ┃  ┃  ┣ analyze-task-complexity.js 
+ ┃  ┃  ┃  ┃  ┣ clear-subtasks.js 
+ ┃  ┃  ┃  ┃  ┣ expand-all-tasks.js 
+ ┃  ┃  ┃  ┃  ┣ expand-task.js 
+ ┃  ┃  ┃  ┃  ┣ find-next-task.js
+ ┃  ┃  ┃  ┃  ┣ generate-task-files.js
+ ┃  ┃  ┃  ┃  ┣ is-task-dependent.js
+ ┃  ┃  ┃  ┃  ┣ list-tasks.js 
+ ┃  ┃  ┃  ┃  ┣ migrate.js
+ ┃  ┃  ┃  ┃  ┣ models.js
+ ┃  ┃  ┃  ┃  ┣ move-task.js
+ ┃  ┃  ┃  ┃  ┣ parse-prd.js
+ ┃  ┃  ┃  ┃  ┣ remove-subtask.js
+ ┃  ┃  ┃  ┃  ┣ remove-task.js
+ ┃  ┃  ┃  ┃  ┣ research.js
+ ┃  ┃  ┃  ┃  ┣ response-language.js
+ ┃  ┃  ┃  ┃  ┣ scope-adjustment.js
+ ┃  ┃  ┃  ┃  ┣ set-task-status.js
+ ┃  ┃  ┃  ┃  ┣ tag-management.js
+ ┃  ┃  ┃  ┃  ┣ task-exists.js
+ ┃  ┃  ┃  ┃  ┣ update-single-task-status.js
+ ┃  ┃  ┃  ┃  ┣ update-subtask-by-id.js
+ ┃  ┃  ┃  ┃  ┣ update-task-by-id.js
+ ┃  ┃  ┃  ┃  ┗ update-tasks.js
  ┃  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┃  ┣ contextGatherer.js - DONE
- ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js - DONE
- ┃  ┃  ┃  ┃  ┗ git-utils.js - DONE
- ┃  ┃  ┃  ┣ ai-services-unified.js  - DONE
- ┃  ┃  ┃  ┣ commands.js  - DONE
- ┃  ┃  ┃  ┣ config-manager.js  - DONE
- ┃  ┃  ┃  ┣ dependency-manager.js  - DONE
- ┃  ┃  ┃  ┣ index.js  - DONE
- ┃  ┃  ┃  ┣ prompt-manager.js  - DONE
- ┃  ┃  ┃  ┣ supported-models.json - DONE
- ┃  ┃  ┃  ┣ sync-readme.js - DONE
- ┃  ┃  ┃  ┣ task-manager.js  - DONE
- ┃  ┃  ┃  ┣ ui.js  - DONE
- ┃  ┃  ┃  ┣ update-config-tokens.js - DONE
- ┃  ┃  ┃  ┗ utils.js  - DONE
- ┃  ┃  ┣ dev.js  - DONE
- ┃  ┃  ┣ init.js  - DONE
- ┃  ┃  ┗ task-complexity-report.json - DONE
+ ┃  ┃  ┃  ┃  ┣ contextGatherer.js
+ ┃  ┃  ┃  ┃  ┣ fuzzyTaskSearch.js
+ ┃  ┃  ┃  ┃  ┗ git-utils.js
+ ┃  ┃  ┃  ┣ ai-services-unified.js 
+ ┃  ┃  ┃  ┣ commands.js 
+ ┃  ┃  ┃  ┣ config-manager.js 
+ ┃  ┃  ┃  ┣ dependency-manager.js 
+ ┃  ┃  ┃  ┣ index.js 
+ ┃  ┃  ┃  ┣ prompt-manager.js 
+ ┃  ┃  ┃  ┣ supported-models.json
+ ┃  ┃  ┃  ┣ sync-readme.js
+ ┃  ┃  ┃  ┣ task-manager.js 
+ ┃  ┃  ┃  ┣ ui.js 
+ ┃  ┃  ┃  ┣ update-config-tokens.js
+ ┃  ┃  ┃  ┗ utils.js 
+ ┃  ┃  ┣ dev.js 
+ ┃  ┃  ┣ init.js 
+ ┃  ┃  ┗ task-complexity-report.json
  ┃  ┣ src
  ┃  ┃  ┣ ai-providers
  ┃  ┃  ┃  ┣ custom-sdk
  ┃  ┃  ┃  ┃  ┗ claude-code
- ┃  ┃  ┃  ┃     ┣ errors.js - DONE
- ┃  ┃  ┃  ┃     ┣ index.js - DONE
- ┃  ┃  ┃  ┃     ┣ json-extractor.js - DONE
- ┃  ┃  ┃  ┃     ┣ language-model.js - DONE
- ┃  ┃  ┃  ┃     ┣ message-converter.js - DONE
- ┃  ┃  ┃  ┃     ┗ types.js - DONE
- ┃  ┃  ┃  ┣ anthropic.js - DONE
- ┃  ┃  ┃  ┣ base-provider.js - DONE
- ┃  ┃  ┃  ┣ claude-code.js - DONE
- ┃  ┃  ┃  ┣ gemini-cli.js - DONE
- ┃  ┃  ┃  ┣ google-vertex.js - DONE
- ┃  ┃  ┃  ┣ google.js - DONE
- ┃  ┃  ┃  ┣ index.js - DONE
- ┃  ┃  ┃  ┣ ollama.js - DONE
- ┃  ┃  ┃  ┣ openai.js - DONE
- ┃  ┃  ┃  ┣ openrouter.js - DONE
- ┃  ┃  ┃  ┗ perplexity.js - DONE
+ ┃  ┃  ┃  ┃     ┣ errors.js
+ ┃  ┃  ┃  ┃     ┣ index.js
+ ┃  ┃  ┃  ┃     ┣ json-extractor.js
+ ┃  ┃  ┃  ┃     ┣ language-model.js
+ ┃  ┃  ┃  ┃     ┣ message-converter.js
+ ┃  ┃  ┃  ┃     ┗ types.js
+ ┃  ┃  ┃  ┣ anthropic.js
+ ┃  ┃  ┃  ┣ base-provider.js
+ ┃  ┃  ┃  ┣ claude-code.js
+ ┃  ┃  ┃  ┣ gemini-cli.js
+ ┃  ┃  ┃  ┣ google-vertex.js
+ ┃  ┃  ┃  ┣ google.js
+ ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┣ ollama.js
+ ┃  ┃  ┃  ┣ openai.js
+ ┃  ┃  ┃  ┣ openrouter.js
+ ┃  ┃  ┃  ┗ perplexity.js
  ┃  ┃  ┣ constants
- ┃  ┃  ┃  ┣ commands.js - DONE
- ┃  ┃  ┃  ┣ paths.js - DONE
- ┃  ┃  ┃  ┣ profiles.js - DONE
- ┃  ┃  ┃  ┣ providers.js - DONE
- ┃  ┃  ┃  ┣ rules-actions.js - DONE
- ┃  ┃  ┃  ┣ task-priority.js - DONE
- ┃  ┃  ┃  ┗ task-status.js - DONE 
+ ┃  ┃  ┃  ┣ commands.js
+ ┃  ┃  ┃  ┣ paths.js
+ ┃  ┃  ┃  ┣ profiles.js
+ ┃  ┃  ┃  ┣ providers.js
+ ┃  ┃  ┃  ┣ rules-actions.js
+ ┃  ┃  ┃  ┣ task-priority.js
+ ┃  ┃  ┃  ┗ task-status.js 
  ┃  ┃  ┣ profiles
- ┃  ┃  ┃  ┣ base-profile.js - DONE
- ┃  ┃  ┃  ┣ claude.js - DONE
- ┃  ┃  ┃  ┣ cline.js - DONE
- ┃  ┃  ┃  ┣ codex.js - DONE
- ┃  ┃  ┃  ┣ cursor.js - DONE
- ┃  ┃  ┃  ┣ gemini.js - DONE
- ┃  ┃  ┃  ┣ index.js - DONE
- ┃  ┃  ┃  ┣ roo.js - DONE
- ┃  ┃  ┃  ┗ vscode.js - DONE
+ ┃  ┃  ┃  ┣ base-profile.js
+ ┃  ┃  ┃  ┣ claude.js
+ ┃  ┃  ┃  ┣ cline.js
+ ┃  ┃  ┃  ┣ codex.js
+ ┃  ┃  ┃  ┣ cursor.js
+ ┃  ┃  ┃  ┣ gemini.js
+ ┃  ┃  ┃  ┣ index.js
+ ┃  ┃  ┃  ┣ roo.js
+ ┃  ┃  ┃  ┗ vscode.js
  ┃  ┃  ┣ prompts
  ┃  ┃  ┃  ┣ schemas
- ┃  ┃  ┃  ┃  ┣ parameter.schema.json - DONE
- ┃  ┃  ┃  ┃  ┣ prompt-template.schema.json - DONE
- ┃  ┃  ┃  ┃  ┗ variant.schema.json - DONE
- ┃  ┃  ┃  ┣ add-task.json - DONE
- ┃  ┃  ┃  ┣ analyze-complexity.json - DONE
- ┃  ┃  ┃  ┣ expand-task.json - DONE
- ┃  ┃  ┃  ┣ parse-prd.json - DONE
- ┃  ┃  ┃  ┣ research.json - DONE
- ┃  ┃  ┃  ┣ update-subtask.json - DONE
- ┃  ┃  ┃  ┣ update-task.json - DONE
- ┃  ┃  ┃  ┗ update-tasks.json - DONE
+ ┃  ┃  ┃  ┃  ┣ parameter.schema.json
+ ┃  ┃  ┃  ┃  ┣ prompt-template.schema.json
+ ┃  ┃  ┃  ┃  ┗ variant.schema.json
+ ┃  ┃  ┃  ┣ add-task.json
+ ┃  ┃  ┃  ┣ analyze-complexity.json
+ ┃  ┃  ┃  ┣ expand-task.json
+ ┃  ┃  ┃  ┣ parse-prd.json
+ ┃  ┃  ┃  ┣ research.json
+ ┃  ┃  ┃  ┣ update-subtask.json
+ ┃  ┃  ┃  ┣ update-task.json
+ ┃  ┃  ┃  ┗ update-tasks.json
  ┃  ┃  ┣ provider-registry
- ┃  ┃  ┃  ┗ index.js - DONE
+ ┃  ┃  ┃  ┗ index.js
  ┃  ┃  ┣ utils
- ┃  ┃  ┃  ┣ create-mcp-config.js - DONE
- ┃  ┃  ┃  ┣ getVersion.js - DONE
- ┃  ┃  ┃  ┣ logger-utils.js - DONE
- ┃  ┃  ┃  ┣ manage-gitignore.js - DONE
- ┃  ┃  ┃  ┣ path-utils.js - DONE
- ┃  ┃  ┃  ┣ profiles.js - DONE
- ┃  ┃  ┃  ┗ rule-transformer.js - DONE
- ┃  ┃  ┗ task-master.js - DONE
- ┃  ┣ .mcp.json - DONE
- ┃  ┣ index.js - DONE 
+ ┃  ┃  ┃  ┣ create-mcp-config.js
+ ┃  ┃  ┃  ┣ getVersion.js
+ ┃  ┃  ┃  ┣ logger-utils.js
+ ┃  ┃  ┃  ┣ manage-gitignore.js
+ ┃  ┃  ┃  ┣ path-utils.js
+ ┃  ┃  ┃  ┣ profiles.js
+ ┃  ┃  ┃  ┗ rule-transformer.js
+ ┃  ┃  ┗ task-master.js
+ ┃  ┣ .mcp.json
+ ┃  ┣ index.js 
 
 **Process:**
 1. Use this Directory Tree to check your progress, if the file has " - Done" next to it, you have completed the file, if it doesn't say " - Done", you have not completed the file

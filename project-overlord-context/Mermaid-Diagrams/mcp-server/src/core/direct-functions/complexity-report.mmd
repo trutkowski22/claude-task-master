@@ -1,0 +1,88 @@
+flowchart TD
+    subgraph "complexity-report.js"
+        A["📊 Complexity Report Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["Cache Key Generation"]
+        E --> F["Core Action Function"]
+        F --> G["Report Reading"]
+        G --> H["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["readComplexityReport from '../../../../scripts/modules/utils.js'"]
+            I2["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I3["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["complexityReportDirect(args, log) - async"]
+            F2["coreActionFn() - async (internal)"]
+        end
+        
+        subgraph "Parameters"
+            P1["reportPath - string"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check reportPath exists"]
+            V2["Log report path location"]
+        end
+        
+        subgraph "Cache Management"
+            CACHE1["Generate cache key: 'complexityReport:${reportPath}'"]
+            CACHE2["Define core action function"]
+        end
+        
+        subgraph "Report Processing"
+            RP1["Enable silent mode"]
+            RP2["Call readComplexityReport"]
+            RP3["Disable silent mode"]
+            RP4["Validate report exists"]
+            RP5["Return report data"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Execute core action function"]
+            EX2["Return success response with report"]
+            EX3["Handle nested error scenarios"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["File not found errors"]
+            ERR3["Read errors"]
+            ERR4["Unexpected errors"]
+            ERR5["Always restore logging (multiple levels)"]
+        end
+        
+        subgraph "Exports"
+            EXP1["complexityReportDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        C --> F1
+        C --> F2
+        F1 --> P1
+        D --> V1
+        D --> V2
+        E --> CACHE1
+        F --> CACHE2
+        F --> F2
+        G --> RP1
+        G --> RP2
+        G --> RP3
+        G --> RP4
+        H --> RP5
+        F --> EX1
+        H --> EX2
+        EX1 --> EX3
+        V1 --> ERR1
+        RP4 --> ERR2
+        RP2 --> ERR3
+        EX3 --> ERR4
+        ERR3 --> ERR5
+        ERR4 --> ERR5
+        H --> EXP1
+    end

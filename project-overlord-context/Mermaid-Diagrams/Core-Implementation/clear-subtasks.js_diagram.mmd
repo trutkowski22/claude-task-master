@@ -1,0 +1,79 @@
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: clearSubtasks, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: path, FROM: path"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js file system module"]
+        D2["DEP: Node.js path module"]
+        D3["DEP: Task Manager core functions"]
+        D4["DEP: Silent mode utilities"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: clearSubtasksDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: clearSubtasksDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.id - Task IDs (comma-separated) to clear subtasks from"]
+        P4["PARAM: {boolean} args.all - Clear subtasks from all tasks"]
+        P5["PARAM: {string} args.tag - Tag context to operate on"]
+        P6["PARAM: {string} args.projectRoot - Project root path"]
+        P7["PARAM: {Object} log - Logger object"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksPath, VALUE: tasksJsonPath"]
+        C2["CONST: data, VALUE: readJSON result"]
+        C3["CONST: currentTag, VALUE: resolved tag from data or args"]
+        C4["CONST: tasks, VALUE: tasks array from data"]
+        C5["CONST: taskIds, VALUE: determined task IDs"]
+        C6["CONST: updatedData, VALUE: readJSON result after clearing"]
+        C7["CONST: taskIdArray, VALUE: parsed task ID array"]
+        C8["CONST: clearedTasksCount, VALUE: number of tasks cleared"]
+        C9["CONST: taskSummary, VALUE: summary of cleared tasks"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required tasksJsonPath parameter"]
+        FL2["Check that either id or all parameter is provided"]
+        FL3["Verify tasks file exists at specified path"]
+        FL4["Read tasks data using readJSON with tag handling"]
+        FL5["Determine task IDs to clear (from id param or all tasks)"]
+        FL6["Enable silent mode to suppress console output"]
+        FL7["Call clearSubtasks core function with task IDs"]
+        FL8["Restore normal logging mode"]
+        FL9["Read updated tasks data to build summary"]
+        FL10["Return success result with cleared tasks summary"]
+    end
+    
+    subgraph clearSubtasks["clear-subtasks.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

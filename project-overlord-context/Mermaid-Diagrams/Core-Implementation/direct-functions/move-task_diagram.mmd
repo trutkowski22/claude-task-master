@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Imports
+        I1[moveTask from ../../../../scripts/modules/task-manager.js]
+        I2[findTasksPath from ../utils/path-utils.js]
+        I3[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[moveTaskDirect - Wrapper function for moving tasks or subtasks to new positions]
+    end
+
+    subgraph Exports
+        E1[moveTaskDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, sourceId, destinationId, file, projectRoot, tag, generateFiles]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that sourceId and destinationId are provided as required parameters]
+        FL2[Determine tasks.json path from arguments or find using path utilities]
+        FL3[Validate project root if tasksJsonPath is not explicitly provided]
+        FL4[Enable silent mode to prevent console output during MCP operation]
+        FL5[Call core moveTask function with source and destination IDs]
+        FL6[Control file generation based on generateFiles parameter (default: true)]
+        FL7[Restore console output and return success result with move confirmation]
+        FL8[Handle errors gracefully and ensure console output is restored]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

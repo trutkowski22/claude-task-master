@@ -1,0 +1,120 @@
+flowchart TD
+    subgraph "index.js"
+        A["🚀 Task Master MCP Server"] --> B["Import Dependencies"]
+        B --> C["Class Definition"]
+        C --> D["Constructor"]
+        D --> E["Initialization"]
+        E --> F["Server Management"]
+        F --> G["Provider Registration"]
+        
+        subgraph "Imports"
+            I1["FastMCP from 'fastmcp'"]
+            I2["path from 'path'"]
+            I3["dotenv from 'dotenv'"]
+            I4["fileURLToPath from 'url'"]
+            I5["fs from 'fs'"]
+            I6["logger from './logger.js'"]
+            I7["registerTaskMasterTools from './tools/index.js'"]
+            I8["ProviderRegistry from '../../src/provider-registry/index.js'"]
+            I9["MCPProvider from './providers/mcp-provider.js'"]
+        end
+        
+        subgraph "Environment Setup"
+            ENV1["dotenv.config()"]
+            ENV2["__filename = fileURLToPath(import.meta.url)"]
+            ENV3["__dirname = path.dirname(__filename)"]
+        end
+        
+        subgraph "Class: TaskMasterMCPServer"
+            CL1["constructor()"]
+            CL2["init() - async"]
+            CL3["start() - async"]
+            CL4["stop() - async"]
+            CL5["registerRemoteProvider(session)"]
+        end
+        
+        subgraph "Constructor Logic"
+            CONS1["Read package.json for version"]
+            CONS2["Set server options (name, version)"]
+            CONS3["Create FastMCP instance"]
+            CONS4["Bind methods"]
+            CONS5["Setup logger"]
+        end
+        
+        subgraph "Initialization"
+            INIT1["Check if already initialized"]
+            INIT2["Register Task Master tools"]
+            INIT3["Set initialized flag"]
+        end
+        
+        subgraph "Server Start"
+            START1["Initialize if not done"]
+            START2["Setup 'connect' event handler"]
+            START3["Start FastMCP with stdio transport"]
+            START4["Set 2-minute timeout"]
+        end
+        
+        subgraph "Provider Registration"
+            PROV1["Check session capabilities"]
+            PROV2["Create MCPProvider instance"]
+            PROV3["Set session on provider"]
+            PROV4["Register with ProviderRegistry"]
+            PROV5["Send logging messages"]
+        end
+        
+        subgraph "Server Stop"
+            STOP1["Check server exists"]
+            STOP2["Call server.stop()"]
+        end
+        
+        subgraph "Constants"
+            CONST1["Server name: 'Task Master MCP Server'"]
+            CONST2["Transport type: 'stdio'"]
+            CONST3["Timeout: 120000ms (2 minutes)"]
+        end
+        
+        subgraph "Exports"
+            EXP1["TaskMasterMCPServer class (default)"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        B --> I5
+        B --> I6
+        B --> I7
+        B --> I8
+        B --> I9
+        B --> ENV1
+        B --> ENV2
+        B --> ENV3
+        C --> CL1
+        C --> CL2
+        C --> CL3
+        C --> CL4
+        C --> CL5
+        D --> CONS1
+        D --> CONS2
+        D --> CONS3
+        D --> CONS4
+        D --> CONS5
+        E --> INIT1
+        E --> INIT2
+        E --> INIT3
+        F --> START1
+        F --> START2
+        F --> START3
+        F --> START4
+        F --> STOP1
+        F --> STOP2
+        G --> PROV1
+        G --> PROV2
+        G --> PROV3
+        G --> PROV4
+        G --> PROV5
+        C --> CONST1
+        F --> CONST2
+        F --> CONST3
+        A --> EXP1
+    end

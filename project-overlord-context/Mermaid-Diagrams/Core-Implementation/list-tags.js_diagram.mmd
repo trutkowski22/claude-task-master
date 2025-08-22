@@ -1,0 +1,36 @@
+```mermaid
+graph TB
+    subgraph "list-tags.js"
+        subgraph "Imports"
+            tags["tags<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager/tag-management.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            listTagsDirect["listTagsDirect(args, log, context)<br/>Direct function wrapper for listing all tags with error handling"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- showMetadata?: boolean (include metadata in output)<br/>- tasksJsonPath?: string (path to tasks.json)<br/>- projectRoot?: string (project root path)"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Additional context with session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            enableSilent["Enable silent mode"]
+            createLogWrap["Create logger wrapper"]
+            prepareOptions["Prepare listing options"]
+            callCoreFunction["Call core tags function"]
+            transformResult["Transform result to create tags summary:<br/>- Calculate status breakdown<br/>- Calculate subtask counts<br/>- Remove full task data"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with tags summary"]
+        end
+
+        subgraph "Exports"
+            ExportListTagsDirect["listTagsDirect"]
+        end
+    end
+```

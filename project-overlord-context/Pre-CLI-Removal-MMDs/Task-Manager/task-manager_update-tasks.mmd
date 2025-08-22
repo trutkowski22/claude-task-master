@@ -1,0 +1,96 @@
+flowchart TB
+    subgraph updateTasks-Imports["updateTasks-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I5["IMPORT: z, FROM: zod"]
+        I6["IMPORT: readJSON, writeJSON, truncate, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I8["IMPORT: getDebugFlag, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I9["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I10["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I11["IMPORT: generateTextService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I12["IMPORT: getModelConfiguration, FROM: /claude-task-master/scripts/modules/task-manager/models.js"]
+        I13["IMPORT: ContextGatherer, FROM: /claude-task-master/scripts/modules/utils/contextGatherer.js"]
+        I14["IMPORT: FuzzyTaskSearch, FROM: /claude-task-master/scripts/modules/utils/fuzzyTaskSearch.js"]
+        I15["IMPORT: flattenTasksWithSubtasks, findProjectRoot, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph updateTasks-FunctionsDefined["updateTasks-Functions Defined"]
+        FU1["FUNCTION: parseUpdatedTasksFromText"]
+        FU2["FUNCTION: updateTasks"]
+    end
+    subgraph updateTasks-Exports["updateTasks-Exports"]
+        E1["EXP: updateTasks"]
+    end
+    subgraph updateTasks-Parameters["updateTasks-Parameters"]
+        P1["PARAM: {string} text - Response text from AI"]
+        P2["PARAM: {number} expectedCount - Expected number of tasks"]
+        P3["PARAM: {Function | Object} logFn - The logging function or MCP log object"]
+        P4["PARAM: {boolean} isMCP - Flag indicating if logFn is MCP logger"]
+        P5["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P6["PARAM: {number} fromId - Task ID to start updating from"]
+        P7["PARAM: {string} prompt - Prompt with new context"]
+        P8["PARAM: {boolean} [useResearch=false] - Whether to use the research AI role"]
+        P9["PARAM: {Object} context - Context object containing session and mcpLog"]
+        P10["PARAM: {string} [outputFormat='text'] - Output format (text or json)"]
+    end
+    subgraph updateTasks-Constants["updateTasks-Const Declarations"]
+        C1["CONST: updatedTaskSchema, VALUE: Zod schema for task validation"]
+        C2["CONST: preprocessTaskSchema, VALUE: Zod schema with preprocessing for defaults"]
+        C3["CONST: updatedTaskArraySchema, VALUE: z.array(updatedTaskSchema)"]
+        C4["CONST: preprocessedTaskArraySchema, VALUE: z.array(preprocessTaskSchema)"]
+        C5["CONST: cleanedResponse, VALUE: preprocessed AI response text"]
+        C6["CONST: parseMethodUsed, VALUE: tracking which parsing method worked"]
+        C7["CONST: potentialJsonFromArray, VALUE: content extracted between square brackets"]
+        C8["CONST: parsedTasks, VALUE: JSON.parse(cleanedResponse)"]
+        C9["CONST: logFn, VALUE: mcpLog || consoleLog"]
+        C10["CONST: isMCP, VALUE: !!mcpLog"]
+        C11["CONST: projectRoot, VALUE: providedProjectRoot || findProjectRoot()"]
+        C12["CONST: data, VALUE: readJSON(tasksPath, projectRoot, tag)"]
+        C13["CONST: tasksToUpdate, VALUE: filtered tasks array (id >= fromId && status !== 'done')"]
+        C14["CONST: contextGatherer, VALUE: new ContextGatherer(projectRoot, tag)"]
+        C15["CONST: promptManager, VALUE: getPromptManager()"]
+        C16["CONST: updatedTasksMap, VALUE: new Map(parsedUpdatedTasks.map((task) => [task.id, task]))"]
+    end
+    subgraph updateTasks-ExecutionFlow["updateTasks-Execution Flow"]
+        FL1["Extract JSON array from AI response using multiple parsing strategies"]
+        FL2["Try extracting content between square brackets first"]
+        FL3["Fall back to JSON code block extraction if brackets fail"]
+        FL4["Strip common prefixes if code block extraction fails"]
+        FL5["Parse JSON array and validate basic structure"]
+        FL6["Apply preprocessing schema to add defaults for missing fields"]
+        FL7["Validate task array structure using Zod schema"]
+        FL8["Load and filter tasks to update (fromId and not done status)"]
+        FL9["Gather contextual information using ContextGatherer and FuzzyTaskSearch"]
+        FL10["Display tasks to be updated in table format for CLI"]
+        FL11["Load prompt templates using PromptManager"]
+        FL12["Call AI text generation service with system and user prompts"]
+        FL13["Parse updated tasks array from AI response"]
+        FL14["Create efficient lookup map for updated tasks"]
+        FL15["Merge updated task data with existing tasks preserving subtasks"]
+        FL16["Write updated task data back to file"]
+        FL17["Display success message and AI usage telemetry"]
+        FL18["Handle errors with appropriate logging and user messages"]
+    end
+    subgraph updateTasks["update-tasks.js"]
+        updateTasks-Imports
+        updateTasks-FunctionsDefined
+        updateTasks-Exports
+        updateTasks-Parameters
+        updateTasks-Constants
+        updateTasks-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17
+    FL17 --> FL18

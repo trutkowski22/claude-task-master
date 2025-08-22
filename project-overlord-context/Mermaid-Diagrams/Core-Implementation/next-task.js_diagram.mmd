@@ -1,0 +1,86 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: findNextTask, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: readJSON, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: readComplexityReport, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task management system for finding next available task"]
+        D2["DEP: JSON file reading utilities for tasks and complexity data"]
+        D3["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: nextTaskDirect"]
+        FU2["FUNCTION: coreNextTaskAction (internal async function)"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: nextTaskDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing next task criteria"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string} args.reportPath - path to complexity report file"]
+        P4["PARAM: {string} args.projectRoot - project root path"]
+        P5["PARAM: {string} args.tag - tag for task context"]
+        P6["PARAM: {Object} log - logger object for operation tracking"]
+        P7["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: reportPath, VALUE: extracted from args"]
+        C3["CONST: projectRoot, VALUE: extracted from args"]
+        C4["CONST: tag, VALUE: extracted from args"]
+        C5["CONST: session, VALUE: extracted from context"]
+        C6["CONST: data, VALUE: tasks data from JSON file"]
+        C7["CONST: complexityReport, VALUE: complexity analysis data"]
+        C8["CONST: nextTask, VALUE: found next available task"]
+        C9["CONST: isSubtask, VALUE: boolean indicating if next task is subtask"]
+        C10["CONST: taskOrSubtask, VALUE: string describing task type"]
+        C11["CONST: additionalAdvice, VALUE: context-specific guidance text"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameter tasksJsonPath"]
+        FL2["Enable silent mode for MCP JSON response compatibility"]
+        FL3["Read tasks data from provided JSON path"]
+        FL4["Validate tasks data structure and content"]
+        FL5["Read complexity report for task prioritization"]
+        FL6["Find next eligible task using core algorithm"]
+        FL7["Check if next task is a subtask or main task"]
+        FL8["Generate context-specific advice for task type"]
+        FL9["Disable silent mode and return success with task details"]
+        FL10["Handle no eligible tasks case with informative message"]
+        FL11["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["next-task.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL6 --> FL10
+    FL7 --> FL8
+    FL8 --> FL9
+    FL2 --> FL11
+    FL3 --> FL11
+    FL6 --> FL11
+```

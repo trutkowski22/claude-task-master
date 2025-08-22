@@ -1,0 +1,48 @@
+```mermaid
+graph TB
+    subgraph "initialize-project.js"
+        subgraph "Imports"
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            os["os from node:os"]
+            RULE_PROFILES["RULE_PROFILES<br/>from G:/claude-task-master/claude-task-master/src/constants/profiles.js"]
+            convertAllRulesToProfileRules["convertAllRulesToProfileRules<br/>from G:/claude-task-master/claude-task-master/src/utils/rule-transformer.js"]
+            fs["fs from node:fs"]
+            path["path from node:path"]
+        end
+
+        subgraph "Functions"
+            initializeProject["initializeProject(options) (internal)<br/>Core project initialization function"]
+            initializeProjectDirect["initializeProjectDirect(args, log, context)<br/>Direct function wrapper for initializing a project"]
+        end
+
+        subgraph "Parameters"
+            options["options: Object<br/>- addAliases?: boolean<br/>- initGit?: boolean<br/>- storeTasksInGit?: boolean<br/>- skipInstall?: boolean<br/>- yes?: boolean<br/>- rules?: Array<string>"]
+            args["args: Object<br/>- projectRoot: string (target directory)<br/>- addAliases?: boolean<br/>- initGit?: boolean<br/>- storeTasksInGit?: boolean<br/>- skipInstall?: boolean<br/>- yes?: boolean<br/>- rules?: Array<string>"]
+            log["log: Object<br/>Logger object"]
+            context["context: Object<br/>Context object containing session"]
+        end
+
+        subgraph "Execution Flow"
+            validateTargetDir["Validate target directory from args.projectRoot"]
+            changeWorkingDir["Change CWD to target directory"]
+            createDirectories["Create .taskmaster directory structure:<br/>- .taskmaster/<br/>- .taskmaster/tasks/<br/>- .taskmaster/docs/<br/>- .taskmaster/templates/"]
+            createConfigFiles["Create initial configuration files:<br/>- config.json<br/>- state.json<br/>- tasks.json"]
+            setupRules["Set up rule profiles if provided"]
+            enableSilent["Enable silent mode"]
+            callCoreInit["Call core initializeProject function"]
+            restoreCWD["Restore original working directory"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with initialization details"]
+        end
+
+        subgraph "Constants"
+            homeDir["homeDir<br/>User home directory"]
+            originalCwd["originalCwd<br/>Original working directory"]
+        end
+
+        subgraph "Exports"
+            ExportInitializeProjectDirect["initializeProjectDirect"]
+        end
+    end
+```

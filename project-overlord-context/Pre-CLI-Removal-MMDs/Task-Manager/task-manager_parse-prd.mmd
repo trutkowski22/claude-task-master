@@ -1,0 +1,108 @@
+flowchart TB
+    subgraph parsePrd-Imports["parsePrd-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I5["IMPORT: z, FROM: zod"]
+        I6["IMPORT: log, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: writeJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I8["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I9["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I10["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I11["IMPORT: readJSON, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I12["IMPORT: findTaskById, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I13["IMPORT: ensureTagMetadata, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I14["IMPORT: getCurrentTag, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I15["IMPORT: generateObjectService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I16["IMPORT: getDebugFlag, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I17["IMPORT: getMainProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I18["IMPORT: getResearchProvider, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I19["IMPORT: getDefaultPriority, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I20["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I22["IMPORT: CUSTOM_PROVIDERS, FROM: /claude-task-master/src/constants/providers.js"]
+    end
+    subgraph parsePrd-Dependencies["parsePrd-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: AI services (OpenAI, Anthropic, etc.)"]
+        D3["DEP: Zod validation"]
+        D4["DEP: Chalk terminal colors"]
+        D5["DEP: Boxen UI components"]
+    end
+    subgraph parsePrd-FunctionsDefined["parsePrd-Functions Defined"]
+        FU1["FUNCTION: parsePRD"]
+    end
+    subgraph parsePrd-Exports["parsePrd-Exports"]
+        E1["EXP: parsePRD"]
+    end
+    subgraph parsePrd-Parameters["parsePrd-Parameters"]
+        P1["PARAM: {string} prdPath - Path to the PRD file"]
+        P2["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P3["PARAM: {number} numTasks - Number of tasks to generate"]
+        P4["PARAM: {Object} options - Additional options"]
+        P5["PARAM: {boolean} options.force - Whether to overwrite existing tasks.json"]
+        P6["PARAM: {boolean} options.append - Append to existing tasks file"]
+        P7["PARAM: {boolean} options.research - Use research model for enhanced PRD analysis"]
+        P8["PARAM: {Object} options.mcpLog - MCP logger object"]
+        P9["PARAM: {Object} options.session - Session object from MCP server"]
+        P10["PARAM: {string} options.projectRoot - Project root path"]
+        P11["PARAM: {string} options.tag - Target tag for task generation"]
+    end
+    subgraph parsePrd-Constants["parsePrd-Constants"]
+        C1["CONST: prdSingleTaskSchema, VALUE: z.object schema for single task"]
+        C2["CONST: prdResponseSchema, VALUE: z.object schema for full AI response"]
+        C3["CONST: isMCP, VALUE: !!mcpLog"]
+        C4["CONST: outputFormat, VALUE: isMCP ? 'json' : 'text'"]
+        C5["CONST: targetTag, VALUE: tag parameter"]
+        C6["CONST: logFn, VALUE: logger function wrapper"]
+        C7["CONST: existingTasks, VALUE: existing tasks array"]
+        C8["CONST: nextId, VALUE: next available task ID"]
+        C9["CONST: aiServiceResponse, VALUE: AI service response"]
+        C10["CONST: prdContent, VALUE: fs.readFileSync result"]
+        C11["CONST: promptManager, VALUE: getPromptManager result"]
+        C12["CONST: defaultTaskPriority, VALUE: getDefaultPriority result"]
+        C13["CONST: currentProvider, VALUE: provider selection"]
+        C14["CONST: generatedData, VALUE: AI-generated tasks data"]
+        C15["CONST: taskMap, VALUE: new Map() for ID mapping"]
+        C16["CONST: processedNewTasks, VALUE: processed tasks array"]
+        C17["CONST: finalTasks, VALUE: final tasks array"]
+        C18["CONST: outputData, VALUE: complete file data structure"]
+    end
+    subgraph parsePrd-ExecutionFlow["parsePrd-Execution Flow"]
+        FL1["Parse options and determine output format (MCP vs CLI)"]
+        FL2["Check for existing tasks in target tag"]
+        FL3["Handle file existence and overwrite/append logic"]
+        FL4["Read PRD content from specified file path"]
+        FL5["Load prompts using PromptManager with context"]
+        FL6["Determine AI provider (main vs research mode)"]
+        FL7["Call AI service to generate tasks from PRD content"]
+        FL8["Validate AI response against Zod schema"]
+        FL9["Process and remap task IDs for consistency"]
+        FL10["Remap dependencies to ensure valid references"]
+        FL11["Merge with existing tasks if append mode enabled"]
+        FL12["Preserve other tags while updating target tag"]
+        FL13["Write complete data structure back to file"]
+        FL14["Display success message and next steps"]
+        FL15["Return telemetry data and success status"]
+    end
+    subgraph parsePrd["parse-prd.js"]
+        parsePrd-Imports
+        parsePrd-Dependencies
+        parsePrd-FunctionsDefined
+        parsePrd-Exports
+        parsePrd-Parameters
+        parsePrd-Constants
+        parsePrd-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15

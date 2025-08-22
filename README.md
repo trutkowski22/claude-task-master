@@ -1,20 +1,9 @@
-# Task Master [![GitHub stars](https://img.shields.io/github/stars/eyaltoledano/claude-task-master?style=social)](https://github.com/eyaltoledano/claude-task-master/stargazers)
+# Project Overlord
 
-[![CI](https://github.com/eyaltoledano/claude-task-master/actions/workflows/ci.yml/badge.svg)](https://github.com/eyaltoledano/claude-task-master/actions/workflows/ci.yml) [![npm version](https://badge.fury.io/js/task-master-ai.svg)](https://badge.fury.io/js/task-master-ai) [![Discord](https://dcbadge.limes.pink/api/server/https://discord.gg/taskmasterai?style=flat)](https://discord.gg/taskmasterai) [![License: MIT with Commons Clause](https://img.shields.io/badge/license-MIT%20with%20Commons%20Clause-blue.svg)](LICENSE)
-
-[![NPM Downloads](https://img.shields.io/npm/d18m/task-master-ai?style=flat)](https://www.npmjs.com/package/task-master-ai) [![NPM Downloads](https://img.shields.io/npm/dm/task-master-ai?style=flat)](https://www.npmjs.com/package/task-master-ai) [![NPM Downloads](https://img.shields.io/npm/dw/task-master-ai?style=flat)](https://www.npmjs.com/package/task-master-ai)
-
-## By [@eyaltoledano](https://x.com/eyaltoledano), [@RalphEcom](https://x.com/RalphEcom) & [@jasonzhou1993](https://x.com/jasonzhou1993)
-
-[![Twitter Follow](https://img.shields.io/twitter/follow/eyaltoledano)](https://x.com/eyaltoledano)
-[![Twitter Follow](https://img.shields.io/twitter/follow/RalphEcom)](https://x.com/RalphEcom)
-[![Twitter Follow](https://img.shields.io/twitter/follow/jasonzhou1993)](https://x.com/jasonzhou1993)
 
 A task management system for AI-driven development with Claude, designed to work seamlessly with Cursor AI.
 
 ## Documentation
-
-📚 **[View Full Documentation](https://docs.task-master.dev)**
 
 For detailed guides, API references, and comprehensive examples, visit our documentation site.
 
@@ -22,8 +11,8 @@ For detailed guides, API references, and comprehensive examples, visit our docum
 
 The following documentation is also available in the `docs` directory:
 
-- [Configuration Guide](docs/configuration.md) - Set up environment variables and customize Task Master
-- [Tutorial](docs/tutorial.md) - Step-by-step guide to getting started with Task Master
+- [Configuration Guide](docs/configuration.md) - Set up environment variables and customize Project Overlord
+- [Tutorial](docs/tutorial.md) - Step-by-step guide to getting started with Project Overlord
 - [Command Reference](docs/command-reference.md) - Complete list of all available commands
 - [Task Structure](docs/task-structure.md) - Understanding the task format and features
 - [Example Interactions](docs/examples.md) - Common Cursor AI interaction examples
@@ -47,7 +36,6 @@ At least one (1) of the following is required:
 - OpenAI API key
 - Google Gemini API key
 - Perplexity API key (for research model)
-- xAI API Key (for research or main model)
 - OpenRouter API Key (for research or main model)
 - Claude Code (no API key required - requires Claude Code CLI)
 
@@ -57,7 +45,7 @@ Using the research model is optional but highly recommended. You will need at le
 
 ### Option 1: MCP (Recommended)
 
-MCP (Model Control Protocol) lets you run Task Master directly from your editor.
+MCP (Model Control Protocol) lets you run Project Overlord directly from your editor.
 
 #### 1. Add your MCP config at the following path depending on your editor
 
@@ -83,11 +71,7 @@ MCP (Model Control Protocol) lets you run Task Master directly from your editor.
         "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE",
         "OPENAI_API_KEY": "YOUR_OPENAI_KEY_HERE",
         "GOOGLE_API_KEY": "YOUR_GOOGLE_KEY_HERE",
-        "MISTRAL_API_KEY": "YOUR_MISTRAL_KEY_HERE",
-        "GROQ_API_KEY": "YOUR_GROQ_KEY_HERE",
         "OPENROUTER_API_KEY": "YOUR_OPENROUTER_KEY_HERE",
-        "XAI_API_KEY": "YOUR_XAI_KEY_HERE",
-        "AZURE_OPENAI_API_KEY": "YOUR_AZURE_KEY_HERE",
         "OLLAMA_API_KEY": "YOUR_OLLAMA_API_KEY_HERE"
       }
     }
@@ -112,11 +96,7 @@ MCP (Model Control Protocol) lets you run Task Master directly from your editor.
         "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE",
         "OPENAI_API_KEY": "YOUR_OPENAI_KEY_HERE",
         "GOOGLE_API_KEY": "YOUR_GOOGLE_KEY_HERE",
-        "MISTRAL_API_KEY": "YOUR_MISTRAL_KEY_HERE",
-        "GROQ_API_KEY": "YOUR_GROQ_KEY_HERE",
         "OPENROUTER_API_KEY": "YOUR_OPENROUTER_KEY_HERE",
-        "XAI_API_KEY": "YOUR_XAI_KEY_HERE",
-        "AZURE_OPENAI_API_KEY": "YOUR_AZURE_KEY_HERE",
         "OLLAMA_API_KEY": "YOUR_OLLAMA_API_KEY_HERE"
       },
       "type": "stdio"
@@ -146,7 +126,7 @@ Change the main model to claude-code/sonnet
 
 [Table of available models](docs/models.md) | [Claude Code setup](docs/examples/claude-code-usage.md)
 
-#### 4. Initialize Task Master
+#### 4. Initialize Project Overlord
 
 In your editor's AI chat pane, say:
 
@@ -180,116 +160,19 @@ Use your AI assistant to:
 - **Research fresh information**: `Research the latest best practices for implementing JWT authentication with Node.js`
 - **Research with context**: `Research React Query v5 migration strategies for our current API implementation in src/api.js`
 
-[More examples on how to use Task Master in chat](docs/examples.md)
 
-### Option 2: Using Command Line
 
-#### Installation
 
-```bash
-# Install globally
-npm install -g task-master-ai
-
-# OR install locally within your project
-npm install task-master-ai
-```
-
-#### Initialize a new project
-
-```bash
-# If installed globally
-task-master init
-
-# If installed locally
-npx task-master init
-
-# Initialize project with specific rules
-task-master init --rules cursor,windsurf,vscode
-```
-
-This will prompt you for project details and set up a new project with the necessary files and structure.
-
-#### Common Commands
-
-```bash
-# Initialize a new project
-task-master init
-
-# Parse a PRD and generate tasks
-task-master parse-prd your-prd.txt
-
-# List all tasks
-task-master list
-
-# Show the next task to work on
-task-master next
-
-# Show specific task(s) - supports comma-separated IDs
-task-master show 1,3,5
-
-# Research fresh information with project context
-task-master research "What are the latest best practices for JWT authentication?"
-
-# Generate task files
-task-master generate
-
-# Add rules after initialization
-task-master rules add windsurf,roo,vscode
-```
 
 ## Claude Code Support
 
-Task Master now supports Claude models through the Claude Code CLI, which requires no API key:
+Project Overlord now supports Claude models through the Claude Code CLI, which requires no API key:
 
 - **Models**: `claude-code/opus` and `claude-code/sonnet`
 - **Requirements**: Claude Code CLI installed
 - **Benefits**: No API key needed, uses your local Claude instance
 
-[Learn more about Claude Code setup](docs/examples/claude-code-usage.md)
-
-## Troubleshooting
-
-### If `task-master init` doesn't respond
-
-Try running it with Node directly:
-
-```bash
-node node_modules/claude-task-master/scripts/init.js
-```
-
-Or clone the repository and run:
-
-```bash
-git clone https://github.com/eyaltoledano/claude-task-master.git
-cd claude-task-master
-node scripts/init.js
-```
-
-## Contributors
-
-<a href="https://github.com/eyaltoledano/claude-task-master/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eyaltoledano/claude-task-master" alt="Task Master project contributors" />
-</a>
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=eyaltoledano/claude-task-master&type=Timeline)](https://www.star-history.com/#eyaltoledano/claude-task-master&Timeline)
-
 ## Licensing
 
-Task Master is licensed under the MIT License with Commons Clause. This means you can:
+Project Overlord is licensed under the MIT License with Commons Clause. This means you can:
 
-✅ **Allowed**:
-
-- Use Task Master for any purpose (personal, commercial, academic)
-- Modify the code
-- Distribute copies
-- Create and sell products built using Task Master
-
-❌ **Not Allowed**:
-
-- Sell Task Master itself
-- Offer Task Master as a hosted service
-- Create competing products based on Task Master
-
-See the [LICENSE](LICENSE) file for the complete license text and [licensing details](docs/licensing.md) for more information.

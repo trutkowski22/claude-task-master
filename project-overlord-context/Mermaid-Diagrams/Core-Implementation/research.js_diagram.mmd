@@ -1,0 +1,88 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: path, FROM: node.js path module"]
+        I2["IMPORT: performResearch, FROM: /scripts/modules/task-manager.js"]
+        I3["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: createLogWrapper, FROM: /core/tools/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: AI-powered research system with project context"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Logger wrapper utilities for core function compatibility"]
+        D4["DEP: Task/subtask update system for research saving"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: researchDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: researchDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing research query and options"]
+        P2["PARAM: {string} args.query - research query/prompt (required)"]
+        P3["PARAM: {string} args.taskIds - comma-separated task/subtask IDs for context"]
+        P4["PARAM: {string} args.filePaths - comma-separated file paths for context"]
+        P5["PARAM: {string} args.customContext - additional custom context text"]
+        P6["PARAM: {boolean} args.includeProjectTree - include project file tree flag"]
+        P7["PARAM: {string} args.detailLevel - detail level (low/medium/high)"]
+        P8["PARAM: {string} args.saveTo - auto-save to task/subtask ID"]
+        P9["PARAM: {boolean} args.saveToFile - save to research directory flag"]
+        P10["PARAM: {string} args.projectRoot - project root path"]
+        P11["PARAM: {string} args.tag - tag for task context"]
+        P12["PARAM: {Object} log - logger object for operation tracking"]
+        P13["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: session, VALUE: extracted from context"]
+        C2["CONST: mcpLog, VALUE: wrapped logger for core functions"]
+        C3["CONST: parsedTaskIds, VALUE: parsed array of task IDs"]
+        C4["CONST: parsedFilePaths, VALUE: parsed array of file paths"]
+        C5["CONST: validDetailLevels, VALUE: ['low', 'medium', 'high']"]
+        C6["CONST: researchOptions, VALUE: options object for research function"]
+        C7["CONST: researchContext, VALUE: context object for research function"]
+        C8["CONST: researchContent, VALUE: formatted research content for saving"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Enable silent mode for MCP JSON response compatibility"]
+        FL2["Create logger wrapper for core function compatibility"]
+        FL3["Validate required query parameter"]
+        FL4["Parse comma-separated task IDs and file paths"]
+        FL5["Validate detail level parameter"]
+        FL6["Prepare research options and context objects"]
+        FL7["Call core performResearch function"]
+        FL8["Auto-save research results to task/subtask if requested"]
+        FL9["Disable silent mode and return success with research data"]
+        FL10["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["research.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL1 --> FL10
+    FL3 --> FL10
+    FL5 --> FL10
+    FL7 --> FL10
+```

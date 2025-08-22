@@ -1,0 +1,88 @@
+flowchart TB
+    subgraph ["add-task-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I5["IMPORT: z, FROM: zod"]
+        I6["IMPORT: Fuse, FROM: fuse.js"]
+        I8["IMPORT: readJSON, writeJSON, log, truncate, ensureTagMetadata, performCompleteTagMigration, markMigrationForNotice, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I9["IMPORT: generateObjectService, FROM: /claude-task-master/scripts/modules/ai-services-unified.js"]
+        I10["IMPORT: getDefaultPriority, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I11["IMPORT: getPromptManager, FROM: /claude-task-master/scripts/modules/prompt-manager.js"]
+        I12["IMPORT: ContextGatherer, FROM: /claude-task-master/scripts/modules/utils/contextGatherer.js"]
+        I13["IMPORT: generateTaskFiles, FROM: /claude-task-master/scripts/modules/task-manager/generate-task-files.js"]
+        I14["IMPORT: TASK_PRIORITY_OPTIONS, DEFAULT_TASK_PRIORITY, isValidTaskPriority, normalizeTaskPriority, FROM: /claude-task-master/src/constants/task-priority.js"]
+    end
+    subgraph ["add-task-Constants"]
+        C1["CONST: AiTaskDataSchema, VALUE: Zod schema for AI task output validation"]
+    end
+    subgraph ["add-task-FunctionsDefined"]
+        FU1["FUNCTION: getAllTasks"]
+        FU2["FUNCTION: addTask"]
+        FU3["FUNCTION: buildDependencyGraph (nested)"]
+    end
+    subgraph ["add-task-Exports"]
+        E1["EXP: addTask (default)"]
+    end
+    subgraph ["add-task-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} prompt - Description of the task to add (required for AI-driven creation)"]
+        P3["PARAM: {Array} dependencies - Task dependencies"]
+        P4["PARAM: {string} priority - Task priority"]
+        P5["PARAM: {function} reportProgress - Function to report progress to MCP server (optional)"]
+        P6["PARAM: {Object} mcpLog - MCP logger object (optional)"]
+        P7["PARAM: {Object} session - Session object from MCP server (optional)"]
+        P8["PARAM: {string} outputFormat - Output format (text or json)"]
+        P9["PARAM: {Object} customEnv - Custom environment variables (optional)"]
+        P10["PARAM: {Object} manualTaskData - Manual task data (optional, for direct task creation without AI)"]
+        P11["PARAM: {boolean} useResearch - Whether to use the research model"]
+        P12["PARAM: {Object} context - Context object containing session and potentially projectRoot"]
+        P13["PARAM: {string} context.projectRoot - Project root path (for MCP/env fallback)"]
+        P14["PARAM: {string} context.commandName - The name of the command being executed (for telemetry)"]
+        P15["PARAM: {string} context.outputType - The output type ('cli' or 'mcp', for telemetry)"]
+        P16["PARAM: {string} context.tag - Tag for the task (optional)"]
+    end
+    subgraph ["add-task-ExecutionFlow"]
+        FL1["Create consistent logging function for both MCP and CLI"]
+        FL2["Validate and normalize task priority"]
+        FL3["Read existing tasks data with tag awareness"]
+        FL4["Handle legacy format migration if needed"]
+        FL5["Ensure target tag exists and has proper structure"]
+        FL6["Get all tasks across tags for dependency validation"]
+        FL7["Determine next task ID within target tag"]
+        FL8["Validate dependencies against all tasks"]
+        FL9["Build dependency graphs for analysis"]
+        FL10["Branch: Use manual task data OR generate with AI"]
+        FL11["If AI: Gather context using ContextGatherer"]
+        FL12["If AI: Load prompts using PromptManager"]
+        FL13["If AI: Call generateObjectService for task creation"]
+        FL14["Create new task object with validated data"]
+        FL15["Add task to target tag's tasks array"]
+        FL16["Write updated data back to file"]
+        FL17["Display success message with task details"]
+        FL18["Return task ID and telemetry data"]
+    end
+    subgraph ["add-task.js"]
+        ["add-task-Imports"]
+        ["add-task-Constants"]
+        ["add-task-FunctionsDefined"]
+        ["add-task-Exports"]
+        ["add-task-Parameters"]
+        ["add-task-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL10 --> FL14
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16
+    FL16 --> FL17
+    FL17 --> FL18

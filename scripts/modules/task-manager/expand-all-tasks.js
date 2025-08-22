@@ -1,14 +1,8 @@
 import { log, readJSON, isSilentMode, findProjectRoot } from '../utils.js';
-import {
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 import expandTask from './expand-task.js';
 import { getDebugFlag } from '../config-manager.js';
 import { aggregateTelemetry } from '../utils.js';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 
 /**
  * Expand all eligible pending or in-progress tasks using the expandTask function.
@@ -57,7 +51,7 @@ async function expandAllTasks(
 					// Basic logger for JSON output mode
 					info: (msg) => {},
 					warn: (msg) => {},
-					error: (msg) => console.error(`ERROR: ${msg}`), // Still log errors
+					error: (msg) => {}, // Errors handled by caller
 					debug: (msg) => {}
 				}
 			: {
@@ -179,21 +173,14 @@ async function expandAllTasks(
 
 		if (outputFormat === 'text') {
 			const summaryContent =
-				`${chalk.white.bold('Expansion Summary:')}\n\n` +
-				`${chalk.cyan('-')} Attempted: ${chalk.bold(tasksToExpandCount)}\n` +
-				`${chalk.green('-')} Expanded:  ${chalk.bold(expandedCount)}\n` +
+				`${('Expansion Summary:')}\n\n` +
+				`${('-')} Attempted: ${(tasksToExpandCount)}\n` +
+				`${('-')} Expanded:  ${(expandedCount)}\n` +
 				// Skipped count is always 0 now due to pre-filtering
-				`${chalk.gray('-')} Skipped:   ${chalk.bold(0)}\n` +
-				`${chalk.red('-')} Failed:    ${chalk.bold(failedCount)}`;
+				`${('-')} Skipped:   ${(0)}\n` +
+				`${('-')} Failed:    ${(failedCount)}`;
 
-			console.log(
-				boxen(summaryContent, {
-					padding: 1,
-					margin: { top: 1 },
-					borderColor: failedCount > 0 ? 'red' : 'green', // Red if failures, green otherwise
-					borderStyle: 'round'
-				})
-			);
+			// Summary display handled by logger
 		}
 
 		if (outputFormat === 'text' && aggregatedTelemetryData) {
@@ -213,9 +200,7 @@ async function expandAllTasks(
 		if (loadingIndicator)
 			stopLoadingIndicator(loadingIndicator, 'Error.', false);
 		logger.error(`Error during expand all operation: ${error.message}`);
-		if (!isMCPCall && getDebugFlag(session)) {
-			console.error(error); // Log full stack in debug CLI mode
-		}
+		// Debug logging handled by logger
 		// Re-throw error for the caller to handle, the direct function will format it
 		throw error; // Let direct function wrapper handle formatting
 		/* Original re-throw:

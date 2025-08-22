@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph Imports["📦 Imports"]
+        import1["contextManager from G:\claude-task-master\claude-task-master\mcp-server\src\core\context-manager.js"]
+    end
+
+    subgraph Dependencies["🔗 Dependencies"]
+        dep1["contextManager - Manages cache context and statistics"]
+    end
+
+    subgraph Functions_Defined["⚡ Functions Defined"]
+        func1["getCacheStatsDirect() - Retrieves cache statistics for monitoring"]
+    end
+
+    subgraph Exports["📤 Exports"]
+        exp1["getCacheStatsDirect - Direct function to get cache statistics"]
+    end
+
+    subgraph Parameters["📝 Parameters"]
+        param1["args (Object) - Command arguments"]
+        param2["log (Object) - Logger object"]
+    end
+
+    subgraph Execution_Flow["🔄 Execution Flow"]
+        step1["1. Log cache statistics retrieval attempt"]
+        step2["2. Get statistics from contextManager"]
+        step3["3. Return success response with stats data"]
+        step4["4. Catch errors and return failure response"]
+    end
+
+    %% Flow connections
+    step1 --> step2
+    step2 --> step3
+    step2 --> step4

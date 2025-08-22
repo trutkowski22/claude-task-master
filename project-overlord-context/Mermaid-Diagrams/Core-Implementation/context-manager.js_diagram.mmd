@@ -1,0 +1,111 @@
+```mermaid
+graph TB
+    %% Context Manager - Core Implementation Layer
+    %% File: mcp-server/src/core/context-manager.js
+    
+    subgraph "Context Manager Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            FASTMCP["FastMCP"]
+            LRU_CACHE["LRUCache"]
+        end
+        
+        subgraph "ContextManager Class"
+            direction TB
+            
+            subgraph "Configuration"
+                CONFIG["config: {maxCacheSize, ttl, maxContextSize}"]
+                DEFAULTS["Defaults: 1000 items, 5min TTL, 4000 tokens"]
+            end
+            
+            subgraph "Cache Management"
+                CACHE["cache: LRUCache instance"]
+                CACHE_CONFIG["Cache Config: {max, ttl, updateAgeOnGet}"]
+                STATS["stats: {hits, misses, invalidations}"]
+            end
+            
+            subgraph "Core Methods"
+                CONSTRUCTOR["constructor(config)"]
+                GET_CONTEXT["getContext(contextId, metadata)"]
+                UPDATE_CONTEXT["updateContext(contextId, updates)"]
+                INVALIDATE_CONTEXT["invalidateContext(contextId, metadata)"]
+            end
+            
+            subgraph "Cache Operations"
+                GET_CACHED["getCachedData(key)"]
+                SET_CACHED["setCachedData(key, data)"]
+                INVALIDATE_KEY["invalidateCacheKey(key)"]
+                GET_STATS["getStats()"]
+            end
+            
+            subgraph "Private Methods"
+                GET_CACHE_KEY["_getCacheKey(contextId, metadata)"]
+                KEY_GENERATION["JSON.stringify for metadata"]
+            end
+        end
+        
+        subgraph "Context Object Structure"
+            CONTEXT_OBJ["Context: {id, metadata: {created, ...}}"]
+            METADATA["Metadata with timestamp"]
+        end
+        
+        subgraph "Singleton Export"
+            SINGLETON["contextManager (default instance)"]
+        end
+    end
+    
+    %% Dependencies
+    LRU_CACHE --> CACHE
+    FASTMCP --> CONSTRUCTOR
+    
+    %% Configuration Flow
+    CONSTRUCTOR --> CONFIG
+    CONFIG --> DEFAULTS
+    CONFIG --> CACHE_CONFIG
+    CACHE_CONFIG --> CACHE
+    
+    %% Stats Initialization
+    CONSTRUCTOR --> STATS
+    
+    %% Context Management Flow
+    GET_CONTEXT --> GET_CACHE_KEY
+    GET_CONTEXT --> CACHE
+    GET_CONTEXT --> STATS
+    GET_CONTEXT --> CONTEXT_OBJ
+    
+    UPDATE_CONTEXT --> GET_CONTEXT
+    UPDATE_CONTEXT --> CACHE
+    
+    INVALIDATE_CONTEXT --> GET_CACHE_KEY
+    INVALIDATE_CONTEXT --> CACHE
+    INVALIDATE_CONTEXT --> STATS
+    
+    %% Cache Operations Flow
+    GET_CACHED --> CACHE
+    GET_CACHED --> STATS
+    
+    SET_CACHED --> CACHE
+    
+    INVALIDATE_KEY --> CACHE
+    INVALIDATE_KEY --> STATS
+    
+    GET_STATS --> STATS
+    GET_STATS --> CONFIG
+    
+    %% Private Methods
+    GET_CACHE_KEY --> KEY_GENERATION
+    
+    %% Context Creation
+    CONTEXT_OBJ --> METADATA
+    
+    %% Singleton
+    CONSTRUCTOR --> SINGLETON
+    
+    style GET_CONTEXT fill:#e1f5fe
+    style UPDATE_CONTEXT fill:#e1f5fe
+    style INVALIDATE_CONTEXT fill:#e1f5fe
+    style CACHE fill:#fff3e0
+    style STATS fill:#f3e5f5
+    style SINGLETON fill:#e8f5e8
+```

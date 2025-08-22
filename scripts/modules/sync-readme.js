@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import { log, findProjectRoot } from './utils.js';
 import { getProjectName } from './config-manager.js';
 import listTasks from './task-manager/list-tasks.js';
@@ -110,7 +109,6 @@ export async function syncTasksToReadme(projectRoot = null, options = {}) {
 		);
 
 		if (!tasksOutput) {
-			console.log(chalk.red('❌ Failed to generate task output'));
 			return false;
 		}
 
@@ -167,17 +165,8 @@ export async function syncTasksToReadme(projectRoot = null, options = {}) {
 		// Write updated content to README
 		fs.writeFileSync(readmePath, updatedContent, 'utf8');
 
-		console.log(chalk.green('✅ Successfully synced tasks to README.md'));
-		console.log(
-			chalk.cyan(
-				`📋 Export details: ${withSubtasks ? 'with' : 'without'} subtasks${status ? `, status: ${status}` : ''}`
-			)
-		);
-		console.log(chalk.gray(`📍 Location: ${readmePath}`));
-
 		return true;
 	} catch (error) {
-		console.log(chalk.red('❌ Failed to sync tasks to README:'), error.message);
 		log('error', `README sync error: ${error.message}`);
 		return false;
 	}

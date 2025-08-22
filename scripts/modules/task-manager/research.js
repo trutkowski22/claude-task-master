@@ -5,10 +5,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import inquirer from 'inquirer';
-import { highlight } from 'cli-highlight';
 import { ContextGatherer } from '../utils/contextGatherer.js';
 import { FuzzyTaskSearch } from '../utils/fuzzyTaskSearch.js';
 import { generateTextService } from '../ai-services-unified.js';
@@ -19,11 +15,6 @@ import {
 	readJSON,
 	flattenTasksWithSubtasks
 } from '../utils.js';
-import {
-	displayAiUsageSummary,
-	startLoadingIndicator,
-	stopLoadingIndicator
-} from '../ui.js';
 
 /**
  * Perform AI-powered research with project context
@@ -89,17 +80,7 @@ async function performResearch(
 				success: (...args) => consoleLog('success', ...args)
 			};
 
-	// Show UI banner for CLI mode
-	if (outputFormat === 'text') {
-		console.log(
-			boxen(chalk.cyan.bold(`🔍 AI Research Query`), {
-				padding: 1,
-				borderColor: 'cyan',
-				borderStyle: 'round',
-				margin: { top: 1, bottom: 1 }
-			})
-		);
-	}
+	
 
 	try {
 		// Initialize context gatherer
@@ -151,28 +132,6 @@ async function performResearch(
 							.map((id) => parseInt(id))
 							.sort((a, b) => a - b)
 							.map((id) => id.toString());
-
-						console.log(
-							chalk.gray('Provided tasks: ') +
-								chalk.cyan(sortedProvidedIds.join(', '))
-						);
-
-						if (uniqueAutoDiscovered.length > 0) {
-							const sortedAutoIds = uniqueAutoDiscovered
-								.map((id) => parseInt(id))
-								.sort((a, b) => a - b)
-								.map((id) => id.toString());
-
-							console.log(
-								chalk.gray('+ Auto-discovered related tasks: ') +
-									chalk.cyan(sortedAutoIds.join(', '))
-							);
-						}
-					} else {
-						console.log(
-							chalk.gray('Auto-discovered relevant tasks: ') +
-								chalk.cyan(sortedTaskIds.join(', '))
-						);
 					}
 				}
 			}
@@ -218,26 +177,12 @@ async function performResearch(
 		const userPromptTokens = contextGatherer.countTokens(userPrompt);
 		const totalInputTokens = systemPromptTokens + userPromptTokens;
 
-		if (outputFormat === 'text') {
-			// Display detailed token breakdown in a clean box
-			displayDetailedTokenBreakdown(
-				tokenBreakdown,
-				systemPromptTokens,
-				userPromptTokens
-			);
-		}
-
+	
 		// Only log detailed info in debug mode or MCP
 		if (outputFormat !== 'text') {
 			logFn.info(
 				`Calling AI service with research role, context size: ${tokenBreakdown.total} tokens (${gatheredContext.length} characters)`
 			);
-		}
-
-		// Start loading indicator for CLI mode
-		let loadingIndicator = null;
-		if (outputFormat === 'text') {
-			loadingIndicator = startLoadingIndicator('Researching with AI...\n');
 		}
 
 		let aiResult;
@@ -253,50 +198,12 @@ async function performResearch(
 				outputType
 			});
 		} catch (error) {
-			if (loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-			}
-			throw error;
-		} finally {
-			if (loadingIndicator) {
-				stopLoadingIndicator(loadingIndicator);
-			}
 		}
+
 
 		const researchResult = aiResult.mainResult;
 		const telemetryData = aiResult.telemetryData;
 		const tagInfo = aiResult.tagInfo;
-
-		// Format and display results
-		// Initialize interactive save tracking
-		let interactiveSaveInfo = { interactiveSaveOccurred: false };
-
-		if (outputFormat === 'text') {
-			displayResearchResults(
-				researchResult,
-				query,
-				detailLevel,
-				tokenBreakdown
-			);
-
-			// Display AI usage telemetry for CLI users
-			if (telemetryData) {
-				displayAiUsageSummary(telemetryData, 'cli');
-			}
-
-			// Offer follow-up question option (only for initial CLI queries, not MCP)
-			if (allowFollowUp && !isMCP) {
-				interactiveSaveInfo = await handleFollowUpQuestions(
-					options,
-					context,
-					outputFormat,
-					projectRoot,
-					logFn,
-					query,
-					researchResult
-				);
-			}
-		}
 
 		// Handle MCP save-to-file request
 		if (saveToFile && isMCP) {
@@ -355,7 +262,7 @@ async function performResearch(
 		logFn.error(`Research query failed: ${error.message}`);
 
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`\n❌ Research failed: ${error.message}`));
+			logFn((`\n❌ Research failed: ${error.message}`));
 		}
 
 		throw error;
@@ -378,8 +285,8 @@ function displayDetailedTokenBreakdown(
 	// Custom context
 	if (tokenBreakdown.customContext) {
 		parts.push(
-			chalk.cyan('Custom: ') +
-				chalk.yellow(tokenBreakdown.customContext.tokens.toLocaleString())
+			('Custom: ') +
+				(tokenBreakdown.customContext.tokens.toLocaleString())
 		);
 	}
 
@@ -395,14 +302,14 @@ function displayDetailedTokenBreakdown(
 					task.title.length > 30
 						? task.title.substring(0, 30) + '...'
 						: task.title;
-				return `  ${chalk.gray(task.id)} ${chalk.white(titleDisplay)} ${chalk.yellow(task.tokens.toLocaleString())} tokens`;
+				return `  ${(task.id)} ${(titleDisplay)} ${(task.tokens.toLocaleString())} tokens`;
 			})
 			.join('\n');
 
 		parts.push(
-			chalk.cyan('Tasks: ') +
-				chalk.yellow(totalTaskTokens.toLocaleString()) +
-				chalk.gray(` (${tokenBreakdown.tasks.length} items)`) +
+			('Tasks: ') +
+				(totalTaskTokens.toLocaleString()) +
+				(` (${tokenBreakdown.tasks.length} items)`) +
 				'\n' +
 				taskDetails
 		);
@@ -420,14 +327,14 @@ function displayDetailedTokenBreakdown(
 					file.path.length > 40
 						? '...' + file.path.substring(file.path.length - 37)
 						: file.path;
-				return `  ${chalk.gray(pathDisplay)} ${chalk.yellow(file.tokens.toLocaleString())} tokens ${chalk.gray(`(${file.sizeKB}KB)`)}`;
+				return `  ${(pathDisplay)} ${(file.tokens.toLocaleString())} tokens ${(`(${file.sizeKB}KB)`)}`;
 			})
 			.join('\n');
 
 		parts.push(
-			chalk.cyan('Files: ') +
-				chalk.yellow(totalFileTokens.toLocaleString()) +
-				chalk.gray(` (${tokenBreakdown.files.length} files)`) +
+			('Files: ') +
+				(totalFileTokens.toLocaleString()) +
+				(` (${tokenBreakdown.files.length} files)`) +
 				'\n' +
 				fileDetails
 		);
@@ -436,9 +343,9 @@ function displayDetailedTokenBreakdown(
 	// Project tree
 	if (tokenBreakdown.projectTree) {
 		parts.push(
-			chalk.cyan('Project Tree: ') +
-				chalk.yellow(tokenBreakdown.projectTree.tokens.toLocaleString()) +
-				chalk.gray(
+			('Project Tree: ') +
+				(tokenBreakdown.projectTree.tokens.toLocaleString()) +
+				(
 					` (${tokenBreakdown.projectTree.fileCount} files, ${tokenBreakdown.projectTree.dirCount} dirs)`
 				)
 		);
@@ -447,32 +354,17 @@ function displayDetailedTokenBreakdown(
 	// Prompts breakdown
 	const totalPromptTokens = systemPromptTokens + userPromptTokens;
 	const promptDetails = [
-		`  ${chalk.gray('System:')} ${chalk.yellow(systemPromptTokens.toLocaleString())} tokens`,
-		`  ${chalk.gray('User:')} ${chalk.yellow(userPromptTokens.toLocaleString())} tokens`
+		`  ${('System:')} ${(systemPromptTokens.toLocaleString())} tokens`,
+		`  ${('User:')} ${(userPromptTokens.toLocaleString())} tokens`
 	].join('\n');
 
 	parts.push(
-		chalk.cyan('Prompts: ') +
-			chalk.yellow(totalPromptTokens.toLocaleString()) +
-			chalk.gray(' (generated)') +
+		('Prompts: ') +
+			(totalPromptTokens.toLocaleString()) +
+			(' (generated)') +
 			'\n' +
 			promptDetails
 	);
-
-	// Display the breakdown in a clean box
-	if (parts.length > 0) {
-		const content = parts.join('\n\n');
-		const tokenBox = boxen(content, {
-			title: chalk.blue.bold('Context Analysis'),
-			titleAlignment: 'left',
-			padding: { top: 1, bottom: 1, left: 2, right: 2 },
-			margin: { top: 0, bottom: 1 },
-			borderStyle: 'single',
-			borderColor: 'blue'
-		});
-		console.log(tokenBox);
-	}
-}
 
 /**
  * Process research result text to highlight code blocks
@@ -487,225 +379,21 @@ function processCodeBlocks(text) {
 		try {
 			// Default to javascript if no language specified
 			const lang = language || 'javascript';
-
-			// Highlight the code using cli-highlight
-			const highlightedCode = highlight(code.trim(), {
-				language: lang,
-				ignoreIllegals: true // Don't fail on unrecognized syntax
-			});
-
-			// Add a subtle border around code blocks
-			const codeBox = boxen(highlightedCode, {
-				padding: { top: 0, bottom: 0, left: 1, right: 1 },
-				margin: { top: 0, bottom: 0 },
-				borderStyle: 'single',
-				borderColor: 'dim'
-			});
-
-			return '\n' + codeBox + '\n';
 		} catch (error) {
-			// If highlighting fails, return the original code block with basic formatting
 			return (
 				'\n' +
-				chalk.gray('```' + (language || '')) +
+				('```' + (language || '')) +
 				'\n' +
-				chalk.white(code.trim()) +
+				(code.trim()) +
 				'\n' +
-				chalk.gray('```') +
+				('```') +
 				'\n'
 			);
 		}
 	});
 }
-
-/**
- * Display research results in formatted output
- * @param {string} result - AI research result
- * @param {string} query - Original query
- * @param {string} detailLevel - Detail level used
- * @param {Object} tokenBreakdown - Detailed token usage
- */
-function displayResearchResults(result, query, detailLevel, tokenBreakdown) {
-	// Header with query info
-	const header = boxen(
-		chalk.green.bold('Research Results') +
-			'\n\n' +
-			chalk.gray('Query: ') +
-			chalk.white(query) +
-			'\n' +
-			chalk.gray('Detail Level: ') +
-			chalk.cyan(detailLevel),
-		{
-			padding: { top: 1, bottom: 1, left: 2, right: 2 },
-			margin: { top: 1, bottom: 0 },
-			borderStyle: 'round',
-			borderColor: 'green'
-		}
-	);
-	console.log(header);
-
-	// Process the result to highlight code blocks
-	const processedResult = processCodeBlocks(result);
-
-	// Main research content in a clean box
-	const contentBox = boxen(processedResult, {
-		padding: { top: 1, bottom: 1, left: 2, right: 2 },
-		margin: { top: 0, bottom: 1 },
-		borderStyle: 'single',
-		borderColor: 'gray'
-	});
-	console.log(contentBox);
-
-	// Success footer
-	console.log(chalk.green('✅ Research completed'));
 }
 
-/**
- * Handle follow-up questions and save functionality in interactive mode
- * @param {Object} originalOptions - Original research options
- * @param {Object} context - Execution context
- * @param {string} outputFormat - Output format
- * @param {string} projectRoot - Project root directory
- * @param {Object} logFn - Logger function
- * @param {string} initialQuery - Initial query for context
- * @param {string} initialResult - Initial AI result for context
- */
-async function handleFollowUpQuestions(
-	originalOptions,
-	context,
-	outputFormat,
-	projectRoot,
-	logFn,
-	initialQuery,
-	initialResult
-) {
-	let interactiveSaveOccurred = false;
-
-	try {
-		// Import required modules for saving
-		const { readJSON } = await import('../utils.js');
-		const updateTaskById = (await import('./update-task-by-id.js')).default;
-		const { updateSubtaskById } = await import('./update-subtask-by-id.js');
-
-		// Initialize conversation history with the initial Q&A
-		const conversationHistory = [
-			{
-				question: initialQuery,
-				answer: initialResult,
-				type: 'initial',
-				timestamp: new Date().toISOString()
-			}
-		];
-
-		while (true) {
-			// Get user choice
-			const { action } = await inquirer.prompt([
-				{
-					type: 'list',
-					name: 'action',
-					message: 'What would you like to do next?',
-					choices: [
-						{ name: 'Ask a follow-up question', value: 'followup' },
-						{ name: 'Save to file', value: 'savefile' },
-						{ name: 'Save to task/subtask', value: 'save' },
-						{ name: 'Quit', value: 'quit' }
-					],
-					pageSize: 4
-				}
-			]);
-
-			if (action === 'quit') {
-				break;
-			}
-
-			if (action === 'savefile') {
-				// Handle save to file functionality
-				await handleSaveToFile(
-					conversationHistory,
-					projectRoot,
-					context,
-					logFn
-				);
-				continue;
-			}
-
-			if (action === 'save') {
-				// Handle save functionality
-				const saveResult = await handleSaveToTask(
-					conversationHistory,
-					projectRoot,
-					context,
-					logFn
-				);
-				if (saveResult) {
-					interactiveSaveOccurred = true;
-				}
-				continue;
-			}
-
-			if (action === 'followup') {
-				// Get the follow-up question
-				const { followUpQuery } = await inquirer.prompt([
-					{
-						type: 'input',
-						name: 'followUpQuery',
-						message: 'Enter your follow-up question:',
-						validate: (input) => {
-							if (!input || input.trim().length === 0) {
-								return 'Please enter a valid question.';
-							}
-							return true;
-						}
-					}
-				]);
-
-				if (!followUpQuery || followUpQuery.trim().length === 0) {
-					continue;
-				}
-
-				console.log('\n' + chalk.gray('─'.repeat(60)) + '\n');
-
-				// Build cumulative conversation context from all previous exchanges
-				const conversationContext =
-					buildConversationContext(conversationHistory);
-
-				// Create enhanced options for follow-up with full conversation context
-				const followUpOptions = {
-					...originalOptions,
-					taskIds: [], // Clear task IDs to allow fresh fuzzy search
-					customContext:
-						conversationContext +
-						(originalOptions.customContext
-							? `\n\n--- Original Context ---\n${originalOptions.customContext}`
-							: '')
-				};
-
-				// Perform follow-up research
-				const followUpResult = await performResearch(
-					followUpQuery.trim(),
-					followUpOptions,
-					context,
-					outputFormat,
-					false // allowFollowUp = false for nested calls
-				);
-
-				// Add this exchange to the conversation history
-				conversationHistory.push({
-					question: followUpQuery.trim(),
-					answer: followUpResult.result,
-					type: 'followup',
-					timestamp: new Date().toISOString()
-				});
-			}
-		}
-	} catch (error) {
-		// If there's an error with inquirer (e.g., non-interactive terminal),
-		// silently continue without follow-up functionality
-		logFn.debug(`Follow-up questions not available: ${error.message}`);
-	}
-
-	return { interactiveSaveOccurred };
-}
 
 /**
  * Handle saving conversation to a task or subtask
@@ -726,28 +414,6 @@ async function handleSaveToTask(
 		const updateTaskById = (await import('./update-task-by-id.js')).default;
 		const { updateSubtaskById } = await import('./update-subtask-by-id.js');
 
-		// Get task ID from user
-		const { taskId } = await inquirer.prompt([
-			{
-				type: 'input',
-				name: 'taskId',
-				message: 'Enter task ID (e.g., "15" for task or "15.2" for subtask):',
-				validate: (input) => {
-					if (!input || input.trim().length === 0) {
-						return 'Please enter a task ID.';
-					}
-
-					const trimmedInput = input.trim();
-					// Validate format: number or number.number
-					if (!/^\d+(\.\d+)?$/.test(trimmedInput)) {
-						return 'Invalid format. Use "15" for task or "15.2" for subtask.';
-					}
-
-					return true;
-				}
-			}
-		]);
-
 		const trimmedTaskId = taskId.trim();
 
 		// Format conversation thread for saving
@@ -765,15 +431,15 @@ async function handleSaveToTask(
 		);
 
 		if (!fs.existsSync(tasksPath)) {
-			console.log(
-				chalk.red('❌ Tasks file not found. Please run task-master init first.')
-			);
+			logFn
+				('❌ Tasks file not found. Please run task-master init first.')
+		
 			return;
 		}
 
 		const data = readJSON(tasksPath, projectRoot, context.tag);
 		if (!data || !data.tasks) {
-			console.log(chalk.red('❌ No valid tasks found.'));
+			logFn(('❌ No valid tasks found.'));
 			return;
 		}
 
@@ -785,7 +451,7 @@ async function handleSaveToTask(
 			const parentTask = data.tasks.find((t) => t.id === parentId);
 
 			if (!parentTask) {
-				console.log(chalk.red(`❌ Parent task ${parentId} not found.`));
+				logFn((`❌ Parent task ${parentId} not found.`));
 				return;
 			}
 
@@ -793,12 +459,11 @@ async function handleSaveToTask(
 				!parentTask.subtasks ||
 				!parentTask.subtasks.find((st) => st.id === subtaskId)
 			) {
-				console.log(chalk.red(`❌ Subtask ${trimmedTaskId} not found.`));
+				console.log((`❌ Subtask ${trimmedTaskId} not found.`));
 				return;
 			}
 
 			// Save to subtask using updateSubtaskById
-			console.log(chalk.blue('💾 Saving research conversation to subtask...'));
 
 			await updateSubtaskById(
 				tasksPath,
@@ -808,24 +473,18 @@ async function handleSaveToTask(
 				context,
 				'text'
 			);
-
-			console.log(
-				chalk.green(
-					`✅ Research conversation saved to subtask ${trimmedTaskId}`
-				)
-			);
 		} else {
 			// Validate task exists
 			const taskIdNum = parseInt(trimmedTaskId, 10);
 			const task = data.tasks.find((t) => t.id === taskIdNum);
 
 			if (!task) {
-				console.log(chalk.red(`❌ Task ${trimmedTaskId} not found.`));
+				console.log((`❌ Task ${trimmedTaskId} not found.`));
 				return;
 			}
 
 			// Save to task using updateTaskById with append mode
-			console.log(chalk.blue('💾 Saving research conversation to task...'));
+			console.log(('💾 Saving research conversation to task...'));
 
 			await updateTaskById(
 				tasksPath,
@@ -837,14 +496,12 @@ async function handleSaveToTask(
 				true // appendMode = true
 			);
 
-			console.log(
-				chalk.green(`✅ Research conversation saved to task ${trimmedTaskId}`)
-			);
+		
 		}
 
 		return true; // Indicate successful save
 	} catch (error) {
-		console.log(chalk.red(`❌ Error saving conversation: ${error.message}`));
+		console.log((`❌ Error saving conversation: ${error.message}`));
 		logFn.error(`Error saving conversation: ${error.message}`);
 		return false; // Indicate failed save
 	}
@@ -902,15 +559,11 @@ async function handleSaveToFile(
 		fs.writeFileSync(filePath, fileContent, 'utf8');
 
 		const relativePath = path.relative(projectRoot, filePath);
-		console.log(
-			chalk.green(`✅ Research saved to: ${chalk.cyan(relativePath)}`)
-		);
 
 		logFn.success(`Research conversation saved to ${relativePath}`);
 
 		return filePath;
 	} catch (error) {
-		console.log(chalk.red(`❌ Error saving research file: ${error.message}`));
 		logFn.error(`Error saving research file: ${error.message}`);
 		throw error;
 	}

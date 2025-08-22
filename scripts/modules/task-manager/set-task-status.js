@@ -1,6 +1,5 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 
 import {
 	log,
@@ -9,7 +8,7 @@ import {
 	findTaskById,
 	ensureTagMetadata
 } from '../utils.js';
-import { displayBanner } from '../ui.js';
+
 import { validateTaskDependencies } from '../dependency-manager.js';
 import { getDebugFlag } from '../config-manager.js';
 import updateSingleTaskStatus from './update-single-task-status.js';
@@ -43,13 +42,6 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 
 		// Only display UI elements if not in MCP mode
 		if (!isMcpMode) {
-			console.log(
-				boxen(chalk.white.bold(`Updating Task Status to: ${newStatus}`), {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round'
-				})
-			);
 		}
 
 		log('info', `Reading tasks from ${tasksPath}...`);
@@ -137,16 +129,6 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 		if (!isMcpMode) {
 			for (const updateInfo of updatedTasks) {
 				const { id, oldStatus, newStatus: updatedStatus } = updateInfo;
-
-				console.log(
-					boxen(
-						chalk.white.bold(`Successfully updated task ${id} status:`) +
-							'\n' +
-							`From: ${chalk.yellow(oldStatus)}\n` +
-							`To:   ${chalk.green(updatedStatus)}`,
-						{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-					)
-				);
 			}
 		}
 
@@ -164,7 +146,6 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 
 		// Only show error UI in CLI mode
 		if (!options?.mcpLog) {
-			console.error(chalk.red(`Error: ${error.message}`));
 
 			// Pass session to getDebugFlag
 			if (getDebugFlag(options?.session)) {
@@ -172,7 +153,6 @@ async function setTaskStatus(tasksPath, taskIdInput, newStatus, options = {}) {
 				console.error(error);
 			}
 
-			process.exit(1);
 		} else {
 			// In MCP mode, throw the error for the caller to handle
 			throw error;

@@ -1,0 +1,69 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: removeDependency, FROM: /scripts/modules/dependency-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Dependency management system for task relationships"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: removeDependencyDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: removeDependencyDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing dependency removal information"]
+        P2["PARAM: {string} args.tasksJsonPath - explicit path to tasks.json file"]
+        P3["PARAM: {string|number} args.id - task ID to remove dependency from"]
+        P4["PARAM: {string|number} args.dependsOn - dependency task ID to remove"]
+        P5["PARAM: {string} args.projectRoot - project root path"]
+        P6["PARAM: {string} args.tag - tag for task context"]
+        P7["PARAM: {Object} log - logger object for operation tracking"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted path from arguments"]
+        C2["CONST: id, VALUE: task ID from arguments"]
+        C3["CONST: dependsOn, VALUE: dependency task ID from arguments"]
+        C4["CONST: projectRoot, VALUE: project root path from arguments"]
+        C5["CONST: tag, VALUE: tag context from arguments"]
+        C6["CONST: tasksPath, VALUE: validated tasks.json file path"]
+        C7["CONST: taskId, VALUE: formatted task ID for core function"]
+        C8["CONST: dependencyId, VALUE: formatted dependency ID for core function"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameter tasksJsonPath"]
+        FL2["Validate task ID and dependency ID are provided"]
+        FL3["Format IDs for core function compatibility"]
+        FL4["Enable silent mode for MCP JSON response compatibility"]
+        FL5["Call core removeDependency function with formatted parameters"]
+        FL6["Disable silent mode and return success response"]
+        FL7["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["remove-dependency.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL5 --> FL7
+```

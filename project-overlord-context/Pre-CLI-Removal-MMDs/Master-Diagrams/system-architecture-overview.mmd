@@ -1,0 +1,224 @@
+flowchart TB
+
+%% =================================================================================
+%% SYSTEM ARCHITECTURE OVERVIEW - MASTER DIAGRAM
+%% How layers connect at high level across the entire system
+%% =================================================================================
+
+%% PROJECT OVERLORD LAYER DEFINITIONS
+subgraph ProjectOverlordArchitecture["project-overlord-architecture"]
+    LAYER1["LAYER: MCP Interface Layer - Tools Registration & API Handling"]
+    LAYER2["LAYER: Core Implementation Layer - Direct Function Implementations"]
+    LAYER3["LAYER: Task Manager Layer - Business Logic & Core Operations"]
+    LAYER4["LAYER: Shared Infrastructure Layer - Utilities & Common Services"]
+end
+
+%% PROJECT OVERLORD DATA FLOW
+subgraph ProjectOverlordDataFlow["project-overlord-data-flow"]
+    FLOW1["FLOW: Client Request → MCP Interface"]
+    FLOW2["FLOW: MCP Interface → Core Implementation"]
+    FLOW3["FLOW: Core Implementation → Task Manager"]
+    FLOW4["FLOW: All Layers → Shared Infrastructure"]
+    FLOW5["FLOW: Response Path (reverse of request)"]
+end
+
+%% PROJECT OVERLORD INTEGRATION POINTS
+subgraph ProjectOverlordIntegration["project-overlord-integration"]
+    INT1["INTEGRATION: FastMCP Server Registration"]
+    INT2["INTEGRATION: File System Operations"]
+    INT3["INTEGRATION: Git Repository Management"]
+    INT4["INTEGRATION: AI Research Services"]
+    INT5["INTEGRATION: Token Counting & Context Management"]
+end
+
+%% MCP INTERFACE LAYER - Entry Points
+subgraph mcpInterfaceLayer["MCP Interface Layer"]
+    subgraph mcpTools["MCP Tools"]
+        TOOL1["TOOL: registerExpandTaskTool"]
+        TOOL2["TOOL: registerShowTaskTool"]
+        TOOL3["TOOL: registerUpdateSubtaskTool"]
+        TOOL4["TOOL: registerNextTaskTool"]
+        TOOL5["TOOL: registerSetTaskStatusTool"]
+        TOOL6["TOOL: registerValidateDependenciesTool"]
+        TOOL7["TOOL: registerMoveTaskTool"]
+        TOOL8["TOOL: registerResearchTool"]
+    end
+    
+    subgraph mcpValidation["MCP Validation"]
+        VAL1["VALIDATION: Zod Schema Validation"]
+        VAL2["VALIDATION: Parameter Processing"]
+        VAL3["VALIDATION: Error Response Handling"]
+    end
+    
+    subgraph mcpUtilities["MCP Utilities"]
+        UTIL1["UTILITY: handleApiResult"]
+        UTIL2["UTILITY: createErrorResponse"]
+        UTIL3["UTILITY: withNormalizedProjectRoot"]
+        UTIL4["UTILITY: resolveTag"]
+    end
+end
+
+%% CORE IMPLEMENTATION LAYER - Direct Functions
+subgraph coreImplementationLayer["Core Implementation Layer"]
+    subgraph coreFunctions["Core Direct Functions"]
+        CORE1["FUNCTION: expandAllTasksDirect"]
+        CORE2["FUNCTION: expandTaskDirect"]
+        CORE3["FUNCTION: showTaskDirect"]
+        CORE4["FUNCTION: updateSubtaskByIdDirect"]
+        CORE5["FUNCTION: setTaskStatusDirect"]
+        CORE6["FUNCTION: nextTaskDirect"]
+        CORE7["FUNCTION: validateDependenciesDirect"]
+        CORE8["FUNCTION: moveTaskDirect"]
+    end
+    
+    subgraph coreUtilities["Core Utilities"]
+        CUTIL1["UTILITY: createLogWrapper"]
+        CUTIL2["UTILITY: enableSilentMode"]
+        CUTIL3["UTILITY: disableSilentMode"]
+        CUTIL4["UTILITY: findTasksPath"]
+        CUTIL5["UTILITY: findComplexityReportPath"]
+    end
+end
+
+%% TASK MANAGER LAYER - Business Logic
+subgraph taskManagerLayer["Task Manager Layer"]
+    subgraph taskOperations["Task Operations"]
+        OP1["OPERATION: findNextTask"]
+        OP2["OPERATION: updateSubtaskById"]
+        OP3["OPERATION: setTaskStatus"]
+        OP4["OPERATION: expandAllTasks"]
+        OP5["OPERATION: expandTask"]
+        OP6["OPERATION: moveTask"]
+        OP7["OPERATION: validateDependencies"]
+    end
+    
+    subgraph taskModels["Task Models"]
+        MODEL1["MODEL: validateTask"]
+        MODEL2["MODEL: validateSubtask"]
+        MODEL3["MODEL: createTaskTemplate"]
+        MODEL4["MODEL: createSubtaskTemplate"]
+    end
+    
+    subgraph tagManagement["Tag Management"]
+        TAG1["TAG: addTag"]
+        TAG2["TAG: removeTag"]
+        TAG3["TAG: renameTag"]
+        TAG4["TAG: listTags"]
+    end
+end
+
+%% SHARED INFRASTRUCTURE LAYER - Common Services
+subgraph sharedInfrastructureLayer["Shared Infrastructure Layer"]
+    subgraph contextServices["Context Services"]
+        CTX1["SERVICE: ContextGatherer"]
+        CTX2["SERVICE: createContextGatherer"]
+        CTX3["SERVICE: countTokens"]
+        CTX4["SERVICE: semanticSearch"]
+    end
+    
+    subgraph fileServices["File Services"]
+        FILE1["SERVICE: readJSON"]
+        FILE2["SERVICE: writeJSON"]
+        FILE3["SERVICE: findTaskById"]
+        FILE4["SERVICE: flattenTasksWithSubtasks"]
+    end
+    
+    subgraph searchServices["Search Services"]
+        SEARCH1["SERVICE: createFuzzySearch"]
+        SEARCH2["SERVICE: searchTasks"]
+        SEARCH3["SERVICE: searchSubtasks"]
+        SEARCH4["SERVICE: rankResults"]
+    end
+    
+    subgraph gitServices["Git Services"]
+        GIT1["SERVICE: getGitStatus"]
+        GIT2["SERVICE: getGitBranch"]
+        GIT3["SERVICE: getGitCommitHash"]
+        GIT4["SERVICE: isGitRepo"]
+    end
+end
+
+%% EXTERNAL INTEGRATIONS
+subgraph externalIntegrations["External Integrations"]
+    EXT1["EXTERNAL: FastMCP Server Framework"]
+    EXT2["EXTERNAL: File System (fs, path)"]
+    EXT3["EXTERNAL: Zod Validation Library"]
+    EXT4["EXTERNAL: Fuse.js Fuzzy Search"]
+    EXT5["EXTERNAL: GPT Tokens Package"]
+    EXT6["EXTERNAL: Git Command Line"]
+    EXT7["EXTERNAL: AI Research Services"]
+    EXT8["EXTERNAL: Chalk Terminal Colors"]
+end
+
+%% LAYER RELATIONSHIPS - Request Flow
+LAYER1 --> LAYER2
+LAYER2 --> LAYER3
+LAYER3 --> LAYER4
+
+%% MCP INTERFACE TO CORE IMPLEMENTATION
+TOOL1 --> CORE1
+TOOL1 --> CORE2
+TOOL2 --> CORE3
+TOOL3 --> CORE4
+TOOL4 --> CORE6
+TOOL5 --> CORE5
+TOOL6 --> CORE7
+TOOL7 --> CORE8
+TOOL8 --> CORE1
+
+%% CORE IMPLEMENTATION TO TASK MANAGER
+CORE1 --> OP4
+CORE2 --> OP5
+CORE3 --> OP1
+CORE4 --> OP2
+CORE5 --> OP3
+CORE6 --> OP1
+CORE7 --> OP7
+CORE8 --> OP6
+
+%% TASK MANAGER TO SHARED INFRASTRUCTURE
+OP1 --> FILE1 & FILE3 & SEARCH1
+OP2 --> FILE1 & FILE2 & FILE3
+OP3 --> FILE1 & FILE2 & FILE3
+OP4 --> FILE1 & FILE2 & CTX1
+OP5 --> FILE1 & FILE2 & CTX1
+OP6 --> FILE1 & FILE2 & FILE3
+OP7 --> FILE1 & FILE3
+MODEL1 & MODEL2 & MODEL3 & MODEL4 --> FILE1 & FILE2
+TAG1 & TAG2 & TAG3 & TAG4 --> FILE1 & FILE2
+
+%% SHARED INFRASTRUCTURE TO EXTERNAL
+CTX1 --> EXT4 & EXT5
+CTX2 --> EXT4 & EXT5
+SEARCH1 --> EXT4
+FILE1 & FILE2 --> EXT2
+GIT1 & GIT2 & GIT3 & GIT4 --> EXT6
+
+%% MCP INTERFACE TO EXTERNAL
+VAL1 --> EXT3
+UTIL1 & UTIL2 & UTIL3 --> EXT1
+TOOL1 & TOOL2 & TOOL3 & TOOL4 & TOOL5 & TOOL6 & TOOL7 & TOOL8 --> EXT1
+
+%% CROSS-LAYER UTILITIES
+UTIL4 --> FILE1 & FILE3
+CUTIL1 --> EXT1
+CUTIL4 & CUTIL5 --> EXT2
+
+%% DATA FLOW CONNECTIONS
+FLOW1 --> FLOW2
+FLOW2 --> FLOW3
+FLOW3 --> FLOW4
+FLOW4 --> FLOW5
+
+%% INTEGRATION POINT CONNECTIONS
+INT1 --> EXT1
+INT2 --> EXT2
+INT3 --> EXT6
+INT4 --> EXT7
+INT5 --> EXT5
+
+%% PROJECT OVERLORD ARCHITECTURE CONNECTIONS
+LAYER1 --> mcpInterfaceLayer
+LAYER2 --> coreImplementationLayer
+LAYER3 --> taskManagerLayer
+LAYER4 --> sharedInfrastructureLayer

@@ -1,0 +1,49 @@
+```mermaid
+graph TB
+    %% Scripts Modules Index - Shared Infrastructure Layer
+    %% File: scripts/modules/index.js
+    
+    subgraph "Scripts Modules Index"
+        direction TB
+        
+        subgraph "Module Exports"
+            UTILS_EXPORT["export * from './utils.js'"]
+            COMMANDS_EXPORT["export * from './commands.js'"]
+            TASK_MANAGER_EXPORT["export * from './task-manager.js'"]
+            PROMPT_MANAGER_EXPORT["export * from './prompt-manager.js'"]
+        end
+        
+        subgraph "Referenced Modules"
+            UTILS_MODULE["utils.js - Utility functions"]
+            COMMANDS_MODULE["commands.js - Command handlers"]
+            TASK_MANAGER_MODULE["task-manager.js - Task management"]
+            PROMPT_MANAGER_MODULE["prompt-manager.js - Prompt handling"]
+        end
+        
+        subgraph "Export Pattern"
+            WILDCARD_EXPORTS["Re-export all exports from each module"]
+            CENTRAL_ENTRY_POINT["Single entry point for all CLI modules"]
+        end
+    end
+    
+    %% Export Flow
+    UTILS_EXPORT --> UTILS_MODULE
+    COMMANDS_EXPORT --> COMMANDS_MODULE
+    TASK_MANAGER_EXPORT --> TASK_MANAGER_MODULE
+    PROMPT_MANAGER_EXPORT --> PROMPT_MANAGER_MODULE
+    
+    %% Central Pattern
+    UTILS_EXPORT --> WILDCARD_EXPORTS
+    COMMANDS_EXPORT --> WILDCARD_EXPORTS
+    TASK_MANAGER_EXPORT --> WILDCARD_EXPORTS
+    PROMPT_MANAGER_EXPORT --> WILDCARD_EXPORTS
+    
+    WILDCARD_EXPORTS --> CENTRAL_ENTRY_POINT
+    
+    style CENTRAL_ENTRY_POINT fill:#e1f5fe
+    style WILDCARD_EXPORTS fill:#e8f5e8
+    style UTILS_EXPORT fill:#fff3e0
+    style COMMANDS_EXPORT fill:#f3e5f5
+    style TASK_MANAGER_EXPORT fill:#fce4ec
+    style PROMPT_MANAGER_EXPORT fill:#e0f2f1
+```

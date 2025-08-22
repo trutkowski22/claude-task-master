@@ -1,0 +1,133 @@
+flowchart TB
+    subgraph ui-Imports ["ui-Imports"]
+        I1["IMPORT: chalk, FROM: chalk"]
+        I2["IMPORT: figlet, FROM: figlet"]
+        I3["IMPORT: boxen, FROM: boxen"]
+        I4["IMPORT: ora, FROM: ora"]
+        I5["IMPORT: Table, FROM: cli-table3"]
+        I6["IMPORT: gradient, FROM: gradient-string"]
+        I7["IMPORT: readline, FROM: readline"]
+        I8["IMPORT: log, findTaskById, readJSON, truncate, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I9["IMPORT: fs, FROM: fs"]
+        I10["IMPORT: findNextTask, analyzeTaskComplexity, readComplexityReport, FROM: /claude-task-master/scripts/modules/task-manager.js"]
+        I11["IMPORT: getProjectName, getDefaultSubtasks, FROM: /claude-task-master/scripts/modules/config-manager.js"]
+        I12["IMPORT: TASK_STATUS_OPTIONS, FROM: /claude-task-master/src/constants/task-status.js"]
+        I13["IMPORT: TASKMASTER_CONFIG_FILE, TASKMASTER_TASKS_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I14["IMPORT: getTaskMasterVersion, FROM: /claude-task-master/src/utils/getVersion.js"]
+    end
+    subgraph ui-Dependencies
+        D1["DEP: CLI UI libraries (chalk, figlet, boxen, ora)"]
+        D2["DEP: CLI table rendering"]
+        D3["DEP: Color gradients"]
+        D4["DEP: Node.js readline and fs"]
+        D5["DEP: Task management utilities"]
+        D6["DEP: Configuration system"]
+    end
+    subgraph ui-FunctionsDefined
+        FU1["FUNCTION: displayTaggedTasksFYI"]
+        FU2["FUNCTION: displayCurrentTagIndicator"]
+        FU3["FUNCTION: displayBanner"]
+        FU4["FUNCTION: startLoadingIndicator"]
+        FU5["FUNCTION: stopLoadingIndicator"]
+        FU6["FUNCTION: succeedLoadingIndicator"]
+        FU7["FUNCTION: failLoadingIndicator"]
+        FU8["FUNCTION: warnLoadingIndicator"]
+        FU9["FUNCTION: infoLoadingIndicator"]
+        FU10["FUNCTION: createProgressBar"]
+        FU11["FUNCTION: getStatusWithColor"]
+        FU12["FUNCTION: formatDependenciesWithStatus"]
+        FU13["FUNCTION: displayHelp"]
+        FU14["FUNCTION: getComplexityWithColor"]
+        FU15["FUNCTION: truncateString"]
+        FU16["FUNCTION: displayNextTask"]
+        FU17["FUNCTION: displayTaskById"]
+        FU18["FUNCTION: displayComplexityReport"]
+        FU19["FUNCTION: generateComplexityAnalysisPrompt"]
+        FU20["FUNCTION: confirmTaskOverwrite"]
+        FU21["FUNCTION: displayApiKeyStatus"]
+        FU22["FUNCTION: displayModelConfiguration"]
+        FU23["FUNCTION: displayAvailableModels"]
+        FU24["FUNCTION: displayAiUsageSummary"]
+        FU25["FUNCTION: displayMultipleTasksSummary"]
+        FU26["FUNCTION: displayContextAnalysis"]
+    end
+    subgraph ui-Exports
+        E1["EXP: displayBanner"]
+        E2["EXP: displayTaggedTasksFYI"]
+        E3["EXP: startLoadingIndicator"]
+        E4["EXP: stopLoadingIndicator"]
+        E5["EXP: createProgressBar"]
+        E6["EXP: getStatusWithColor"]
+        E7["EXP: formatDependenciesWithStatus"]
+        E8["EXP: displayHelp"]
+        E9["EXP: getComplexityWithColor"]
+        E10["EXP: displayNextTask"]
+        E11["EXP: displayTaskById"]
+        E12["EXP: displayComplexityReport"]
+        E13["EXP: generateComplexityAnalysisPrompt"]
+        E14["EXP: confirmTaskOverwrite"]
+        E15["EXP: displayApiKeyStatus"]
+        E16["EXP: displayModelConfiguration"]
+        E17["EXP: displayAvailableModels"]
+        E18["EXP: displayAiUsageSummary"]
+        E19["EXP: displayMultipleTasksSummary"]
+        E20["EXP: succeedLoadingIndicator"]
+        E21["EXP: failLoadingIndicator"]
+        E22["EXP: warnLoadingIndicator"]
+        E23["EXP: infoLoadingIndicator"]
+        E24["EXP: displayContextAnalysis"]
+        E25["EXP: displayCurrentTagIndicator"]
+    end
+    subgraph ui-Parameters
+        P1["PARAM: {Object} data - Data object that may contain _migrationHappened flag"]
+        P2["PARAM: {string} tagName - The tag name to display"]
+        P3["PARAM: {Object} options - Display options"]
+        P4["PARAM: {boolean} [options.skipIfMaster=false] - Don't show indicator if tag is 'master'"]
+        P5["PARAM: {boolean} [options.dim=false] - Use dimmed styling"]
+        P6["PARAM: {string} message - Message to display next to the spinner"]
+        P7["PARAM: {Object} spinner - Spinner object to stop"]
+        P8["PARAM: {number} percent - The completion percentage"]
+        P9["PARAM: {number} length - The total length of the progress bar in characters"]
+        P10["PARAM: {Object} statusBreakdown - Optional breakdown of non-complete statuses"]
+        P11["PARAM: {string} status - Task status"]
+        P12["PARAM: {boolean} forTable - Whether the status is being displayed in a table"]
+    end
+    subgraph ui-Constants
+        C1["CONST: coolGradient, VALUE: Gradient from blue tones"]
+        C2["CONST: warmGradient, VALUE: Gradient from orange/red tones"]
+        C3["CONST: bannerText, VALUE: ASCII art from figlet"]
+        C4["CONST: progressBarChar, VALUE: Character for progress visualization"]
+        C5["CONST: statusColors, VALUE: Color mapping for task statuses"]
+        C6["CONST: table, VALUE: CLI table instance for formatted output"]
+    end
+    subgraph ui-ExecutionFlow
+        FL1["Display branded banner with figlet ASCII art and gradients"]
+        FL2["Show tag context and migration notifications"]
+        FL3["Manage loading indicators with ora spinners"]
+        FL4["Create visual progress bars with status breakdowns"]
+        FL5["Format task statuses with appropriate colors"]
+        FL6["Display help documentation and available commands"]
+        FL7["Render task details with dependency visualization"]
+        FL8["Show complexity reports and analysis data"]
+        FL9["Handle API key status and model configuration display"]
+        FL10["Export comprehensive UI function library"]
+    end
+    subgraph "ui.js"
+        ui-Imports
+        ui-Dependencies
+        ui-FunctionsDefined
+        ui-Exports
+        ui-Parameters
+        ui-Constants
+        ui-ExecutionFlow
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10

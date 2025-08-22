@@ -1,0 +1,47 @@
+flowchart TB
+    subgraph Imports
+        I1[getModelConfiguration, getAvailableModelsList, setModel from ../../../../scripts/modules/task-manager/models.js]
+        I2[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+        I3[createLogWrapper from ../../tools/utils.js]
+        I4[CUSTOM_PROVIDERS_ARRAY from ../../../../src/constants/providers.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[getProviderHint - Determines provider hint from custom provider flags]
+        FU2[handleModelSetting - Handles setting models for different roles]
+        FU3[modelsDirect - Main function for getting or updating model configuration]
+    end
+
+    subgraph Exports
+        E1[modelsDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with projectRoot, listAvailableModels, setMain, setResearch, setFallback, provider flags]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph Constants
+        C1[MODEL_ROLES array: main, research, fallback]
+        C2[CUSTOM_PROVIDERS_ARRAY for provider validation]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that only one custom provider flag is used simultaneously]
+        FL2[Enable silent mode to prevent console interference with operations]
+        FL3[Check if listAvailableModels flag is set and return available models list]
+        FL4[Handle model setting for any specified role using handleModelSetting function]
+        FL5[If no specific action requested, return current model configuration]
+        FL6[Create log wrapper and model context for core function calls]
+        FL7[Restore normal logging mode and return results]
+        FL8[Handle errors gracefully with structured error responses]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

@@ -1,0 +1,81 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: setTaskStatus, FROM: /scripts/modules/task-manager.js"]
+        I2["IMPORT: enableSilentMode, FROM: /scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /scripts/modules/utils.js"]
+        I4["IMPORT: isSilentMode, FROM: /scripts/modules/utils.js"]
+        I5["IMPORT: nextTaskDirect, FROM: ./next-task.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Task status management system for updating task states"]
+        D2["DEP: Silent mode management for MCP compatibility"]
+        D3["DEP: Next task finder for automated workflow progression"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: setTaskStatusDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: setTaskStatusDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - command arguments containing status update information"]
+        P2["PARAM: {string} args.id - task ID to update status for"]
+        P3["PARAM: {string} args.status - new status to set for the task"]
+        P4["PARAM: {string} args.tasksJsonPath - path to tasks.json file"]
+        P5["PARAM: {string} args.projectRoot - project root path"]
+        P6["PARAM: {string} args.complexityReportPath - path to complexity report"]
+        P7["PARAM: {string} args.tag - tag for task context"]
+        P8["PARAM: {Object} log - logger object for operation tracking"]
+        P9["PARAM: {Object} context - MCP context containing session"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: tasksJsonPath, VALUE: extracted from args"]
+        C2["CONST: id, VALUE: task ID from args"]
+        C3["CONST: status, VALUE: new status from args"]
+        C4["CONST: complexityReportPath, VALUE: complexity report path from args"]
+        C5["CONST: projectRoot, VALUE: project root path from args"]
+        C6["CONST: tag, VALUE: tag context from args"]
+        C7["CONST: session, VALUE: extracted from context"]
+        C8["CONST: tasksPath, VALUE: validated tasks.json file path"]
+        C9["CONST: taskId, VALUE: task identifier"]
+        C10["CONST: newStatus, VALUE: new status value"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required parameters - tasksJsonPath, id, status"]
+        FL2["Enable silent mode for MCP JSON response compatibility"]
+        FL3["Call core setTaskStatus function with task ID and new status"]
+        FL4["Check if task was completed (status = 'done')"]
+        FL5["If completed, fetch next available task using nextTaskDirect"]
+        FL6["Combine status update result with next task information"]
+        FL7["Disable silent mode and return success with full result"]
+        FL8["Handle errors by restoring silent mode and returning error"]
+    end
+    
+    subgraph FileName["set-task-status.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL4 --> FL7
+    FL5 --> FL6
+    FL6 --> FL7
+    FL1 --> FL8
+    FL3 --> FL8
+    FL5 --> FL8
+```

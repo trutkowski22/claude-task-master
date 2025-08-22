@@ -1,9 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
+
 
 import { log, readJSON } from '../utils.js';
-import { formatDependenciesWithStatus } from '../ui.js';
 import { validateAndFixDependencies } from '../dependency-manager.js';
 import { getDebugFlag } from '../config-manager.js';
 
@@ -188,11 +187,8 @@ function generateTaskFiles(tasksPath, outputDir, options = {}) {
 	} catch (error) {
 		log('error', `Error generating task files: ${error.message}`);
 		if (!options?.mcpLog) {
-			console.error(chalk.red(`Error generating task files: ${error.message}`));
-			if (getDebugFlag()) {
-				console.error(error);
-			}
-			process.exit(1);
+			// Error already logged via log function
+			throw new Error(`Error generating task files: ${error.message}`);
 		} else {
 			throw error;
 		}

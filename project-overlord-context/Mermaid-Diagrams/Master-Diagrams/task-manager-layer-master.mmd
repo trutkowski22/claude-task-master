@@ -1,0 +1,188 @@
+```mermaid
+flowchart TB
+    %% SHARED INFRASTRUCTURE SECTIONS
+    subgraph SharedImports["Shared-Infrastructure-Imports"]
+        SI1["IMPORT: z, FROM: zod"]
+        SI2["IMPORT: readJSON, FROM: /scripts/modules/utils.js"]
+        SI3["IMPORT: writeJSON, FROM: /scripts/modules/utils.js"]
+        SI4["IMPORT: log, FROM: /scripts/modules/utils.js"]
+        SI5["IMPORT: ensureTagMetadata, FROM: /scripts/modules/utils.js"]
+        SI6["IMPORT: generateObjectService, FROM: /scripts/modules/ai-services-unified.js"]
+        SI7["IMPORT: getPromptManager, FROM: /scripts/modules/prompt-manager.js"]
+        SI8["IMPORT: ContextGatherer, FROM: /scripts/modules/utils/contextGatherer.js"]
+    end
+    
+    subgraph SharedDependencies["Shared-Infrastructure-Dependencies"]
+        SD1["DEP: AI service providers for task generation and analysis"]
+        SD2["DEP: File system for task data persistence"]
+        SD3["DEP: Zod validation for data schema enforcement"]
+        SD4["DEP: Context gathering for intelligent task operations"]
+        SD5["DEP: Tag management system for project organization"]
+    end
+    
+    subgraph SharedParameters["Shared-Infrastructure-Parameters"]
+        SP1["PARAM: {string} tasksPath - path to tasks.json file"]
+        SP2["PARAM: {Object} context - session and project context information"]
+        SP3["PARAM: {string} outputFormat - output format for responses"]
+        SP4["PARAM: {boolean} useResearch - whether to use research AI model"]
+        SP5["PARAM: {string} tag - tag context for operations"]
+    end
+    
+    subgraph SharedConstants["Shared-Infrastructure-Constants"]
+        SC1["CONST: rawData, VALUE: task data read from JSON file"]
+        SC2["CONST: allTasks, VALUE: flattened array of all tasks across tags"]
+        SC3["CONST: targetTag, VALUE: resolved tag context for operations"]
+        SC4["CONST: logFn, VALUE: unified logging function for CLI and MCP"]
+        SC5["CONST: aiServiceResponse, VALUE: response from AI service calls"]
+    end
+    
+    %% INDIVIDUAL FILE SECTIONS
+    subgraph addTaskManager["add-task.js"]
+        subgraph addTaskImports["addTask-Imports"]
+            ATMI1["IMPORT: Fuse, FROM: fuse.js"]
+            ATMI2["IMPORT: generateTaskFiles, FROM: /scripts/modules/task-manager/generate-task-files.js"]
+            ATMI3["IMPORT: TASK_PRIORITY_OPTIONS, FROM: /src/constants/task-priority.js"]
+        end
+        
+        subgraph addTaskFunctions["addTask-Functions Defined"]
+            ATMF1["FUNCTION: getAllTasks"]
+            ATMF2["FUNCTION: addTask"]
+            ATMF3["FUNCTION: buildDependencyGraph"]
+        end
+        
+        subgraph addTaskExports["addTask-Exports"]
+            ATME1["EXP: addTask"]
+        end
+        
+        subgraph addTaskConstants["addTask-Constants"]
+            ATMC1["CONST: AiTaskDataSchema, VALUE: Zod schema for AI task validation"]
+            ATMC2["CONST: newTaskId, VALUE: calculated next available task ID"]
+            ATMC3["CONST: taskData, VALUE: task content from AI or manual input"]
+            ATMC4["CONST: newTask, VALUE: complete task object for storage"]
+        end
+        
+        subgraph addTaskFlow["addTask-Execution Flow"]
+            ATML1["Validate priority and normalize to standard values"]
+            ATML2["Read and migrate legacy task format if needed"]
+            ATML3["Validate target tag and ensure proper structure"]
+            ATML4["Calculate next task ID and validate dependencies"]
+            ATML5["Generate task data using AI or use manual input"]
+            ATML6["Build dependency graph and gather context"]
+            ATML7["Create task object and write to JSON file"]
+            ATML8["Return task ID and telemetry data"]
+        end
+        
+        addTaskImports
+        addTaskFunctions
+        addTaskExports
+        addTaskConstants
+        addTaskFlow
+    end
+    
+    subgraph contextGatherer["contextGatherer.js"]
+        subgraph contextGathererImports["contextGatherer-Imports"]
+            CGI1["IMPORT: path, FROM: path"]
+            CGI2["IMPORT: fs, FROM: fs"]
+            CGI3["IMPORT: Fuse, FROM: fuse.js"]
+        end
+        
+        subgraph contextGathererFunctions["contextGatherer-Functions Defined"]
+            CGF1["FUNCTION: constructor"]
+            CGF2["FUNCTION: gather"]
+            CGF3["FUNCTION: searchTasks"]
+            CGF4["FUNCTION: analyzeProject"]
+        end
+        
+        subgraph contextGathererExports["contextGatherer-Exports"]
+            CGE1["EXP: ContextGatherer"]
+        end
+        
+        subgraph contextGathererConstants["contextGatherer-Constants"]
+            CGC1["CONST: fuse, VALUE: Fuse.js instance for fuzzy searching"]
+            CGC2["CONST: projectFiles, VALUE: discovered project file structure"]
+            CGC3["CONST: taskMatches, VALUE: semantically related tasks"]
+        end
+        
+        subgraph contextGathererFlow["contextGatherer-Execution Flow"]
+            CGL1["Initialize with project root and tag context"]
+            CGL2["Perform semantic search across tasks and files"]
+            CGL3["Analyze project structure and dependencies"]
+            CGL4["Gather relevant context for AI operations"]
+            CGL5["Return structured context data"]
+        end
+        
+        contextGathererImports
+        contextGathererFunctions
+        contextGathererExports
+        contextGathererConstants
+        contextGathererFlow
+    end
+    
+    subgraph taskManager["task-manager.js"]
+        subgraph taskManagerImports["taskManager-Imports"]
+            TMI1["IMPORT: getAllTaskManagerModules, FROM: individual task-manager files"]
+        end
+        
+        subgraph taskManagerFunctions["taskManager-Functions Defined"]
+            TMF1["FUNCTION: initializeTaskManager"]
+            TMF2["FUNCTION: executeTaskOperation"]
+        end
+        
+        subgraph taskManagerExports["taskManager-Exports"]
+            TME1["EXP: TaskManager"]
+            TME2["EXP: taskManagerInstance"]
+        end
+        
+        subgraph taskManagerFlow["taskManager-Execution Flow"]
+            TML1["Initialize task manager with configuration"]
+            TML2["Coordinate between different task operations"]
+            TML3["Provide unified interface for task management"]
+            TML4["Handle cross-module dependencies and state"]
+        end
+        
+        taskManagerImports
+        taskManagerFunctions
+        taskManagerExports
+        taskManagerFlow
+    end
+    
+    %% RELATIONSHIP CONNECTIONS
+    SharedImports --> addTaskImports
+    SharedImports --> contextGathererImports
+    SharedImports --> taskManagerImports
+    
+    SharedDependencies --> addTaskManager
+    SharedDependencies --> contextGatherer
+    SharedDependencies --> taskManager
+    
+    SharedParameters --> addTaskManager
+    SharedParameters --> contextGatherer
+    SharedParameters --> taskManager
+    
+    SharedConstants --> addTaskManager
+    SharedConstants --> contextGatherer
+    SharedConstants --> taskManager
+    
+    %% EXECUTION FLOW CONNECTIONS
+    ATML1 --> ATML2
+    ATML2 --> ATML3
+    ATML3 --> ATML4
+    ATML4 --> ATML5
+    ATML5 --> ATML6
+    ATML6 --> ATML7
+    ATML7 --> ATML8
+    
+    CGL1 --> CGL2
+    CGL2 --> CGL3
+    CGL3 --> CGL4
+    CGL4 --> CGL5
+    
+    TML1 --> TML2
+    TML2 --> TML3
+    TML3 --> TML4
+    
+    %% LAYER RELATIONSHIPS
+    contextGatherer --> addTaskManager
+    taskManager --> addTaskManager
+    addTaskManager --> contextGatherer
+```

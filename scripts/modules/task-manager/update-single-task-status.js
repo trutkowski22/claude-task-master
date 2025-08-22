@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+
 
 import { log } from '../utils.js';
 import { isValidTaskStatus } from '../../../src/constants/task-status.js';
@@ -75,12 +75,12 @@ async function updateSingleTaskStatus(
 				// Only show suggestion in CLI mode
 				if (showUi) {
 					console.log(
-						chalk.yellow(
+						(
 							`All subtasks of parent task ${parentId} are now marked as done.`
 						)
 					);
 					console.log(
-						chalk.yellow(
+						(
 							`Consider updating the parent task status with: task-master set-status --id=${parentId} --status=done`
 						)
 					);

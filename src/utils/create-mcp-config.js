@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { log } from '../../scripts/modules/utils.js';
+// Remove CLI dependency - use console directly for MCP-only operations
 
 // Return JSON with existing mcp.json formatting style
 function formatJSONWithTabs(obj) {
@@ -28,10 +28,7 @@ function formatJSONWithTabs(obj) {
 export function setupMCPConfiguration(projectRoot, mcpConfigPath) {
 	// Handle null mcpConfigPath (e.g., for Claude/Codex profiles)
 	if (!mcpConfigPath) {
-		log(
-			'debug',
-			'[MCP Config] No mcpConfigPath provided, skipping MCP configuration setup'
-		);
+		console.log('[DEBUG] [MCP Config] No mcpConfigPath provided, skipping MCP configuration setup');
 		return;
 	}
 
@@ -39,7 +36,7 @@ export function setupMCPConfiguration(projectRoot, mcpConfigPath) {
 	const mcpPath = path.join(projectRoot, mcpConfigPath);
 	const configDir = path.dirname(mcpPath);
 
-	log('info', `Setting up MCP configuration at ${mcpPath}...`);
+	console.log(`[INFO] Setting up MCP configuration at ${mcpPath}...`);
 
 	// New MCP config to be added - references the installed package
 	const newMCPServer = {
@@ -64,10 +61,7 @@ export function setupMCPConfiguration(projectRoot, mcpConfigPath) {
 	}
 
 	if (fs.existsSync(mcpPath)) {
-		log(
-			'info',
-			'MCP configuration file already exists, checking for existing task-master-ai...'
-		);
+		console.log('[INFO] MCP configuration file already exists, checking for existing task-master-ai...');
 		try {
 			// Read existing config
 			const mcpConfig = JSON.parse(fs.readFileSync(mcpPath, 'utf8'));
@@ -85,39 +79,33 @@ export function setupMCPConfiguration(projectRoot, mcpConfigPath) {
 					)
 			);
 			if (hasMCPString) {
-				log(
-					'info',
-					'Found existing task-master-ai MCP configuration in mcp.json, leaving untouched'
-				);
+				console.log('[INFO] Found existing task-master-ai MCP configuration in mcp.json, leaving untouched');
 				return; // Exit early, don't modify the existing configuration
 			}
 			// Add the task-master-ai server if it doesn't exist
 			if (!mcpConfig.mcpServers['task-master-ai']) {
 				mcpConfig.mcpServers['task-master-ai'] = newMCPServer['task-master-ai'];
-				log(
-					'info',
-					'Added task-master-ai server to existing MCP configuration'
-				);
+				console.log('[INFO] Added task-master-ai server to existing MCP configuration');
 			} else {
-				log('info', 'task-master-ai server already configured in mcp.json');
+				console.log('[INFO] task-master-ai server already configured in mcp.json');
 			}
 			// Write the updated configuration
 			fs.writeFileSync(mcpPath, formatJSONWithTabs(mcpConfig) + '\n');
-			log('success', 'Updated MCP configuration file');
+			console.log('[SUCCESS] Updated MCP configuration file');
 		} catch (error) {
-			log('error', `Failed to update MCP configuration: ${error.message}`);
+			console.error(`[ERROR] Failed to update MCP configuration: ${error.message}`);
 			// Create a backup before potentially modifying
 			const backupPath = `${mcpPath}.backup-${Date.now()}`;
 			if (fs.existsSync(mcpPath)) {
 				fs.copyFileSync(mcpPath, backupPath);
-				log('info', `Created backup of existing mcp.json at ${backupPath}`);
+				console.log('[INFO]' + `Created backup of existing mcp.json at ${backupPath}`);
 			}
 			// Create new configuration
 			const newMCPConfig = {
 				mcpServers: newMCPServer
 			};
 			fs.writeFileSync(mcpPath, formatJSONWithTabs(newMCPConfig) + '\n');
-			log(
+			console.log(
 				'warn',
 				'Created new MCP configuration file (backup of original file was created if it existed)'
 			);
@@ -128,11 +116,11 @@ export function setupMCPConfiguration(projectRoot, mcpConfigPath) {
 			mcpServers: newMCPServer
 		};
 		fs.writeFileSync(mcpPath, formatJSONWithTabs(newMCPConfig) + '\n');
-		log('success', `Created MCP configuration file at ${mcpPath}`);
+		console.log('[SUCCESS]' + `Created MCP configuration file at ${mcpPath}`);
 	}
 
 	// Add note to console about MCP integration
-	log('info', 'MCP server will use the installed task-master-ai package');
+	console.log('[INFO]' + 'MCP server will use the installed task-master-ai package');
 }
 
 /**
@@ -167,7 +155,7 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 	if (!fs.existsSync(mcpPath)) {
 		result.success = true;
 		result.removed = false;
-		log('debug', `[MCP Config] MCP config file does not exist: ${mcpPath}`);
+		console.log('[DEBUG]' + `[MCP Config] MCP config file does not exist: ${mcpPath}`);
 		return result;
 	}
 
@@ -178,7 +166,7 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 		if (!mcpConfig.mcpServers) {
 			result.success = true;
 			result.removed = false;
-			log('debug', `[MCP Config] No mcpServers section found in: ${mcpPath}`);
+			console.log('[DEBUG]' + `[MCP Config] No mcpServers section found in: ${mcpPath}`);
 			return result;
 		}
 
@@ -197,7 +185,7 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 		if (!hasTaskMaster) {
 			result.success = true;
 			result.removed = false;
-			log(
+			console.log(
 				'debug',
 				`[MCP Config] Task Master not found in MCP config: ${mcpPath}`
 			);
@@ -218,7 +206,7 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 				)
 			) {
 				delete mcpConfig.mcpServers[serverName];
-				log(
+				console.log(
 					'debug',
 					`[MCP Config] Removed server '${serverName}' containing task-master-ai`
 				);
@@ -235,7 +223,7 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 			result.success = true;
 			result.removed = true;
 			result.deleted = false;
-			log(
+			console.log(
 				'info',
 				`[MCP Config] Removed Task Master from MCP config, preserving other servers: ${remainingServers.join(', ')}`
 			);
@@ -245,14 +233,14 @@ export function removeTaskMasterMCPConfiguration(projectRoot, mcpConfigPath) {
 			result.success = true;
 			result.removed = true;
 			result.deleted = true;
-			log(
+			console.log(
 				'info',
 				`[MCP Config] Removed MCP config file (no other servers remaining): ${mcpPath}`
 			);
 		}
 	} catch (error) {
 		result.error = error.message;
-		log(
+		console.log(
 			'error',
 			`[MCP Config] Failed to remove Task Master from MCP config: ${error.message}`
 		);

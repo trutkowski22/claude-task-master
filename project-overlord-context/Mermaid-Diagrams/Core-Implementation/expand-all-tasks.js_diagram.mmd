@@ -1,0 +1,36 @@
+```mermaid
+graph TB
+    subgraph "expand-all-tasks.js"
+        subgraph "Imports"
+            expandAllTasks["expandAllTasks<br/>from G:/claude-task-master/claude-task-master/scripts/modules/task-manager.js"]
+            enableSilentMode["enableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            disableSilentMode["disableSilentMode<br/>from G:/claude-task-master/claude-task-master/scripts/modules/utils.js"]
+            createLogWrapper["createLogWrapper<br/>from G:/claude-task-master/claude-task-master/mcp-server/src/tools/utils.js"]
+        end
+
+        subgraph "Functions"
+            expandAllTasksDirect["expandAllTasksDirect(args, log, context)<br/>Expand all pending tasks with subtasks"]
+        end
+
+        subgraph "Parameters"
+            args["args: Object<br/>- tasksJsonPath: string (explicit path to tasks.json)<br/>- num?: number|string (number of subtasks to generate)<br/>- research?: boolean (enable research-backed generation)<br/>- prompt?: string (additional context)<br/>- force?: boolean (force regeneration)<br/>- projectRoot?: string (project root path)<br/>- tag?: string (tag for task)"]
+            log["log: Object<br/>Logger object from FastMCP"]
+            context["context: Object<br/>Context object containing session"]
+        end
+
+        subgraph "Execution Flow"
+            validateInput["Validate required parameters (tasksJsonPath)"]
+            createLogWrap["Create logger wrapper"]
+            parseParameters["Parse and validate parameters:<br/>- Parse num to integer<br/>- Convert research to boolean<br/>- Process prompt and force flag"]
+            enableSilent["Enable silent mode"]
+            callCoreFunction["Call core expandAllTasks function"]
+            processResult["Process result with aggregated telemetry data"]
+            restoreLogging["Restore normal logging"]
+            returnResult["Return success/error result with expansion summary"]
+        end
+
+        subgraph "Exports"
+            ExportExpandAllTasksDirect["expandAllTasksDirect"]
+        end
+    end
+```

@@ -1,0 +1,49 @@
+graph TB
+    subgraph "Add Task Tool (add-task.js)"
+        A[registerAddTaskTool] --> B[Define Tool Schema]
+        B --> C[Tool: add_task]
+        C --> D[Parameters]
+
+        D --> E[prompt: Task description]
+        D --> F[title: Manual task title]
+        D --> G[description: Manual description]
+        D --> H[details: Implementation details]
+        D --> I[testStrategy: Test strategy]
+        D --> J[dependencies: Dependency IDs]
+        D --> K[priority: Task priority]
+        D --> L[file: Optional tasks file path]
+        D --> M[projectRoot: Project directory]
+        D --> N[tag: Optional tag context]
+        D --> O[research: Research capabilities flag]
+        
+        C --> P[Execute Handler]
+        P --> Q[withNormalizedProjectRoot wrapper]
+        Q --> R[Log task addition]
+        R --> S[resolveTag]
+        S --> T[findTasksPath]
+        T --> U{Path found?}
+        
+        U -->|No| V[Return error response]
+        U -->|Yes| W[addTaskDirect]
+        
+        W --> X[handleApiResult]
+        X --> Y[Return formatted response]
+        
+        P --> Z[Error Handling]
+        Z --> AA[createErrorResponse]
+    end
+    
+    subgraph "External Dependencies"
+        BB[utils.js]
+        CC[task-master-core.js]
+        DD[path-utils.js]
+        EE[scripts/modules/utils.js]
+    end
+    
+    BB --> Q
+    BB --> V
+    BB --> X
+    BB --> AA
+    CC --> W
+    DD --> T
+    EE --> S

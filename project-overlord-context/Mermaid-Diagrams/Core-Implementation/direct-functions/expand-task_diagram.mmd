@@ -1,0 +1,65 @@
+flowchart TB
+    subgraph "Imports"
+        I1["expandTask - from G:\claude-task-master\claude-task-master\scripts\modules\task-manager\expand-task.js"]
+        I2["readJSON, writeJSON, enableSilentMode, disableSilentMode, isSilentMode - from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        I3["path - Node.js built-in path module"]
+        I4["fs - Node.js built-in filesystem module"]
+        I5["createLogWrapper - from ../../tools/utils.js"]
+    end
+
+    subgraph "Functions Defined"
+        FU1["expandTaskDirect(args, log, context) - Wrapper function that expands a specific task into subtasks with comprehensive validation and error handling"]
+    end
+
+    subgraph "Exports"
+        E1["expandTaskDirect - Direct function wrapper for individual task expansion operations"]
+    end
+
+    subgraph "Parameters"
+        P1["args.tasksJsonPath - Explicit path to the tasks.json file (required string)"]
+        P2["args.id - The ID of the task to expand (required string)"]
+        P3["args.num - Number of subtasks to generate (optional number/string)"]
+        P4["args.research - Enable research role for subtask generation (optional boolean)"]
+        P5["args.prompt - Additional context to guide subtask generation (optional string)"]
+        P6["args.force - Force expansion even if subtasks exist (optional boolean)"]
+        P7["args.projectRoot - Project root directory (optional string)"]
+        P8["args.tag - Tag for the task (optional string)"]
+        P9["log - Logger object for recording operations and debugging"]
+        P10["context - Context object containing session information"]
+        P11["context.session - MCP Session object (optional)"]
+    end
+
+    subgraph "Execution Flow"
+        FL1["Extract session and parameters from context and args"]
+        FL2["Log session debugging information for troubleshooting"]
+        FL3["Validate required tasksJsonPath parameter"]
+        FL4["Parse and validate task ID as integer"]
+        FL5["Process optional parameters with type conversion"]
+        FL6["Read tasks data from JSON file using readJSON utility"]
+        FL7["Validate tasks data structure and find target task"]
+        FL8["Check task status and prevent expansion of completed tasks"]
+        FL9["Handle existing subtasks and force flag logic"]
+        FL10["Clear existing subtasks if force flag is enabled"]
+        FL11["Create task backup and initialize subtasks array"]
+        FL12["Save updated tasks.json with proper context"]
+        FL13["Enable silent mode and call core expandTask function"]
+        FL14["Read updated data and calculate subtasks added"]
+        FL15["Return success response with expansion results and telemetry"]
+        FL16["Handle errors and restore logging in nested try-catch blocks"]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13
+    FL13 --> FL14
+    FL14 --> FL15
+    FL15 --> FL16

@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
+
 import { z } from 'zod';
 
 import {
@@ -24,7 +23,6 @@ import {
 	getDefaultPriority
 } from '../config-manager.js';
 import { getPromptManager } from '../prompt-manager.js';
-import { displayAiUsageSummary } from '../ui.js';
 import { CUSTOM_PROVIDERS } from '../../../src/constants/providers.js';
 
 // Define the Zod schema for a SINGLE task object
@@ -152,7 +150,7 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 				);
 				report(overwriteError.message, 'error');
 				if (outputFormat === 'text') {
-					console.error(chalk.red(overwriteError.message));
+					console.error((overwriteError.message));
 				}
 				throw overwriteError;
 			} else {
@@ -339,28 +337,13 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 
 		// Handle CLI output (e.g., success message)
 		if (outputFormat === 'text') {
-			console.log(
-				boxen(
-					chalk.green(
-						`Successfully generated ${processedNewTasks.length} new tasks${research ? ' with research-backed analysis' : ''}. Total tasks in ${tasksPath}: ${finalTasks.length}`
-					),
-					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-				)
-			);
-
-			console.log(
-				boxen(
-					chalk.white.bold('Next Steps:') +
+						log(
+				
+					'Next Steps:' +
 						'\n\n' +
-						`${chalk.cyan('1.')} Run ${chalk.yellow('task-master list')} to view all tasks\n` +
-						`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down a task into subtasks`,
-					{
-						padding: 1,
-						borderColor: 'cyan',
-						borderStyle: 'round',
-						margin: { top: 1 }
-					}
-				)
+						`${('1.')} Run ${('task-master list')} to view all tasks\n` +
+						`${('2.')} Run ${('task-master expand --id=<id>')} to break down a task into subtasks`,
+			
 			);
 
 			if (aiServiceResponse && aiServiceResponse.telemetryData) {
@@ -378,9 +361,6 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 	} catch (error) {
 		report(`Error parsing PRD: ${error.message}`, 'error');
 
-		// Only show error UI for text output (CLI)
-		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
 
 			if (getDebugFlag(projectRoot)) {
 				// Use projectRoot for debug flag check
@@ -390,6 +370,6 @@ async function parsePRD(prdPath, tasksPath, numTasks, options = {}) {
 
 		throw error; // Always re-throw for proper error handling
 	}
-}
+
 
 export default parsePRD;

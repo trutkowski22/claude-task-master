@@ -1,0 +1,58 @@
+flowchart TB
+    subgraph Imports ["📥 Imports"]
+        IMP1["No external imports"]
+    end
+    
+    subgraph Functions ["⚙️ Functions Defined"]
+        FN1["extractJson(text)"]
+    end
+    
+    subgraph Exports ["📤 Exports"]
+        EX1["function extractJson"]
+    end
+    
+    subgraph Parameters ["📋 Parameters"]
+        PA1["extractJson: text (string)"]
+    end
+    
+    subgraph Constants ["📊 Constants"]
+        CO1["Regex patterns: /^```json\s*/gm, /^```\s*/gm, /```\s*$/gm"]
+        CO2["Variable patterns: /^const\s+\w+\s*=\s*/, /^let\s+\w+\s*=\s*/, /^var\s+\w+\s*=\s*/"]
+        CO3["JSON patterns: /{[\s\S]*}/, /\[[\s\S]*\]/"]
+        CO4["Conversion patterns: /([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, /'/g, /,\s*([}\]])/g"]
+    end
+    
+    subgraph ExecutionFlow ["🔄 Execution Flow"]
+        FL1["Trim input text and prepare for processing"]
+        FL2["Remove markdown code blocks (```json, ``` patterns)"]
+        FL3["Remove JavaScript variable declarations (const, let, var)"]
+        FL4["Remove trailing semicolons and explanatory text"]
+        FL5["Find JSON boundaries by tracking braces and brackets"]
+        FL6["Handle string escaping and quote detection during parsing"]
+        FL7["Extract JSON content between balanced braces/brackets"]
+        FL8["Try regex fallback for object/array extraction if needed"]
+        FL9["Attempt to parse extracted text as valid JSON"]
+        FL10["If parsing fails, convert JavaScript object literal to JSON"]
+        FL11["Replace unquoted keys with quoted keys and fix quotes"]
+        FL12["Validate converted JSON or return original text if all fails"]
+    end
+    
+    %% Flow connections
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12
+    
+    %% Cross-references
+    FN1 -.-> PA1
+    CO1 -.-> FL2
+    CO2 -.-> FL3
+    CO3 -.-> FL8
+    CO4 -.-> FL10

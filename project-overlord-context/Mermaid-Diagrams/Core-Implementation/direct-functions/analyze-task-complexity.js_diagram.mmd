@@ -1,0 +1,80 @@
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: analyzeTaskComplexity, FROM: /claude-task-master/scripts/modules/task-manager/analyze-task-complexity.js"]
+        I2["IMPORT: enableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I3["IMPORT: disableSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I4["IMPORT: isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I5["IMPORT: fs, FROM: fs"]
+        I6["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js file system module for report verification"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: analyzeTaskComplexityDirect"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: analyzeTaskComplexityDirect"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {Object} args - Function arguments"]
+        P2["PARAM: {string} args.tasksJsonPath - Explicit path to the tasks.json file"]
+        P3["PARAM: {string} args.outputPath - Explicit absolute path to save the report"]
+        P4["PARAM: {string|number} args.threshold - Minimum complexity score to recommend expansion (1-10)"]
+        P5["PARAM: {boolean} args.research - Use Perplexity AI for research-backed complexity analysis"]
+        P6["PARAM: {string} args.ids - Comma-separated list of task IDs to analyze"]
+        P7["PARAM: {number} args.from - Starting task ID in a range to analyze"]
+        P8["PARAM: {number} args.to - Ending task ID in a range to analyze"]
+        P9["PARAM: {string} args.projectRoot - Project root path"]
+        P10["PARAM: {string} args.tag - Tag for the task (optional)"]
+        P11["PARAM: {Object} log - Logger object"]
+        P12["PARAM: {Object} context - Context object containing session data"]
+        P13["PARAM: {Object} context.session - MCP session object"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: logWrapper, VALUE: MCP-compatible logger wrapper"]
+        C2["CONST: tasksPath, VALUE: provided tasksJsonPath argument"]
+        C3["CONST: resolvedOutputPath, VALUE: provided outputPath argument"]
+        C4["CONST: coreOptions, VALUE: configuration object for core complexity analysis function"]
+        C5["CONST: wasSilent, VALUE: previous silent mode state before enabling"]
+        C6["CONST: coreResult, VALUE: return value from core analyzeTaskComplexity function"]
+        C7["CONST: report, VALUE: extracted report data from core result"]
+        C8["CONST: analysisArray, VALUE: complexity analysis array from report data"]
+        C9["CONST: highComplexityTasks, VALUE: count of tasks with complexity score >= 8"]
+        C10["CONST: mediumComplexityTasks, VALUE: count of tasks with complexity score 5-7"]
+        C11["CONST: lowComplexityTasks, VALUE: count of tasks with complexity score < 5"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Validate required arguments: tasksJsonPath and outputPath"]
+        FL2["Log analysis parameters including IDs, ranges, and research flag"]
+        FL3["Prepare core function options with all analysis parameters"]
+        FL4["Manage silent mode state to prevent console output interference"]
+        FL5["Call core analyzeTaskComplexity function with options and context"]
+        FL6["Verify report file was created at expected output path"]
+        FL7["Process report data and categorize tasks by complexity scores"]
+        FL8["Return success response with report summary and full analysis data"]
+    end
+    
+    subgraph analyzeTaskComplexityDirectFunc["analyze-task-complexity.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

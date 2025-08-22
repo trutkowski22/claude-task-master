@@ -1,0 +1,65 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: createAnthropic, FROM: @ai-sdk/anthropic"]
+        I2["IMPORT: BaseAIProvider, FROM: /src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Vercel AI SDK for Anthropic API integration"]
+        D2["DEP: Anthropic API service for Claude model access"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: constructor"]
+        FU2["FUNCTION: getRequiredApiKeyName"]
+        FU3["FUNCTION: getClient"]
+    end
+    
+    subgraph Exports["Exports"]
+        E1["EXP: AnthropicAIProvider"]
+    end
+    
+    subgraph Parameters["Parameters"]
+        P1["PARAM: {object} params - configuration parameters for client initialization"]
+        P2["PARAM: {string} params.apiKey - Anthropic API key for authentication"]
+        P3["PARAM: {string} params.baseURL - optional custom API endpoint URL"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: apiKey, VALUE: extracted API key from params destructuring"]
+        C2["CONST: baseURL, VALUE: extracted base URL from params destructuring"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: ANTHROPIC_API_KEY, USAGE: API key for authenticating with Anthropic services"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Extend BaseAIProvider class for standard AI provider interface"]
+        FL2["Set provider name to 'Anthropic' for identification"]
+        FL3["Return required API key environment variable name"]
+        FL4["Validate API key is provided for client creation"]
+        FL5["Create Anthropic client with API key and optional base URL"]
+        FL6["Configure anthropic-beta header for extended output features"]
+        FL7["Handle any client initialization errors appropriately"]
+    end
+    
+    subgraph FileName["anthropic.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Exports
+        Parameters
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+```

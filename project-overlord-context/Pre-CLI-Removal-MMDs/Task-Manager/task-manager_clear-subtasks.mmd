@@ -1,0 +1,54 @@
+flowchart TB
+    subgraph ["clear-subtasks-Imports"]
+        I1["IMPORT: path, FROM: path"]
+        I5["IMPORT: log, readJSON, writeJSON, truncate, isSilentMode, FROM: /claude-task-master/scripts/modules/utils.js"]
+    end
+    subgraph ["clear-subtasks-FunctionsDefined"]
+        FU1["FUNCTION: clearSubtasks"]
+    end
+    subgraph ["clear-subtasks-Exports"]
+        E1["EXP: clearSubtasks (default)"]
+    end
+    subgraph ["clear-subtasks-Parameters"]
+        P1["PARAM: {string} tasksPath - Path to the tasks.json file"]
+        P2["PARAM: {string} taskIds - Task IDs to clear subtasks from"]
+        P3["PARAM: {Object} context - Context object containing projectRoot and tag"]
+        P4["PARAM: {string} context.projectRoot - Project root path"]
+        P5["PARAM: {string} context.tag - Tag for the task"]
+    end
+    subgraph ["clear-subtasks-ExecutionFlow"]
+        FL1["Read tasks data from file using context"]
+        FL2["Validate tasks data exists"]
+        FL3["Display clearing subtasks banner"]
+        FL4["Parse comma-separated task IDs"]
+        FL5["Create summary table for cleared subtasks"]
+        FL6["Iterate through each task ID"]
+        FL7["Find task by ID and validate"]
+        FL8["Check if task has subtasks to clear"]
+        FL9["Clear subtasks array and update counter"]
+        FL10["Add task info to summary table"]
+        FL11["Write updated tasks back to file if changes made"]
+        FL12["Display summary table and success message"]
+        FL13["Show next steps suggestions"]
+    end
+    subgraph ["clear-subtasks.js"]
+        ["clear-subtasks-Imports"]
+        ["clear-subtasks-FunctionsDefined"]
+        ["clear-subtasks-Exports"]
+        ["clear-subtasks-Parameters"]
+        ["clear-subtasks-ExecutionFlow"]
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL8 --> FL10
+    FL9 --> FL10
+    FL10 --> FL6
+    FL6 --> FL11
+    FL11 --> FL12
+    FL12 --> FL13

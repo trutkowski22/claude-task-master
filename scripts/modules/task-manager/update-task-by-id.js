@@ -1,8 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod'; // Keep Zod for post-parse validation
 
 import {
@@ -14,13 +11,6 @@ import {
 	flattenTasksWithSubtasks,
 	findProjectRoot
 } from '../utils.js';
-
-import {
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	displayAiUsageSummary
-} from '../ui.js';
 
 import { generateTextService } from '../ai-services-unified.js';
 import { getDebugFlag, isApiKeySet } from '../config-manager.js';
@@ -306,7 +296,7 @@ async function updateTaskById(
 			);
 			if (outputFormat === 'text')
 				console.log(
-					chalk.yellow('Perplexity AI not available. Falling back to main AI.')
+					('Perplexity AI not available. Falling back to main AI.')
 				);
 			useResearch = false;
 		}
@@ -332,28 +322,6 @@ async function updateTaskById(
 				'warn',
 				`Task ${taskId} is already marked as done and cannot be updated`
 			);
-
-			// Only show warning box for text output (CLI)
-			if (outputFormat === 'text') {
-				console.log(
-					boxen(
-						chalk.yellow(
-							`Task ${taskId} is already marked as ${taskToUpdate.status} and cannot be updated.`
-						) +
-							'\n\n' +
-							chalk.white(
-								'Completed tasks are locked to maintain consistency. To modify a completed task, you must first:'
-							) +
-							'\n' +
-							chalk.white(
-								'1. Change its status to "pending" or "in-progress"'
-							) +
-							'\n' +
-							chalk.white('2. Then run the update-task command'),
-						{ padding: 1, borderColor: 'yellow', borderStyle: 'round' }
-					)
-				);
-			}
 			return null;
 		}
 		// --- End Task Loading ---
@@ -384,63 +352,6 @@ async function updateTaskById(
 			}
 		} catch (contextError) {
 			report('warn', `Could not gather context: ${contextError.message}`);
-		}
-		// --- End Context Gathering ---
-
-		// --- Display Task Info (CLI Only - Keep existing) ---
-		if (outputFormat === 'text') {
-			// Show the task that will be updated
-			const table = new Table({
-				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Status')
-				],
-				colWidths: [5, 60, 10]
-			});
-
-			table.push([
-				taskToUpdate.id,
-				truncate(taskToUpdate.title, 57),
-				getStatusWithColor(taskToUpdate.status)
-			]);
-
-			console.log(
-				boxen(chalk.white.bold(`Updating Task #${taskId}`), {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round',
-					margin: { top: 1, bottom: 0 }
-				})
-			);
-
-			console.log(table.toString());
-
-			// Display a message about how completed subtasks are handled
-			console.log(
-				boxen(
-					chalk.cyan.bold('How Completed Subtasks Are Handled:') +
-						'\n\n' +
-						chalk.white(
-							'• Subtasks marked as "done" or "completed" will be preserved\n'
-						) +
-						chalk.white(
-							'• New subtasks will build upon what has already been completed\n'
-						) +
-						chalk.white(
-							'• If completed work needs revision, a new subtask will be created instead of modifying done items\n'
-						) +
-						chalk.white(
-							'• This approach maintains a clear record of completed work and new requirements'
-						),
-					{
-						padding: 1,
-						borderColor: 'blue',
-						borderStyle: 'round',
-						margin: { top: 1, bottom: 1 }
-					}
-				)
-			);
 		}
 
 		// --- Build Prompts using PromptManager ---
@@ -503,12 +414,7 @@ async function updateTaskById(
 
 		let loadingIndicator = null;
 		let aiServiceResponse = null;
-
-		if (!isMCP && outputFormat === 'text') {
-			loadingIndicator = startLoadingIndicator(
-				useResearch ? 'Updating task with research...\n' : 'Updating task...\n'
-			);
-		}
+		
 
 		try {
 			const serviceRole = useResearch ? 'research' : 'main';
@@ -521,9 +427,6 @@ async function updateTaskById(
 				commandName: 'update-task',
 				outputType: isMCP ? 'mcp' : 'cli'
 			});
-
-			if (loadingIndicator)
-				stopLoadingIndicator(loadingIndicator, 'AI update complete.');
 
 			if (appendMode) {
 				// Append mode: handle as plain text
@@ -561,20 +464,7 @@ async function updateTaskById(
 
 				// Display success message for CLI
 				if (outputFormat === 'text') {
-					console.log(
-						boxen(
-							chalk.green(`Successfully appended to task #${taskId}`) +
-								'\n\n' +
-								chalk.white.bold('Title:') +
-								' ' +
-								taskToUpdate.title +
-								'\n\n' +
-								chalk.white.bold('Newly Added Content:') +
-								'\n' +
-								chalk.white(newlyAddedSnippet),
-							{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-						)
-					);
+					
 				}
 
 				// Display AI usage telemetry for CLI users
@@ -731,10 +621,8 @@ async function updateTaskById(
 		// --- General Error Handling (Keep existing) ---
 		report('error', `Error updating task: ${error.message}`);
 		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
 			// ... helpful hints ...
 			if (getDebugFlag(session)) console.error(error);
-			process.exit(1);
 		} else {
 			throw error; // Re-throw for MCP
 		}

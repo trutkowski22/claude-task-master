@@ -1,0 +1,66 @@
+flowchart TB
+    subgraph Imports["📦 Imports"]
+        import1["clearSubtasks from G:\claude-task-master\claude-task-master\scripts\modules\task-manager.js"]
+        import2["enableSilentMode, disableSilentMode, readJSON from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+        import3["fs from Node.js filesystem module"]
+        import4["path from Node.js path module"]
+    end
+
+    subgraph Dependencies["🔗 Dependencies"]
+        dep1["clearSubtasks - Core function to clear subtasks from tasks"]
+        dep2["enableSilentMode/disableSilentMode - Control console output"]
+        dep3["readJSON - Read and parse tasks.json with tag resolution"]
+        dep4["fs - File system operations"]
+    end
+
+    subgraph Functions_Defined["⚡ Functions Defined"]
+        func1["clearSubtasksDirect() - Clear subtasks from specified tasks"]
+    end
+
+    subgraph Exports["📤 Exports"]
+        exp1["clearSubtasksDirect - Direct function to clear subtasks"]
+    end
+
+    subgraph Parameters["📝 Parameters"]
+        param1["args.tasksJsonPath (string) - Explicit path to the tasks.json file"]
+        param2["args.id (string, optional) - Task IDs (comma-separated) to clear subtasks from"]
+        param3["args.all (boolean, optional) - Clear subtasks from all tasks"]
+        param4["args.tag (string, optional) - Tag context to operate on"]
+        param5["args.projectRoot (string, optional) - Project root path"]
+        param6["log (Object) - Logger object"]
+    end
+
+    subgraph Execution_Flow["🔄 Execution Flow"]
+        step1["1. Log clearing subtasks attempt with arguments"]
+        step2["2. Validate tasksJsonPath is provided"]
+        step3["3. Validate either id or all parameter is provided"]
+        step4["4. Check if tasks.json file exists"]
+        step5["5. Read tasks data with tag resolution"]
+        step6["6. Validate tasks data exists"]
+        step7["7. Determine task IDs to clear (all tasks or specific IDs)"]
+        step8["8. Enable silent mode to prevent console interference"]
+        step9["9. Call core clearSubtasks function"]
+        step10["10. Disable silent mode"]
+        step11["11. Read updated data and build summary"]
+        step12["12. Return success response with summary"]
+        step13["13. Handle errors and restore logging"]
+    end
+
+    %% Flow connections
+    step1 --> step2
+    step2 --> step3
+    step3 --> step4
+    step4 --> step5
+    step5 --> step6
+    step6 --> step7
+    step7 --> step8
+    step8 --> step9
+    step9 --> step10
+    step10 --> step11
+    step11 --> step12
+    step2 --> step13
+    step3 --> step13
+    step4 --> step13
+    step5 --> step13
+    step6 --> step13
+    step9 --> step13

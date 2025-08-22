@@ -1,0 +1,239 @@
+```mermaid
+flowchart TB
+    %% SHARED INFRASTRUCTURE SECTIONS
+    subgraph SharedImports["Shared-Infrastructure-Imports"]
+        SI1["IMPORT: createAnthropic, FROM: @ai-sdk/anthropic"]
+        SI2["IMPORT: path, FROM: path"]
+        SI3["IMPORT: fs, FROM: fs"]
+        SI4["IMPORT: findProjectRoot, FROM: /src/utils/path-utils.js"]
+        SI5["IMPORT: BaseAIProvider, FROM: /src/ai-providers/base-provider.js"]
+    end
+    
+    subgraph SharedDependencies["Shared-Infrastructure-Dependencies"]
+        SD1["DEP: AI SDK providers for model integration"]
+        SD2["DEP: Node.js file system for configuration and path management"]
+        SD3["DEP: Cross-platform path utilities for file resolution"]
+        SD4["DEP: Configuration management for environment variables"]
+        SD5["DEP: Profile systems for different AI coding assistants"]
+    end
+    
+    subgraph SharedParameters["Shared-Infrastructure-Parameters"]
+        SP1["PARAM: {object} params - configuration parameters for initialization"]
+        SP2["PARAM: {string} apiKey - API key for service authentication"]
+        SP3["PARAM: {string} baseURL - optional custom API endpoint"]
+        SP4["PARAM: {object} overrides - path and configuration overrides"]
+        SP5["PARAM: {string} projectRoot - absolute path to project root"]
+    end
+    
+    subgraph SharedConstants["Shared-Infrastructure-Constants"]
+        SC1["CONST: paths, VALUE: resolved application path configuration"]
+        SC2["CONST: LOG_LEVELS, VALUE: logging level hierarchy definitions"]
+        SC3["CONST: TASK_PRIORITY_OPTIONS, VALUE: valid task priority values"]
+        SC4["CONST: PROVIDERS, VALUE: available AI provider configurations"]
+        SC5["CONST: PROFILES, VALUE: coding assistant profile definitions"]
+    end
+    
+    %% INDIVIDUAL FILE SECTIONS
+    subgraph taskMasterPath["task-master.js"]
+        subgraph pathImports["path-Imports"]
+            PI1["IMPORT: path constants from /src/constants/paths.js"]
+        end
+        
+        subgraph pathFunctions["path-Functions Defined"]
+            PF1["FUNCTION: constructor"]
+            PF2["FUNCTION: getProjectRoot"]
+            PF3["FUNCTION: getAllPaths"]
+            PF4["FUNCTION: getCurrentTag"]
+            PF5["FUNCTION: initTaskMaster"]
+        end
+        
+        subgraph pathExports["path-Exports"]
+            PE1["EXP: TaskMaster"]
+            PE2["EXP: initTaskMaster"]
+        end
+        
+        subgraph pathConstants["path-Constants"]
+            PC1["CONST: paths, VALUE: frozen object with all resolved paths"]
+            PC2["CONST: resolvedPath, VALUE: validated absolute path"]
+            PC3["CONST: hasTaskmasterDir, VALUE: project structure validation"]
+        end
+        
+        subgraph pathFlow["path-Execution Flow"]
+            PL1["Initialize TaskMaster with path resolution"]
+            PL2["Validate project root and structure"]
+            PL3["Resolve all application paths with fallbacks"]
+            PL4["Provide tag-aware path resolution"]
+            PL5["Return frozen TaskMaster instance"]
+        end
+        
+        pathImports
+        pathFunctions
+        pathExports
+        pathConstants
+        pathFlow
+    end
+    
+    subgraph anthropicProvider["anthropic.js"]
+        subgraph anthropicImports["anthropic-Imports"]
+            AI1["IMPORT: createAnthropic, FROM: @ai-sdk/anthropic"]
+            AI2["IMPORT: BaseAIProvider, FROM: /src/ai-providers/base-provider.js"]
+        end
+        
+        subgraph anthropicFunctions["anthropic-Functions Defined"]
+            AF1["FUNCTION: constructor"]
+            AF2["FUNCTION: getRequiredApiKeyName"]
+            AF3["FUNCTION: getClient"]
+        end
+        
+        subgraph anthropicExports["anthropic-Exports"]
+            AE1["EXP: AnthropicAIProvider"]
+        end
+        
+        subgraph anthropicConstants["anthropic-Constants"]
+            AC1["CONST: apiKey, VALUE: extracted API key from parameters"]
+            AC2["CONST: baseURL, VALUE: optional custom endpoint URL"]
+        end
+        
+        subgraph anthropicFlow["anthropic-Execution Flow"]
+            AL1["Extend BaseAIProvider for standard interface"]
+            AL2["Validate API key requirements"]
+            AL3["Create Anthropic client with configuration"]
+            AL4["Configure headers for extended features"]
+            AL5["Handle initialization errors"]
+        end
+        
+        anthropicImports
+        anthropicFunctions
+        anthropicExports
+        anthropicConstants
+        anthropicFlow
+    end
+    
+    subgraph constants["constants/"]
+        subgraph constantsImports["constants-Imports"]
+            CONI1["IMPORT: (various constants and enums)"]
+        end
+        
+        subgraph constantsFunctions["constants-Functions Defined"]
+            CONF1["FUNCTION: isValidTaskPriority"]
+            CONF2["FUNCTION: normalizeTaskPriority"]
+            CONF3["FUNCTION: isValidTaskStatus"]
+        end
+        
+        subgraph constantsExports["constants-Exports"]
+            CONE1["EXP: TASK_PRIORITY_OPTIONS"]
+            CONE2["EXP: TASK_STATUS_OPTIONS"]
+            CONE3["EXP: PATHS"]
+            CONE4["EXP: PROVIDERS"]
+            CONE5["EXP: PROFILES"]
+            CONE6["EXP: COMMANDS"]
+            CONE7["EXP: RULES_ACTIONS"]
+        end
+        
+        subgraph constantsConstants["constants-Constants"]
+            CONC1["CONST: DEFAULT_TASK_PRIORITY, VALUE: medium"]
+            CONC2["CONST: VALID_TASK_STATUSES, VALUE: array of status options"]
+            CONC3["CONST: TASKMASTER_DIR, VALUE: .taskmaster"]
+            CONC4["CONST: SUPPORTED_PROVIDERS, VALUE: AI provider list"]
+        end
+        
+        subgraph constantsFlow["constants-Execution Flow"]
+            CONL1["Define application-wide constants"]
+            CONL2["Provide validation functions"]
+            CONL3["Export organized constant collections"]
+            CONL4["Maintain consistency across modules"]
+        end
+        
+        constantsImports
+        constantsFunctions
+        constantsExports
+        constantsConstants
+        constantsFlow
+    end
+    
+    subgraph profiles["profiles/"]
+        subgraph profilesImports["profiles-Imports"]
+            PROI1["IMPORT: BaseProfile, FROM: /src/profiles/base-profile.js"]
+        end
+        
+        subgraph profilesFunctions["profiles-Functions Defined"]
+            PROF1["FUNCTION: constructor"]
+            PROF2["FUNCTION: getRules"]
+            PROF3["FUNCTION: getActions"]
+            PROF4["FUNCTION: validateProfile"]
+        end
+        
+        subgraph profilesExports["profiles-Exports"]
+            PROE1["EXP: ClaudeProfile"]
+            PROE2["EXP: ClineProfile"]
+            PROE3["EXP: CursorProfile"]
+            PROE4["EXP: VsCodeProfile"]
+            PROE5["EXP: GeminiProfile"]
+            PROE6["EXP: RooProfile"]
+        end
+        
+        subgraph profilesConstants["profiles-Constants"]
+            PROC1["CONST: CLAUDE_RULES, VALUE: Claude-specific coding rules"]
+            PROC2["CONST: CURSOR_RULES, VALUE: Cursor-specific coding rules"]
+            PROC3["CONST: VSCODE_RULES, VALUE: VSCode-specific coding rules"]
+        end
+        
+        subgraph profilesFlow["profiles-Execution Flow"]
+            PROL1["Define coding assistant profiles"]
+            PROL2["Implement assistant-specific rule sets"]
+            PROL3["Provide profile validation and management"]
+            PROL4["Export profiles for configuration system"]
+        end
+        
+        profilesImports
+        profilesFunctions
+        profilesExports
+        profilesConstants
+        profilesFlow
+    end
+    
+    %% RELATIONSHIP CONNECTIONS
+    SharedImports --> pathImports
+    SharedImports --> anthropicImports
+    SharedImports --> constantsImports
+    SharedImports --> profilesImports
+    
+    SharedDependencies --> taskMasterPath
+    SharedDependencies --> anthropicProvider
+    SharedDependencies --> constants
+    SharedDependencies --> profiles
+    
+    SharedParameters --> taskMasterPath
+    SharedParameters --> anthropicProvider
+    
+    SharedConstants --> taskMasterPath
+    SharedConstants --> anthropicProvider
+    SharedConstants --> constants
+    SharedConstants --> profiles
+    
+    %% EXECUTION FLOW CONNECTIONS
+    PL1 --> PL2
+    PL2 --> PL3
+    PL3 --> PL4
+    PL4 --> PL5
+    
+    AL1 --> AL2
+    AL2 --> AL3
+    AL3 --> AL4
+    AL4 --> AL5
+    
+    CONL1 --> CONL2
+    CONL2 --> CONL3
+    CONL3 --> CONL4
+    
+    PROL1 --> PROL2
+    PROL2 --> PROL3
+    PROL3 --> PROL4
+    
+    %% LAYER RELATIONSHIPS
+    constants --> taskMasterPath
+    constants --> anthropicProvider
+    constants --> profiles
+    profiles --> taskMasterPath
+    taskMasterPath --> anthropicProvider
+```

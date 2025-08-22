@@ -1,0 +1,42 @@
+flowchart TB
+    subgraph "Imports"
+        I1["generateTaskFiles - from G:\claude-task-master\claude-task-master\scripts\modules\task-manager.js"]
+        I2["enableSilentMode, disableSilentMode - from G:\claude-task-master\claude-task-master\scripts\modules\utils.js"]
+    end
+
+    subgraph "Functions Defined"
+        FU1["generateTaskFilesDirect(args, log) - Wrapper function that generates individual task files from tasks.json with comprehensive path validation"]
+    end
+
+    subgraph "Exports"
+        E1["generateTaskFilesDirect - Direct function wrapper for task file generation operations"]
+    end
+
+    subgraph "Parameters"
+        P1["args.tasksJsonPath - Path to the tasks.json file (required string)"]
+        P2["args.outputDir - Path to the output directory (required string)"]
+        P3["args.projectRoot - Project root path for MCP/env fallback (required string)"]
+        P4["args.tag - Tag for the task context (optional string)"]
+        P5["log - Logger object for recording operations and errors"]
+    end
+
+    subgraph "Execution Flow"
+        FL1["Extract tasksJsonPath, outputDir, projectRoot, and tag from args"]
+        FL2["Validate required tasksJsonPath parameter"]
+        FL3["Validate required outputDir parameter"]
+        FL4["Resolve paths using provided arguments"]
+        FL5["Enable silent mode to prevent stdout interference"]
+        FL6["Call core generateTaskFiles function with context options"]
+        FL7["Restore normal logging mode after generation"]
+        FL8["Return success response with file generation details"]
+        FL9["Handle errors with nested try-catch and ensure logging restoration"]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9

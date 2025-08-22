@@ -1,0 +1,99 @@
+flowchart TD
+    subgraph "add-subtask.js"
+        A["🔗 Add Subtask Direct"] --> B["Import Dependencies"]
+        B --> C["Function Definition"]
+        C --> D["Parameter Validation"]
+        D --> E["Mode Decision"]
+        E --> F["Core Function Call"]
+        F --> G["Response Formatting"]
+        
+        subgraph "Imports"
+            I1["addSubtask from '../../../../scripts/modules/task-manager.js'"]
+            I2["enableSilentMode from '../../../../scripts/modules/utils.js'"]
+            I3["disableSilentMode from '../../../../scripts/modules/utils.js'"]
+        end
+        
+        subgraph "Functions"
+            F1["addSubtaskDirect(args, log) - async"]
+        end
+        
+        subgraph "Parameters"
+            P1["tasksJsonPath - string"]
+            P2["id - string (parent task ID)"]
+            P3["taskId - string (optional, existing task to convert)"]
+            P4["title - string (optional, for new subtask)"]
+            P5["description - string (optional)"]
+            P6["details - string (optional)"]
+            P7["status - string (default: 'pending')"]
+            P8["dependencies - string (comma-separated)"]
+            P9["skipGenerate - boolean"]
+            P10["projectRoot - string"]
+            P11["tag - string"]
+        end
+        
+        subgraph "Validation Logic"
+            V1["Check tasksJsonPath exists"]
+            V2["Validate parent task ID"]
+            V3["Validate either taskId OR title provided"]
+            V4["Parse dependencies string"]
+            V5["Convert IDs to numbers"]
+        end
+        
+        subgraph "Execution Modes"
+            MODE1["Convert existing task to subtask"]
+            MODE2["Create new subtask"]
+        end
+        
+        subgraph "Execution Flow"
+            EX1["Enable silent mode"]
+            EX2["Create context object"]
+            EX3["Call addSubtask core function"]
+            EX4["Disable silent mode"]
+            EX5["Return success response"]
+        end
+        
+        subgraph "Error Handling"
+            ERR1["Missing argument errors"]
+            ERR2["Input validation errors"]
+            ERR3["Core function errors"]
+            ERR4["Always restore logging"]
+        end
+        
+        subgraph "Exports"
+            EXP1["addSubtaskDirect function"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        C --> F1
+        F1 --> P1
+        F1 --> P2
+        F1 --> P3
+        F1 --> P4
+        F1 --> P5
+        F1 --> P6
+        F1 --> P7
+        F1 --> P8
+        F1 --> P9
+        F1 --> P10
+        F1 --> P11
+        D --> V1
+        D --> V2
+        D --> V3
+        D --> V4
+        D --> V5
+        E --> MODE1
+        E --> MODE2
+        F --> EX1
+        F --> EX2
+        F --> EX3
+        F --> EX4
+        G --> EX5
+        V1 --> ERR1
+        V2 --> ERR2
+        V3 --> ERR2
+        EX3 --> ERR3
+        ERR3 --> ERR4
+        G --> EXP1
+    end

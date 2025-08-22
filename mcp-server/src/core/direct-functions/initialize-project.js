@@ -1,4 +1,4 @@
-import { initializeProject } from '../../../../scripts/init.js'; // Import core function and its logger if needed separately
+// Core initialization logic extracted from CLI
 import {
 	enableSilentMode,
 	disableSilentMode
@@ -7,6 +7,115 @@ import {
 import os from 'os'; // Import os module for home directory check
 import { RULE_PROFILES } from '../../../../src/constants/profiles.js';
 import { convertAllRulesToProfileRules } from '../../../../src/utils/rule-transformer.js';
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Core project initialization function (extracted from CLI)
+ * @param {Object} options - Initialization options
+ * @returns {Promise<Object>} - Result object with success status
+ */
+async function initializeProject(options = {}) {
+	try {
+		const {
+			addAliases = false,
+			initGit = false,
+			storeTasksInGit = false,
+			skipInstall = false,
+			yes = false,
+			rules = ['cursor']
+		} = options;
+
+		const projectRoot = process.cwd();
+		
+		// Create .taskmaster directory structure
+		const taskmasterDir = path.join(projectRoot, '.taskmaster');
+		const tasksDir = path.join(taskmasterDir, 'tasks');
+		const docsDir = path.join(taskmasterDir, 'docs');
+		const templatesDir = path.join(taskmasterDir, 'templates');
+		
+		// Create directories if they don't exist
+		[taskmasterDir, tasksDir, docsDir, templatesDir].forEach(dir => {
+			if (!fs.existsSync(dir)) {
+				fs.mkdirSync(dir, { recursive: true });
+			}
+		});
+
+		// Create initial config.json if it doesn't exist
+		const configPath = path.join(taskmasterDir, 'config.json');
+		if (!fs.existsSync(configPath)) {
+			const config = {
+				global: {
+					defaultTag: 'master',
+					logLevel: 'info',
+					debug: false
+				},
+				ai: {
+					provider: 'anthropic',
+					model: 'claude-3-5-sonnet-20241022'
+				}
+			};
+			fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+		}
+
+		// Create initial state.json if it doesn't exist
+		const statePath = path.join(taskmasterDir, 'state.json');
+		if (!fs.existsSync(statePath)) {
+			const state = {
+				currentTag: 'master',
+				lastSwitched: new Date().toISOString(),
+				branchTagMapping: {},
+				migrationNoticeShown: false
+			};
+			fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
+		}
+
+		// Create initial tasks.json if it doesn't exist
+		const tasksPath = path.join(tasksDir, 'tasks.json');
+		if (!fs.existsSync(tasksPath)) {
+			const initialTasks = {
+				master: {
+					tasks: [],
+					metadata: {
+						created: new Date().toISOString(),
+						updated: new Date().toISOString(),
+						description: 'Tasks for master context'
+					}
+				}
+			};
+			fs.writeFileSync(tasksPath, JSON.stringify(initialTasks, null, 2));
+		}
+
+		// Handle rules setup if provided
+		if (rules && rules.length > 0) {
+			try {
+				await convertAllRulesToProfileRules(projectRoot, rules);
+			} catch (ruleError) {
+				// Rules setup is optional - don't fail initialization
+				console.warn(`Warning: Could not set up rules: ${ruleError.message}`);
+			}
+		}
+
+		return {
+			success: true,
+			message: 'Project initialized successfully',
+			projectRoot,
+			createdDirectories: [taskmasterDir, tasksDir, docsDir, templatesDir],
+			createdFiles: [configPath, statePath, tasksPath].filter(file => 
+				fs.existsSync(file) && fs.statSync(file).birthtime > new Date(Date.now() - 5000)
+			)
+		};
+
+	} catch (error) {
+		return {
+			success: false,
+			error: { 
+				code: 'INITIALIZATION_ERROR',
+				message: error.message
+			}
+		};
+	}
+}
 
 /**
  * Direct function wrapper for initializing a project.

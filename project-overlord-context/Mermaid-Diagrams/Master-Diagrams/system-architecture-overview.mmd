@@ -1,224 +1,229 @@
+```mermaid
 flowchart TB
-
-%% =================================================================================
-%% SYSTEM ARCHITECTURE OVERVIEW - MASTER DIAGRAM
-%% How layers connect at high level across the entire system
-%% =================================================================================
-
-%% PROJECT OVERLORD LAYER DEFINITIONS
-subgraph ProjectOverlordArchitecture["project-overlord-architecture"]
-    LAYER1["LAYER: MCP Interface Layer - Tools Registration & API Handling"]
-    LAYER2["LAYER: Core Implementation Layer - Direct Function Implementations"]
-    LAYER3["LAYER: Task Manager Layer - Business Logic & Core Operations"]
-    LAYER4["LAYER: Shared Infrastructure Layer - Utilities & Common Services"]
-end
-
-%% PROJECT OVERLORD DATA FLOW
-subgraph ProjectOverlordDataFlow["project-overlord-data-flow"]
-    FLOW1["FLOW: Client Request → MCP Interface"]
-    FLOW2["FLOW: MCP Interface → Core Implementation"]
-    FLOW3["FLOW: Core Implementation → Task Manager"]
-    FLOW4["FLOW: All Layers → Shared Infrastructure"]
-    FLOW5["FLOW: Response Path (reverse of request)"]
-end
-
-%% PROJECT OVERLORD INTEGRATION POINTS
-subgraph ProjectOverlordIntegration["project-overlord-integration"]
-    INT1["INTEGRATION: FastMCP Server Registration"]
-    INT2["INTEGRATION: File System Operations"]
-    INT3["INTEGRATION: Git Repository Management"]
-    INT4["INTEGRATION: AI Research Services"]
-    INT5["INTEGRATION: Token Counting & Context Management"]
-end
-
-%% MCP INTERFACE LAYER - Entry Points
-subgraph mcpInterfaceLayer["MCP Interface Layer"]
-    subgraph mcpTools["MCP Tools"]
-        TOOL1["TOOL: registerExpandTaskTool"]
-        TOOL2["TOOL: registerShowTaskTool"]
-        TOOL3["TOOL: registerUpdateSubtaskTool"]
-        TOOL4["TOOL: registerNextTaskTool"]
-        TOOL5["TOOL: registerSetTaskStatusTool"]
-        TOOL6["TOOL: registerValidateDependenciesTool"]
-        TOOL7["TOOL: registerMoveTaskTool"]
-        TOOL8["TOOL: registerResearchTool"]
+    %% EXTERNAL SYSTEMS
+    subgraph ExternalSystems["External Systems"]
+        Claude["Claude AI Models"]
+        OpenAI["OpenAI GPT Models"]
+        Anthropic["Anthropic API"]
+        Perplexity["Perplexity Research"]
+        FileSystem["File System"]
+        GitRepo["Git Repository"]
+        MCPClient["MCP Client Applications"]
     end
     
-    subgraph mcpValidation["MCP Validation"]
-        VAL1["VALIDATION: Zod Schema Validation"]
-        VAL2["VALIDATION: Parameter Processing"]
-        VAL3["VALIDATION: Error Response Handling"]
+    %% MCP INTERFACE LAYER
+    subgraph MCPInterfaceLayer["MCP Interface Layer"]
+        subgraph MCPServer["FastMCP Server"]
+            ServerEntry["server.js - Main Entry Point"]
+            MCPIndex["index.js - TaskMasterMCPServer Class"]
+            MCPLogger["logger.js - Logging System"]
+        end
+        
+        subgraph MCPTools["MCP Tools (35 tools)"]
+            ToolsIndex["index.js - Tool Registration Hub"]
+            ToolsUtils["utils.js - MCP Utilities"]
+            AddTaskTool["add-task.js - Task Creation Tool"]
+            ListTasksTool["get-tasks.js - Task Listing Tool"]
+            UpdateTaskTool["update-task.js - Task Update Tool"]
+            TagTools["Tag Management Tools (7 tools)"]
+            DependencyTools["Dependency Tools (4 tools)"]
+            ComplexityTools["Analysis Tools (3 tools)"]
+            OtherTools["Other Task Tools (18 tools)"]
+        end
+        
+        subgraph MCPProviders["MCP Providers"]
+            MCPProvider["mcp-provider.js - MCP Integration"]
+        end
     end
     
-    subgraph mcpUtilities["MCP Utilities"]
-        UTIL1["UTILITY: handleApiResult"]
-        UTIL2["UTILITY: createErrorResponse"]
-        UTIL3["UTILITY: withNormalizedProjectRoot"]
-        UTIL4["UTILITY: resolveTag"]
-    end
-end
-
-%% CORE IMPLEMENTATION LAYER - Direct Functions
-subgraph coreImplementationLayer["Core Implementation Layer"]
-    subgraph coreFunctions["Core Direct Functions"]
-        CORE1["FUNCTION: expandAllTasksDirect"]
-        CORE2["FUNCTION: expandTaskDirect"]
-        CORE3["FUNCTION: showTaskDirect"]
-        CORE4["FUNCTION: updateSubtaskByIdDirect"]
-        CORE5["FUNCTION: setTaskStatusDirect"]
-        CORE6["FUNCTION: nextTaskDirect"]
-        CORE7["FUNCTION: validateDependenciesDirect"]
-        CORE8["FUNCTION: moveTaskDirect"]
-    end
-    
-    subgraph coreUtilities["Core Utilities"]
-        CUTIL1["UTILITY: createLogWrapper"]
-        CUTIL2["UTILITY: enableSilentMode"]
-        CUTIL3["UTILITY: disableSilentMode"]
-        CUTIL4["UTILITY: findTasksPath"]
-        CUTIL5["UTILITY: findComplexityReportPath"]
-    end
-end
-
-%% TASK MANAGER LAYER - Business Logic
-subgraph taskManagerLayer["Task Manager Layer"]
-    subgraph taskOperations["Task Operations"]
-        OP1["OPERATION: findNextTask"]
-        OP2["OPERATION: updateSubtaskById"]
-        OP3["OPERATION: setTaskStatus"]
-        OP4["OPERATION: expandAllTasks"]
-        OP5["OPERATION: expandTask"]
-        OP6["OPERATION: moveTask"]
-        OP7["OPERATION: validateDependencies"]
+    %% CORE IMPLEMENTATION LAYER
+    subgraph CoreImplementationLayer["Core Implementation Layer"]
+        subgraph CoreManagement["Core Management"]
+            TaskMasterCore["task-master-core.js - Function Registry"]
+            ContextManager["context-manager.js - Cache & Context"]
+        end
+        
+        subgraph DirectFunctions["Direct Functions (39 functions)"]
+            AddTaskDirect["add-task.js - Task Creation Logic"]
+            ListTasksDirect["list-tasks.js - Task Listing Logic"]
+            UpdateTaskDirect["update-task-by-id.js - Task Update Logic"]
+            TagDirectFunctions["Tag Management (9 functions)"]
+            DependencyDirectFunctions["Dependency Management (4 functions)"]
+            ComplexityDirectFunctions["Analysis Functions (3 functions)"]
+            OtherDirectFunctions["Other Core Functions (20 functions)"]
+        end
+        
+        subgraph CoreUtilities["Core Utilities"]
+            EnvUtils["env-utils.js - Environment Management"]
+            PathUtils["path-utils.js - Path Resolution"]
+        end
+        
+        subgraph CustomSDK["Custom SDK"]
+            SDKIndex["index.js - SDK Main Interface"]
+            JSONExtractor["json-extractor.js - JSON Processing"]
+            LanguageModel["language-model.js - Model Interface"]
+            MessageConverter["message-converter.js - Message Handling"]
+            SchemaConverter["schema-converter.js - Schema Processing"]
+            ErrorHandling["errors.js - Error Management"]
+        end
     end
     
-    subgraph taskModels["Task Models"]
-        MODEL1["MODEL: validateTask"]
-        MODEL2["MODEL: validateSubtask"]
-        MODEL3["MODEL: createTaskTemplate"]
-        MODEL4["MODEL: createSubtaskTemplate"]
+    %% TASK MANAGER LAYER
+    subgraph TaskManagerLayer["Task Manager Layer"]
+        subgraph TaskManagerCore["Task Manager Core"]
+            TaskManagerIndex["task-manager.js - Main Coordinator"]
+            AIServicesUnified["ai-services-unified.js - AI Integration"]
+            ConfigManager["config-manager.js - Configuration"]
+            PromptManager["prompt-manager.js - Prompt Templates"]
+        end
+        
+        subgraph TaskOperations["Task Operations (24 modules)"]
+            AddTaskManager["add-task.js - Task Creation Business Logic"]
+            ListTasksManager["list-tasks.js - Task Listing Business Logic"]
+            UpdateTaskManager["update-task-by-id.js - Task Update Business Logic"]
+            TagManagerOperations["Tag Management (5 modules)"]
+            DependencyManagerOperations["Dependency Operations (3 modules)"]
+            ComplexityManagerOperations["Analysis Operations (2 modules)"]
+            OtherTaskOperations["Other Operations (11 modules)"]
+        end
+        
+        subgraph TaskUtilities["Task Utilities"]
+            ContextGatherer["contextGatherer.js - Context Analysis"]
+            FuzzyTaskSearch["fuzzyTaskSearch.js - Task Search"]
+            GitUtils["git-utils.js - Git Integration"]
+        end
+        
+        subgraph ModuleSupport["Module Support"]
+            ModulesIndex["index.js - Module Coordinator"]
+            DependencyManager["dependency-manager.js - Dependency Resolution"]
+            SyncReadme["sync-readme.js - Documentation Sync"]
+            UpdateConfigTokens["update-config-tokens.js - Token Management"]
+            ModuleUtils["utils.js - Utility Functions"]
+        end
     end
     
-    subgraph tagManagement["Tag Management"]
-        TAG1["TAG: addTag"]
-        TAG2["TAG: removeTag"]
-        TAG3["TAG: renameTag"]
-        TAG4["TAG: listTags"]
-    end
-end
-
-%% SHARED INFRASTRUCTURE LAYER - Common Services
-subgraph sharedInfrastructureLayer["Shared Infrastructure Layer"]
-    subgraph contextServices["Context Services"]
-        CTX1["SERVICE: ContextGatherer"]
-        CTX2["SERVICE: createContextGatherer"]
-        CTX3["SERVICE: countTokens"]
-        CTX4["SERVICE: semanticSearch"]
+    %% SHARED INFRASTRUCTURE LAYER
+    subgraph SharedInfrastructureLayer["Shared Infrastructure Layer"]
+        subgraph PathManagement["Path Management"]
+            TaskMasterMain["task-master.js - Central Path Manager"]
+        end
+        
+        subgraph AIProviders["AI Providers (12 providers)"]
+            BaseProvider["base-provider.js - Provider Interface"]
+            AnthropicProvider["anthropic.js - Anthropic Integration"]
+            OpenAIProvider["openai.js - OpenAI Integration"]
+            ClaudeCodeProvider["claude-code.js - Claude Code Integration"]
+            GoogleProvider["google.js - Google AI Integration"]
+            PerplexityProvider["perplexity.js - Research Integration"]
+            OtherProviders["Other Providers (6 providers)"]
+            
+            subgraph ClaudeCodeSDK["Claude Code SDK"]
+                ClaudeSDKIndex["index.js - SDK Interface"]
+                ClaudeErrors["errors.js - Error Handling"]
+                ClaudeJSONExtractor["json-extractor.js - JSON Processing"]
+                ClaudeLanguageModel["language-model.js - Model Interface"]
+                ClaudeMessageConverter["message-converter.js - Message Handling"]
+                ClaudeTypes["types.js - Type Definitions"]
+            end
+        end
+        
+        subgraph Constants["Constants (7 modules)"]
+            Commands["commands.js - Command Definitions"]
+            Paths["paths.js - Path Constants"]
+            Profiles["profiles.js - Profile Constants"]
+            Providers["providers.js - Provider Constants"]
+            RulesActions["rules-actions.js - Rule Constants"]
+            TaskPriority["task-priority.js - Priority Constants"]
+            TaskStatus["task-status.js - Status Constants"]
+        end
+        
+        subgraph ProfileSystem["Profile System (8 profiles)"]
+            BaseProfile["base-profile.js - Profile Interface"]
+            ClaudeProfile["claude.js - Claude Profile"]
+            ClineProfile["cline.js - Cline Profile"]
+            CursorProfile["cursor.js - Cursor Profile"]
+            VsCodeProfile["vscode.js - VSCode Profile"]
+            GeminiProfile["gemini.js - Gemini Profile"]
+            RooProfile["roo.js - Roo Profile"]
+            CodexProfile["codex.js - Codex Profile"]
+        end
+        
+        subgraph UtilitySystem["Utility System (7 utilities)"]
+            CreateMCPConfig["create-mcp-config.js - MCP Configuration"]
+            GetVersion["getVersion.js - Version Management"]
+            LoggerUtils["logger-utils.js - Logging Utilities"]
+            ManageGitignore["manage-gitignore.js - Git Management"]
+            PathUtilsShared["path-utils.js - Path Utilities"]
+            ProfilesUtil["profiles.js - Profile Utilities"]
+            RuleTransformer["rule-transformer.js - Rule Processing"]
+        end
+        
+        subgraph ProviderRegistry["Provider Registry"]
+            RegistryIndex["index.js - Provider Registration"]
+        end
     end
     
-    subgraph fileServices["File Services"]
-        FILE1["SERVICE: readJSON"]
-        FILE2["SERVICE: writeJSON"]
-        FILE3["SERVICE: findTaskById"]
-        FILE4["SERVICE: flattenTasksWithSubtasks"]
+    %% DATA LAYER
+    subgraph DataLayer["Data Layer"]
+        TasksJSON["tasks.json - Task Storage"]
+        ConfigJSON["config.json - Configuration"]
+        StateJSON["state.json - Application State"]
+        ComplexityReport["task-complexity-report.json - Analysis Data"]
+        PRDFiles["PRD Files - Requirements"]
+        PromptTemplates["Prompt Templates - AI Instructions"]
+        GitIgnore[".gitignore - Git Configuration"]
     end
     
-    subgraph searchServices["Search Services"]
-        SEARCH1["SERVICE: createFuzzySearch"]
-        SEARCH2["SERVICE: searchTasks"]
-        SEARCH3["SERVICE: searchSubtasks"]
-        SEARCH4["SERVICE: rankResults"]
-    end
+    %% INTERFACE RELATIONSHIPS
+    MCPClient --> MCPServer
+    MCPServer --> MCPTools
+    MCPTools --> MCPProviders
     
-    subgraph gitServices["Git Services"]
-        GIT1["SERVICE: getGitStatus"]
-        GIT2["SERVICE: getGitBranch"]
-        GIT3["SERVICE: getGitCommitHash"]
-        GIT4["SERVICE: isGitRepo"]
-    end
-end
-
-%% EXTERNAL INTEGRATIONS
-subgraph externalIntegrations["External Integrations"]
-    EXT1["EXTERNAL: FastMCP Server Framework"]
-    EXT2["EXTERNAL: File System (fs, path)"]
-    EXT3["EXTERNAL: Zod Validation Library"]
-    EXT4["EXTERNAL: Fuse.js Fuzzy Search"]
-    EXT5["EXTERNAL: GPT Tokens Package"]
-    EXT6["EXTERNAL: Git Command Line"]
-    EXT7["EXTERNAL: AI Research Services"]
-    EXT8["EXTERNAL: Chalk Terminal Colors"]
-end
-
-%% LAYER RELATIONSHIPS - Request Flow
-LAYER1 --> LAYER2
-LAYER2 --> LAYER3
-LAYER3 --> LAYER4
-
-%% MCP INTERFACE TO CORE IMPLEMENTATION
-TOOL1 --> CORE1
-TOOL1 --> CORE2
-TOOL2 --> CORE3
-TOOL3 --> CORE4
-TOOL4 --> CORE6
-TOOL5 --> CORE5
-TOOL6 --> CORE7
-TOOL7 --> CORE8
-TOOL8 --> CORE1
-
-%% CORE IMPLEMENTATION TO TASK MANAGER
-CORE1 --> OP4
-CORE2 --> OP5
-CORE3 --> OP1
-CORE4 --> OP2
-CORE5 --> OP3
-CORE6 --> OP1
-CORE7 --> OP7
-CORE8 --> OP6
-
-%% TASK MANAGER TO SHARED INFRASTRUCTURE
-OP1 --> FILE1 & FILE3 & SEARCH1
-OP2 --> FILE1 & FILE2 & FILE3
-OP3 --> FILE1 & FILE2 & FILE3
-OP4 --> FILE1 & FILE2 & CTX1
-OP5 --> FILE1 & FILE2 & CTX1
-OP6 --> FILE1 & FILE2 & FILE3
-OP7 --> FILE1 & FILE3
-MODEL1 & MODEL2 & MODEL3 & MODEL4 --> FILE1 & FILE2
-TAG1 & TAG2 & TAG3 & TAG4 --> FILE1 & FILE2
-
-%% SHARED INFRASTRUCTURE TO EXTERNAL
-CTX1 --> EXT4 & EXT5
-CTX2 --> EXT4 & EXT5
-SEARCH1 --> EXT4
-FILE1 & FILE2 --> EXT2
-GIT1 & GIT2 & GIT3 & GIT4 --> EXT6
-
-%% MCP INTERFACE TO EXTERNAL
-VAL1 --> EXT3
-UTIL1 & UTIL2 & UTIL3 --> EXT1
-TOOL1 & TOOL2 & TOOL3 & TOOL4 & TOOL5 & TOOL6 & TOOL7 & TOOL8 --> EXT1
-
-%% CROSS-LAYER UTILITIES
-UTIL4 --> FILE1 & FILE3
-CUTIL1 --> EXT1
-CUTIL4 & CUTIL5 --> EXT2
-
-%% DATA FLOW CONNECTIONS
-FLOW1 --> FLOW2
-FLOW2 --> FLOW3
-FLOW3 --> FLOW4
-FLOW4 --> FLOW5
-
-%% INTEGRATION POINT CONNECTIONS
-INT1 --> EXT1
-INT2 --> EXT2
-INT3 --> EXT6
-INT4 --> EXT7
-INT5 --> EXT5
-
-%% PROJECT OVERLORD ARCHITECTURE CONNECTIONS
-LAYER1 --> mcpInterfaceLayer
-LAYER2 --> coreImplementationLayer
-LAYER3 --> taskManagerLayer
-LAYER4 --> sharedInfrastructureLayer
+    %% LAYER RELATIONSHIPS
+    MCPTools --> DirectFunctions
+    DirectFunctions --> TaskOperations
+    TaskOperations --> AIProviders
+    TaskOperations --> DataLayer
+    
+    %% SHARED INFRASTRUCTURE USAGE
+    PathManagement --> CoreImplementationLayer
+    PathManagement --> TaskManagerLayer
+    PathManagement --> MCPInterfaceLayer
+    
+    Constants --> CoreImplementationLayer
+    Constants --> TaskManagerLayer
+    Constants --> MCPInterfaceLayer
+    
+    ProfileSystem --> TaskManagerLayer
+    ProfileSystem --> CoreImplementationLayer
+    
+    UtilitySystem --> CoreImplementationLayer
+    UtilitySystem --> TaskManagerLayer
+    UtilitySystem --> MCPInterfaceLayer
+    
+    %% AI PROVIDER INTEGRATION
+    AIProviders --> Claude
+    AIProviders --> OpenAI
+    AIProviders --> Anthropic
+    AIProviders --> Perplexity
+    
+    %% EXTERNAL SYSTEM INTEGRATION
+    TaskManagerLayer --> FileSystem
+    TaskManagerLayer --> GitRepo
+    CoreImplementationLayer --> FileSystem
+    DataLayer --> FileSystem
+    
+    %% DATA FLOW
+    MCPInterfaceLayer --> CoreImplementationLayer
+    CoreImplementationLayer --> TaskManagerLayer
+    TaskManagerLayer --> SharedInfrastructureLayer
+    SharedInfrastructureLayer --> DataLayer
+    
+    %% CONTEXT AND CACHING
+    ContextManager --> TaskManagerLayer
+    ContextManager --> AIProviders
+    
+    %% PROVIDER REGISTRY CONNECTIONS
+    ProviderRegistry --> AIProviders
+    ProviderRegistry --> MCPProviders
+```

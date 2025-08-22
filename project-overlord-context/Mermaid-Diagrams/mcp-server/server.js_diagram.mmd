@@ -1,0 +1,47 @@
+```mermaid
+flowchart TB
+    subgraph Imports["Imports"]
+        I1["IMPORT: TaskMasterMCPServer, FROM: /mcp-server/src/index.js"]
+        I2["IMPORT: dotenv, FROM: dotenv"]
+        I3["IMPORT: logger, FROM: /mcp-server/src/logger.js"]
+    end
+    
+    subgraph Dependencies["Dependencies"]
+        D1["DEP: Node.js process for server lifecycle management"]
+        D2["DEP: Environment variable configuration system"]
+    end
+    
+    subgraph FunctionsDefined["Functions Defined"]
+        FU1["FUNCTION: startServer"]
+    end
+    
+    subgraph Constants["Const Declarations"]
+        C1["CONST: server, VALUE: new TaskMasterMCPServer instance"]
+    end
+    
+    subgraph EnvironmentVariables["Environment Variables"]
+        ENV1["ENV: *, USAGE: loaded via dotenv.config for server configuration"]
+    end
+    
+    subgraph ExecutionFlow["Execution Flow"]
+        FL1["Load environment variables using dotenv configuration"]
+        FL2["Create new TaskMasterMCPServer instance"]
+        FL3["Set up graceful shutdown handlers for SIGINT and SIGTERM"]
+        FL4["Start the MCP server and handle any startup errors"]
+        FL5["Exit process with appropriate codes on shutdown or error"]
+    end
+    
+    subgraph FileName["server.js"]
+        Imports
+        Dependencies
+        FunctionsDefined
+        Constants
+        EnvironmentVariables
+        ExecutionFlow
+    end
+    
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+```

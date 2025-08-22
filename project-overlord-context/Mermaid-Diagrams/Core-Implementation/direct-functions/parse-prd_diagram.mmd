@@ -1,0 +1,44 @@
+flowchart TB
+    subgraph Imports
+        I1[path module for path operations]
+        I2[fs module for file system operations]
+        I3[parsePRD from ../../../../scripts/modules/task-manager.js]
+        I4[enableSilentMode, disableSilentMode, isSilentMode from ../../../../scripts/modules/utils.js]
+        I5[createLogWrapper from ../../tools/utils.js]
+        I6[getDefaultNumTasks from ../../../../scripts/modules/config-manager.js]
+        I7[resolvePrdPath, resolveProjectPath from ../utils/path-utils.js]
+        I8[TASKMASTER_TASKS_FILE from ../../../../src/constants/paths.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[parsePRDDirect - Wrapper function for parsing PRD documents and generating tasks]
+    end
+
+    subgraph Exports
+        E1[parsePRDDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with input, output, numTasks, force, append, research, projectRoot, tag]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that projectRoot argument is provided as required parameter]
+        FL2[Resolve input PRD path using path utilities and validate file exists]
+        FL3[Resolve output path or use default TASKMASTER_TASKS_FILE location]
+        FL4[Create output directory if it doesn't exist using recursive creation]
+        FL5[Parse and validate numTasks parameter or use project default]
+        FL6[Enable silent mode to prevent console interference during PRD parsing]
+        FL7[Call core parsePRD function with resolved paths and options]
+        FL8[Return success result with generated tasks path and telemetry data]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

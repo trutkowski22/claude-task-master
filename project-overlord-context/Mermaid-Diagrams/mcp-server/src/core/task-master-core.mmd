@@ -1,0 +1,89 @@
+flowchart TD
+    subgraph "task-master-core.js"
+        A["🔗 Task Master Core"] --> B["Import Direct Functions"]
+        B --> C["Import Utilities"]
+        C --> D["Create Function Map"]
+        D --> E["Export All Functions"]
+        
+        subgraph "Imports - Direct Functions"
+            I1["listTasksDirect from './direct-functions/list-tasks.js'"]
+            I2["getCacheStatsDirect from './direct-functions/cache-stats.js'"]
+            I3["parsePRDDirect from './direct-functions/parse-prd.js'"]
+            I4["updateTasksDirect from './direct-functions/update-tasks.js'"]
+            I5["updateTaskByIdDirect from './direct-functions/update-task-by-id.js'"]
+            I6["updateSubtaskByIdDirect from './direct-functions/update-subtask-by-id.js'"]
+            I7["generateTaskFilesDirect from './direct-functions/generate-task-files.js'"]
+            I8["setTaskStatusDirect from './direct-functions/set-task-status.js'"]
+            I9["showTaskDirect from './direct-functions/show-task.js'"]
+            I10["nextTaskDirect from './direct-functions/next-task.js'"]
+            I11["expandTaskDirect from './direct-functions/expand-task.js'"]
+            I12["addTaskDirect from './direct-functions/add-task.js'"]
+            I13["addSubtaskDirect from './direct-functions/add-subtask.js'"]
+            I14["removeSubtaskDirect from './direct-functions/remove-subtask.js'"]
+            I15["analyzeTaskComplexityDirect from './direct-functions/analyze-task-complexity.js'"]
+            I16["clearSubtasksDirect from './direct-functions/clear-subtasks.js'"]
+            I17["expandAllTasksDirect from './direct-functions/expand-all-tasks.js'"]
+            I18["removeDependencyDirect from './direct-functions/remove-dependency.js'"]
+            I19["validateDependenciesDirect from './direct-functions/validate-dependencies.js'"]
+            I20["fixDependenciesDirect from './direct-functions/fix-dependencies.js'"]
+            I21["More functions... (24 total direct functions)"]
+        end
+        
+        subgraph "Imports - Utilities"
+            U1["findTasksPath from './utils/path-utils.js'"]
+        end
+        
+        subgraph "Function Map Creation"
+            MAP1["directFunctions = new Map()"]
+            MAP2["Map entries for all 24 direct functions"]
+            MAP3["Key-value pairs for dynamic dispatch"]
+        end
+        
+        subgraph "Exports"
+            EXP1["findTasksPath utility"]
+            EXP2["directFunctions Map"]
+            EXP3["All 24 direct function implementations"]
+            EXP4["Named exports for each function"]
+        end
+        
+        subgraph "Architecture Pattern"
+            ARCH1["Central re-export module"]
+            ARCH2["Improved organization"]
+            ARCH3["Maintainability enhancement"]
+            ARCH4["Dynamic dispatch capability"]
+        end
+        
+        B --> I1
+        B --> I2
+        B --> I3
+        B --> I4
+        B --> I5
+        B --> I6
+        B --> I7
+        B --> I8
+        B --> I9
+        B --> I10
+        B --> I11
+        B --> I12
+        B --> I13
+        B --> I14
+        B --> I15
+        B --> I16
+        B --> I17
+        B --> I18
+        B --> I19
+        B --> I20
+        B --> I21
+        C --> U1
+        D --> MAP1
+        D --> MAP2
+        D --> MAP3
+        E --> EXP1
+        E --> EXP2
+        E --> EXP3
+        E --> EXP4
+        A --> ARCH1
+        A --> ARCH2
+        A --> ARCH3
+        A --> ARCH4
+    end

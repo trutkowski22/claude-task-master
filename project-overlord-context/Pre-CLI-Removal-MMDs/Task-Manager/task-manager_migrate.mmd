@@ -1,0 +1,77 @@
+flowchart TB
+    subgraph migrate-Imports["migrate-Imports"]
+        I1["IMPORT: fs, FROM: fs"]
+        I2["IMPORT: path, FROM: path"]
+        I4["IMPORT: fileURLToPath, FROM: url"]
+        I5["IMPORT: createLogWrapper, FROM: /claude-task-master/mcp-server/src/tools/utils.js"]
+        I6["IMPORT: findProjectRoot, FROM: /claude-task-master/scripts/modules/utils.js"]
+        I7["IMPORT: LEGACY_CONFIG_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+        I8["IMPORT: TASKMASTER_CONFIG_FILE, FROM: /claude-task-master/src/constants/paths.js"]
+    end
+    subgraph migrate-Dependencies["migrate-Dependencies"]
+        D1["DEP: File system"]
+        D2["DEP: Node.js path"]
+        D3["DEP: Chalk terminal colors"]
+        D4["DEP: Node.js readline"]
+    end
+    subgraph migrate-FunctionsDefined["migrate-Functions Defined"]
+        FU1["FUNCTION: migrateProject"]
+        FU2["FUNCTION: analyzeMigrationNeeds"]
+        FU3["FUNCTION: performMigration"]
+    end
+    subgraph migrate-Exports["migrate-Exports"]
+        E1["EXP: migrateProject"]
+        E2["EXP: default object with migrateProject"]
+    end
+    subgraph migrate-Parameters["migrate-Parameters"]
+        P1["PARAM: {Object} options - Migration options"]
+        P2["PARAM: {string} projectRoot - Project root directory"]
+        P3["PARAM: {Array} migrationPlan - List of files to migrate"]
+    end
+    subgraph migrate-Constants["migrate-Constants"]
+        C1["CONST: __filename, VALUE: fileURLToPath(import.meta.url)"]
+        C2["CONST: __dirname, VALUE: path.dirname(__filename)"]
+        C3["CONST: log, VALUE: createLogWrapper result"]
+        C4["CONST: projectRoot, VALUE: findProjectRoot() || process.cwd()"]
+        C5["CONST: taskmasterDir, VALUE: path.join result"]
+        C6["CONST: migrationPlan, VALUE: analyzeMigrationNeeds result"]
+        C7["CONST: readline, VALUE: imported readline module"]
+        C8["CONST: rl, VALUE: readline.createInterface result"]
+        C9["CONST: answer, VALUE: user input promise"]
+        C10["CONST: neededDirs, VALUE: new Set()"]
+        C11["CONST: backupDir, VALUE: path.join result"]
+    end
+    subgraph migrate-ExecutionFlow["migrate-Execution Flow"]
+        FL1["Find project root and initialize logging"]
+        FL2["Check if .taskmaster directory already exists"]
+        FL3["Analyze migration needs by scanning existing files"]
+        FL4["Create migration plan for tasks, scripts, and config files"]
+        FL5["Display migration plan to user"]
+        FL6["Request user confirmation if not in auto mode"]
+        FL7["Create .taskmaster directory structure"]
+        FL8["Create backup directory if backup option enabled"]
+        FL9["Migrate files according to plan"]
+        FL10["Copy files to new locations"]
+        FL11["Clean up original files if cleanup option enabled"]
+        FL12["Remove empty directories after migration"]
+    end
+    subgraph migrate["migrate.js"]
+        migrate-Imports
+        migrate-Dependencies
+        migrate-FunctionsDefined
+        migrate-Exports
+        migrate-Parameters
+        migrate-Constants
+        migrate-ExecutionFlow
+    end
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8
+    FL8 --> FL9
+    FL9 --> FL10
+    FL10 --> FL11
+    FL11 --> FL12

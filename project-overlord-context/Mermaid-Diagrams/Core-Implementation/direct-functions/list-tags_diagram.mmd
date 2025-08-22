@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Imports
+        I1[tags from ../../../../scripts/modules/task-manager/tag-management.js]
+        I2[enableSilentMode, disableSilentMode from ../../../../scripts/modules/utils.js]
+        I3[createLogWrapper from ../../tools/utils.js]
+    end
+
+    subgraph "Functions Defined"
+        FU1[listTagsDirect - Wrapper function for listing all tags with metadata processing]
+    end
+
+    subgraph Exports
+        E1[listTagsDirect function]
+    end
+
+    subgraph Parameters
+        P1[args object with tasksJsonPath, showMetadata, projectRoot]
+        P2[log object for logging operations]
+        P3[context object containing session data]
+    end
+
+    subgraph "Execution Flow"
+        FL1[Validate that tasksJsonPath argument is provided]
+        FL2[Enable silent mode to prevent console interference with JSON response]
+        FL3[Create MCP log wrapper for consistent logging]
+        FL4[Call core tags function with provided path and options]
+        FL5[Process tag results to calculate status breakdowns and subtask counts]
+        FL6[Transform tag data to include summary statistics and metadata]
+        FL7[Restore normal logging mode]
+        FL8[Return structured tag information with counts and current tag status]
+    end
+
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    FL7 --> FL8

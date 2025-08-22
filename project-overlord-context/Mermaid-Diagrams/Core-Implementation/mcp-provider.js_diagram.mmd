@@ -1,0 +1,144 @@
+```mermaid
+graph TB
+    %% MCP Provider - Core Implementation Layer
+    %% File: mcp-server/src/providers/mcp-provider.js
+    
+    subgraph "MCP Provider Module"
+        direction TB
+        
+        subgraph "Dependencies"
+            CREATE_MCP["createMCP from '../custom-sdk/index.js'"]
+            BASE_PROVIDER["BaseAIProvider from '../../../src/ai-providers/base-provider.js'"]
+        end
+        
+        subgraph "MCPProvider Class"
+            direction TB
+            
+            subgraph "Class Inheritance"
+                EXTENDS_BASE["extends BaseAIProvider"]
+            end
+            
+            subgraph "Instance Properties"
+                NAME_PROP["name: 'mcp'"]
+                SESSION_PROP["session: null (MCP server session)"]
+            end
+            
+            subgraph "Constructor"
+                CONSTRUCTOR["constructor()"]
+                SUPER_CALL["super()"]
+                INIT_PROPERTIES["Initialize name and session"]
+            end
+            
+            subgraph "API Key Methods"
+                GET_API_KEY_NAME["getRequiredApiKeyName()"]
+                IS_REQUIRED_API_KEY["isRequiredApiKey()"]
+                RETURN_KEY_NAME["Returns 'MCP_API_KEY'"]
+                RETURN_FALSE["Returns false"]
+            end
+            
+            subgraph "Authentication Validation"
+                VALIDATE_AUTH["validateAuth(params)"]
+                CHECK_SESSION["Check if this.session exists"]
+                CHECK_CAPABILITIES["Check session.clientCapabilities.sampling"]
+                THROW_SESSION_ERROR["Throw session error"]
+                THROW_CAPABILITIES_ERROR["Throw capabilities error"]
+            end
+            
+            subgraph "Client Creation"
+                GET_CLIENT["getClient(params)"]
+                TRY_CATCH_BLOCK["try/catch block"]
+                CREATE_MCP_CALL["createMCP() call"]
+                PASS_SESSION["Pass this.session"]
+                PASS_DEFAULT_SETTINGS["Pass defaultSettings"]
+                HANDLE_ERROR["handleError('client initialization', error)"]
+                RETURN_CLIENT["Return MCP AI SDK client"]
+            end
+            
+            subgraph "Session Management"
+                SET_SESSION["setSession(session)"]
+                UPDATE_SESSION["this.session = session"]
+                LOG_NULL_SESSION["Log warning for null session"]
+                LOG_UPDATE_SESSION["Log debug for session update"]
+                
+                HAS_VALID_SESSION["hasValidSession()"]
+                CHECK_SESSION_VALIDITY["Check session && session.clientCapabilities?.sampling"]
+                RETURN_BOOLEAN["Return boolean result"]
+            end
+        end
+        
+        subgraph "Client Configuration"
+            direction TB
+            
+            subgraph "MCP Options"
+                SESSION_CONFIG["session: this.session"]
+                DEFAULT_SETTINGS_CONFIG["defaultSettings: {temperature, maxTokens}"]
+            end
+            
+            subgraph "Settings Mapping"
+                TEMP_MAPPING["temperature: params.temperature"]
+                MAX_TOKENS_MAPPING["maxTokens: params.maxTokens"]
+            end
+        end
+        
+        subgraph "Error Handling"
+            CLIENT_INIT_ERROR["Client initialization error handling"]
+            SESSION_VALIDATION_ERROR["Session validation errors"]
+            CAPABILITIES_VALIDATION_ERROR["Capabilities validation errors"]
+        end
+    end
+    
+    %% Dependencies
+    CREATE_MCP --> CREATE_MCP_CALL
+    BASE_PROVIDER --> EXTENDS_BASE
+    
+    %% Constructor Flow
+    CONSTRUCTOR --> SUPER_CALL
+    SUPER_CALL --> INIT_PROPERTIES
+    INIT_PROPERTIES --> NAME_PROP
+    INIT_PROPERTIES --> SESSION_PROP
+    
+    %% API Key Methods
+    GET_API_KEY_NAME --> RETURN_KEY_NAME
+    IS_REQUIRED_API_KEY --> RETURN_FALSE
+    
+    %% Authentication Validation Flow
+    VALIDATE_AUTH --> CHECK_SESSION
+    CHECK_SESSION --> THROW_SESSION_ERROR
+    CHECK_SESSION --> CHECK_CAPABILITIES
+    CHECK_CAPABILITIES --> THROW_CAPABILITIES_ERROR
+    
+    %% Client Creation Flow
+    GET_CLIENT --> TRY_CATCH_BLOCK
+    TRY_CATCH_BLOCK --> CREATE_MCP_CALL
+    CREATE_MCP_CALL --> PASS_SESSION
+    CREATE_MCP_CALL --> PASS_DEFAULT_SETTINGS
+    
+    PASS_SESSION --> SESSION_CONFIG
+    PASS_DEFAULT_SETTINGS --> DEFAULT_SETTINGS_CONFIG
+    DEFAULT_SETTINGS_CONFIG --> TEMP_MAPPING
+    DEFAULT_SETTINGS_CONFIG --> MAX_TOKENS_MAPPING
+    
+    CREATE_MCP_CALL --> RETURN_CLIENT
+    TRY_CATCH_BLOCK --> HANDLE_ERROR
+    HANDLE_ERROR --> CLIENT_INIT_ERROR
+    
+    %% Session Management Flow
+    SET_SESSION --> UPDATE_SESSION
+    UPDATE_SESSION --> LOG_NULL_SESSION
+    UPDATE_SESSION --> LOG_UPDATE_SESSION
+    
+    HAS_VALID_SESSION --> CHECK_SESSION_VALIDITY
+    CHECK_SESSION_VALIDITY --> RETURN_BOOLEAN
+    
+    %% Error Flow
+    THROW_SESSION_ERROR --> SESSION_VALIDATION_ERROR
+    THROW_CAPABILITIES_ERROR --> CAPABILITIES_VALIDATION_ERROR
+    
+    style MCPProvider fill:#e1f5fe
+    style GET_CLIENT fill:#e8f5e8
+    style VALIDATE_AUTH fill:#fff3e0
+    style SET_SESSION fill:#f3e5f5
+    style HAS_VALID_SESSION fill:#fce4ec
+    style CREATE_MCP_CALL fill:#e8f5e8
+    style HANDLE_ERROR fill:#ffebee
+```

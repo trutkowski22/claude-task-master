@@ -39,9 +39,7 @@ export class ContextGatherer {
 			const tasks = data?.tasks || [];
 			return tasks;
 		} catch (error) {
-			console.warn(
-				`Warning: Could not load tasks for ContextGatherer: ${error.message}`
-			);
+			// Silently handle task loading errors
 			return [];
 		}
 	}
@@ -561,7 +559,7 @@ export class ContextGatherer {
 				breakdown: includeTokenCounts ? breakdown : []
 			};
 		} catch (error) {
-			console.warn(`Warning: Could not gather task context: ${error.message}`);
+			// Silently handle task context errors
 			return { context: null, breakdown: [] };
 		}
 	}
@@ -687,9 +685,7 @@ export class ContextGatherer {
 					});
 				}
 			} catch (error) {
-				console.warn(
-					`Warning: Could not read file ${filePath}: ${error.message}`
-				);
+				// Silently handle file read errors
 			}
 		}
 
@@ -729,9 +725,7 @@ export class ContextGatherer {
 				breakdown: breakdown
 			};
 		} catch (error) {
-			console.warn(
-				`Warning: Could not generate project tree: ${error.message}`
-			);
+			// Silently handle project tree errors
 			return { context: null, breakdown: null };
 		}
 	}

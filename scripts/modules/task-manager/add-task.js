@@ -1,20 +1,7 @@
 import path from 'path';
-import chalk from 'chalk';
-import boxen from 'boxen';
-import Table from 'cli-table3';
 import { z } from 'zod';
 import Fuse from 'fuse.js'; // Import Fuse.js for advanced fuzzy search
 
-import {
-	displayBanner,
-	getStatusWithColor,
-	startLoadingIndicator,
-	stopLoadingIndicator,
-	succeedLoadingIndicator,
-	failLoadingIndicator,
-	displayAiUsageSummary,
-	displayContextAnalysis
-} from '../ui.js';
 import {
 	readJSON,
 	writeJSON,
@@ -131,12 +118,6 @@ async function addTask(
 		if (normalizedPriority) {
 			effectivePriority = normalizedPriority;
 		} else {
-			if (outputFormat === 'text') {
-				consoleLog(
-					'warn',
-					`Invalid priority "${priority}". Using default priority "${DEFAULT_TASK_PRIORITY}".`
-				);
-			}
 			effectivePriority = DEFAULT_TASK_PRIORITY;
 		}
 	}
@@ -148,7 +129,6 @@ async function addTask(
 		logFn.info(`Using tag context: ${tag}`);
 	}
 
-	let loadingIndicator = null;
 	let aiServiceResponse = null; // To store the full response from AI service
 
 	// Create custom reporter that checks for MCP log
@@ -312,18 +292,6 @@ async function addTask(
 				: 0;
 		const newTaskId = highestId + 1;
 
-		// Only show UI box for CLI mode
-		if (outputFormat === 'text') {
-			console.log(
-				boxen(chalk.white.bold(`Creating New Task #${newTaskId}`), {
-					padding: 1,
-					borderColor: 'blue',
-					borderStyle: 'round',
-					margin: { top: 1, bottom: 1 }
-				})
-			);
-		}
-
 		// Validate dependencies before proceeding
 		const invalidDeps = dependencies.filter((depId) => {
 			// Ensure depId is parsed as a number for comparison
@@ -397,11 +365,6 @@ async function addTask(
 			const gatheredContext = gatherResult.context;
 			const analysisData = gatherResult.analysisData;
 
-			// Display context analysis if not in silent mode
-			if (outputFormat === 'text' && analysisData) {
-				displayContextAnalysis(analysisData, prompt, gatheredContext.length);
-			}
-
 			// Add any manually provided details to the prompt for context
 			let contextFromArgs = '';
 			if (manualTaskData?.title)
@@ -428,13 +391,6 @@ async function addTask(
 					dependencies: numericDependencies
 				}
 			);
-
-			// Start the loading indicator - only for text mode
-			if (outputFormat === 'text') {
-				loadingIndicator = startLoadingIndicator(
-					`Generating new task with ${useResearch ? 'Research' : 'Main'} AI... \n`
-				);
-			}
 
 			try {
 				const serviceRole = useResearch ? 'research' : 'main';
@@ -477,21 +433,7 @@ async function addTask(
 				}
 
 				report('Successfully generated task data from AI.', 'success');
-
-				// Success! Show checkmark
-				if (loadingIndicator) {
-					succeedLoadingIndicator(
-						loadingIndicator,
-						'Task generated successfully'
-					);
-					loadingIndicator = null; // Clear it
-				}
 			} catch (error) {
-				// Failure! Show X
-				if (loadingIndicator) {
-					failLoadingIndicator(loadingIndicator, 'AI generation failed');
-					loadingIndicator = null;
-				}
 				report(
 					`DEBUG: generateObjectService caught error: ${error.message}`,
 					'debug'
@@ -500,10 +442,6 @@ async function addTask(
 				throw error; // Re-throw error after logging
 			} finally {
 				report('DEBUG: generateObjectService finally block reached.', 'debug');
-				// Clean up if somehow still running
-				if (loadingIndicator) {
-					stopLoadingIndicator(loadingIndicator);
-				}
 			}
 			// --- End Refactored AI Interaction ---
 		}
@@ -559,166 +497,18 @@ async function addTask(
 		writeJSON(tasksPath, rawData, projectRoot, targetTag);
 		report('DEBUG: tasks.json written.', 'debug');
 
-		// Show success message - only for text output (CLI)
-		if (outputFormat === 'text') {
-			const table = new Table({
-				head: [
-					chalk.cyan.bold('ID'),
-					chalk.cyan.bold('Title'),
-					chalk.cyan.bold('Description')
-				],
-				colWidths: [5, 30, 50] // Adjust widths as needed
-			});
-
-			table.push([
-				newTask.id,
-				truncate(newTask.title, 27),
-				truncate(newTask.description, 47)
-			]);
-
-			console.log(chalk.green('✓ New task created successfully:'));
-			console.log(table.toString());
-
-			// Helper to get priority color
-			const getPriorityColor = (p) => {
-				switch (p?.toLowerCase()) {
-					case 'high':
-						return 'red';
-					case 'low':
-						return 'gray';
-					default:
-						return 'yellow';
-				}
-			};
-
-			// Check if AI added new dependencies that weren't explicitly provided
-			const aiAddedDeps = newTask.dependencies.filter(
-				(dep) => !numericDependencies.includes(dep)
-			);
-
-			// Check if AI removed any dependencies that were explicitly provided
-			const aiRemovedDeps = numericDependencies.filter(
-				(dep) => !newTask.dependencies.includes(dep)
-			);
-
-			// Get task titles for dependencies to display
-			const depTitles = {};
-			newTask.dependencies.forEach((dep) => {
-				const depTask = allTasks.find((t) => t.id === dep);
-				if (depTask) {
-					depTitles[dep] = truncate(depTask.title, 30);
-				}
-			});
-
-			// Prepare dependency display string
-			let dependencyDisplay = '';
-			if (newTask.dependencies.length > 0) {
-				dependencyDisplay = chalk.white('Dependencies:') + '\n';
-				newTask.dependencies.forEach((dep) => {
-					const isAiAdded = aiAddedDeps.includes(dep);
-					const depType = isAiAdded ? chalk.yellow(' (AI suggested)') : '';
-					dependencyDisplay +=
-						chalk.white(
-							`  - ${dep}: ${depTitles[dep] || 'Unknown task'}${depType}`
-						) + '\n';
-				});
-			} else {
-				dependencyDisplay = chalk.white('Dependencies: None') + '\n';
-			}
-
-			// Add info about removed dependencies if any
-			if (aiRemovedDeps.length > 0) {
-				dependencyDisplay +=
-					chalk.gray('\nUser-specified dependencies that were not used:') +
-					'\n';
-				aiRemovedDeps.forEach((dep) => {
-					const depTask = allTasks.find((t) => t.id === dep);
-					const title = depTask ? truncate(depTask.title, 30) : 'Unknown task';
-					dependencyDisplay += chalk.gray(`  - ${dep}: ${title}`) + '\n';
-				});
-			}
-
-			// Add dependency analysis summary
-			let dependencyAnalysis = '';
-			if (aiAddedDeps.length > 0 || aiRemovedDeps.length > 0) {
-				dependencyAnalysis =
-					'\n' + chalk.white.bold('Dependency Analysis:') + '\n';
-				if (aiAddedDeps.length > 0) {
-					dependencyAnalysis +=
-						chalk.green(
-							`AI identified ${aiAddedDeps.length} additional dependencies`
-						) + '\n';
-				}
-				if (aiRemovedDeps.length > 0) {
-					dependencyAnalysis +=
-						chalk.yellow(
-							`AI excluded ${aiRemovedDeps.length} user-provided dependencies`
-						) + '\n';
-				}
-			}
-
-			// Show success message box
-			console.log(
-				boxen(
-					chalk.white.bold(`Task ${newTaskId} Created Successfully`) +
-						'\n\n' +
-						chalk.white(`Title: ${newTask.title}`) +
-						'\n' +
-						chalk.white(`Status: ${getStatusWithColor(newTask.status)}`) +
-						'\n' +
-						chalk.white(
-							`Priority: ${chalk[getPriorityColor(newTask.priority)](newTask.priority)}`
-						) +
-						'\n\n' +
-						dependencyDisplay +
-						dependencyAnalysis +
-						'\n' +
-						chalk.white.bold('Next Steps:') +
-						'\n' +
-						chalk.cyan(
-							`1. Run ${chalk.yellow(`task-master show ${newTaskId}`)} to see complete task details`
-						) +
-						'\n' +
-						chalk.cyan(
-							`2. Run ${chalk.yellow(`task-master set-status --id=${newTaskId} --status=in-progress`)} to start working on it`
-						) +
-						'\n' +
-						chalk.cyan(
-							`3. Run ${chalk.yellow(`task-master expand --id=${newTaskId}`)} to break it down into subtasks`
-						),
-					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
-				)
-			);
-
-			// Display AI Usage Summary if telemetryData is available
-			if (
-				aiServiceResponse &&
-				aiServiceResponse.telemetryData &&
-				(outputType === 'cli' || outputType === 'text')
-			) {
-				displayAiUsageSummary(aiServiceResponse.telemetryData, 'cli');
-			}
-		}
-
 		report(
 			`DEBUG: Returning new task ID: ${newTaskId} and telemetry.`,
 			'debug'
 		);
 		return {
 			newTaskId: newTaskId,
+			newTask: newTask,
 			telemetryData: aiServiceResponse ? aiServiceResponse.telemetryData : null,
 			tagInfo: aiServiceResponse ? aiServiceResponse.tagInfo : null
 		};
 	} catch (error) {
-		// Stop any loading indicator on error
-		if (loadingIndicator) {
-			stopLoadingIndicator(loadingIndicator);
-		}
-
 		report(`Error adding task: ${error.message}`, 'error');
-		if (outputFormat === 'text') {
-			console.error(chalk.red(`Error: ${error.message}`));
-		}
 		// In MCP mode, we let the direct function handler catch and format
 		throw error;
 	}

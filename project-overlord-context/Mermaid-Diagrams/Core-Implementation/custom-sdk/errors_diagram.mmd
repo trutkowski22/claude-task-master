@@ -1,0 +1,65 @@
+flowchart TB
+    subgraph Imports ["📥 Imports"]
+        IMP1["No external imports"]
+    end
+    
+    subgraph Classes ["🔧 Classes Defined"]
+        CL1["MCPError extends Error"]
+        CL2["MCPSessionError extends MCPError"]
+        CL3["MCPSamplingError extends MCPError"]
+    end
+    
+    subgraph Functions ["⚙️ Functions Defined"]
+        FN1["mapMCPError(error)"]
+        FN2["isRetryableError(error)"]
+    end
+    
+    subgraph Exports ["📤 Exports"]
+        EX1["class MCPError"]
+        EX2["class MCPSessionError"]
+        EX3["class MCPSamplingError"]
+        EX4["function mapMCPError"]
+        EX5["function isRetryableError"]
+    end
+    
+    subgraph Parameters ["📋 Parameters"]
+        PA1["MCPError constructor: message, options{code, cause, mcpResponse}"]
+        PA2["MCPSessionError constructor: message, options"]
+        PA3["MCPSamplingError constructor: message, options"]
+        PA4["mapMCPError: error"]
+        PA5["isRetryableError: error"]
+    end
+    
+    subgraph Constants ["📊 Constants"]
+        CO1["Error names: 'MCPError', 'MCPSessionError', 'MCPSamplingError'"]
+        CO2["Error codes: 'SESSION_ERROR', 'SAMPLING_ERROR', 'CAPABILITY_ERROR', 'UNKNOWN_ERROR'"]
+    end
+    
+    subgraph ExecutionFlow ["🔄 Execution Flow"]
+        FL1["Define custom error classes that extend standard Error"]
+        FL2["MCPError base class stores message, code, cause, and mcpResponse"]
+        FL3["MCPSessionError and MCPSamplingError inherit from MCPError"]
+        FL4["mapMCPError function converts any error to appropriate MCP error type"]
+        FL5["Check error message patterns to determine specific error type"]
+        FL6["isRetryableError function determines if error should trigger retry"]
+        FL7["Analyze error type and message content for retry decision"]
+    end
+    
+    %% Flow connections
+    FL1 --> FL2
+    FL2 --> FL3
+    FL3 --> FL4
+    FL4 --> FL5
+    FL5 --> FL6
+    FL6 --> FL7
+    
+    %% Cross-references
+    CL1 -.-> PA1
+    CL2 -.-> PA2
+    CL3 -.-> PA3
+    FN1 -.-> PA4
+    FN2 -.-> PA5
+    CO1 -.-> CL1
+    CO1 -.-> CL2
+    CO1 -.-> CL3
+    CO2 -.-> FN1
