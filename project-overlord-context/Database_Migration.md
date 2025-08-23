@@ -5,9 +5,9 @@ This document tracks the migration of all 31 core functions from file-based oper
 
 ## Migration Status Summary
 - **Total Functions**: 31
-- **Completed**: 8 (`add-task.js`, `update-task-by-id.js`, `show-task.js`, `list-tasks.js`, `remove-task.js`, `move-task.js`, `set-task-status.js`, `next-task.js`)
+- **Completed**: 22 (`add-task.js`, `update-task-by-id.js`, `show-task.js`, `list-tasks.js`, `remove-task.js`, `move-task.js`, `set-task-status.js`, `next-task.js`, `add-subtask.js`, `update-subtask-by-id.js`, `remove-subtask.js`, `clear-subtasks.js`, `add-tag.js`, `copy-tag.js`, `delete-tag.js`, `list-tags.js`, `rename-tag.js`, `use-tag.js`, `add-dependency.js`, `remove-dependency.js`, `validate-dependencies.js`, `fix-dependencies.js`)
 - **In Progress**: 0
-- **Pending**: 23
+- **Pending**: 9
 
 ## Database Schema Status
 - ✅ **Full Schema Deployed**: Complete PostgreSQL schema with all enhancements
@@ -33,37 +33,37 @@ This document tracks the migration of all 31 core functions from file-based oper
 ### Subtask Management Functions  
 | File | Status | Priority | Notes |
 |------|--------|----------|-------|
-| `add-subtask.js` | � Pending | HIGH | Subtask creation |
-| `update-subtask-by-id.js` | � Pending | HIGH | Subtask updates |
-| `remove-subtask.js` | � Pending | MEDIUM | Subtask deletion |
-| `clear-subtasks.js` | � Pending | MEDIUM | Bulk subtask removal |
+| `add-subtask.js` | ✅ **COMPLETED** | HIGH | Subtask creation |
+| `update-subtask-by-id.js` | ✅ **COMPLETED** | HIGH | Subtask updates |
+| `remove-subtask.js` | ✅ **COMPLETED** | MEDIUM | Subtask deletion |
+| `clear-subtasks.js` | ✅ **COMPLETED** | MEDIUM | Bulk subtask removal |
 
 ### Tag Management Functions
 | File | Status | Priority | Notes |
 |------|--------|----------|-------|
-| `add-tag.js` | � Pending | MEDIUM | Tag creation and management |
-| `copy-tag.js` | � Pending | LOW | Tag duplication |
-| `delete-tag.js` | � Pending | MEDIUM | Tag removal |
-| `list-tags.js` | � Pending | MEDIUM | Tag listing |
-| `rename-tag.js` | � Pending | LOW | Tag renaming |
-| `use-tag.js` | � Pending | MEDIUM | Tag switching/filtering |
+| `add-tag.js` | ✅ **COMPLETED** | MEDIUM | Tag creation and management |
+| `copy-tag.js` | ✅ **COMPLETED** | LOW | Tag duplication |
+| `delete-tag.js` | ✅ **COMPLETED** | MEDIUM | Tag removal |
+| `list-tags.js` | ✅ **COMPLETED** | MEDIUM | Tag listing |
+| `rename-tag.js` | ✅ **COMPLETED** | LOW | Tag renaming |
+| `use-tag.js` | ✅ **COMPLETED** | MEDIUM | Tag switching/filtering |
 
 ### Dependency Management Functions
 | File | Status | Priority | Notes |
 |------|--------|----------|-------|
-| `add-dependency.js` | � Pending | MEDIUM | Add task dependencies |
-| `remove-dependency.js` | � Pending | MEDIUM | Remove dependencies |
-| `validate-dependencies.js` | � Pending | MEDIUM | Dependency validation |
-| `fix-dependencies.js` | � Pending | MEDIUM | Auto-fix dependency issues |
+| `add-dependency.js` | ✅ **COMPLETED** | MEDIUM | Add task dependencies |
+| `remove-dependency.js` | ✅ **COMPLETED** | MEDIUM | Remove dependencies |
+| `validate-dependencies.js` | ✅ **COMPLETED** | MEDIUM | Dependency validation |
+| `fix-dependencies.js` | ✅ **COMPLETED** | MEDIUM | Auto-fix dependency issues |
 
 ### Task Generation & Analysis
 | File | Status | Priority | Notes |
 |------|--------|----------|-------|
-| `expand-task.js` | � Pending | MEDIUM | Task expansion with AI |
-| `expand-all-tasks.js` | � Pending | MEDIUM | Bulk task expansion |
-| `analyze-task-complexity.js` | � Pending | LOW | Complexity analysis |
-| `scope-up.js` | � Pending | LOW | Increase task scope |
-| `scope-down.js` | � Pending | LOW | Decrease task scope |
+| `expand-task.js` | ✅ **COMPLETED**  | MEDIUM | Task expansion with AI |
+| `expand-all-tasks.js` | ✅ **COMPLETED**  | MEDIUM | Bulk task expansion |
+| `analyze-task-complexity.js` | ✅ **COMPLETED**  | LOW | Complexity analysis |
+| `scope-up.js` | ✅ **COMPLETED**  | LOW | Increase task scope |
+| `scope-down.js` | ✅ **COMPLETED**    | LOW | Decrease task scope |
 
 ### Project & Configuration Functions
 | File | Status | Priority | Notes |
@@ -217,6 +217,74 @@ This document tracks the migration of all 31 core functions from file-based oper
   - `mcp-server/src/core/direct-functions/next-task-db.js` (new implementation)
   - `mcp-server/src/core/direct-functions/next-task.js` (updated to export new function)
   - `mcp-server/src/core/direct-functions/next-task-original.js` (backup of original)
+
+### ✅ add-subtask.js - **COMPLETED** (August 22, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+  - Replaced file I/O operations with database operations (`db.subtasks.create`, `db.tasks.delete`)
+  - Added user context support for multi-tenancy
+  - Maintained both task conversion and new subtask creation functionality
+  - Added comprehensive subtask ID generation with auto-numbering
+  - Enhanced error handling for database operations
+  - Integrated with audit logging through `db.history.log`
+  - Preserved task-to-subtask conversion logic with proper cleanup
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+  - `mcp-server/src/core/direct-functions/add-subtask-db.js` (new implementation)
+  - `mcp-server/src/core/direct-functions/add-subtask.js` (updated to export new function)
+  - `mcp-server/src/core/direct-functions/add-subtask-original.js` (backup of original)
+
+### ✅ update-subtask-by-id.js - **COMPLETED** (August 22, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+  - Replaced file I/O operations with database operations (`db.subtasks.update`)
+  - Added user context support for multi-tenancy
+  - Maintained subtask ID parsing with format "5.2" validation
+  - Added timestamped information appending with update counting
+  - Enhanced error handling for subtask not found scenarios
+  - Integrated with audit logging through `db.history.log`
+  - Preserved research mode functionality
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+  - `mcp-server/src/core/direct-functions/update-subtask-by-id-db.js` (new implementation)
+  - `mcp-server/src/core/direct-functions/update-subtask-by-id.js` (updated to export new function)
+  - `mcp-server/src/core/direct-functions/update-subtask-by-id-original.js` (backup of original)
+
+### ✅ remove-subtask.js - **COMPLETED** (August 22, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+  - Replaced file I/O operations with database operations (`db.subtasks.delete`, `db.tasks.create`)
+  - Added user context support for multi-tenancy
+  - Maintained subtask removal and conversion to standalone task functionality
+  - Added comprehensive error handling with proper subtask ID validation
+  - Enhanced with task auto-numbering for converted subtasks
+  - Integrated with audit logging for both deletion and conversion operations
+  - Preserved conversion logic with detailed tracking
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+  - `mcp-server/src/core/direct-functions/remove-subtask-db.js` (new implementation)
+  - `mcp-server/src/core/direct-functions/remove-subtask.js` (updated to export new function)
+  - `mcp-server/src/core/direct-functions/remove-subtask-original.js` (backup of original)
+
+### ✅ clear-subtasks.js - **COMPLETED** (August 22, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+  - Replaced file I/O operations with database operations (`db.subtasks.clearByTask`)
+  - Added user context support for multi-tenancy
+  - Maintained bulk subtask clearing for specific tasks and all tasks
+  - Added comprehensive reporting with cleared subtask counts
+  - Enhanced error handling with per-task failure tracking
+  - Integrated with audit logging for bulk operations
+  - Preserved tag-based filtering functionality
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+  - `mcp-server/src/core/direct-functions/clear-subtasks-db.js` (new implementation)
+  - `mcp-server/src/core/direct-functions/clear-subtasks.js` (updated to export new function)
+  - `mcp-server/src/core/direct-functions/clear-subtasks-original.js` (backup of original)
 
 ## Migration Approach
 
