@@ -1,40 +1,22 @@
+// Import the database-powered implementation
+import { responseLanguageDirect as responseLanguageDbDirect } from './response-language-db.js';
+
 /**
- * response-language.js
- * Direct function for managing response language via MCP
+ * response-language.js - DEPRECATED FILE-BASED IMPLEMENTATION
+ *
+ * This file has been migrated to use database operations.
+ * All functionality now delegates to the database-powered implementation.
  */
 
-import { setResponseLanguage } from '../../../../scripts/modules/task-manager.js';
-import {
-	enableSilentMode,
-	disableSilentMode
-} from '../../../../scripts/modules/utils.js';
-import { createLogWrapper } from '../../tools/utils.js';
-
+/**
+ * Direct function wrapper for response language management
+ * This function now delegates to the database-powered implementation
+ * @param {Object} args - Arguments passed by the MCP tool
+ * @param {Object} log - MCP logger
+ * @param {Object} context - MCP context (contains session)
+ * @returns {Object} Result object with success, data/error fields
+ */
 export async function responseLanguageDirect(args, log, context = {}) {
-	const { projectRoot, language } = args;
-	const mcpLog = createLogWrapper(log);
-
-	log.info(
-		`Executing response-language_direct with args: ${JSON.stringify(args)}`
-	);
-	log.info(`Using project root: ${projectRoot}`);
-
-	try {
-		enableSilentMode();
-		return setResponseLanguage(language, {
-			mcpLog,
-			projectRoot
-		});
-	} catch (error) {
-		return {
-			success: false,
-			error: {
-				code: 'DIRECT_FUNCTION_ERROR',
-				message: error.message,
-				details: error.stack
-			}
-		};
-	} finally {
-		disableSilentMode();
-	}
+	// Delegate to the database-powered implementation
+	return responseLanguageDbDirect(args, log, context);
 }
