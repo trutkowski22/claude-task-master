@@ -8,17 +8,17 @@
 import { z } from 'zod';
 import Fuse from 'fuse.js';
 import { db, DatabaseError } from '../../database/index.js';
-import { generateObjectService } from '../../../../scripts/modules/ai-services-unified.js';
-import { getDefaultPriority } from '../../../../scripts/modules/config-manager.js';
-import { getPromptManager } from '../../../../scripts/modules/prompt-manager.js';
-import ContextGatherer from '../../../../scripts/modules/utils/contextGatherer.js';
+import { generateObjectService } from '../../../scripts/modules/ai-services-unified.js';
+import { getDefaultPriority } from '../../../scripts/modules/config-manager.js';
+import { getPromptManager } from '../../../scripts/modules/prompt-manager.js';
+import ContextGatherer from '../../../scripts/modules/utils/contextGatherer.js';
 import { createLogWrapper } from '../../tools/utils.js';
 import {
     TASK_PRIORITY_OPTIONS,
     DEFAULT_TASK_PRIORITY,
     isValidTaskPriority,
     normalizeTaskPriority
-} from '../../../../src/constants/task-priority.js';
+} from '../../../src/constants/task-priority.js';
 
 // Define Zod schema for the expected AI output object
 const AiTaskDataSchema = z.object({

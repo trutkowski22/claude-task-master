@@ -134,31 +134,75 @@ CREATE TABLE IF NOT EXISTS public.task_history (
     user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
     task_id UUID REFERENCES public.tasks(id) ON DELETE CASCADE,
     subtask_id UUID REFERENCES public.subtasks(id) ON DELETE CASCADE,
-    
+
     -- Change tracking
     action TEXT NOT NULL CHECK (action IN ('created', 'updated', 'deleted', 'status_changed', 'assigned', 'moved')),
     field_name TEXT,
     old_value JSONB,
     new_value JSONB,
     change_summary TEXT,
-    
+
     -- Context
     changed_by UUID REFERENCES public.users(id),
     ip_address INET,
     user_agent TEXT,
-    
+
     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-    
+
     -- Either task_id or subtask_id must be set, but not both
     CONSTRAINT history_task_or_subtask CHECK (
-        (task_id IS NOT NULL AND subtask_id IS NULL) OR 
+        (task_id IS NOT NULL AND subtask_id IS NULL) OR
         (task_id IS NULL AND subtask_id IS NOT NULL)
     )
+);
+
+-- Complexity reports table - stores complexity analysis results
+CREATE TABLE IF NOT EXISTS public.complexity_reports (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+    project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE,
+
+    -- Report metadata
+    name TEXT NOT NULL,
+    description TEXT,
+    report_data JSONB NOT NULL, -- The actual complexity analysis data
+
+    -- Source information
+    source TEXT DEFAULT 'generated' CHECK (source IN ('generated', 'file', 'imported')),
+    source_path TEXT, -- Original file path if imported from file
+
+    -- Timestamps
+    created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+
+    -- Unique constraint for user/project/name combination
+    CONSTRAINT complexity_reports_user_project_name_unique UNIQUE(user_id, project_id, name)
+);
+
+-- Cache statistics table - stores cache performance metrics
+CREATE TABLE IF NOT EXISTS public.cache_stats (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+
+    -- Statistics data
+    stats_data JSONB NOT NULL, -- The actual cache statistics
+
+    -- Recording information
+    recorded_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+
+    -- Metadata
+    created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON public.projects(user_id);
 CREATE INDEX IF NOT EXISTS idx_projects_deleted_at ON public.projects(deleted_at);
+CREATE INDEX IF NOT EXISTS idx_complexity_reports_user_id ON public.complexity_reports(user_id);
+CREATE INDEX IF NOT EXISTS idx_complexity_reports_project_id ON public.complexity_reports(project_id);
+CREATE INDEX IF NOT EXISTS idx_complexity_reports_created_at ON public.complexity_reports(created_at);
+CREATE INDEX IF NOT EXISTS idx_cache_stats_user_id ON public.cache_stats(user_id);
+CREATE INDEX IF NOT EXISTS idx_cache_stats_recorded_at ON public.cache_stats(recorded_at);
 
 CREATE INDEX IF NOT EXISTS idx_tasks_user_id ON public.tasks(user_id);
 CREATE INDEX IF NOT EXISTS idx_tasks_project_id ON public.projects(project_id);
@@ -196,6 +240,8 @@ ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_dependencies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.complexity_reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cache_stats ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for users table
 CREATE POLICY "Users can view own profile" ON public.users
@@ -283,6 +329,32 @@ CREATE POLICY "Users can view own task history" ON public.task_history
 CREATE POLICY "Users can create task history" ON public.task_history
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+-- RLS Policies for complexity_reports table
+CREATE POLICY "Users can view own complexity reports" ON public.complexity_reports
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can create own complexity reports" ON public.complexity_reports
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own complexity reports" ON public.complexity_reports
+    FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own complexity reports" ON public.complexity_reports
+    FOR DELETE USING (auth.uid() = user_id);
+
+-- RLS Policies for cache_stats table
+CREATE POLICY "Users can view own cache stats" ON public.cache_stats
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can create own cache stats" ON public.cache_stats
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own cache stats" ON public.cache_stats
+    FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own cache stats" ON public.cache_stats
+    FOR DELETE USING (auth.uid() = user_id);
+
 -- Functions for updated_at timestamps
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -306,6 +378,12 @@ CREATE TRIGGER update_subtasks_updated_at BEFORE UPDATE ON public.subtasks
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_tags_updated_at BEFORE UPDATE ON public.tags
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_complexity_reports_updated_at BEFORE UPDATE ON public.complexity_reports
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_cache_stats_updated_at BEFORE UPDATE ON public.cache_stats
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Function to automatically assign task numbers

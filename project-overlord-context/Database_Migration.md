@@ -5,9 +5,9 @@ This document tracks the migration of all 31 core functions from file-based oper
 
 ## Migration Status Summary
 - **Total Functions**: 31
-- **Completed**: 22 (`add-task.js`, `update-task-by-id.js`, `show-task.js`, `list-tasks.js`, `remove-task.js`, `move-task.js`, `set-task-status.js`, `next-task.js`, `add-subtask.js`, `update-subtask-by-id.js`, `remove-subtask.js`, `clear-subtasks.js`, `add-tag.js`, `copy-tag.js`, `delete-tag.js`, `list-tags.js`, `rename-tag.js`, `use-tag.js`, `add-dependency.js`, `remove-dependency.js`, `validate-dependencies.js`, `fix-dependencies.js`)
+- **Completed**: 28 (`add-task.js`, `update-task-by-id.js`, `show-task.js`, `list-tasks.js`, `remove-task.js`, `move-task.js`, `set-task-status.js`, `next-task.js`, `add-subtask.js`, `update-subtask-by-id.js`, `remove-subtask.js`, `clear-subtasks.js`, `add-tag.js`, `copy-tag.js`, `delete-tag.js`, `list-tags.js`, `rename-tag.js`, `use-tag.js`, `add-dependency.js`, `remove-dependency.js`, `validate-dependencies.js`, `fix-dependencies.js`, `generate-task-files.js`, `parse-prd.js`, `research.js`, `complexity-report.js`, `cache-stats.js`, `initialize-project.js`)
 - **In Progress**: 0
-- **Pending**: 9
+- **Pending**: 3
 
 ## Database Schema Status
 - ✅ **Full Schema Deployed**: Complete PostgreSQL schema with all enhancements
@@ -77,13 +77,30 @@ This document tracks the migration of all 31 core functions from file-based oper
 ### Advanced Operations
 | File | Status | Priority | Notes |
 |------|--------|----------|-------|
-| `generate-task-files.js` | � Pending | LOW | File generation |
-| `parse-prd.js` | � Pending | MEDIUM | PRD parsing |
-| `research.js` | � Pending | MEDIUM | Research operations |
-| `complexity-report.js` | � Pending | LOW | Reporting |
-| `cache-stats.js` | � Pending | LOW | Cache statistics |
+| `generate-task-files.js` | ✅ **COMPLETED** | LOW | File generation |
+| `parse-prd.js` | ✅ **COMPLETED** | MEDIUM | PRD parsing |
+| `research.js` | ✅ **COMPLETED** | MEDIUM | Research operations |
+| `complexity-report.js` | ✅ **COMPLETED** | LOW | Reporting |
+| `cache-stats.js` | ✅ **COMPLETED** | LOW | Cache statistics |
 
 ## Completed Migrations
+
+### ✅ generate-task-files.js - **COMPLETED** (August 23, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+  - Replaced file I/O operations with database operations (`db.tasks.list`, `db.tags.getByName`, `db.tags.getTasksByTag`)
+  - Added user context support for multi-tenancy
+  - Maintained tag-aware file generation with proper naming conventions
+  - Added comprehensive subtask and dependency handling from database
+  - Integrated with database auto-numbering and task structure
+  - Preserved orphaned file cleanup functionality
+  - Enhanced with proper error handling for database operations
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+  - `scripts/modules/task-manager/generate-task-files-db.js` (new implementation)
+  - `scripts/modules/task-manager/generate-task-files.js` (updated to export new function)
+  - `scripts/modules/task-manager/generate-task-files-original.js` (backup of original)
 
 ### ✅ add-task.js - **COMPLETED** (August 22, 2025)
 - **Status**: ✅ Fully migrated from file operations to database operations
@@ -287,6 +304,74 @@ This document tracks the migration of all 31 core functions from file-based oper
   - `mcp-server/src/core/direct-functions/clear-subtasks.js` (updated to export new function)
   - `mcp-server/src/core/direct-functions/clear-subtasks-original.js` (backup of original)
 
+### ✅ parse-prd.js - **COMPLETED** (August 23, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+ - Replaced file I/O operations with database operations (`db.tasks.create`, `db.tasks.list`)
+ - Added user context support for multi-tenancy
+ - Maintained PRD parsing and task extraction functionality
+ - Enhanced with database transaction support for bulk task creation
+ - Integrated with database auto-numbering and task structure
+ - Added comprehensive error handling for database operations
+ - Preserved AI-powered PRD analysis and task breakdown logic
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+ - `mcp-server/src/core/direct-functions/parse-prd-db.js` (new implementation)
+ - `mcp-server/src/core/direct-functions/parse-prd.js` (updated to export new function)
+ - `mcp-server/src/core/direct-functions/parse-prd-original.js` (backup of original)
+
+### ✅ research.js - **COMPLETED** (August 23, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+ - Replaced file I/O operations with database operations (`db.tasks.getByNumber`, `db.subtasks.listByTask`)
+ - Added user context support for multi-tenancy
+ - Maintained research task analysis and information gathering functionality
+ - Enhanced with database query optimization for research operations
+ - Integrated with audit logging through `db.history.log`
+ - Added support for task and subtask research context retrieval
+ - Preserved AI-powered research capabilities with database integration
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+ - `mcp-server/src/core/direct-functions/research-db.js` (new implementation)
+ - `mcp-server/src/core/direct-functions/research.js` (updated to export new function)
+ - `mcp-server/src/core/direct-functions/research-original.js` (backup of original)
+
+### ✅ complexity-report.js - **COMPLETED** (August 23, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+ - Replaced file I/O operations with database operations (`db.tasks.list`, `db.subtasks.listByTask`)
+ - Added user context support for multi-tenancy
+ - Maintained complexity analysis and reporting functionality
+ - Enhanced with database aggregation queries for performance metrics
+ - Integrated with database schema complexity scoring fields
+ - Added comprehensive task complexity calculations from database
+ - Preserved all reporting formats and analysis capabilities
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+ - `mcp-server/src/core/direct-functions/complexity-report-db.js` (new implementation)
+ - `mcp-server/src/core/direct-functions/complexity-report.js` (updated to export new function)
+ - `mcp-server/src/core/direct-functions/complexity-report-original.js` (backup of original)
+
+### ✅ cache-stats.js - **COMPLETED** (August 23, 2025)
+- **Status**: ✅ Fully migrated from file operations to database operations
+- **Changes Made**:
+ - Replaced file I/O operations with database operations (`db.tasks.list`, `db.subtasks.listByTask`)
+ - Added user context support for multi-tenancy
+ - Maintained cache statistics and performance monitoring functionality
+ - Enhanced with database query optimization for statistics gathering
+ - Integrated with database metadata and performance tracking
+ - Added comprehensive caching metrics from database operations
+ - Preserved all statistics reporting and cache analysis capabilities
+- **API Compatibility**: ✅ Maintains exact same public API
+- **Testing**: ✅ Migration structure validated, ready for authentication
+- **Files**:
+ - `mcp-server/src/core/direct-functions/cache-stats-db.js` (new implementation)
+ - `mcp-server/src/core/direct-functions/cache-stats.js` (updated to export new function)
+ - `mcp-server/src/core/direct-functions/cache-stats-original.js` (backup of original)
+
 ## Migration Approach
 
 ### Phase 1: High Priority Core Functions (8 functions)
@@ -354,6 +439,6 @@ Each migrated function must:
 
 ---
 
-**Last Updated**: August 22, 2025
+**Last Updated**: August 23, 2025
 **Phase**: 1.3 - Core Function Migration  
 **Status**: Database layer complete, ready to begin function migration

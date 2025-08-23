@@ -6,7 +6,7 @@
  */
 
 import { db, DatabaseError } from '../../database/index.js';
-import { updateTaskById } from '../../../../scripts/modules/task-manager.js';
+import { updateTaskById } from '../../../scripts/modules/task-manager.js';
 import { createLogWrapper } from '../../tools/utils.js';
 
 /**

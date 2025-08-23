@@ -126,3 +126,10 @@ process.on('SIGTERM', () => {
 
 // Run the setup
 main().catch(console.error);
+
+
+
+
+
+
+
