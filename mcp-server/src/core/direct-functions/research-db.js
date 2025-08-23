@@ -6,14 +6,14 @@
  */
 
 import path from 'path';
-import { performResearch } from '../../../scripts/modules/task-manager.js';
+import { performResearch } from '../../../../scripts/modules/task-manager.js';
 import {
 	enableSilentMode,
 	disableSilentMode
-} from '../../../scripts/modules/utils.js';
+} from '../../../../scripts/modules/utils.js';
 import { createLogWrapper } from '../../tools/utils.js';
 import { db, DatabaseError } from '../../database/index.js';
-import { getDebugFlag } from '../../../scripts/modules/config-manager.js';
+import { getDebugFlag } from '../../../../scripts/modules/config-manager.js';
 
 /**
  * Extract user ID from context

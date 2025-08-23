@@ -12,7 +12,7 @@ import {
 	enableSilentMode,
 	disableSilentMode,
 	readComplexityReport
-} from '../../../scripts/modules/utils.js';
+} from '../../../../scripts/modules/utils.js';
 
 /**
  * Extract user ID from context

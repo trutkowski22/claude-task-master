@@ -312,6 +312,12 @@ async function generateTaskFilesDb(userId, projectId = null, tag, outputDir, con
 }
 
 /**
+ * Database-powered task file generation function
+ * Exported for use by other modules that need the core functionality
+ */
+export { generateTaskFilesDb };
+
+/**
  * Direct function wrapper for generating task files with database operations
  *
  * This is the main entry point that replaces the file-based generateTaskFiles function
